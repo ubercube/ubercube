@@ -112,7 +112,7 @@ public class Display
 
 	public void update()
 	{
-		closed = (glfwWindowShouldClose(window) == GL_TRUE);
+		closed = glfwWindowShouldClose(window);
 
 		if (destroy)
 		{
@@ -123,10 +123,10 @@ public class Display
 		glfwPollEvents();
 		glfwSwapBuffers(window);
 
-		glfwGetWindowSize(window, windowSizeBuffer, null);
+		glfwGetWindowSize(window, windowSizeBuffer.asIntBuffer(), null);
 		width = windowSizeBuffer.getInt(0);
 
-		glfwGetWindowSize(window, null, windowSizeBuffer);
+		glfwGetWindowSize(window, null, windowSizeBuffer.asIntBuffer());
 		height = windowSizeBuffer.getInt(0);
 
 		resized = false;
