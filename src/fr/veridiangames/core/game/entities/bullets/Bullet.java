@@ -37,6 +37,7 @@ public class Bullet extends Entity
 {
 	private float				force;
 	private NetworkableClient	net;
+	private Vec3 startPosition = new Vec3();
 
 	public Bullet(int id, String name, Vec3 spawnPoint, Quat orientation, float force)
 	{
@@ -44,7 +45,9 @@ public class Bullet extends Entity
 		super.add(new ECName(name));
 		super.add(new ECRender(spawnPoint, orientation, new Vec3(0.04f, 0.04f, 0.4f)));
 		super.addTag("Bullet");
-		
+
+		startPosition.set(this.getPosition());
+
 		this.force = force;
 	}
 
@@ -71,7 +74,15 @@ public class Bullet extends Entity
 				position.add(direction.copy().mul(force / step));
 			}
 		}
-		
+
+		float dx = startPosition.x - getPosition().x;
+		float dy = startPosition.y - getPosition().y;
+		float dz = startPosition.z - getPosition().z;
+		float distance = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
+		if(distance > 100){
+			this.destroy();
+		}
+
 		if (block != 0)
 		{
 			this.net.send(new BulletHitPacket(new StaticBullet(id, "", position, getRotation())));
