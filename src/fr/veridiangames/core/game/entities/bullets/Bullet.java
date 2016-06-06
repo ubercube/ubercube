@@ -75,11 +75,10 @@ public class Bullet extends Entity
 			}
 		}
 
-		float dx = startPosition.x - getPosition().x;
-		float dy = startPosition.y - getPosition().y;
-		float dz = startPosition.z - getPosition().z;
-		float distance = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
-		if(distance > 100){
+		Vec3 v = new Vec3(getPosition());
+		v.sub(startPosition);
+		float distance = Math.abs(v.sqrt());
+		if(distance > 1000){
 			this.destroy();
 		}
 

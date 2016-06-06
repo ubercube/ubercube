@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b7a69701-d23b-431c-9257-dc3ee7b0ce39" name="Default" comment="Update LWJGL to 3.0.0 Build 90.">
+    <list default="true" id="b7a69701-d23b-431c-9257-dc3ee7b0ce39" name="Default" comment="Refactoring.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/Display.java" afterPath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/Display.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/bullets/Bullet.java" afterPath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/bullets/Bullet.java" />
@@ -29,8 +29,28 @@
       <file leaf-file-name="Bullet.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/bullets/Bullet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="87" column="12" selection-start-line="87" selection-start-column="12" selection-end-line="87" selection-end-column="12" />
+            <state relative-caret-position="409">
+              <caret line="80" column="24" selection-start-line="80" selection-start-column="24" selection-end-line="80" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Vec3.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/maths/Vec3.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="197">
+              <caret line="233" column="16" selection-start-line="233" selection-start-column="16" selection-end-line="233" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/player/Player.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="59" column="9" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -79,6 +99,7 @@
         <option value="$PROJECT_DIR$/src/fr/veridiangames/server/ServerMain.java" />
         <option value="$PROJECT_DIR$/src/fr/veridiangames/client/Test.java" />
         <option value="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/Display.java" />
+        <option value="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/player/Player.java" />
         <option value="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/bullets/Bullet.java" />
       </list>
     </option>
@@ -258,7 +279,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="bullets" />
+              <option name="myItemId" value="player" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -587,7 +608,14 @@
       <option name="project" value="LOCAL" />
       <updated>1465204653475</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Resolve Issue#1.">
+      <created>1465208191454</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1465208191454</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -625,7 +653,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Update LWJGL to 3.0.0 Build 90." />
-    <option name="LAST_COMMIT_MESSAGE" value="Update LWJGL to 3.0.0 Build 90." />
+    <MESSAGE value="Resolve Issue#1." />
+    <option name="LAST_COMMIT_MESSAGE" value="Resolve Issue#1." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -832,10 +861,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/player/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="59" column="9" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/maths/Vec3.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="233" column="16" selection-start-line="233" selection-start-column="16" selection-end-line="233" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/bullets/Bullet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="87" column="12" selection-start-line="87" selection-start-column="12" selection-end-line="87" selection-end-column="12" />
+        <state relative-caret-position="409">
+          <caret line="80" column="24" selection-start-line="80" selection-start-column="24" selection-end-line="80" selection-end-column="24" />
           <folding />
         </state>
       </provider>
