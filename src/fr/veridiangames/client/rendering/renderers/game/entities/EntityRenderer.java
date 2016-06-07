@@ -31,6 +31,7 @@ import java.nio.IntBuffer;
 import java.util.List;
 import java.util.Map;
 
+import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import org.lwjgl.BufferUtils;
 
 import fr.veridiangames.core.game.entities.Entity;
@@ -120,7 +121,9 @@ public class EntityRenderer
 			Entity e = entities.get(indices.get(i));
 			if (e instanceof Player)
 				continue;
-			
+			if (e instanceof ParticleSystem)
+				continue;
+
 			renderCount++;
 			
 			Transform transform = ((ECRender) e.get(EComponent.RENDER)).getTransform();

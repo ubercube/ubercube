@@ -29,6 +29,7 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.FuckedECPosition;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
+import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Vec3;
 
@@ -42,6 +43,7 @@ public class EntityManager
 	private List<Integer>			renderableEntities;
 	private List<Integer>			networkableEntities;
 	private List<Integer>			playerEntities;
+	private List<Integer>			particleEntities;
 
 	public EntityManager()
 	{
@@ -50,6 +52,7 @@ public class EntityManager
 		renderableEntities = new ArrayList<Integer>();
 		networkableEntities = new ArrayList<Integer>();
 		playerEntities = new ArrayList<Integer>();
+		particleEntities = new ArrayList<Integer>();
 	}
 
 	public void update(GameCore core)
@@ -74,7 +77,10 @@ public class EntityManager
 
 		if (e instanceof Player)
 			playerEntities.add(e.getID());
-		
+
+		if (e instanceof ParticleSystem)
+			particleEntities.add(e.getID());
+
 		keys.add(e.getID());
 		entities.put(e.getID(), e);
 	}
@@ -89,7 +95,10 @@ public class EntityManager
 		
 		if (playerEntities.contains(id))
 			playerEntities.remove((Integer) id);
-		
+
+		if (particleEntities.contains(id))
+			particleEntities.remove((Integer) id);
+
 		entities.remove(id);
 		keys.remove((Integer) id);
 	}
@@ -140,11 +149,11 @@ public class EntityManager
 					Vec3 esize = ((ECRender) e.get(EComponent.RENDER)).getSize();
 					
 					if (point.x > epos.x - esize.x && point.x < epos.x + esize.x &&
-							point.y > epos.y - esize.y && point.y < epos.y + esize.y &&
-							point.z > epos.z - esize.z && point.z < epos.z + esize.z)
-					{
-						result = e;
-					}
+						point.y > epos.y - esize.y && point.y < epos.y + esize.y &&
+						point.z > epos.z - esize.z && point.z < epos.z + esize.z)
+				{
+					result = e;
+				}
 				}
 			}
 		}
@@ -166,5 +175,10 @@ public class EntityManager
 	public List<Integer> getPlayerEntites()
 	{
 		return playerEntities;
+	}
+
+	public List<Integer> getParticleEntities()
+	{
+		return particleEntities;
 	}
 }

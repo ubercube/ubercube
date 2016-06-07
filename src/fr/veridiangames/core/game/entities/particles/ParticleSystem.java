@@ -25,31 +25,32 @@ import fr.veridiangames.core.game.entities.components.FuckedECPosition;
 import fr.veridiangames.core.game.entities.components.FuckedECRotation;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Transform;
-import fr.veridiangames.core.maths.Vec2;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.utils.Color4f;
+
+import java.util.List;
 
 public class ParticleSystem extends Entity
 {
 	private Transform	transform;
-	
+
 	private int			particleCount;
-	
+
 	private int 		particleLifeTime;
 	private int			particleLifeTimeRandomness;
-	
+
 	private float 		particleSize;
 	private float 		particleSizeRandomness;
-	
+
 	private Color4f 	particleColor;
 	private Color4f		particleColorRandomness;
-	
-	
-	
+
+	private List<Particle> particles;
+
 	public ParticleSystem(int id, String name)
 	{
 		super(id);
-		super.add(new ECName(""));
+		super.add(new ECName(name));
 		super.add(new FuckedECPosition(new Vec3()));
 		super.add(new FuckedECRotation(new Quat()));
 	}
@@ -67,5 +68,10 @@ public class ParticleSystem extends Entity
 	public void setParent(Transform parent)
 	{
 		transform.setParent(parent);
+	}
+
+	public List<Particle> getParticles()
+	{
+		return particles;
 	}
 }
