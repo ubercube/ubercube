@@ -1,5 +1,4 @@
 #version 330 core
-#extension GL_NV_shadow_samplers_cube : enable
 
 out vec4 fragColor;
 

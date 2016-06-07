@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b7a69701-d23b-431c-9257-dc3ee7b0ce39" name="Default" comment="Refactoring.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/shaders/330/env_sphere.frag" afterPath="$PROJECT_DIR$/res/shaders/330/env_sphere.frag" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/shaders/330/env_sphere.vert" afterPath="$PROJECT_DIR$/res/shaders/330/env_sphere.vert" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/Display.java" afterPath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/Display.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/bullets/Bullet.java" afterPath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/bullets/Bullet.java" />
     </list>
@@ -26,11 +28,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Bullet.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Bullet.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/bullets/Bullet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="409">
-              <caret line="80" column="24" selection-start-line="80" selection-start-column="24" selection-end-line="80" selection-end-column="24" />
+            <state relative-caret-position="17">
+              <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="env_sphere.vert" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/res/shaders/330/env_sphere.vert">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="17" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="env_sphere.frag" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/shaders/330/env_sphere.frag">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="17" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -39,7 +61,7 @@
       <file leaf-file-name="Vec3.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/maths/Vec3.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
+            <state relative-caret-position="3332">
               <caret line="233" column="16" selection-start-line="233" selection-start-column="16" selection-end-line="233" selection-end-column="16" />
               <folding />
             </state>
@@ -49,7 +71,7 @@
       <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/player/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
+            <state relative-caret-position="510">
               <caret line="59" column="9" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
               <folding />
             </state>
@@ -59,7 +81,7 @@
       <file leaf-file-name="Entity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/Entity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="473">
+            <state relative-caret-position="1292">
               <caret line="110" column="30" selection-start-line="110" selection-start-column="30" selection-end-line="110" selection-end-column="30" />
               <folding>
                 <element signature="e#2447#2448#0" expanded="true" />
@@ -101,6 +123,8 @@
         <option value="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/Display.java" />
         <option value="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/player/Player.java" />
         <option value="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/bullets/Bullet.java" />
+        <option value="$PROJECT_DIR$/res/shaders/330/env_sphere.frag" />
+        <option value="$PROJECT_DIR$/res/shaders/330/env_sphere.vert" />
       </list>
     </option>
   </component>
@@ -135,6 +159,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -305,11 +331,63 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ubercube OpenSource" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ubercube OpenSource" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ubercube OpenSource" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ubercube OpenSource" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shaders" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="330" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ubercube OpenSource" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ubercube OpenSource" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shaders" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -593,6 +671,9 @@
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="b7a69701-d23b-431c-9257-dc3ee7b0ce39" name="Default" comment="" />
@@ -615,7 +696,14 @@
       <option name="project" value="LOCAL" />
       <updated>1465208191454</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Refactoring.">
+      <created>1465212372587</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1465212372587</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -629,8 +717,8 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32827735" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32827735" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -648,13 +736,22 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Update LWJGL to 3.0.0 Build 90." />
     <MESSAGE value="Resolve Issue#1." />
-    <option name="LAST_COMMIT_MESSAGE" value="Resolve Issue#1." />
+    <MESSAGE value="Refactoring." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactoring." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -667,13 +764,45 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/bullets/Bullet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/maths/Vec3.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3332">
+          <caret line="233" column="16" selection-start-line="233" selection-start-column="16" selection-end-line="233" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/player/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="59" column="9" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/Entity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1292">
+          <caret line="110" column="30" selection-start-line="110" selection-start-column="30" selection-end-line="110" selection-end-column="30" />
+          <folding>
+            <element signature="e#2447#2448#0" expanded="true" />
+            <element signature="e#2475#2476#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/client/MainComponent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#1529#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -681,10 +810,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#941#942#0" expanded="false" />
-            <element signature="e#977#978#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -692,7 +817,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -700,9 +824,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#1345#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -710,9 +831,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#1529#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -749,7 +867,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -757,7 +874,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -765,7 +881,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="79">
           <caret line="44" column="13" selection-start-line="44" selection-start-column="13" selection-end-line="44" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -773,7 +888,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="28" column="6" selection-start-line="28" selection-start-column="6" selection-end-line="28" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -781,7 +895,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2471">
           <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -789,9 +902,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="510">
           <caret line="65" column="20" selection-start-line="65" selection-start-column="20" selection-end-line="65" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -799,10 +909,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="36" column="5" selection-start-line="36" selection-start-column="5" selection-end-line="36" selection-end-column="5" />
-          <folding>
-            <element signature="e#941#942#0" expanded="false" />
-            <element signature="e#977#978#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -810,9 +916,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#1529#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -820,7 +923,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
           <caret line="53" column="24" selection-start-line="53" selection-start-column="24" selection-end-line="53" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -828,7 +930,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="44" column="17" selection-start-line="44" selection-start-column="17" selection-end-line="44" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -836,7 +937,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -844,15 +944,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#1345#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/Entity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="473">
+        <state relative-caret-position="1292">
           <caret line="110" column="30" selection-start-line="110" selection-start-column="30" selection-end-line="110" selection-end-column="30" />
           <folding>
             <element signature="e#2447#2448#0" expanded="true" />
@@ -863,7 +960,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/player/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
+        <state relative-caret-position="510">
           <caret line="59" column="9" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
           <folding />
         </state>
@@ -871,7 +968,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/maths/Vec3.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
+        <state relative-caret-position="3332">
           <caret line="233" column="16" selection-start-line="233" selection-start-column="16" selection-end-line="233" selection-end-column="16" />
           <folding />
         </state>
@@ -879,8 +976,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/bullets/Bullet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="80" column="24" selection-start-line="80" selection-start-column="24" selection-end-line="80" selection-end-column="24" />
+        <state relative-caret-position="17">
+          <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/shaders/330/env_sphere.frag">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="17" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/shaders/330/env_sphere.vert">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="17" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
           <folding />
         </state>
       </provider>
