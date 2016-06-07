@@ -1,4 +1,5 @@
 #version 120
+#extension GL_NV_shadow_samplers_cube : enable
 
 attribute vec3 in_position;
 attribute vec2 in_coords;
