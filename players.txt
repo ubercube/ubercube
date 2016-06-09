@@ -1,0 +1,4 @@
+#Server Player Database
+#
+# | Username | User ID | Type | Banned | Kicked |
+#

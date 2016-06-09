@@ -1,0 +1,4 @@
+#Server Kicked Players
+#
+# | Username | User ID |
+#

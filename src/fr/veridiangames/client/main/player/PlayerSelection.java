@@ -53,7 +53,7 @@ public class PlayerSelection
 				if (e.contains(EComponent.RENDER))
 				{
 					Vec3 ePos = ((ECRender) e.get(EComponent.RENDER)).getTransform().getPosition();
-					Vec3 eSize = ((ECRender) e.get(EComponent.RENDER)).getSize();
+					Vec3 eSize = ((ECRender) e.get(EComponent.RENDER)).getScale();
 					this.pos = new Vec3(ePos);
 					this.size = new Vec3(eSize).add(0.01f);
 				}
