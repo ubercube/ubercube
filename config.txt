@@ -1,9 +1,0 @@
-#Ubercube Server Config
-#Created on the 08 juin 2016 05:46:07 PM
-#
-WorldType:0
-Seed:-4709540755978604383
-ViewDistance:10
-Fog:1.0
-Name:My Ubercube Server
-MaxPlayers:20
