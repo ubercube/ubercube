@@ -23,12 +23,14 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.data.GameData;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.EntityManager;
+import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.physics.PhysicsEngine;
+import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Indexer;
 
 /**
@@ -57,6 +59,8 @@ public class Game
 		this.world = new World(core);
 		
 		spawn(new NetworkedPlayer(Indexer.getUniqueID(), "Entity", new Vec3(50 * 16, 8, 50 * 16), new Quat(), "", 0));
+		/** Test spawn code **/
+		spawn(new ParticleSystem(Indexer.getUniqueID(), "Particles", new Vec3(805, 7, 805), 0.1f, new Color4f(0.7f, 0.1f, 0.1f, 1f)).useCollision(true).setParticleVelocity(new Vec3(0, 0.05f, 0.05f)).setGravity(new Vec3(0, -0.001f, 0)));
 	}
 
 	public void update()

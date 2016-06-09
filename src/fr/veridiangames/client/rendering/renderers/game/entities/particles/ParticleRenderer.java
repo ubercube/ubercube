@@ -54,11 +54,11 @@ import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
  */
 public class ParticleRenderer
 {
-    public static final int MAX_PARTICLES = 2000;
+    public static final int MAX_PARTICLES = 10000;
 
-    private FloatBuffer instanceBuffer;
-    private int vao, vbo, vio, ibo;
-    private int renderCount;
+    private FloatBuffer     instanceBuffer;
+    private int             vao, vbo, vio, ibo;
+    private int             renderCount;
 
     public ParticleRenderer()
     {
@@ -130,7 +130,7 @@ public class ParticleRenderer
 
                 for (int j = 0; j < particles.size(); j++)
                 {
-                    Particle p = particles.get(i);
+                    Particle p = particles.get(j);
 
                     renderCount++;
 
