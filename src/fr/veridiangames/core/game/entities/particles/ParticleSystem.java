@@ -53,6 +53,7 @@ public class ParticleSystem extends Entity
 
 	private boolean 		collision;
 	private Vec3			gravity;
+	private boolean			activate;
 
 	private List<Particle> 	particles;
 
@@ -69,16 +70,17 @@ public class ParticleSystem extends Entity
 
 		this.particleSpawnBox = new Vec3();
 
-		this.particleLifeTime = 500;
+		this.particleLifeTime = 50;
 		this.particleColors = color;
 		this.particleVelocity = new Vec3();
 
 		this.particleLifeTimeRandomness = 10;
 		this.particleColorRandomness = 0.1f;
-		this.particleVelocityRandomness = 0.02f;
+		this.particleVelocityRandomness = 0.01f;
 
 		this.collision = false;
 		this.gravity = new Vec3();
+		this.activate = true;
 	}
 
 	public void update(GameCore core)
@@ -86,7 +88,10 @@ public class ParticleSystem extends Entity
 		super.update(core);
 
 		for(int i = 0; i < particleCount; i++)
-			particles.add(new Particle(this));
+		{
+			if(activate)
+				particles.add(new Particle(this));
+		}
 
 		for(int i = 0; i < particles.size(); i++)
 		{
@@ -99,7 +104,6 @@ public class ParticleSystem extends Entity
 			if(!collision || !p.isCollision())
 			{
 				p.getVelocity().add(p.getGravity());
-
 				p.getTransform().getLocalPosition().add(p.getVelocity());
 			}
 
@@ -215,6 +219,17 @@ public class ParticleSystem extends Entity
 	public ParticleSystem setGravity(Vec3 gravity)
 	{
 		this.gravity = gravity;
+		return this;
+	}
+
+	public boolean isActivate()
+	{
+		return activate;
+	}
+
+	public ParticleSystem setActivate(boolean activate)
+	{
+		this.activate = activate;
 		return this;
 	}
 }
