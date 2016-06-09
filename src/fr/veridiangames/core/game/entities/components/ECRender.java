@@ -20,7 +20,6 @@
 package fr.veridiangames.core.game.entities.components;
 
 import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.maths.Mat4;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
@@ -32,13 +31,11 @@ public class ECRender extends EComponent
 {
 	private Transform 	transform;
 	private Transform	eyePoint;
-	private Vec3 		size;
 	
-	public ECRender(Vec3 position, Quat rotation, Vec3 size)
+	public ECRender(Vec3 position, Quat rotation, Vec3 scale)
 	{
 		super(RENDER);
-		this.size = size;
-		this.transform = new Transform(position, rotation, size);
+		this.transform = new Transform(position, rotation, scale);
 		this.eyePoint = new Transform();
 	}
 
@@ -69,13 +66,13 @@ public class ECRender extends EComponent
 		this.eyePoint = transform;
 	}
 	
-	public Vec3 getSize()
+	public Vec3 getScale()
 	{
-		return size;
+		return transform.getLocalScale();
 	}
 
-	public void setSize(Vec3 size)
+	public void setScale(Vec3 scale)
 	{
-		this.size = size;
+		transform.setLocalScale(scale);
 	}
 }

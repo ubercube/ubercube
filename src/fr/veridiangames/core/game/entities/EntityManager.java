@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.game.entities.components.FuckedECPosition;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
@@ -146,7 +145,7 @@ public class EntityManager
 				if (e.contains(EComponent.RENDER))
 				{
 					Vec3 epos = ((ECRender) e.get(EComponent.RENDER)).getTransform().getPosition();
-					Vec3 esize = ((ECRender) e.get(EComponent.RENDER)).getSize();
+					Vec3 esize = ((ECRender) e.get(EComponent.RENDER)).getScale();
 					
 					if (point.x > epos.x - esize.x && point.x < epos.x + esize.x &&
 						point.y > epos.y - esize.y && point.y < epos.y + esize.y &&
