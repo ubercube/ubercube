@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2016 Team Ubercube
  *
- * This file is part of Ubercube.
+ *   This file is part of Ubercube.
  *
- *     Ubercube is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
+ *       Ubercube is free software: you can redistribute it and/or modify
+ *       it under the terms of the GNU General Public License as published by
+ *       the Free Software Foundation, either version 3 of the License, or
+ *       (at your option) any later version.
  *
- *     Ubercube is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ *       Ubercube is distributed in the hope that it will be useful,
+ *       but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *       GNU General Public License for more details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with Ubercube.  If not, see <http://www.gnu.org/licenses/>.
+ *       You should have received a copy of the GNU General Public License
+ *       along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
 package fr.veridiangames.core.game.entities.particles;
@@ -44,7 +44,7 @@ public class Particle
                                                                                     system.getRandom().nextFloat() * system.getParticleSpawnBox().y - system.getParticleSpawnBox().y / 2,
                                                                                     system.getRandom().nextFloat() * system.getParticleSpawnBox().z - system.getParticleSpawnBox().z / 2));
 
-        transform.setLocalScale(system.getTransform().getLocalScale().copy().mul(system.getRandom().nextFloat()));
+        transform.setLocalScale(system.getTransform().getLocalScale().copy().mul(system.getRandom().nextFloat() * (system.getMaxScale() - system.getMinScale()) + system.getMinScale()));
         transform.setLocalRotation(Quat.euler(system.getRandom().nextFloat(), system.getRandom().nextFloat(), system.getRandom().nextFloat()));
 
         float colorRandomness = system.getRandom().nextFloat() * system.getParticleColorRandomness() - system.getParticleColorRandomness() / 2;
