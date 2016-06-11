@@ -17,50 +17,30 @@
  *       along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.core.physics.colliders;
+package fr.veridiangames.core.game.entities.particles;
 
-import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
-import fr.veridiangames.core.physics.CollisionData;
+import fr.veridiangames.core.utils.Color4f;
+import fr.veridiangames.core.utils.Indexer;
 
 /**
- * Created by Marccspro on 22 janv. 2016.
+ * Created by Tybau on 11/06/2016.
  */
-public abstract class Collider
-{
-	protected Vec3	position;
-	protected Quat	rotation;
+public class ParticlesBlood extends ParticleSystem{
 
-	public Collider(Vec3 position, Quat rotation)
-	{
-		this.position = position;
-		this.rotation = rotation;
-	}
-	
-	public Collider()
-	{
-		this(new Vec3(), new Quat());
-	}
-	
-	public abstract CollisionData getCollisionData(Collider collider);
+    public ParticlesBlood()
+    {
+        this(Indexer.getUniqueID(), new Vec3());
+    }
 
-	public Vec3 getPosition()
-	{
-		return position;
-	}
-
-	public void setPosition(Vec3 position)
-	{
-		this.position = position;
-	}
-
-	public Quat getRotation()
-	{
-		return rotation;
-	}
-
-	public void setRotation(Quat rotation)
-	{
-		this.rotation = rotation;
-	}
+    public ParticlesBlood(int id, Vec3 position)
+    {
+        super(id, ParticlesManager.BLOOD, position);
+        super.useCollision(true);
+        super.setParticleVelocity(new Vec3(0, 0.05f, 0.05f));
+        super.setGravity(new Vec3(0, -0.001f, 0));
+        super.setParticleLifeTime(200);
+        super.setScaleInterval(0.05f, 0.2f);
+        super.setParticleColors(new Color4f(0.8f, 0.1f, 0.1f));
+    }
 }

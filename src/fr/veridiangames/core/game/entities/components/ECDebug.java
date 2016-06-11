@@ -17,32 +17,36 @@
  *       along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.client;
-
-import fr.veridiangames.core.GameCore;
-import fr.veridiangames.client.main.Main;
-import fr.veridiangames.client.rendering.Display;
-
-import java.security.SecureRandom;
+package fr.veridiangames.core.game.entities.components;
 
 /**
- * Created by Marccspro on 28 janv. 2016.
+ * Created by Tybau on 10/06/2016.
  */
-public class MainComponent
-{	
-	public static void main(String[] args)
-	{
-		Main main = new Main();
-		main.setDisplay(new Display("Ubercube Revision 3", 1280, 720));
-		main.setGameCore(new GameCore());
+public class ECDebug extends EComponent
+{
+    private boolean particleSpawn;
+    private boolean particleRemove;
 
-		SecureRandom rand = new SecureRandom();
-		rand.setSeed(System.nanoTime());
-		int 	clientID = 	rand.nextInt(999999999); //Integer.parseInt(args[0]);
-		String 	address = 	args[0];
-		int 	port = 		25565; //Integer.parseInt(args[1].split(":")[1]);
-		
-		main.openConnection(clientID, address, port);
-		main.start();
-	}
+    public ECDebug()
+    {
+        super(DEBUG);
+    }
+
+    public boolean isParticleSpawn()
+    {
+        return particleSpawn;
+    }
+
+    public void setParticleSpawn(boolean v)
+    {
+        this.particleSpawn = v;
+    }
+
+    public boolean isParticleRemove() {
+        return particleRemove;
+    }
+
+    public void setParticleRemove(boolean particleRemove) {
+        this.particleRemove = particleRemove;
+    }
 }
