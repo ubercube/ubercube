@@ -92,6 +92,14 @@ public class Main
 			mainRenderer.update();
 		}
 	}
+
+	public void updatePhysics()
+	{
+		if (!net.isConnected())
+			return;
+
+		core.updatePhysics();
+	}
 	
 	public void render()
 	{
@@ -125,15 +133,16 @@ public class Main
 			{
 				display.getInput().update();
 				update();
+				updatePhysics();
 				ticks++;
-				
+
 				secondTime++;
 				if (secondTime % 60 == 0)
 				{
 					second = true;
 					secondTime = 0;
 				}
-				
+
 				updatedTime += tickTime;
 			}
 			else if (timer.getElapsed() - renderedTime >= renderTime)
@@ -195,7 +204,7 @@ public class Main
 		net = new NetworkClient(clientID, address, port, this);
 		
 		float midWorld = core.getGame().getData().getWorldSize() / 2 * 16;
-		ClientPlayer player = new ClientPlayer(clientID, new String("ID" + clientID).substring(0, 6), new Vec3(midWorld, 20, midWorld), new Quat(), address, port);
+		ClientPlayer player = new ClientPlayer(clientID, new String("ID" + clientID).substring(0, 6), new Vec3(midWorld, 22, midWorld), new Quat(), address, port);
 		player.setNetwork(net);
 		
 		core.getGame().setPlayer(player);

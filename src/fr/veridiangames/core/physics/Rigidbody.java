@@ -131,9 +131,7 @@ public class Rigidbody
 		if (networkView)
 			return;
 		
-		Vec3 vel = new Vec3(0, 0, 0);
-		List<AABoxCollider> blocks = world.getAABoxInRange(position, 2);
-		grounded = false;
+		List<AABoxCollider> blocks = world.getAABoxInRange(position, 3);
 		for (int i = 0; i < blocks.size(); i++)
 		{
 			AABoxCollider b = blocks.get(blocks.size() - i - 1);
@@ -141,16 +139,15 @@ public class Rigidbody
 			if (data.isCollision())
 			{
 				Vec3 mtd = data.getMtd();
-				
-				vel = mtd.copy().abs();
-				
-				if (mtd.y > 0)
+
+				grounded = false;
+				if (data.getNormal().x == 0 && data.getNormal().y == 1 && data.getNormal().z == 0)
 				{
 					gravity.set(0, 0, 0);
 					mainForce.y = 0;
 					grounded = true;
 				}
-
+				mainForce.set(0, 0, 0);
 				this.collider.getPosition().add(mtd);
 			}
 		}

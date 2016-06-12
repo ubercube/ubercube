@@ -138,7 +138,7 @@ public class PlayerRenderer
 		glBufferData(GL_ARRAY_BUFFER, instanceBuffer, GL_DYNAMIC_DRAW);
 	}
 	
-	public void render(Shader shader, Map<Integer, Entity> entities, List<Integer> indices)
+	public void render()
 	{
 		glBindVertexArray(vao);
 		glDrawElementsInstanced(GL_TRIANGLES, cubeIndices().length, GL_UNSIGNED_INT, 0L, renderCount * ENTITY_COMPLEXITY);

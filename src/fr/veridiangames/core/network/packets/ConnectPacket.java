@@ -96,7 +96,6 @@ public class ConnectPacket extends Packet
 		server.getCore().getGame().spawn(new ServerPlayer(id, name, position, rotation, address.getHostName(), port));
 		server.log(name + " just connected !");
 		server.sendToAll(new ConnectPacket(this));
-		System.out.println("Modified blocks: " + server.getCore().getGame().getWorld().getModifiedBlocks().size());
 		server.send(new SyncBlocksPacket(server.getCore().getGame().getWorld().getModifiedBlocks()), address, port);
 
 		for (int i = 0; i < server.getCore().getGame().getEntityManager().getNetworkableEntites().size(); i++)

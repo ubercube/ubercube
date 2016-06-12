@@ -61,10 +61,17 @@ public class Game
 	{
 		this.world = new World(core);
 		
+<<<<<<< Updated upstream
 		spawn(new NetworkedPlayer(Indexer.getUniqueID(), "Entity", new Vec3(810, 8, 805), new Quat(), "", 0));
+//
+//		/** Test spawn code **/
+//		spawn(new ParticleSystem(Indexer.getUniqueID(), "", new Vec3(805, 7, 805)));
+=======
+		spawn(new NetworkedPlayer(Indexer.getUniqueID(), "", new Vec3(810, 8, 805), new Quat(), "", 0));
 
 		/** Test spawn code **/
-		spawn(new ParticleSystem(Indexer.getUniqueID(), "", new Vec3(805, 7, 805)));
+		//spawn(new ParticleSystem(Indexer.getUniqueID(), "", new Vec3(805, 7, 805)));
+>>>>>>> Stashed changes
 	}
 
 	public void update()
@@ -72,9 +79,13 @@ public class Game
 		if (clientPlayer == null)
 			return;
 
-		physics.update(core);
 		entityManager.update(core);
 		world.update();
+	}
+
+	public void updatePhysics()
+	{
+		physics.update(core);
 	}
 
 	public void spawn(Entity e)
@@ -96,7 +107,7 @@ public class Game
 	public void setPlayer(ClientPlayer clientPlayer)
 	{
 		this.clientPlayer = clientPlayer;
-		spawn(clientPlayer);
+		spawn(this.clientPlayer);
 	}
 
 	public EntityManager getEntityManager()
@@ -118,6 +129,4 @@ public class Game
 	{
 		return physics;
 	}
-
-
 }

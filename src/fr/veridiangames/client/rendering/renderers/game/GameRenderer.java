@@ -101,8 +101,8 @@ public class GameRenderer
 			core.getGame().getEntityManager().getRenderableEntites()
 		);
 		particleRenderer.updateInstances(
-				core.getGame().getEntityManager().getEntities(),
-				core.getGame().getEntityManager().getParticleEntities()
+			core.getGame().getEntityManager().getEntities(),
+			core.getGame().getEntityManager().getParticleEntities()
 		);
 		worldRenderer.update(playerViewport.getCamera());
 	}
@@ -153,28 +153,24 @@ public class GameRenderer
 				core.getGame().getData().getViewDistance()
 		);
 
-		entityWeaponRenderer.renderPlayerWeapon(
-				weaponShader,
-				envCubemap.getCubemap(),
-				core.getGame().getEntityManager().getEntities(), 
-				core.getGame().getEntityManager().getPlayerEntites()
-		);
+//		entityWeaponRenderer.renderPlayerWeapon(
+//				weaponShader,
+//				envCubemap.getCubemap(),
+//				core.getGame().getEntityManager().getEntities(),
+//				core.getGame().getEntityManager().getPlayerEntites()
+//		);
 	}
 	
 	public void renderWorld(Camera camera)
 	{
 		playerShader.bind();
 		playerShader.setShaderBase(
-				camera.getProjection(), 
-				camera.getTransform().getPosition(),
+			camera.getProjection(),
+			camera.getTransform().getPosition(),
 			core.getGame().getData().getViewDistance()
 		);
 		playerShader.setModelViewMatrix(Mat4.identity());
-		playerRenderer.render(
-			playerShader,
-			core.getGame().getEntityManager().getEntities(), 
-			core.getGame().getEntityManager().getPlayerEntites()
-		);
+		playerRenderer.render();
 		
 		entityShader.bind();
 		entityShader.setShaderBase(
