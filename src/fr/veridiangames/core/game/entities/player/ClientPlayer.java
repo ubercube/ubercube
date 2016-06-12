@@ -1,36 +1,39 @@
 /*
- *   Copyright (C) 2016 Team Ubercube
+ * Copyright (C) 2016 Team Ubercube
  *
- *   This file is part of Ubercube.
+ * This file is part of Ubercube.
  *
- *       Ubercube is free software: you can redistribute it and/or modify
- *       it under the terms of the GNU General Public License as published by
- *       the Free Software Foundation, either version 3 of the License, or
- *       (at your option) any later version.
+ *     Ubercube is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
  *
- *       Ubercube is distributed in the hope that it will be useful,
- *       but WITHOUT ANY WARRANTY; without even the implied warranty of
- *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *       GNU General Public License for more details.
+ *     Ubercube is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
  *
- *       You should have received a copy of the GNU General Public License
- *       along with Ubercube.  If not, see <http://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU General Public License
+ *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
 package fr.veridiangames.core.game.entities.player;
 
 import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.game.entities.components.ECKeyMovement;
-import fr.veridiangames.core.game.entities.components.ECMouseLook;
-import fr.veridiangames.core.game.entities.components.ECRaycast;
-import fr.veridiangames.core.game.entities.components.ECRigidbody;
-import fr.veridiangames.core.game.entities.components.EComponent;
+import fr.veridiangames.core.game.entities.components.*;
+import fr.veridiangames.core.game.entities.particles.ParticleSystem;
+import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.packets.EntityMovementPacket;
 import fr.veridiangames.core.network.packets.WeaponPositionPacket;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
+import fr.veridiangames.core.utils.Color4f;
+import fr.veridiangames.core.utils.Indexer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Marccspro on 3 f�vr. 2016.
@@ -38,6 +41,8 @@ import fr.veridiangames.core.physics.colliders.AABoxCollider;
 public class ClientPlayer extends Player
 {
 	private NetworkableClient net;
+
+	private List<ParticleSystem> particleSystems;
 	
 	public ClientPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
@@ -45,8 +50,11 @@ public class ClientPlayer extends Player
 		super.add(new ECRigidbody(this, position, rotation, new AABoxCollider(new Vec3(0.3f, 2.5f * 0.5f, 0.3f)), false));
 		super.add(new ECKeyMovement(0.02f, 0.5f));
 		super.add(new ECMouseLook(0.3f));
-		super.add(new ECRaycast(5, 0.01f, "ClientPlayer", "Bullet"));
+		super.add(new ECRaycast(5, 0.01f, "ClientPlayer", "Bullet", "ParticleSystem"));
+		super.add(new ECDebug());
 		super.addTag("ClientPlayer");
+
+		this.particleSystems = new ArrayList<>();
 	}
 	
 	public void init(GameCore core)
@@ -71,6 +79,25 @@ public class ClientPlayer extends Player
 			this.getWeaponManager().getWeapon().setPositionChanged(false);
 			net.send(new WeaponPositionPacket(this.getID(), this.getWeaponManager().getWeapon().getCurrentPosition()));
 		}
+
+		/** Debug **/
+		if(getDebugComponent().isParticleSpawn())
+		{
+			particleSystems.add(new ParticlesBlood(Indexer.getUniqueID(), getPosition().copy())
+					.setParticleVelocity(getRaycast().getDirection().copy().normalize().mul(0.05f))
+					.setNetwork(net));
+		}
+
+        if(getDebugComponent().isParticleRemove())
+        {
+            for(int i = 0; i < particleSystems.size(); i++)
+            {
+                ParticleSystem p = particleSystems.get(i);
+                p.destroy();
+                //core.getGame().getEntityManager().remove(p.getID());
+            }
+            particleSystems.clear();
+        }
 	}
 	
 	public ECRaycast getRaycast()
@@ -86,6 +113,11 @@ public class ClientPlayer extends Player
 	public ECMouseLook getMouseComponent()
 	{
 		return ((ECMouseLook) super.get(EComponent.MOUSE_LOOK));
+	}
+
+	public ECDebug getDebugComponent()
+	{
+		return ((ECDebug) super.get(EComponent.DEBUG));
 	}
 
 	public NetworkableClient getNet()

@@ -17,23 +17,30 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.client.guis.canvases;
+package fr.veridiangames.core.game.entities.particles;
 
-import java.awt.Font;
-
+import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.utils.Color4f;
-import fr.veridiangames.client.guis.GuiCanvas;
-import fr.veridiangames.client.guis.TrueTypeFont;
-import fr.veridiangames.client.guis.components.GuiLabel;
-import fr.veridiangames.client.guis.components.GuiPanel;
-import fr.veridiangames.client.rendering.Display;
+import fr.veridiangames.core.utils.Indexer;
 
-public class ConnectionCanvas extends GuiCanvas
-{
-	public ConnectionCanvas(String address, int port, Display display)
-	{
-		super();
-		super.add(new GuiPanel(0, 0, display.getWidth(), display.getHeight()).setColor(new Color4f(0.3f, 0.3f, 0.3f, 1f)));
-		super.add(new GuiLabel("Connecting to " + address + ":" + port + "...", 30, 30, new TrueTypeFont(new Font("Arial", 0, 20), true)).setShadowDistance(1));
-	}
+/**
+ * Created by Tybau on 11/06/2016.
+ */
+public class ParticlesBlood extends ParticleSystem{
+
+    public ParticlesBlood()
+    {
+        this(Indexer.getUniqueID(), new Vec3());
+    }
+
+    public ParticlesBlood(int id, Vec3 position)
+    {
+        super(id, ParticlesManager.BLOOD, position);
+        super.useCollision(true);
+        super.setParticleVelocity(new Vec3(0, 0.05f, 0.05f));
+        super.setGravity(new Vec3(0, -0.001f, 0));
+        super.setParticleLifeTime(200);
+        super.setScaleInterval(0.05f, 0.2f);
+        super.setParticleColors(new Color4f(0.8f, 0.1f, 0.1f));
+    }
 }

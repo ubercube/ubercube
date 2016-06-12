@@ -1,29 +1,26 @@
 /*
- *   Copyright (C) 2016 Team Ubercube
+ * Copyright (C) 2016 Team Ubercube
  *
- *   This file is part of Ubercube.
+ * This file is part of Ubercube.
  *
- *       Ubercube is free software: you can redistribute it and/or modify
- *       it under the terms of the GNU General Public License as published by
- *       the Free Software Foundation, either version 3 of the License, or
- *       (at your option) any later version.
+ *     Ubercube is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
  *
- *       Ubercube is distributed in the hope that it will be useful,
- *       but WITHOUT ANY WARRANTY; without even the implied warranty of
- *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *       GNU General Public License for more details.
+ *     Ubercube is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
  *
- *       You should have received a copy of the GNU General Public License
- *       along with Ubercube.  If not, see <http://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU General Public License
+ *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
 package fr.veridiangames.client.main.player;
 
 import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.game.entities.components.ECKeyMovement;
-import fr.veridiangames.core.game.entities.components.ECMouseLook;
-import fr.veridiangames.core.game.entities.components.ECRaycast;
-import fr.veridiangames.core.game.entities.components.ECWeapon;
+import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
@@ -59,6 +56,7 @@ public class PlayerHandler
 		ECMouseLook mouse = player.getMouseComponent();
 		ECRaycast ray = player.getRaycast();
 		ECWeapon weapon = player.getWeaponManager();
+		ECDebug debug = player.getDebugComponent();
 		
 		mouse.setDX(0);
 		mouse.setDY(0);
@@ -100,6 +98,10 @@ public class PlayerHandler
 
 		selection.update(ray.getHit());
 		applySelectionActions(ray, input);
+
+		/** Debug system **/
+		debug.setParticleSpawn(input.getKey(input.KEY_P));
+		debug.setParticleRemove(input.getKey(input.KEY_O));
 	}
 	
 	private void applySelectionActions(ECRaycast ray, Input input)

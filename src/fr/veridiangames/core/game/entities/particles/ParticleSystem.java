@@ -1,30 +1,34 @@
 /*
- *   Copyright (C) 2016 Team Ubercube
+ * Copyright (C) 2016 Team Ubercube
  *
- *   This file is part of Ubercube.
+ * This file is part of Ubercube.
  *
- *       Ubercube is free software: you can redistribute it and/or modify
- *       it under the terms of the GNU General Public License as published by
- *       the Free Software Foundation, either version 3 of the License, or
- *       (at your option) any later version.
+ *     Ubercube is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
  *
- *       Ubercube is distributed in the hope that it will be useful,
- *       but WITHOUT ANY WARRANTY; without even the implied warranty of
- *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *       GNU General Public License for more details.
+ *     Ubercube is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
  *
- *       You should have received a copy of the GNU General Public License
- *       along with Ubercube.  If not, see <http://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU General Public License
+ *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
 package fr.veridiangames.core.game.entities.particles;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
+import fr.veridiangames.core.game.entities.EntityManager;
 import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.network.NetworkableClient;
+import fr.veridiangames.core.network.packets.ParticlesRemovePacket;
+import fr.veridiangames.core.network.packets.ParticlesSpawnPacket;
 import fr.veridiangames.core.utils.Color4f;
 
 import java.util.ArrayList;
@@ -33,45 +37,55 @@ import java.util.Random;
 
 public class ParticleSystem extends Entity
 {
-	private Random			random;
+	private Random			    random;
+    private NetworkableClient   net;
 
-	private int				particleCount;
+    private int                 particleType;
 
-	private Vec3 			particleSpawnBox;
+	private int				    particleCount;
 
-	private int 			particleLifeTime;
-	private int				particleLifeTimeRandomness;
+	private Vec3 			    particleSpawnBox;
 
-	private float 			particleSize;
-	private float 			particleSizeRandomness;
+	private float			    minScale;
+	private float			    maxScale;
 
-	private Color4f[] 		particleColors;
-	private float			particleColorRandomness;
+	private int 			    particleLifeTime;
+	private int				    particleLifeTimeRandomness;
 
-	private Vec3 			particleVelocity;
-	private float 			particleVelocityRandomness;
+	private float 			    particleSize;
+	private float 			    particleSizeRandomness;
 
-	private boolean 		collision;
-	private Vec3			gravity;
-	private boolean			activate;
+	private Color4f[] 		    particleColors;
+	private float			    particleColorRandomness;
 
-	private List<Particle> 	particles;
+	private Vec3 			    particleVelocity;
+	private float 			    particleVelocityRandomness;
 
-	public ParticleSystem(int id, String name, Vec3 position, float scale, Color4f... color)
+	private boolean 		    collision;
+	private Vec3			    gravity;
+	private boolean			    activate;
+
+	private List<Particle> 	    particles;
+
+	public ParticleSystem(int id, String name, Vec3 position)
 	{
 		super(id);
 		super.add(new ECName(name));
-		super.add(new ECRender(position, new Quat(), new Vec3(scale)));
+		super.add(new ECRender(position, new Quat(), new Vec3(1)));
+        super.addTag("ParticleSystem");
 
 		this.random = new Random();
 		this.particles = new ArrayList<>();
+
+        this.minScale = 0;
+        this.maxScale = 0.1f;
 
 		this.particleCount = 1;
 
 		this.particleSpawnBox = new Vec3();
 
 		this.particleLifeTime = 50;
-		this.particleColors = color;
+		this.particleColors = new Color4f[] {new Color4f(1.0f, 0.0f, 1.0f)};
 		this.particleVelocity = new Vec3();
 
 		this.particleLifeTimeRandomness = 10;
@@ -82,6 +96,36 @@ public class ParticleSystem extends Entity
 		this.gravity = new Vec3();
 		this.activate = true;
 	}
+
+    public ParticleSystem(int id, ParticleSystem system)
+    {
+        super(id);
+        super.add(new ECName(system.getName()));
+        super.add(new ECRender(system.getTransform().getPosition(), new Quat(), new Vec3(1)));
+        super.addTag("ParticleSystem");
+
+        this.random = system.getRandom();
+        this.particles = new ArrayList<>();
+
+        this.minScale = system.getMinScale();
+        this.maxScale = system.getMaxScale();
+
+        this.particleCount = system.getParticleCount();
+
+        this.particleSpawnBox = system.getParticleSpawnBox();
+
+        this.particleLifeTime = system.getParticleLifeTime();
+        this.particleColors = system.getParticleColors();
+        this.particleVelocity = system.getParticleVelocity();
+
+        this.particleLifeTimeRandomness = system.getParticleLifeTimeRandomness();
+        this.particleColorRandomness = system.getParticleColorRandomness();
+        this.particleVelocityRandomness = system.getParticleVelocityRandomness();
+
+        this.collision = system.hasCollision();
+        this.gravity = system.getGravity();
+        this.activate = system.isActivate();
+    }
 
 	public void update(GameCore core)
 	{
@@ -112,7 +156,23 @@ public class ParticleSystem extends Entity
 		}
 	}
 
-	public Vec3 getParticleSpawnBox()
+    public void destroy() {
+        net.send(new ParticlesRemovePacket(this));
+        //super.destroy();
+    }
+
+    public int getParticleCount()
+    {
+        return particleCount;
+    }
+
+    public ParticleSystem setParticleCount(int particleCount)
+    {
+        this.particleCount = particleCount;
+        return this;
+    }
+
+    public Vec3 getParticleSpawnBox()
 	{
 		return particleSpawnBox;
 	}
@@ -123,7 +183,37 @@ public class ParticleSystem extends Entity
 		return this;
 	}
 
-	public Color4f[] getParticleColors() {
+	public float getMinScale()
+	{
+		return minScale;
+	}
+
+	public ParticleSystem setMinScale(float minScale)
+	{
+		this.minScale = minScale;
+		return this;
+	}
+
+	public float getMaxScale()
+	{
+		return maxScale;
+	}
+
+	public ParticleSystem setMaxScale(float maxScale)
+	{
+		this.maxScale = maxScale;
+		return this;
+	}
+
+    public ParticleSystem setScaleInterval(float min, float max)
+    {
+        this.minScale = min;
+        this.maxScale = max;
+        return this;
+    }
+
+	public Color4f[] getParticleColors()
+	{
 		return particleColors;
 	}
 
@@ -200,6 +290,12 @@ public class ParticleSystem extends Entity
 		return ((ECRender) this.get(EComponent.RENDER)).getTransform();
 	}
 
+	public ParticleSystem setPosition(Vec3 position)
+	{
+		getTransform().setLocalPosition(position);
+		return this;
+	}
+
 	public boolean hasCollision()
 	{
 		return collision;
@@ -232,4 +328,14 @@ public class ParticleSystem extends Entity
 		this.activate = activate;
 		return this;
 	}
+
+    public ParticleSystem setNetwork(NetworkableClient net) {
+        this.net = net;
+        this.net.send(new ParticlesSpawnPacket(this));
+        return this;
+    }
+
+    public String getName(){
+        return ((ECName) this.get(EComponent.NAME)).getName();
+    }
 }

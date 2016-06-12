@@ -17,14 +17,36 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.core.exceptions;
+package fr.veridiangames.core.game.entities.components;
 
-public class EComponentException extends RuntimeException
+/**
+ * Created by Tybau on 10/06/2016.
+ */
+public class ECDebug extends EComponent
 {
-	private static final long serialVersionUID = 7033203286191605502L;
-	
-	public EComponentException(String error)
-	{
-		super(error);
-	}
+    private boolean particleSpawn;
+    private boolean particleRemove;
+
+    public ECDebug()
+    {
+        super(DEBUG);
+    }
+
+    public boolean isParticleSpawn()
+    {
+        return particleSpawn;
+    }
+
+    public void setParticleSpawn(boolean v)
+    {
+        this.particleSpawn = v;
+    }
+
+    public boolean isParticleRemove() {
+        return particleRemove;
+    }
+
+    public void setParticleRemove(boolean particleRemove) {
+        this.particleRemove = particleRemove;
+    }
 }

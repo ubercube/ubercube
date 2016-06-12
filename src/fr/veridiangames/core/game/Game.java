@@ -1,20 +1,20 @@
 /*
- *   Copyright (C) 2016 Team Ubercube
+ * Copyright (C) 2016 Team Ubercube
  *
- *   This file is part of Ubercube.
+ * This file is part of Ubercube.
  *
- *       Ubercube is free software: you can redistribute it and/or modify
- *       it under the terms of the GNU General Public License as published by
- *       the Free Software Foundation, either version 3 of the License, or
- *       (at your option) any later version.
+ *     Ubercube is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
  *
- *       Ubercube is distributed in the hope that it will be useful,
- *       but WITHOUT ANY WARRANTY; without even the implied warranty of
- *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *       GNU General Public License for more details.
+ *     Ubercube is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
  *
- *       You should have received a copy of the GNU General Public License
- *       along with Ubercube.  If not, see <http://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU General Public License
+ *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
 package fr.veridiangames.core.game;
@@ -24,6 +24,7 @@ import fr.veridiangames.core.game.data.GameData;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.EntityManager;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
+import fr.veridiangames.core.game.entities.particles.ParticlesManager;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.world.World;
@@ -33,6 +34,8 @@ import fr.veridiangames.core.physics.PhysicsEngine;
 import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Indexer;
 
+import static javax.swing.text.html.HTML.Tag.HEAD;
+
 /**
  * Created by Marccspro on 28 janv. 2016.
  */
@@ -40,11 +43,11 @@ public class Game
 {
 	private GameCore core;
 
-	private GameData		data;
-	private EntityManager	entityManager;
-	private World			world;
-	private PhysicsEngine	physics;
-	private ClientPlayer	clientPlayer;
+	private GameData		    data;
+	private EntityManager	    entityManager;
+	private World			    world;
+	private PhysicsEngine	    physics;
+	private ClientPlayer	    clientPlayer;
 
 	public Game(GameCore core)
 	{
@@ -61,13 +64,7 @@ public class Game
 		spawn(new NetworkedPlayer(Indexer.getUniqueID(), "Entity", new Vec3(810, 8, 805), new Quat(), "", 0));
 
 		/** Test spawn code **/
-		ParticleSystem particleSystem = new ParticleSystem(Indexer.getUniqueID(), "Particles", new Vec3(805, 7, 805), 0.1f, new Color4f(0.7f, 0.1f, 0.1f, 1f))
-				.useCollision(true)
-				.setParticleVelocity(new Vec3(0, 0.05f, 0.05f))
-				.setGravity(new Vec3(0, -0.001f, 0))
-				.setParticleLifeTime(200);
-
-		spawn(particleSystem);
+		spawn(new ParticleSystem(Indexer.getUniqueID(), "", new Vec3(805, 7, 805)));
 	}
 
 	public void update()
@@ -107,7 +104,7 @@ public class Game
 		return entityManager;
 	}
 
-	public GameData getData()
+    public GameData getData()
 	{
 		return data;
 	}
