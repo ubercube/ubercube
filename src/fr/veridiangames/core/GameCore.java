@@ -40,6 +40,11 @@ public class GameCore
 	{
 		mainGame.update();
 	}
+
+	public void updatePhysics()
+	{
+		mainGame.updatePhysics();
+	}
 	
 	public Game getGame()
 	{

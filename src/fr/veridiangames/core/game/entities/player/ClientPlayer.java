@@ -47,7 +47,7 @@ public class ClientPlayer extends Player
 	public ClientPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
 		super(id, name, position, rotation, address, port);
-		super.add(new ECRigidbody(this, position, rotation, new AABoxCollider(new Vec3(0.3f, 2.5f * 0.5f, 0.3f)), false));
+		super.add(new ECRigidbody(this, position, rotation, new AABoxCollider(new Vec3(0.3f, 2.8f * 0.5f, 0.3f)), false));
 		super.add(new ECKeyMovement(0.02f, 0.5f));
 		super.add(new ECMouseLook(0.3f));
 		super.add(new ECRaycast(5, 0.01f, "ClientPlayer", "Bullet", "ParticleSystem"));

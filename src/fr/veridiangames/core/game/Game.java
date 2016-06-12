@@ -72,9 +72,13 @@ public class Game
 		if (clientPlayer == null)
 			return;
 
-		physics.update(core);
 		entityManager.update(core);
 		world.update();
+	}
+
+	public void updatePhysics()
+	{
+		physics.update(core);
 	}
 
 	public void spawn(Entity e)
