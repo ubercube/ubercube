@@ -22,6 +22,7 @@ package fr.veridiangames.client.rendering.renderers.game.entities;
 import java.util.List;
 import java.util.Map;
 
+import fr.veridiangames.core.GameCore;
 import org.lwjgl.opengl.GL11;
 
 import fr.veridiangames.core.game.entities.Entity;
@@ -36,6 +37,7 @@ import fr.veridiangames.client.rendering.renderers.Renderer;
 import fr.veridiangames.client.rendering.renderers.models.ModelVoxRenderer;
 import fr.veridiangames.client.rendering.shaders.WeaponShader;
 
+import static java.awt.Color.red;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -49,26 +51,30 @@ public class EntityWeaponRenderer
 
 	public void renderEntityWeapons(WeaponShader shader, int cubemap, Map<Integer, Entity> entities, List<Integer> indices)
 	{
+		renderPlayerWeapon(shader, cubemap, entities);
+
 		Renderer.bindTextureCube(cubemap);
 		glDisable(GL11.GL_CULL_FACE);
 		for (int i = 0; i < indices.size(); i++)
 		{
-			if (i == 0)
-				continue;
-			
+			int playerID = GameCore.getInstance().getGame().getPlayer().getID();
 			int entityID = indices.get(i);
+
+			if (entityID == playerID)
+				continue;
+
 			renderEntityWeapon(shader, cubemap, entities, entityID);
 		}
 		glEnable(GL11.GL_CULL_FACE);
 		Renderer.bindTextureCube(0);
 	}
 	
-	public void renderPlayerWeapon(WeaponShader shader, int cubemap, Map<Integer, Entity> entities, List<Integer> indices)
+	public void renderPlayerWeapon(WeaponShader shader, int cubemap, Map<Integer, Entity> entities)
 	{
 		Renderer.bindTextureCube(cubemap);
 		glDisable(GL11.GL_CULL_FACE);
 
-		renderEntityWeapon(shader, cubemap, entities, indices.get(0));
+		renderEntityWeapon(shader, cubemap, entities, GameCore.getInstance().getGame().getPlayer().getID());
 		
 		glEnable(GL11.GL_CULL_FACE);
 		Renderer.bindTextureCube(0);

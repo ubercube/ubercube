@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.bullets.Bullet;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
@@ -134,7 +135,7 @@ public class EntityManager
 		return result;
 	}
 	
-	public Entity getEntityAt(Vec3 point)
+	public Entity getEntityAt(Vec3 point, String... targetTags)
 	{
 		Entity result = null;
 		try 
@@ -142,6 +143,23 @@ public class EntityManager
 			for (int i = 0; i < entities.size(); i++)
 			{
 				Entity e = entities.get(keys.get(i));
+				boolean jumpIteration = false;
+				for (int j = 0; j < targetTags.length; j++)
+				{
+					String target = targetTags[j];
+					if (!e.getTags().contains(target))
+					{
+						jumpIteration = true;
+					}
+					else
+					{
+						jumpIteration = false;
+						continue;
+					}
+				}
+				if (jumpIteration)
+					continue;
+
 				if (e.contains(EComponent.RENDER))
 				{
 					Vec3 epos = ((ECRender) e.get(EComponent.RENDER)).getTransform().getPosition();
@@ -152,6 +170,7 @@ public class EntityManager
 						point.z > epos.z - esize.z && point.z < epos.z + esize.z)
 					{
 						result = e;
+						break;
 					}
 				}
 			}

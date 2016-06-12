@@ -81,14 +81,14 @@ public class ClientPlayer extends Player
 		}
 
 		/** Debug **/
-		if(getDebugComponent().isParticleSpawn())
+		if (this.getDebugComponent().isParticleSpawn())
 		{
 			particleSystems.add(new ParticlesBlood(Indexer.getUniqueID(), getPosition().copy())
 					.setParticleVelocity(getRaycast().getDirection().copy().normalize().mul(0.05f))
 					.setNetwork(net));
 		}
 
-        if(getDebugComponent().isParticleRemove())
+        if (this.getDebugComponent().isParticleRemove())
         {
             for(int i = 0; i < particleSystems.size(); i++)
             {

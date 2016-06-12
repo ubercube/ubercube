@@ -26,12 +26,15 @@ import fr.veridiangames.core.game.Game;
  */
 public class GameCore
 {	
+	private static GameCore instance;
+
 	public double deltaTime;
 	
 	private Game mainGame;
 	
 	public GameCore()
 	{
+		instance = this;
 		mainGame = new Game(this);
 		mainGame.init();
 	}
@@ -54,5 +57,10 @@ public class GameCore
 	public void setDeltaTime(double delta)
 	{
 		this.deltaTime = delta;
+	}
+
+	public static GameCore getInstance()
+	{
+		return instance;
 	}
 }

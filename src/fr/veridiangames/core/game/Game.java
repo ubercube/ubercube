@@ -62,9 +62,9 @@ public class Game
 		this.world = new World(core);
 		
 		spawn(new NetworkedPlayer(Indexer.getUniqueID(), "Entity", new Vec3(810, 8, 805), new Quat(), "", 0));
-
-		/** Test spawn code **/
-		spawn(new ParticleSystem(Indexer.getUniqueID(), "", new Vec3(805, 7, 805)));
+//
+//		/** Test spawn code **/
+//		spawn(new ParticleSystem(Indexer.getUniqueID(), "", new Vec3(805, 7, 805)));
 	}
 
 	public void update()
@@ -100,7 +100,7 @@ public class Game
 	public void setPlayer(ClientPlayer clientPlayer)
 	{
 		this.clientPlayer = clientPlayer;
-		spawn(clientPlayer);
+		spawn(this.clientPlayer);
 	}
 
 	public EntityManager getEntityManager()
@@ -122,6 +122,4 @@ public class Game
 	{
 		return physics;
 	}
-
-
 }

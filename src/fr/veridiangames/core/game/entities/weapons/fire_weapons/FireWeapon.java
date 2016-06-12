@@ -33,6 +33,7 @@ public class FireWeapon extends Weapon
 	private Transform shootPoint;
 	private boolean shooting;
 	private boolean shot;
+	private float shootForce;
 	
 	private int shootTimer = 0;
 	
@@ -40,6 +41,7 @@ public class FireWeapon extends Weapon
 	{
 		super(model);
 		this.shootPoint = new Transform();
+		this.setShootForce(2);
 	}
 	
 	public void update(GameCore core)
@@ -71,7 +73,7 @@ public class FireWeapon extends Weapon
 	
 	private void shootBullet(GameCore core)
 	{
-		Bullet bullet = new Bullet(Indexer.getUniqueID(), "", this.shootPoint.getPosition(), this.transform.getRotation(), 5f);
+		Bullet bullet = new Bullet(Indexer.getUniqueID(), "", this.shootPoint.getPosition(), this.transform.getRotation(), shootForce);
 		bullet.setNetwork(net);
 		core.getGame().spawn(bullet);
 	}
@@ -99,6 +101,16 @@ public class FireWeapon extends Weapon
 	public Transform getShootPoint()
 	{
 		return shootPoint;
+	}
+
+	public float getShootForce()
+	{
+		return shootForce;
+	}
+
+	public void setShootForce(float shootForce)
+	{
+		this.shootForce = shootForce;
 	}
 
 	public void setShootPoint(Transform shootPoint)

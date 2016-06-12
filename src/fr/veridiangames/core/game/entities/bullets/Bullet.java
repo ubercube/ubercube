@@ -24,11 +24,14 @@ import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.ECName;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
+import fr.veridiangames.core.game.entities.particles.ParticleSystem;
+import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.packets.BulletHitPacket;
+import fr.veridiangames.core.utils.Indexer;
 
 /**
  * Created by Marccspro on 18 mai 2016.
@@ -67,8 +70,8 @@ public class Bullet extends Entity
 		{
 			Vec3 stepedPosition = new Vec3(position).add(direction.copy().mul(force / step));
 			block = core.getGame().getWorld().getBlockAt(stepedPosition);
-			e = core.getGame().getEntityManager().getEntityAt(stepedPosition);
-			if (block == 0 || e == null)
+			e = core.getGame().getEntityManager().getEntityAt(stepedPosition, "NetPlayer");
+			if (block == 0 && e == null)
 			{
 				position.set(stepedPosition);
 			}
@@ -88,10 +91,9 @@ public class Bullet extends Entity
 		}
 		if (e != null)
 		{
-			if (e instanceof Player)
-			{
-				this.destroy();
-			}
+			ParticleSystem blood = new ParticlesBlood(Indexer.getUniqueID(), getPosition().copy()).setParticleVelocity(getRotation().getBack().copy().mul(0.01f));
+			blood.setNetwork(net);
+			this.destroy();
 		}
 	}
 
