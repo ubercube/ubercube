@@ -139,28 +139,35 @@ public class EntityManager
 		Entity result = null;
 		try 
 		{
-			for (Entry<Integer, Entity> entry : entities.entrySet())
+			for (int i = 0; i < entities.size(); i++)
 			{
-				Entity e = entry.getValue();
+				Entity e = entities.get(keys.get(i));
 				if (e.contains(EComponent.RENDER))
 				{
 					Vec3 epos = ((ECRender) e.get(EComponent.RENDER)).getTransform().getPosition();
 					Vec3 esize = ((ECRender) e.get(EComponent.RENDER)).getScale();
-					
+
 					if (point.x > epos.x - esize.x && point.x < epos.x + esize.x &&
 						point.y > epos.y - esize.y && point.y < epos.y + esize.y &&
 						point.z > epos.z - esize.z && point.z < epos.z + esize.z)
-				{
-					result = e;
-				}
+					{
+						result = e;
+					}
 				}
 			}
 		}
 		catch (Exception e)
-		{}
+		{
+			e.printStackTrace();
+		}
 		return result;
 	}
-	
+
+	public List<Integer> getKeys()
+	{
+		return keys;
+	}
+
 	public List<Integer> getRenderableEntites()
 	{
 		return renderableEntities;

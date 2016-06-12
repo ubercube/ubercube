@@ -34,6 +34,8 @@ import fr.veridiangames.core.physics.PhysicsEngine;
 import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Indexer;
 
+import static javax.swing.text.html.HTML.Tag.HEAD;
+
 /**
  * Created by Marccspro on 28 janv. 2016.
  */
@@ -59,7 +61,8 @@ public class Game
 	{
 		this.world = new World(core);
 		
-		spawn(new NetworkedPlayer(Indexer.getUniqueID(), "Entity", new Vec3(50 * 16, 8, 50 * 16), new Quat(), "", 0));
+		spawn(new NetworkedPlayer(Indexer.getUniqueID(), "Entity", new Vec3(810, 8, 805), new Quat(), "", 0));
+
 		/** Test spawn code **/
 		spawn(new ParticleSystem(Indexer.getUniqueID(), "", new Vec3(805, 7, 805)));
 	}
@@ -68,7 +71,7 @@ public class Game
 	{
 		if (clientPlayer == null)
 			return;
-		
+
 		physics.update(core);
 		entityManager.update(core);
 		world.update();
@@ -115,4 +118,6 @@ public class Game
 	{
 		return physics;
 	}
+
+
 }

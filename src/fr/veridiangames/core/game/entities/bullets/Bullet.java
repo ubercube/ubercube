@@ -62,16 +62,15 @@ public class Bullet extends Entity
 		int block = 0;
 		Entity e = null;
 		
-		int step = (int) (force * 100);
-		System.out.println("STEP: " + step);
-		for (int i = 0; i < step; i++) 
+		int step = (int) (force * 30.0f);
+		for (int i = 0; i < step; i++)
 		{
-			Vec3 stepedPosition = new Vec3(position).add(direction.copy().mul(force / step)).add(direction.copy().mul(0.3f));
+			Vec3 stepedPosition = new Vec3(position).add(direction.copy().mul(force / step));
 			block = core.getGame().getWorld().getBlockAt(stepedPosition);
 			e = core.getGame().getEntityManager().getEntityAt(stepedPosition);
 			if (block == 0 || e == null)
 			{
-				position.add(direction.copy().mul(force / step));
+				position.set(stepedPosition);
 			}
 		}
 

@@ -52,9 +52,6 @@ public class ParticleSystem extends Entity
 	private int 			    particleLifeTime;
 	private int				    particleLifeTimeRandomness;
 
-	private float 			    particleSize;
-	private float 			    particleSizeRandomness;
-
 	private Color4f[] 		    particleColors;
 	private float			    particleColorRandomness;
 

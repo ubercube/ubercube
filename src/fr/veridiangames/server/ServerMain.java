@@ -22,6 +22,10 @@ package fr.veridiangames.server;
 import java.util.Scanner;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
+import fr.veridiangames.core.maths.Quat;
+import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.utils.Indexer;
 import fr.veridiangames.server.server.NetworkServer;
 
 /**
@@ -38,6 +42,7 @@ public class ServerMain
 		this.scanner = new Scanner(System.in);
 		this.core = new GameCore();
 		int port = 25565;
+
 		this.server = new NetworkServer(port, scanner);
 		this.server.setGameCore(core);
 	}
