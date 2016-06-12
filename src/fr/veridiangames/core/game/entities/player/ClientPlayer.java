@@ -42,6 +42,8 @@ public class ClientPlayer extends Player
 {
 	private NetworkableClient net;
 
+	private int currentLife;
+
 	private List<ParticleSystem> particleSystems;
 	
 	public ClientPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
@@ -53,6 +55,8 @@ public class ClientPlayer extends Player
 		super.add(new ECRaycast(5, 0.01f, "ClientPlayer", "Bullet", "ParticleSystem"));
 		super.add(new ECDebug());
 		super.addTag("ClientPlayer");
+
+		this.currentLife = 100;
 
 		this.particleSystems = new ArrayList<>();
 	}

@@ -37,10 +37,11 @@ public class ParticlesBlood extends ParticleSystem{
     {
         super(id, ParticlesManager.BLOOD, position);
         super.useCollision(true);
-        super.setParticleVelocity(new Vec3(0, 0.05f, 0.05f));
         super.setGravity(new Vec3(0, -0.001f, 0));
         super.setParticleLifeTime(200);
         super.setScaleInterval(0.01f, 0.1f);
         super.setParticleColors(new Color4f(0.8f, 0f, 0f), new Color4f(0.65f, 0f, 0f));
+        super.setImpulsion(true);
+        super.setDuration(30);
     }
 }

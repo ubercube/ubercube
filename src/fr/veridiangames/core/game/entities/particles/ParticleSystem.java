@@ -21,7 +21,6 @@ package fr.veridiangames.core.game.entities.particles;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
-import fr.veridiangames.core.game.entities.EntityManager;
 import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Transform;
@@ -61,6 +60,8 @@ public class ParticleSystem extends Entity
 	private boolean 		    collision;
 	private Vec3			    gravity;
 	private boolean			    activate;
+	private boolean				impulsion;
+	private int					duration;
 
 	private List<Particle> 	    particles;
 
@@ -92,6 +93,8 @@ public class ParticleSystem extends Entity
 		this.collision = false;
 		this.gravity = new Vec3();
 		this.activate = true;
+		this.impulsion = false;
+		this.duration = 0;
 	}
 
     public ParticleSystem(int id, ParticleSystem system)
@@ -122,6 +125,8 @@ public class ParticleSystem extends Entity
         this.collision = system.hasCollision();
         this.gravity = system.getGravity();
         this.activate = system.isActivate();
+		this.impulsion = system.isImpulsion();
+		this.duration = system.getDuration();
     }
 
 	public void update(GameCore core)
@@ -151,11 +156,22 @@ public class ParticleSystem extends Entity
 			if(p.getLifeTime() < 0)
 				particles.remove(p);
 		}
+
+		if(particles.size() == 0)
+			destroy();
+
+		if(impulsion)
+			duration--;
+
+		if(duration < 0)
+			activate = false;
 	}
 
     public void destroy() {
-        net.send(new ParticlesRemovePacket(this));
-        //super.destroy();
+		if(net != null)
+        	net.send(new ParticlesRemovePacket(this));
+		else
+			getCore().getGame().getEntityManager().remove(getID());
     }
 
     public int getParticleCount()
@@ -335,4 +351,26 @@ public class ParticleSystem extends Entity
     public String getName(){
         return ((ECName) this.get(EComponent.NAME)).getName();
     }
+
+	public boolean isImpulsion()
+	{
+		return impulsion;
+	}
+
+	public ParticleSystem setImpulsion(boolean impulsion)
+	{
+		this.impulsion = impulsion;
+		return this;
+	}
+
+	public int getDuration()
+	{
+		return duration;
+	}
+
+	public ParticleSystem setDuration(int duration)
+	{
+		this.duration = duration;
+		return this;
+	}
 }
