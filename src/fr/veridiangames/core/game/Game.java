@@ -60,18 +60,10 @@ public class Game
 	public void init()
 	{
 		this.world = new World(core);
-		
-<<<<<<< Updated upstream
 		spawn(new NetworkedPlayer(Indexer.getUniqueID(), "Entity", new Vec3(810, 8, 805), new Quat(), "", 0));
 //
 //		/** Test spawn code **/
 //		spawn(new ParticleSystem(Indexer.getUniqueID(), "", new Vec3(805, 7, 805)));
-=======
-		spawn(new NetworkedPlayer(Indexer.getUniqueID(), "", new Vec3(810, 8, 805), new Quat(), "", 0));
-
-		/** Test spawn code **/
-		//spawn(new ParticleSystem(Indexer.getUniqueID(), "", new Vec3(805, 7, 805)));
->>>>>>> Stashed changes
 	}
 
 	public void update()
