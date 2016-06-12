@@ -36,9 +36,13 @@ public class Vec3i {
 	public Vec3i(int v) {
 		this(v, v, v);
 	}
-	
+
 	public Vec3i(Vec3i v) {
 		this(v.x, v.y, v.z);
+	}
+
+	public Vec3i(Vec3 v) {
+		this((int) v.x, (int) v.y, (int) v.z);
 	}
 
 	public Vec3i(int x, int y, int z) {
