@@ -32,6 +32,6 @@ public class NetworkedPlayer extends Player
 	public NetworkedPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
 		super(id, name, position, rotation, address, port);
-		super.add(new ECRigidbody(this, position, rotation, new AABoxCollider(new Vec3(0.3f, 2.5f * 0.5f, 0.3f)), true));
+		super.add(new ECRigidbody(this, position, rotation, new AABoxCollider(new Vec3(0.5f, 2.5f * 0.5f, 0.5f)), true));
 	}
 }
