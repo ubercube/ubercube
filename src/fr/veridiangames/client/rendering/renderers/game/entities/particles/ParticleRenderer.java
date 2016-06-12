@@ -134,6 +134,9 @@ public class ParticleRenderer
 
                     renderCount++;
 
+                    if (renderCount >= 10000)
+                        break;
+
                     instanceBuffer.put(p.getTransform().toMatrix().getComponents());
                     instanceBuffer.put(p.getColor().toArray());
                 }

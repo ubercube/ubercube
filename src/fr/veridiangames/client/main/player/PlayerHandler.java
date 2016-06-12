@@ -100,7 +100,7 @@ public class PlayerHandler
 		applySelectionActions(ray, input);
 
 		/** Debug system **/
-		debug.setParticleSpawn(input.getKey(input.KEY_P));
+		debug.setParticleSpawn(input.getKeyDown(input.KEY_P));
 		debug.setParticleRemove(input.getKey(input.KEY_O));
 	}
 	
