@@ -26,7 +26,7 @@ import fr.veridiangames.core.utils.Indexer;
 /**
  * Created by Tybau on 11/06/2016.
  */
-public class ParticlesBlood extends ParticleSystem{
+public class ParticlesBlood extends ParticleSystem {
 
     public ParticlesBlood()
     {
@@ -42,6 +42,10 @@ public class ParticlesBlood extends ParticleSystem{
         super.setScaleInterval(0.01f, 0.1f);
         super.setParticleColors(new Color4f(0.8f, 0f, 0f), new Color4f(0.65f, 0f, 0f));
         super.setImpulsion(true);
-        super.setDuration(30);
+        super.setDuration(0);
+        super.setParticleCount(30);
+        super.setParticleLifeTime(120);
+        super.setParticleLifeTimeRandomness(120);
+        super.setParticleVelocityRandomness(0.02f);
     }
 }

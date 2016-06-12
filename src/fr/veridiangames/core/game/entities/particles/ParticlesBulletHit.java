@@ -19,41 +19,32 @@
 
 package fr.veridiangames.core.game.entities.particles;
 
-import java.util.HashMap;
-import java.util.Map;
+import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.utils.Color4f;
+import fr.veridiangames.core.utils.Indexer;
 
 /**
  * Created by Tybau on 11/06/2016.
  */
-public class ParticlesManager {
+public class ParticlesBulletHit extends ParticleSystem {
 
-    public static final String BLOOD = "ParticleBlood";
-    public static final String BULLET_HIT = "ParticleBulletHit";
-
-    private static Map<String, Class<? extends ParticleSystem>> particles;
-
-    static
+    public ParticlesBulletHit()
     {
-        particles = new HashMap<>();
-        particles.put(BLOOD, ParticlesBlood.class);
-        particles.put(BULLET_HIT, ParticlesBulletHit.class);
+        this(Indexer.getUniqueID(), new Vec3());
     }
 
-    public static ParticleSystem getParticleSystem(String particleName)
+    public ParticlesBulletHit(int id, Vec3 position)
     {
-        try
-        {
-            return (ParticleSystem) particles.get(particleName).newInstance();
-        }
-        catch (InstantiationException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-        catch (IllegalAccessException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
+        super(id, ParticlesManager.BULLET_HIT, position);
+        super.useCollision(true);
+        super.setGravity(new Vec3(0, -0.002f, 0));
+        super.setScaleInterval(0.01f, 0.1f);
+        super.setParticleColors(new Color4f(0.3f, 0.15f, 0f));
+        super.setImpulsion(true);
+        super.setDuration(0);
+        super.setParticleCount(30);
+        super.setParticleLifeTime(120);
+        super.setParticleLifeTimeRandomness(120);
+        super.setParticleVelocityRandomness(0.1f);
     }
 }

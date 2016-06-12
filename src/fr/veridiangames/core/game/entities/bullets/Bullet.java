@@ -26,8 +26,10 @@ import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
+import fr.veridiangames.core.game.entities.particles.ParticlesBulletHit;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.packets.BulletHitPacket;
 import fr.veridiangames.core.utils.Indexer;
@@ -86,11 +88,19 @@ public class Bullet extends Entity
 		if (block != 0)
 		{
 			this.net.send(new BulletHitPacket(new StaticBullet(id, "", position, getRotation())));
+
+			Vec3i blockPosition = new Vec3i(position);
+			Vec3 normal = new Vec3(blockPosition).gtNorm(position);
+
+			ParticleSystem hitParticles = new ParticlesBulletHit(Indexer.getUniqueID(), getPosition().copy());
+			hitParticles.setNetwork(net);
+
 			this.destroy();
 		}
 		if (e != null)
 		{
-			ParticleSystem blood = new ParticlesBlood(Indexer.getUniqueID(), getPosition().copy()).setParticleVelocity(getRotation().getBack().copy().mul(0.01f));
+			ParticleSystem blood = new ParticlesBlood(Indexer.getUniqueID(), getPosition().copy());
+			blood.setParticleVelocity(getRotation().getBack().copy().mul(0.02f));
 			blood.setNetwork(net);
 			this.destroy();
 		}
