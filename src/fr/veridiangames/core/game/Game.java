@@ -60,7 +60,7 @@ public class Game
 	public void init()
 	{
 		this.world = new World(core);
-		spawn(new NetworkedPlayer(Indexer.getUniqueID(), "Entity", new Vec3(810, 8, 805), new Quat(), "", 0));
+		//spawn(new NetworkedPlayer(Indexer.getUniqueID(), "Entity", new Vec3(810, 8, 805), new Quat(), "", 0));
 //
 //		/** Test spawn code **/
 //		spawn(new ParticleSystem(Indexer.getUniqueID(), "", new Vec3(805, 7, 805)));
