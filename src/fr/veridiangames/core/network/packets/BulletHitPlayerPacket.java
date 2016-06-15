@@ -20,16 +20,8 @@
 package fr.veridiangames.core.network.packets;
 
 import java.net.InetAddress;
-import java.util.List;
-import java.util.Map;
-
-import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.game.entities.Entity;
-import fr.veridiangames.core.game.entities.bullets.StaticBullet;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
-import fr.veridiangames.core.maths.Quat;
-import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;

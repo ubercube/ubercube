@@ -33,8 +33,8 @@ public class GameData
 	public GameData()
 	{
 		worldSize = 100;
-		worldGen = new WorldGen(5);
-		//worldGen = new WorldGen(42 /*new Random().nextInt(99999)*/, worldSize);
+		//worldGen = new WorldGen(5);
+		worldGen = new WorldGen(42 /*new Random().nextInt(99999)*/, worldSize);
 		viewDistance = 150;
 	}
 

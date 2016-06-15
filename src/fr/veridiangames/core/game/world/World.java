@@ -31,6 +31,7 @@ import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.maths.Vec4i;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
+import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Indexer;
 
 public class World
@@ -383,7 +384,6 @@ public class World
 	
 	public void addModifiedBlock(int x, int y, int z, int block)
 	{
-		System.out.println("MOD BLOCK: " + x + " " + y + " " + z + " " + block);
 		Vec4i v = getModifiedBlock(x, y, z);
 		if (v != null)
 		{
@@ -407,5 +407,24 @@ public class World
 				return b;
 		}
 		return null;
+	}
+
+	public int getBlockDamage(int x, int y, int z, float damage)
+	{
+		return applyBlockDamage(getBlock(x, y, z), damage);
+	}
+
+	public int applyBlockDamage(int blck, float damage)
+	{
+		Color4f block = Color4f.getColorFromARGB(blck);
+
+		block.setAlpha(block.getAlpha() - damage);
+
+		Color4f a = block;
+		Color4f b = Color4f.BLACK;
+
+		block = Color4f.mix(a, b, block.getAlpha() * 0.2f);
+
+		return block.getARGB();
 	}
 }

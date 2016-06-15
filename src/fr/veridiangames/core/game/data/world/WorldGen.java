@@ -145,7 +145,7 @@ public class WorldGen
 			{
 				float h = gen.getNoise(x, y) + 16;
 				int color = 0xffffff;
-				Color4f c = new Color4f(color);
+				Color4f c = Color4f.getColorFromARGB(color);
 				int r = (int) (c.r * h * 4);
 				int g = (int) (c.g * h * 4);
 				int b = (int) (c.b * h * 4);

@@ -35,6 +35,13 @@ public class Indexer
 		System.out.println("Start: " + x + " " + y + " " + z);
 		System.out.println("Index: " + index);
 		System.out.println("Solve: " + solve);
+
+		int color = 0x7fffffff;		// INT encoder sur 4 octets
+		Color4f c = Color4f.getColorFromARGB(color);
+
+		System.out.println("Start: " + color);
+		System.out.println(": " + c);
+		System.out.println(": " + c.getARGB());
 	}
 	
 	public static int index3i(Vec3i pos)
