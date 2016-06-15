@@ -24,7 +24,6 @@ import fr.veridiangames.client.guis.TrueTypeFont.IntObject;
 import fr.veridiangames.client.rendering.Camera;
 import fr.veridiangames.client.rendering.buffers.Buffers;
 import fr.veridiangames.client.rendering.shaders.Gui3DShader;
-import fr.veridiangames.client.rendering.shaders.GuiShader;
 import fr.veridiangames.client.rendering.textures.Texture;
 import fr.veridiangames.core.maths.*;
 import fr.veridiangames.core.utils.Color4f;
@@ -42,25 +41,27 @@ public class Font3DRenderer
 {
 	private int vbo;
 	private FloatBuffer buffer;
-	private int size;
+	private int bufferSize;
 
 	private TrueTypeFont font;
 	private Transform transform;
 	private int w, h;
 	private String text;
+	private float fontSize;
 
 	public Font3DRenderer(TrueTypeFont font, String text, Vec3 position) {
 		this.font = font;
 		this.transform = new Transform(position);
 		this.text = new String(text);
-		
-		size = text.length() * 20;
+		this.fontSize = font.fontSize;
+
+		bufferSize = text.length() * 20;
 		vbo = Buffers.createVertexBuffer();
 		createBuffer();
 	}
 	
 	public void setText(String text) {
-		this.size = text.length() * 20;	
+		this.bufferSize = text.length() * 20;
 		if (this.text.length() != text.length()) {
 			this.text = text; 
 			createBuffer();			
@@ -75,7 +76,7 @@ public class Font3DRenderer
 	}
 	
 	private void createBuffer() {
-		buffer = BufferUtils.createFloatBuffer(size);
+		buffer = BufferUtils.createFloatBuffer(bufferSize);
 		
 		IntObject intObject = null;
 		int charCurrent;
@@ -132,19 +133,22 @@ public class Font3DRenderer
 		float SrcHeight = srcY2 - srcY;
 		float RenderWidth = (SrcWidth / font.textureWidth);
 		float RenderHeight = (SrcHeight / font.textureHeight);
-		
+
+		float halfDrawX = drawX;
+		float halfDrawY = drawY;
+
 		float[] data = new float[] {
-			drawX, drawY + DrawHeight, 0, TextureSrcX, TextureSrcY,
-			drawX + DrawWidth, drawY + DrawHeight, 0, TextureSrcX + RenderWidth, TextureSrcY,
-			drawX + DrawWidth, drawY, 0, TextureSrcX + RenderWidth, TextureSrcY + RenderHeight,
-			drawX, drawY, 0, TextureSrcX, TextureSrcY + RenderHeight
+				halfDrawX, halfDrawY + DrawHeight, 0, TextureSrcX, TextureSrcY,
+				halfDrawX + DrawWidth, halfDrawY + DrawHeight, 0, TextureSrcX + RenderWidth, TextureSrcY,
+				halfDrawX + DrawWidth, halfDrawY, 0, TextureSrcX + RenderWidth, TextureSrcY + RenderHeight,
+				halfDrawX, halfDrawY, 0, TextureSrcX, TextureSrcY + RenderHeight
 		};
 		
 		return data;
 	}
 	
 	private void updateBuffer() {
-		if (buffer.capacity() == 0 && size != 0) {
+		if (buffer.capacity() == 0 && bufferSize != 0) {
 			createBuffer();
 			return;
 		}
@@ -203,7 +207,12 @@ public class Font3DRenderer
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		font.fontTexture.bind(shader);
 
-		shader.setModelViewMatrix(transform.toMatrix());
+		float dist = camera.getTransform().getPosition().copy().sub(transform.getPosition()).magnitude();
+
+		transform.setLocalRotation(camera.getTransform().getRotation());
+		transform.setLocalScale(new Vec3(dist / (float) font.fontTexture.getHeight()));
+
+		shader.setModelViewMatrix(transform.toMatrix().mul(Mat4.translate(-w / 2, -h / 2, 0)));
 		shader.setColor(color);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);

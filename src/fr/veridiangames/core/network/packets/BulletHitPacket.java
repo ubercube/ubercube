@@ -102,6 +102,6 @@ public class BulletHitPacket extends Packet
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		client.getCore().getGame().spawn(new StaticBullet(id, "", position, rotation));
+		//client.getCore().getGame().spawn(new StaticBullet(id, "", position, rotation));
 	}
 }

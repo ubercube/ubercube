@@ -24,7 +24,6 @@ import fr.veridiangames.client.rendering.Camera;
 import fr.veridiangames.client.rendering.renderers.guis.Font3DRenderer;
 import fr.veridiangames.client.rendering.shaders.Gui3DShader;
 import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.utils.Color4f;
 
 import java.awt.*;
@@ -38,8 +37,8 @@ public class PlayerNameRenderer
 
     public PlayerNameRenderer()
     {
-        TrueTypeFont font = new TrueTypeFont(new Font("Arial", Font.PLAIN, 64), true);
-        fontRenderer = new Font3DRenderer(font, "MDR", GameCore.getInstance().getGame().getPlayer().getPosition().copy());
+        TrueTypeFont font = new TrueTypeFont(new Font("Arial", Font.PLAIN, 20), true);
+        fontRenderer = new Font3DRenderer(font, "MDR GROS CONNARD", GameCore.getInstance().getGame().getPlayer().getPosition().copy().add(0, -3, 0));
     }
 
     public void render(Gui3DShader shader, Camera camera)

@@ -34,6 +34,6 @@ public class ConnectionCanvas extends GuiCanvas
 	{
 		super();
 		super.add(new GuiPanel(0, 0, display.getWidth(), display.getHeight()).setColor(new Color4f(0.3f, 0.3f, 0.3f, 1f)));
-		super.add(new GuiLabel("Connecting to " + address + ":" + port + "...", 30, 30, new TrueTypeFont(new Font("Arial", 0, 20), true)).setShadowDistance(1));
+		//super.add(new GuiLabel("Connecting to " + address + ":" + port + "...", 30, 30, new TrueTypeFont(new Font("Arial", 0, 20), true)).setShadowDistance(1));
 	}
 }

@@ -165,6 +165,14 @@ public class GameRenderer
 	
 	public void renderWorld(Camera camera)
 	{
+		gui3DShader.bind();
+		gui3DShader.setProjectionMatrix(camera.getProjection());
+		gui3DShader.setModelViewMatrix(Mat4.identity());
+		playerNameRenderer.render(
+				gui3DShader,
+				camera
+		);
+
 		playerShader.bind();
 		playerShader.setShaderBase(
 			camera.getProjection(),
@@ -185,14 +193,6 @@ public class GameRenderer
 				entityShader,
 				core.getGame().getEntityManager().getEntities(),
 				core.getGame().getEntityManager().getRenderableEntites()
-		);
-
-		gui3DShader.bind();
-		gui3DShader.setProjectionMatrix(camera.getProjection());
-		gui3DShader.setModelViewMatrix(Mat4.identity());
-		playerNameRenderer.render(
-				gui3DShader,
-				camera
 		);
 
 		entityShader.bind();
@@ -246,6 +246,8 @@ public class GameRenderer
 			envSphere.render();
 			Renderer.bindTextureCube(0);
 		}
+
+
 	}
 	
 	public GameCore getGameCore()

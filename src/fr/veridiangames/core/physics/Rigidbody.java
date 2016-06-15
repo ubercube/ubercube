@@ -130,7 +130,7 @@ public class Rigidbody
 	{
 		if (networkView)
 			return;
-		
+
 		List<AABoxCollider> blocks = world.getAABoxInRange(position, 3);
 		for (int i = 0; i < blocks.size(); i++)
 		{
@@ -141,7 +141,7 @@ public class Rigidbody
 				Vec3 mtd = data.getMtd();
 
 				grounded = false;
-				if (data.getNormal().x == 0 && data.getNormal().y == 1 && data.getNormal().z == 0)
+				if (data.getNormal().y == 1)
 				{
 					gravity.set(0, 0, 0);
 					mainForce.y = 0;

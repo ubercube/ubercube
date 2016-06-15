@@ -42,7 +42,7 @@ public class ClientPlayer extends Player
 {
 	private NetworkableClient net;
 
-	private int currentLife;
+	private int displayLife;
 
 	private List<ParticleSystem> particleSystems;
 	
@@ -56,7 +56,7 @@ public class ClientPlayer extends Player
 		super.add(new ECDebug());
 		super.addTag("ClientPlayer");
 
-		this.currentLife = 100;
+		this.displayLife = 100;
 
 		this.particleSystems = new ArrayList<>();
 	}
@@ -132,5 +132,15 @@ public class ClientPlayer extends Player
 	public void setNetwork(NetworkableClient net)
 	{
 		this.net = net;
+	}
+
+	public int getDisplayLife()
+	{
+		return displayLife;
+	}
+
+	public void setDisplayLife(int displayLife)
+	{
+		this.displayLife = displayLife;
 	}
 }

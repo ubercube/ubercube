@@ -298,8 +298,7 @@ public class World
 	public int getBlockAt(Vec3 point)
 	{
 		Vec3i ip = point.getInts();
-		int block = getBlock(ip.x, ip.y, ip.z);
-		return block;
+		return getBlock(ip.x, ip.y, ip.z);
 	}
 
 	public List<Integer> getBlockInRange(Vec3 pos, int range)
@@ -401,8 +400,9 @@ public class World
 	
 	public Vec4i getModifiedBlock(int x, int y, int z)
 	{
-		for (Vec4i b : modifiedBlocks)
+		for (int i = 0; i < modifiedBlocks.size(); i++)
 		{
+			Vec4i b = modifiedBlocks.get(i);
 			if (b.x == x && b.y == y && b.z == z)
 				return b;
 		}

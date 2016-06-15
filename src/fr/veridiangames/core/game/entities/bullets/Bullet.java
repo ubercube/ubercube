@@ -27,11 +27,13 @@ import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
 import fr.veridiangames.core.game.entities.particles.ParticlesBulletHit;
+import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.packets.BulletHitPacket;
+import fr.veridiangames.core.network.packets.BulletHitPlayerPacket;
 import fr.veridiangames.core.utils.Indexer;
 
 /**
@@ -102,6 +104,7 @@ public class Bullet extends Entity
 			ParticleSystem blood = new ParticlesBlood(Indexer.getUniqueID(), getPosition().copy());
 			blood.setParticleVelocity(getRotation().getBack().copy().mul(0.02f));
 			blood.setNetwork(net);
+			this.net.send(new BulletHitPlayerPacket((Player) e));
 			this.destroy();
 		}
 	}
