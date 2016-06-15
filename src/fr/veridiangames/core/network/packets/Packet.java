@@ -37,7 +37,7 @@ public abstract class Packet
 	public static final int	BLOCK_ACTION		= 0x04;
 	public static final int	BLOCK_SYNC			= 0x05;
 	public static final int	WEAPON_POS			= 0x06;
-	public static final int	BULLET_HIT			= 0x07;
+	public static final int BULLET_HIT_BLOCK	= 0x07;
 	public static final int PARTICLES_SPAWN 	= 0x08;
 	public static final int PARTICLES_REMOVE 	= 0x09;
 	public static final int BULLET_HIT_PLAYER 	= 0x0A;

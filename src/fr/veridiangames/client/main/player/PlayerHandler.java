@@ -150,9 +150,7 @@ public class PlayerHandler
 		int yp = (int) check.y;
 		int zp = (int) check.z;
 
-//		core.getGame().getWorld().addBlock(x + xp, y + yp, z + zp, 0x555555);
-//		core.getGame().getWorld().updateRequest(x + xp, y + yp, z + zp);
-		net.send(new BlockActionPacket(core.getGame().getPlayer().getID(), 1, x + xp, y + yp, z + zp, 0x555555));
+		net.send(new BlockActionPacket(core.getGame().getPlayer().getID(), 1, x + xp, y + yp, z + zp, 0x7f555555));
 	}
 	
 	public PlayerSelection getSelection()

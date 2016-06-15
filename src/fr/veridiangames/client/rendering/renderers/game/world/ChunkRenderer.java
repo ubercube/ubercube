@@ -179,7 +179,7 @@ public class ChunkRenderer
 	private int calcBlock(FloatBuffer buffer, int xx, int yy, int zz, int block, float brightness, boolean up, boolean down, boolean left, boolean right, boolean front, boolean back)
 	{
 		float ao = 0.95f;
-		Color4f color = new Color4f(block);
+		Color4f color = Color4f.getColorFromARGB(block);
 		int size = 0;
 		if (up)
 		{

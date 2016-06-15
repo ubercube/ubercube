@@ -41,7 +41,7 @@ public class PacketManager
 		packets.put(Packet.BLOCK_ACTION, BlockActionPacket.class);
 		packets.put(Packet.BLOCK_SYNC, SyncBlocksPacket.class);
 		packets.put(Packet.WEAPON_POS, WeaponPositionPacket.class);
-		packets.put(Packet.BULLET_HIT, BulletHitPacket.class);
+		packets.put(Packet.BULLET_HIT_BLOCK, BulletHitBlockPacket.class);
 		packets.put(Packet.PARTICLES_SPAWN, ParticlesSpawnPacket.class);
 		packets.put(Packet.PARTICLES_REMOVE, ParticlesRemovePacket.class);
 		packets.put(Packet.BULLET_HIT_PLAYER, BulletHitPlayerPacket.class);
