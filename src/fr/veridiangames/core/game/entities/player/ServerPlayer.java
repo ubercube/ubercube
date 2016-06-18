@@ -27,8 +27,21 @@ import fr.veridiangames.core.maths.Vec3;
  */
 public class ServerPlayer extends Player
 {
+	private int life;
+
 	public ServerPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
 		super(id, name, position, rotation, address, port);
+		this.life = 100;
+	}
+
+	public int getLife()
+	{
+		return life;
+	}
+
+	public void setLife(int life)
+	{
+		this.life = life;
 	}
 }

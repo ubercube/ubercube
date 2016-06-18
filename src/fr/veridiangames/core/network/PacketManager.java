@@ -44,6 +44,9 @@ public class PacketManager
 		packets.put(Packet.BULLET_HIT, BulletHitPacket.class);
 		packets.put(Packet.PARTICLES_SPAWN, ParticlesSpawnPacket.class);
 		packets.put(Packet.PARTICLES_REMOVE, ParticlesRemovePacket.class);
+		packets.put(Packet.BULLET_HIT_PLAYER, BulletHitPlayerPacket.class);
+		packets.put(Packet.DEATH, DeathPacket.class);
+		packets.put(Packet.RESPAWN, RespawnPacket.class);
 	}
 	
 	public static Packet getPacket(int packet)

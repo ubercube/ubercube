@@ -20,6 +20,8 @@
 package fr.veridiangames.client.rendering.renderers.game;
 
 import fr.veridiangames.client.rendering.renderers.game.entities.particles.ParticleRenderer;
+import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerNameRenderer;
+import fr.veridiangames.client.rendering.shaders.*;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.maths.Mat4;
 import fr.veridiangames.core.maths.Quat;
@@ -30,14 +32,9 @@ import fr.veridiangames.client.rendering.primitives.SpherePrimitive;
 import fr.veridiangames.client.rendering.renderers.Renderer;
 import fr.veridiangames.client.rendering.renderers.game.entities.EntityRenderer;
 import fr.veridiangames.client.rendering.renderers.game.entities.EntityWeaponRenderer;
-import fr.veridiangames.client.rendering.renderers.game.entities.PlayerRenderer;
-import fr.veridiangames.client.rendering.renderers.game.entities.PlayerSelectionRenderer;
+import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerRenderer;
+import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerSelectionRenderer;
 import fr.veridiangames.client.rendering.renderers.game.world.WorldRenderer;
-import fr.veridiangames.client.rendering.shaders.EntityShader;
-import fr.veridiangames.client.rendering.shaders.EnvSphereShader;
-import fr.veridiangames.client.rendering.shaders.PlayerShader;
-import fr.veridiangames.client.rendering.shaders.WeaponShader;
-import fr.veridiangames.client.rendering.shaders.WorldShader;
 
 /**
  * Created by Marccspro on 3 f�vr. 2016.
@@ -52,6 +49,8 @@ public class GameRenderer
 	private WeaponShader			weaponShader;
 	private EnvSphereShader			envSphereShader;
 
+	private Gui3DShader 			gui3DShader;
+
 	private PlayerRenderer			playerRenderer;
 	private EntityRenderer			entityRenderer;
 	private ParticleRenderer 		particleRenderer;
@@ -59,6 +58,7 @@ public class GameRenderer
 	private PlayerSelectionRenderer playerSelectionRenderer;
 	private EntityWeaponRenderer 	entityWeaponRenderer;
 
+	private PlayerNameRenderer 		playerNameRenderer;
 	private PlayerViewport			playerViewport;
 
 	private SpherePrimitive			envSphere;
@@ -74,13 +74,19 @@ public class GameRenderer
 		this.worldShader = new WorldShader();
 		this.weaponShader = new WeaponShader();
 		this.envSphereShader = new EnvSphereShader();
+		this.envSphereShader = new EnvSphereShader();
 
 		this.playerRenderer = new PlayerRenderer();
 		this.entityRenderer = new EntityRenderer();
+		this.playerNameRenderer = new PlayerNameRenderer();
 		this.particleRenderer = new ParticleRenderer();
 		this.entityWeaponRenderer = new EntityWeaponRenderer();
 		this.playerSelectionRenderer = new PlayerSelectionRenderer(main.getPlayerHandler().getSelection());
 		this.worldRenderer = new WorldRenderer(core);
+<<<<<<< HEAD
+=======
+		this.gui3DShader = new Gui3DShader();
+>>>>>>> develop
 
 		this.playerViewport = new PlayerViewport(main.getDisplay(), main);
 
@@ -163,6 +169,14 @@ public class GameRenderer
 
 	public void renderWorld(Camera camera)
 	{
+		gui3DShader.bind();
+		gui3DShader.setProjectionMatrix(camera.getProjection());
+		gui3DShader.setModelViewMatrix(Mat4.identity());
+		playerNameRenderer.render(
+				gui3DShader,
+				camera
+		);
+
 		playerShader.bind();
 		playerShader.setShaderBase(
 			camera.getProjection(),
@@ -236,6 +250,8 @@ public class GameRenderer
 			envSphere.render();
 			Renderer.bindTextureCube(0);
 		}
+
+
 	}
 	
 	public GameCore getGameCore()

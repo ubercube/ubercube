@@ -39,6 +39,7 @@ import fr.veridiangames.core.maths.Vec3;
 public class Player extends Entity
 {
 	private Vec3 newPosition;
+	private boolean dead;
 	
 	public Player(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
@@ -48,6 +49,8 @@ public class Player extends Entity
 		super.add(new ECModel(0));
 		super.add(new ECNetwork(address, port));
 		super.add(new ECWeapon(0));
+
+		this.dead = false;
 	}
 	
 	public void update(GameCore core)
@@ -117,5 +120,15 @@ public class Player extends Entity
 	public ECWeapon getWeaponManager()
 	{
 		return ((ECWeapon) super.get(EComponent.WEAPON));
+	}
+
+	public boolean isDead()
+	{
+		return dead;
+	}
+
+	public void setDead(boolean dead)
+	{
+		this.dead = dead;
 	}
 }

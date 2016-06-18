@@ -130,7 +130,39 @@ public class Quat {
 		
 		return r;
 	}
-	
+
+	public static Quat lookAt(Vec3 sourcePoint, Vec3 destPoint)
+	{
+		Vec3 forwardVector = new Vec3(destPoint).sub(sourcePoint).normalize();
+
+		float dot = new Vec3(0, 0, 1).dot(forwardVector);
+
+		if (Mathf.abs(dot - (-1.0f)) < 0.000001f)
+		{
+			return new Quat(Vec3.UP.x, Vec3.UP.y, Vec3.UP.z, Mathf.PI);
+		}
+		if (Mathf.abs(dot - (1.0f)) < 0.000001f)
+		{
+			return new Quat();
+		}
+
+		float rotAngle = Mathf.acos(dot);
+		Vec3 rotAxis = new Vec3(0, 0, 1).cross(forwardVector).normalize();
+		return createFromAxisAngle(rotAxis, rotAngle);
+	}
+
+	public static Quat createFromAxisAngle(Vec3 axis, float angle)
+	{
+		float halfAngle = angle * 0.5f;
+		float s = Mathf.sin(halfAngle);
+		Quat q = new Quat();
+		q.x = axis.x * s;
+		q.y = axis.y * s;
+		q.z = axis.z * s;
+		q.w = Mathf.cos(halfAngle);
+		return q;
+	}
+
 //	public static Quat euler(float x, float y, float z) {
 //		float c1 = (float) Math.cos(x / 2.0f);
 //		float s1 = (float) Math.sin(x / 2.0f);
