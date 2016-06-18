@@ -45,30 +45,30 @@ import fr.veridiangames.client.rendering.shaders.WorldShader;
 public class GameRenderer
 {
 	private GameCore				core;
-	
+
 	private PlayerShader			playerShader;
 	private EntityShader			entityShader;
 	private WorldShader				worldShader;
 	private WeaponShader			weaponShader;
 	private EnvSphereShader			envSphereShader;
-	
+
 	private PlayerRenderer			playerRenderer;
 	private EntityRenderer			entityRenderer;
 	private ParticleRenderer 		particleRenderer;
 	private WorldRenderer			worldRenderer;
 	private PlayerSelectionRenderer playerSelectionRenderer;
 	private EntityWeaponRenderer 	entityWeaponRenderer;
-	
+
 	private PlayerViewport			playerViewport;
-	
+
 	private SpherePrimitive			envSphere;
 	private EnvCubemap				envCubemap;
 	private Camera 					envCamera;
-	
+
 	public GameRenderer(Main main, GameCore core)
 	{
 		this.core = core;
-		
+
 		this.playerShader = new PlayerShader();
 		this.entityShader = new EntityShader();
 		this.worldShader = new WorldShader();
@@ -81,23 +81,23 @@ public class GameRenderer
 		this.entityWeaponRenderer = new EntityWeaponRenderer();
 		this.playerSelectionRenderer = new PlayerSelectionRenderer(main.getPlayerHandler().getSelection());
 		this.worldRenderer = new WorldRenderer(core);
-		
+
 		this.playerViewport = new PlayerViewport(main.getDisplay(), main);
-		
+
 		this.envSphere = new SpherePrimitive(3);
 		this.envCubemap = new EnvCubemap(512);
 		this.envCamera = new Camera(90.0f, 512, 512, 0.5f, 100.0f);
 	}
-	
+
 	public void update()
 	{
 		playerViewport.update();
 		playerRenderer.updateInstances(
-			core.getGame().getEntityManager().getEntities(), 
+			core.getGame().getEntityManager().getEntities(),
 			core.getGame().getEntityManager().getPlayerEntites()
 		);
 		entityRenderer.updateInstances(
-			core.getGame().getEntityManager().getEntities(), 
+			core.getGame().getEntityManager().getEntities(),
 			core.getGame().getEntityManager().getRenderableEntites()
 		);
 		particleRenderer.updateInstances(
@@ -106,7 +106,7 @@ public class GameRenderer
 		);
 		worldRenderer.update(playerViewport.getCamera());
 	}
-	
+
 	public void render()
 	{
 		renderWorld(playerViewport.getCamera());
@@ -116,39 +116,39 @@ public class GameRenderer
 	{
 		envCubemap.bind();
 		envCamera.getTransform().setLocalPosition(playerViewport.getPlayerHandler().getEnvSpherePos());
-		
+
 		envCubemap.bindSide(0);
 		envCamera.getTransform().setLocalRotation(new Quat(0, 1, 0, 1));
 		renderWorld(envCamera);
-		
+
 		envCubemap.bindSide(1);
 		envCamera.getTransform().setLocalRotation(new Quat(0, -1, 0, 1));
 		renderWorld(envCamera);
-		
+
 		envCubemap.bindSide(2);
 		envCamera.getTransform().setLocalRotation(new Quat(1, 0, 0, 1));
 		renderWorld(envCamera);
-		
+
 		envCubemap.bindSide(3);
 		envCamera.getTransform().setLocalRotation(new Quat(-1, 0, 0, 1));
 		renderWorld(envCamera);
-		
+
 		envCubemap.bindSide(4);
 		envCamera.getTransform().setLocalRotation(new Quat(0, 0, 0, 1));
 		renderWorld(envCamera);
-		
+
 		envCubemap.bindSide(5);
 		envCamera.getTransform().setLocalRotation(new Quat(0, 1, 0, 0));
 		renderWorld(envCamera);
 
 		envCubemap.unbind();
 	}
-	
+
 	public void renderPlayer(Camera camera)
 	{
 		weaponShader.bind();
 		weaponShader.setShaderBase(
-				camera.getProjection(), 
+				camera.getProjection(),
 				camera.getTransform().getPosition(),
 				core.getGame().getData().getViewDistance()
 		);
@@ -160,7 +160,7 @@ public class GameRenderer
 //				core.getGame().getEntityManager().getPlayerEntites()
 //		);
 	}
-	
+
 	public void renderWorld(Camera camera)
 	{
 		playerShader.bind();
@@ -171,7 +171,7 @@ public class GameRenderer
 		);
 		playerShader.setModelViewMatrix(Mat4.identity());
 		playerRenderer.render();
-		
+
 		entityShader.bind();
 		entityShader.setShaderBase(
 				camera.getProjection(),
@@ -200,38 +200,38 @@ public class GameRenderer
 
 		weaponShader.bind();
 		weaponShader.setShaderBase(
-				camera.getProjection(), 
+				camera.getProjection(),
 				camera.getTransform().getPosition(),
 				core.getGame().getData().getViewDistance()
 		);
 		entityWeaponRenderer.renderEntityWeapons(
 				weaponShader,
 				envCubemap.getCubemap(),
-				core.getGame().getEntityManager().getEntities(), 
+				core.getGame().getEntityManager().getEntities(),
 				core.getGame().getEntityManager().getRenderableEntites()
 		);
-		
+
 		worldShader.bind();
 		worldShader.setShaderBase(
-				camera.getProjection(), 
+				camera.getProjection(),
 				camera.getTransform().getPosition(),
 				core.getGame().getData().getViewDistance()
 		);
 		worldShader.setModelViewMatrix(Mat4.identity());
 		worldRenderer.render();
 		playerSelectionRenderer.render(worldShader);
-		
-		
+
+
 		if (playerViewport.getPlayerHandler().isShowEnvSphere())
 		{
 			envSphereShader.bind();
 			envSphereShader.setShaderBase(
-					camera.getProjection(), 
+					camera.getProjection(),
 					camera.getTransform().getPosition(),
 					core.getGame().getData().getViewDistance()
 			);
 			envSphereShader.setModelViewMatrix(Mat4.translate(playerViewport.getPlayerHandler().getEnvSpherePos()));
-			
+
 			Renderer.bindTextureCube(envCubemap.getCubemap());
 			envSphere.render();
 			Renderer.bindTextureCube(0);
