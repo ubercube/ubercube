@@ -47,6 +47,8 @@ public class PacketManager
 		packets.put(Packet.BULLET_HIT_PLAYER, BulletHitPlayerPacket.class);
 		packets.put(Packet.DEATH, DeathPacket.class);
 		packets.put(Packet.RESPAWN, RespawnPacket.class);
+		packets.put(Packet.PING, PingPacket.class);
+		packets.put(Packet.TIME_OUT, TimeoutPacket.class);
 	}
 	
 	public static Packet getPacket(int packet)
