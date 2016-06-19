@@ -30,6 +30,8 @@ import fr.veridiangames.core.utils.DataBuffer;
  */
 public abstract class Packet
 {
+	public static final int MAX_SIZE = 2048;
+
 	public static final int	DISCONNECT			= 0x00;
 	public static final int	CONNECT				= 0x01;
 	public static final int	ENTITY_SYNC			= 0x02;

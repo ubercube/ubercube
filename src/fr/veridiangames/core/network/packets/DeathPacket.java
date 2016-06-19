@@ -65,10 +65,10 @@ public class DeathPacket extends Packet
     public void process(NetworkableClient client, InetAddress address, int port)
     {
         if(client.getCore().getGame().getPlayer().getID() != this.playerId)
-            System.out.println("Le joueur " + this.playerId + " est mort!");
+            client.log(this.playerId + " just died !");
         else
         {
-            System.out.println("Tu est mort");
+            client.log("You died !");
             client.getCore().getGame().getPlayer().setDead(true);
             client.send(new RespawnPacket(client.getCore().getGame().getPlayer().getID()));
         }
