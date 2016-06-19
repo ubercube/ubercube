@@ -113,6 +113,7 @@ public class Chunk
 					Color4f cb = new Color4f(0.1f, 0.50f, 0.1f, 0);
 					float t = noiseHeight / 30.0f;
 					Color4f color = Color4f.mix(ca, cb, t).add(cn);
+					color.setAlpha(1f);
 					blocks[x][y][z] = color.getARGB();
 				}
 			}

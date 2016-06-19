@@ -36,6 +36,8 @@ import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerR
 import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerSelectionRenderer;
 import fr.veridiangames.client.rendering.renderers.game.world.WorldRenderer;
 
+import static javax.swing.text.html.HTML.Tag.HEAD;
+
 /**
  * Created by Marccspro on 3 f�vr. 2016.
  */
@@ -83,10 +85,7 @@ public class GameRenderer
 		this.entityWeaponRenderer = new EntityWeaponRenderer();
 		this.playerSelectionRenderer = new PlayerSelectionRenderer(main.getPlayerHandler().getSelection());
 		this.worldRenderer = new WorldRenderer(core);
-<<<<<<< HEAD
-=======
 		this.gui3DShader = new Gui3DShader();
->>>>>>> develop
 
 		this.playerViewport = new PlayerViewport(main.getDisplay(), main);
 
@@ -111,6 +110,10 @@ public class GameRenderer
 			core.getGame().getEntityManager().getParticleEntities()
 		);
 		worldRenderer.update(playerViewport.getCamera());
+		playerNameRenderer.update(
+			core.getGame().getEntityManager().getEntities(),
+			core.getGame().getEntityManager().getPlayerEntites()
+		);
 	}
 
 	public void render()
@@ -169,6 +172,8 @@ public class GameRenderer
 
 	public void renderWorld(Camera camera)
 	{
+
+		/* ***** RENDERING BILLBOARDED TEXT ***** */
 		gui3DShader.bind();
 		gui3DShader.setProjectionMatrix(camera.getProjection());
 		gui3DShader.setModelViewMatrix(Mat4.identity());
@@ -177,6 +182,7 @@ public class GameRenderer
 				camera
 		);
 
+		/* ***** RENDERING PLAYER ENTITIES ***** */
 		playerShader.bind();
 		playerShader.setShaderBase(
 			camera.getProjection(),
@@ -186,6 +192,7 @@ public class GameRenderer
 		playerShader.setModelViewMatrix(Mat4.identity());
 		playerRenderer.render();
 
+		/* ***** RENDERING OTHER ENTITIES ***** */
 		entityShader.bind();
 		entityShader.setShaderBase(
 				camera.getProjection(),
@@ -199,6 +206,7 @@ public class GameRenderer
 				core.getGame().getEntityManager().getRenderableEntites()
 		);
 
+		/* ***** RENDERING PARTICLES ***** */
 		entityShader.bind();
 		entityShader.setShaderBase(
 				camera.getProjection(),
@@ -212,6 +220,7 @@ public class GameRenderer
 				core.getGame().getEntityManager().getParticleEntities()
 		);
 
+		/* ***** RENDERING WEAPONS ***** */
 		weaponShader.bind();
 		weaponShader.setShaderBase(
 				camera.getProjection(),
@@ -225,6 +234,7 @@ public class GameRenderer
 				core.getGame().getEntityManager().getRenderableEntites()
 		);
 
+		/* ***** RENDERING THE WORLD ***** */
 		worldShader.bind();
 		worldShader.setShaderBase(
 				camera.getProjection(),
@@ -235,7 +245,7 @@ public class GameRenderer
 		worldRenderer.render();
 		playerSelectionRenderer.render(worldShader);
 
-
+		/* ***** DEBUG RENDERING ENVIRONMENT MAP ***** */
 		if (playerViewport.getPlayerHandler().isShowEnvSphere())
 		{
 			envSphereShader.bind();

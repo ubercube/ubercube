@@ -24,25 +24,52 @@ import fr.veridiangames.client.rendering.Camera;
 import fr.veridiangames.client.rendering.renderers.guis.Font3DRenderer;
 import fr.veridiangames.client.rendering.shaders.Gui3DShader;
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.Entity;
+import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
+import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.utils.Color4f;
 
 import java.awt.*;
+import java.util.*;
+import java.util.List;
+
+import static sun.audio.AudioPlayer.player;
 
 /**
  * Created by Marc on 13/06/2016.
  */
 public class PlayerNameRenderer
 {
-    private Font3DRenderer fontRenderer;
+    private TrueTypeFont font;
+    private List<Font3DRenderer> playerFontRenderers;
 
     public PlayerNameRenderer()
     {
-        TrueTypeFont font = new TrueTypeFont(new Font("Arial", Font.PLAIN, 20), true);
-        fontRenderer = new Font3DRenderer(font, "MDR GROS CONNARD", GameCore.getInstance().getGame().getPlayer().getPosition().copy().add(0, -3, 0));
+        font = new TrueTypeFont(new Font("Arial", Font.BOLD, 32), true);
+        playerFontRenderers = new ArrayList<>();
+    }
+
+    public void update(Map<Integer, Entity> entities, java.util.List<Integer> indices)
+    {
+        playerFontRenderers.clear();
+        for (int i = 0; i < indices.size(); i++)
+        {
+            int key = indices.get(i);
+            Entity e = entities.get(key);
+            if (!(e instanceof NetworkedPlayer))
+                continue;
+            String name = ((Player) e).getName();
+            Vec3 position = ((Player) e).getPosition();
+            playerFontRenderers.add(new Font3DRenderer(font, name, position.copy().add(0, 2.3f, 0)));
+        }
     }
 
     public void render(Gui3DShader shader, Camera camera)
     {
-        fontRenderer.render(shader, camera, Color4f.BLUE, 0);
+        for (int i = 0; i < playerFontRenderers.size(); i++)
+        {
+            playerFontRenderers.get(i).render(shader, camera, Color4f.BLUE, 0);
+        }
     }
 }

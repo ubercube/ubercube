@@ -146,6 +146,8 @@ public class ParticleSystem extends Entity
 
 			if(collision && core.getGame().getWorld().getBlock((int) p.getTransform().getPosition().x, (int) p.getTransform().getPosition().y, (int) p.getTransform().getPosition().z) != 0)
 				p.setCollision(true);
+			else
+				p.setCollision(false);
 
 			if(!collision || !p.isCollision())
 			{

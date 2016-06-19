@@ -125,8 +125,8 @@ public class Font3DRenderer
 	}
 	
 	private float[] quadData(float drawX, float drawY, float drawX2, float drawY2, float srcX, float srcY, float srcX2, float srcY2) {
-		float DrawWidth = drawX2 - drawX;
-		float DrawHeight = drawY2 - drawY;
+		float DrawWidth = (drawX2 - drawX);
+		float DrawHeight = (drawY2 - drawY);
 		float TextureSrcX = srcX / font.textureWidth;
 		float TextureSrcY = srcY / font.textureHeight;
 		float SrcWidth = srcX2 - srcX;
@@ -210,7 +210,7 @@ public class Font3DRenderer
 		float dist = camera.getTransform().getPosition().copy().sub(transform.getPosition()).magnitude();
 
 		transform.setLocalRotation(camera.getTransform().getRotation());
-		transform.setLocalScale(new Vec3(dist / (float) font.fontTexture.getHeight()));
+		transform.setLocalScale(new Vec3(dist / (float) font.fontTexture.getHeight() * 0.5f));
 
 		shader.setModelViewMatrix(transform.toMatrix().mul(Mat4.translate(-w / 2, -h / 2, 0)));
 		shader.setColor(color);
