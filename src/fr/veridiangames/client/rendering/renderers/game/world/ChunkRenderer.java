@@ -108,12 +108,12 @@ public class ChunkRenderer
 					int frontBlock = world.getBlock(xx, yy, zz - 1);
 					int backBlock = world.getBlock(xx, yy, zz + 1);
 
-					boolean up = upBlock == 0;
-					boolean down = downBlock == 0;
-					boolean left = leftBlock == 0;
-					boolean right = rightBlock == 0;
-					boolean front = frontBlock == 0;
-					boolean back = backBlock == 0;
+					boolean up = (upBlock == 0);
+					boolean down = (downBlock == 0);
+					boolean left = (leftBlock == 0);
+					boolean right = (rightBlock == 0);
+					boolean front = (frontBlock == 0);
+					boolean back = (backBlock == 0);
 
 					if (!up && !down && !left && !right && !front && !back)
 						continue;
@@ -159,8 +159,8 @@ public class ChunkRenderer
 		removed = true;
 		if (bufferSize == 0)
 			return;
-		if (!isInViewDistance)
-			return;
+//		if (!isInViewDistance)
+//			return;
 		if (!isInViewFrustum)
 			return;
 
@@ -178,7 +178,7 @@ public class ChunkRenderer
 
 	private int calcBlock(FloatBuffer buffer, int xx, int yy, int zz, int block, float brightness, boolean up, boolean down, boolean left, boolean right, boolean front, boolean back)
 	{
-		float ao = 0.95f;
+		float ao = 0.92f;
 		Color4f color = Color4f.getColorFromARGB(block);
 		int size = 0;
 		if (up)

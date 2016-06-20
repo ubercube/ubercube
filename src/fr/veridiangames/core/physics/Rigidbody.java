@@ -93,8 +93,8 @@ public class Rigidbody
 		if (networkView)
 			return;
 		
-		gravity.add(0, 3f, 0);
-		applyForce(gravity.copy().negate(), 1.0f / 60.0f / 60.0f);
+//		gravity.add(0, 3f, 0);
+//		applyForce(gravity.copy().negate(), 1.0f / 60.0f / 60.0f);
 	}
 	
 	public void applyForces()
