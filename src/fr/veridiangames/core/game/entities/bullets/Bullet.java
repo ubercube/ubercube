@@ -32,7 +32,7 @@ import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.NetworkableClient;
-import fr.veridiangames.core.network.packets.BulletHitPacket;
+import fr.veridiangames.core.network.packets.BulletHitBlockPacket;
 import fr.veridiangames.core.network.packets.BulletHitPlayerPacket;
 import fr.veridiangames.core.utils.Indexer;
 
@@ -66,6 +66,7 @@ public class Bullet extends Entity
 		Vec3 direction = getRotation().getForward();
 
 		int block = 0;
+		Vec3 blockPosition = new Vec3();
 		Entity e = null;
 		
 		int step = (int) (force * 30.0f);
@@ -73,6 +74,7 @@ public class Bullet extends Entity
 		{
 			Vec3 stepedPosition = new Vec3(position).add(direction.copy().mul(force / step));
 			block = core.getGame().getWorld().getBlockAt(stepedPosition);
+			blockPosition = stepedPosition.copy();
 			e = core.getGame().getEntityManager().getEntityAt(stepedPosition, "NetPlayer");
 			if (block == 0 && e == null)
 			{
@@ -89,10 +91,10 @@ public class Bullet extends Entity
 
 		if (block != 0)
 		{
-			this.net.send(new BulletHitPacket(new StaticBullet(id, "", position, getRotation())));
+			Vec3i impactPosition = new Vec3i(position);
+			Vec3 normal = new Vec3(impactPosition).gtNorm(position);
 
-			Vec3i blockPosition = new Vec3i(position);
-			Vec3 normal = new Vec3(blockPosition).gtNorm(position);
+			this.net.send(new BulletHitBlockPacket(new Vec3i(blockPosition), 0.1f, block));
 
 			ParticleSystem hitParticles = new ParticlesBulletHit(Indexer.getUniqueID(), getPosition().copy());
 			hitParticles.setNetwork(net);

@@ -79,7 +79,7 @@ public class RespawnPacket extends Packet
         p.setLife(100);
         p.setDead(false);
 
-        this.position = new Vec3(800, 8, 800);      // TODO : Modify position
+        this.position = new Vec3(800, 20, 800);      // TODO : Modify position
 
         server.send(new RespawnPacket(this), p.getNetwork().getAddress(), p.getNetwork().getPort());
     }

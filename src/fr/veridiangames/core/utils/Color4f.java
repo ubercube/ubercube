@@ -106,7 +106,7 @@ public class Color4f {
 		this.a = a;
 	}
 	
-	public Color4f(Vec3 hsl)
+	/*public Color4f(Vec3 hsl)
 	{
 		float r, g, b;
 		float h = hsl.x;
@@ -175,7 +175,7 @@ public class Color4f {
 	    }
 		
 		return new Vec3(h, s, l);
-	}
+	}*/
 	
 	public static int getColor(int r, int g, int b, int a)
 	{
@@ -222,10 +222,9 @@ public class Color4f {
 	public static Color4f mix(Color4f ca, Color4f cb, float t) {
 		float r = Math.abs(ca.r + (cb.r - ca.r) * t); 
 		float g = Math.abs(ca.g + (cb.g - ca.g) * t); 
-		float b = Math.abs(ca.b + (cb.b - ca.b) * t); 
-		float a = Math.abs(ca.a + (cb.a - ca.a) * t); 
-		
-		return new Color4f(r, g, b, a);
+		float b = Math.abs(ca.b + (cb.b - ca.b) * t);
+
+		return new Color4f(r, g, b, ca.getAlpha());
 	}
 	
 	public float[] toArray() {
@@ -268,7 +267,7 @@ public class Color4f {
 		this.a = alpha;
 	}
 
-	public int getRGB() {
+	/*public int getRGB() {
 		int R = (int) (r*255f);
 		int G = (int) (g*255f);
 		int B = (int) (b*255f);
@@ -276,10 +275,10 @@ public class Color4f {
 		
 		rgb = R << 16 | G << 8 | B;
 		return rgb;
-	}
+	}*/
 	
 	public int getARGB() {
-		int A = (int) (a*255f);
+		int A = (int) (a*127f);
 		int R = (int) (r*255f);
 		int G = (int) (g*255f);
 		int B = (int) (b*255f);
@@ -329,6 +328,21 @@ public class Color4f {
 		g *= v.g;
 		b *= v.b;
 		return this;
+	}
+
+	public static Color4f getColorFromARGB(int argb){
+		Color4f color = new Color4f(0, 0, 0, 0);
+		int A = (argb & 0xff000000)>>24;
+		int R = (argb & 0xff0000)>>16;
+		int G = (argb & 0xff00)>>8;
+		int B = (argb & 0xff);
+
+		color.r = (float) R/255f;
+		color.g = (float) G/255f;
+		color.b = (float) B/255f;
+		color.a = (float) A/127f;
+
+		return color;
 	}
 	
 	public String toString()
