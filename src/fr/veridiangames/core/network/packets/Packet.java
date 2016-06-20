@@ -30,20 +30,24 @@ import fr.veridiangames.core.utils.DataBuffer;
  */
 public abstract class Packet
 {
-	public static final int	DISCONNECT			= 0x00;
-	public static final int	CONNECT				= 0x01;
-	public static final int	ENTITY_SYNC			= 0x02;
-	public static final int	ENTITY_MOVEMENT		= 0x03;
-	public static final int	BLOCK_ACTION		= 0x04;
-	public static final int	BLOCK_SYNC			= 0x05;
-	public static final int	WEAPON_POS			= 0x06;
-	public static final int BULLET_HIT_BLOCK	= 0x07;
-	public static final int PARTICLES_SPAWN 	= 0x08;
-	public static final int PARTICLES_REMOVE 	= 0x09;
-	public static final int BULLET_HIT_PLAYER 	= 0x10;
-	public static final int DEATH				= 0x11;
-	public static final int RESPAWN				= 0x12;
-	public static final int WEAPON_CHANGE		= 0x13;
+	public static final int MAX_SIZE = 2048;
+
+	public static final int	DISCONNECT			= 0;
+	public static final int	CONNECT				= 1;
+	public static final int	ENTITY_SYNC			= 2;
+	public static final int	ENTITY_MOVEMENT		= 3;
+	public static final int	BLOCK_ACTION		= 4;
+	public static final int	BLOCK_SYNC			= 5;
+	public static final int	WEAPON_POS			= 6;
+	public static final int BULLET_HIT_BLOCK	= 7;
+	public static final int PARTICLES_SPAWN 	= 8;
+	public static final int PARTICLES_REMOVE 	= 9;
+	public static final int BULLET_HIT_PLAYER 	= 10;
+	public static final int DEATH				= 11;
+	public static final int RESPAWN				= 12;
+	public static final int PING 				= 13;
+	public static final int TIME_OUT			= 14;
+	public static final int WEAPON_CHANGE		= 15;
 
 	protected DataBuffer data;
 

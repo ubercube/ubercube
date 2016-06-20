@@ -20,13 +20,17 @@
 package fr.veridiangames.core.network.packets;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
+import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.maths.Vec4i;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
@@ -100,7 +104,24 @@ public class ConnectPacket extends Packet
 		{
 			System.out.println("COLOR: " + Integer.toHexString(server.getCore().getGame().getWorld().getModifiedBlocks().get(i).w));
 		}
-		server.send(new SyncBlocksPacket(server.getCore().getGame().getWorld().getModifiedBlocks()), address, port);
+
+		/* SENDING MULTIPLE PACKETS TO AVOID READ OVERFLOW OF 2048 */
+		int modifiedBlocksSize = server.getCore().getGame().getWorld().getModifiedBlocks().size();
+		int packetCount = (int) Mathf.ceil((float) (modifiedBlocksSize * 16) / Packet.MAX_SIZE);
+		List<Vec4i> currentData = server.getCore().getGame().getWorld().getModifiedBlocks();
+		for (int i = 0; i < packetCount; i++)
+		{
+			List<Vec4i> dataToSend = new ArrayList<>();
+			float count = (float)modifiedBlocksSize / packetCount;
+			int icount = (int) count;
+
+			for (int j = 0; j < count; j++)
+			{
+				int index = i * icount + j;
+				dataToSend.add(currentData.get(index));
+			}
+			server.send(new SyncBlocksPacket(dataToSend), address, port);
+		}
 
 		for (int i = 0; i < server.getCore().getGame().getEntityManager().getNetworkableEntites().size(); i++)
 		{

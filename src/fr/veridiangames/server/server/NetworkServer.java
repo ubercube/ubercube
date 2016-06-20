@@ -32,9 +32,12 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.ECNetwork;
 import fr.veridiangames.core.game.entities.components.EComponent;
+import fr.veridiangames.core.game.entities.player.ServerPlayer;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
+import fr.veridiangames.core.network.packets.PingPacket;
+import fr.veridiangames.core.network.packets.TimeoutPacket;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.utils.SystemUtils;
 import fr.veridiangames.server.FileManager;
@@ -42,6 +45,9 @@ import fr.veridiangames.server.server.commands.CmdHelp;
 import fr.veridiangames.server.server.commands.CmdKick;
 import fr.veridiangames.server.server.commands.CmdStop;
 import fr.veridiangames.server.server.commands.Command;
+
+import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
+import static sun.audio.AudioPlayer.player;
 
 /**
  * Created by Marccspro on 24 f�vr. 2016.
@@ -92,6 +98,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 		log("Server successfully started on port " + port + " !");
 		log("Type \"help\" to list every command.");
 		log("Type \"stop\" to stop the server.");
+		ping();
 		receive();
 		while (true)
 		{
@@ -104,6 +111,41 @@ public class NetworkServer implements Runnable, NetworkableServer
 				commands.get(cmdName).process(this, params);
 			}
 		}
+	}
+
+	private void ping()
+	{
+		new Thread("ping-thread")
+		{
+			public void run()
+			{
+				long before = System.nanoTime();
+				while (true)
+				{
+					if (System.nanoTime() - before > 1000000000.0 / 1.0)
+					{
+						log("ping");
+						for (int i = 0; i < core.getGame().getEntityManager().getPlayerEntites().size(); i++)
+						{
+							int key = core.getGame().getEntityManager().getPlayerEntites().get(i);
+							ServerPlayer player = (ServerPlayer) core.getGame().getEntityManager().getEntities().get(key);
+							player.setPinged(false);
+							player.setTimeOutTests(player.getTimeOutTests() + 1);
+							if (player.getTimeOutTests() > 5)
+							{
+								sendToAll(new TimeoutPacket(key));
+								core.getGame().getEntityManager().remove(key);
+								log(player.getName() + " timed out !");
+							}
+
+							log("Pinging " + player.getName() + "... " + player.getPing() + "ms");
+							send(new PingPacket(player.getID(), 0L, player.getPing()), player.getNetwork().getAddress(), player.getNetwork().getPort());
+						}
+						before += 1000000000.0 / 1.0;
+					}
+				}
+			}
+		}.start();
 	}
 
 	private void receive()

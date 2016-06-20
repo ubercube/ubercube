@@ -20,6 +20,8 @@
 package fr.veridiangames.client.rendering.renderers.game;
 
 import fr.veridiangames.client.rendering.renderers.game.entities.particles.ParticleRenderer;
+import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerNameRenderer;
+import fr.veridiangames.client.rendering.shaders.*;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.maths.Mat4;
 import fr.veridiangames.core.maths.Quat;
@@ -30,14 +32,11 @@ import fr.veridiangames.client.rendering.primitives.SpherePrimitive;
 import fr.veridiangames.client.rendering.renderers.Renderer;
 import fr.veridiangames.client.rendering.renderers.game.entities.EntityRenderer;
 import fr.veridiangames.client.rendering.renderers.game.entities.EntityWeaponRenderer;
-import fr.veridiangames.client.rendering.renderers.game.entities.PlayerRenderer;
-import fr.veridiangames.client.rendering.renderers.game.entities.PlayerSelectionRenderer;
+import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerRenderer;
+import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerSelectionRenderer;
 import fr.veridiangames.client.rendering.renderers.game.world.WorldRenderer;
-import fr.veridiangames.client.rendering.shaders.EntityShader;
-import fr.veridiangames.client.rendering.shaders.EnvSphereShader;
-import fr.veridiangames.client.rendering.shaders.PlayerShader;
-import fr.veridiangames.client.rendering.shaders.WeaponShader;
-import fr.veridiangames.client.rendering.shaders.WorldShader;
+
+import static javax.swing.text.html.HTML.Tag.HEAD;
 
 /**
  * Created by Marccspro on 3 f�vr. 2016.
@@ -45,59 +44,65 @@ import fr.veridiangames.client.rendering.shaders.WorldShader;
 public class GameRenderer
 {
 	private GameCore				core;
-	
+
 	private PlayerShader			playerShader;
 	private EntityShader			entityShader;
 	private WorldShader				worldShader;
 	private WeaponShader			weaponShader;
 	private EnvSphereShader			envSphereShader;
-	
+
+	private Gui3DShader 			gui3DShader;
+
 	private PlayerRenderer			playerRenderer;
 	private EntityRenderer			entityRenderer;
 	private ParticleRenderer 		particleRenderer;
 	private WorldRenderer			worldRenderer;
 	private PlayerSelectionRenderer playerSelectionRenderer;
 	private EntityWeaponRenderer 	entityWeaponRenderer;
-	
+
+	private PlayerNameRenderer 		playerNameRenderer;
 	private PlayerViewport			playerViewport;
-	
+
 	private SpherePrimitive			envSphere;
 	private EnvCubemap				envCubemap;
 	private Camera 					envCamera;
-	
+
 	public GameRenderer(Main main, GameCore core)
 	{
 		this.core = core;
-		
+
 		this.playerShader = new PlayerShader();
 		this.entityShader = new EntityShader();
 		this.worldShader = new WorldShader();
 		this.weaponShader = new WeaponShader();
 		this.envSphereShader = new EnvSphereShader();
+		this.envSphereShader = new EnvSphereShader();
 
 		this.playerRenderer = new PlayerRenderer();
 		this.entityRenderer = new EntityRenderer();
+		this.playerNameRenderer = new PlayerNameRenderer();
 		this.particleRenderer = new ParticleRenderer();
 		this.entityWeaponRenderer = new EntityWeaponRenderer();
 		this.playerSelectionRenderer = new PlayerSelectionRenderer(main.getPlayerHandler().getSelection());
 		this.worldRenderer = new WorldRenderer(core);
-		
+		this.gui3DShader = new Gui3DShader();
+
 		this.playerViewport = new PlayerViewport(main.getDisplay(), main);
-		
+
 		this.envSphere = new SpherePrimitive(3);
 		this.envCubemap = new EnvCubemap(512);
 		this.envCamera = new Camera(90.0f, 512, 512, 0.5f, 100.0f);
 	}
-	
+
 	public void update()
 	{
 		playerViewport.update();
 		playerRenderer.updateInstances(
-			core.getGame().getEntityManager().getEntities(), 
+			core.getGame().getEntityManager().getEntities(),
 			core.getGame().getEntityManager().getPlayerEntites()
 		);
 		entityRenderer.updateInstances(
-			core.getGame().getEntityManager().getEntities(), 
+			core.getGame().getEntityManager().getEntities(),
 			core.getGame().getEntityManager().getRenderableEntites()
 		);
 		particleRenderer.updateInstances(
@@ -105,8 +110,12 @@ public class GameRenderer
 			core.getGame().getEntityManager().getParticleEntities()
 		);
 		worldRenderer.update(playerViewport.getCamera());
+		playerNameRenderer.update(
+			core.getGame().getEntityManager().getEntities(),
+			core.getGame().getEntityManager().getPlayerEntites()
+		);
 	}
-	
+
 	public void render()
 	{
 		renderWorld(playerViewport.getCamera());
@@ -116,39 +125,39 @@ public class GameRenderer
 	{
 		envCubemap.bind();
 		envCamera.getTransform().setLocalPosition(playerViewport.getPlayerHandler().getEnvSpherePos());
-		
+
 		envCubemap.bindSide(0);
 		envCamera.getTransform().setLocalRotation(new Quat(0, 1, 0, 1));
 		renderWorld(envCamera);
-		
+
 		envCubemap.bindSide(1);
 		envCamera.getTransform().setLocalRotation(new Quat(0, -1, 0, 1));
 		renderWorld(envCamera);
-		
+
 		envCubemap.bindSide(2);
 		envCamera.getTransform().setLocalRotation(new Quat(1, 0, 0, 1));
 		renderWorld(envCamera);
-		
+
 		envCubemap.bindSide(3);
 		envCamera.getTransform().setLocalRotation(new Quat(-1, 0, 0, 1));
 		renderWorld(envCamera);
-		
+
 		envCubemap.bindSide(4);
 		envCamera.getTransform().setLocalRotation(new Quat(0, 0, 0, 1));
 		renderWorld(envCamera);
-		
+
 		envCubemap.bindSide(5);
 		envCamera.getTransform().setLocalRotation(new Quat(0, 1, 0, 0));
 		renderWorld(envCamera);
 
 		envCubemap.unbind();
 	}
-	
+
 	public void renderPlayer(Camera camera)
 	{
 		weaponShader.bind();
 		weaponShader.setShaderBase(
-				camera.getProjection(), 
+				camera.getProjection(),
 				camera.getTransform().getPosition(),
 				core.getGame().getData().getViewDistance()
 		);
@@ -160,9 +169,20 @@ public class GameRenderer
 //				core.getGame().getEntityManager().getPlayerEntites()
 //		);
 	}
-	
+
 	public void renderWorld(Camera camera)
 	{
+
+		/* ***** RENDERING BILLBOARDED TEXT ***** */
+		gui3DShader.bind();
+		gui3DShader.setProjectionMatrix(camera.getProjection());
+		gui3DShader.setModelViewMatrix(Mat4.identity());
+		playerNameRenderer.render(
+				gui3DShader,
+				camera
+		);
+
+		/* ***** RENDERING PLAYER ENTITIES ***** */
 		playerShader.bind();
 		playerShader.setShaderBase(
 			camera.getProjection(),
@@ -171,7 +191,8 @@ public class GameRenderer
 		);
 		playerShader.setModelViewMatrix(Mat4.identity());
 		playerRenderer.render();
-		
+
+		/* ***** RENDERING OTHER ENTITIES ***** */
 		entityShader.bind();
 		entityShader.setShaderBase(
 				camera.getProjection(),
@@ -185,6 +206,7 @@ public class GameRenderer
 				core.getGame().getEntityManager().getRenderableEntites()
 		);
 
+		/* ***** RENDERING PARTICLES ***** */
 		entityShader.bind();
 		entityShader.setShaderBase(
 				camera.getProjection(),
@@ -198,44 +220,48 @@ public class GameRenderer
 				core.getGame().getEntityManager().getParticleEntities()
 		);
 
+		/* ***** RENDERING WEAPONS ***** */
 		weaponShader.bind();
 		weaponShader.setShaderBase(
-				camera.getProjection(), 
+				camera.getProjection(),
 				camera.getTransform().getPosition(),
 				core.getGame().getData().getViewDistance()
 		);
 		entityWeaponRenderer.renderEntityWeapons(
 				weaponShader,
 				envCubemap.getCubemap(),
-				core.getGame().getEntityManager().getEntities(), 
+				core.getGame().getEntityManager().getEntities(),
 				core.getGame().getEntityManager().getRenderableEntites()
 		);
-		
+
+		/* ***** RENDERING THE WORLD ***** */
 		worldShader.bind();
 		worldShader.setShaderBase(
-				camera.getProjection(), 
+				camera.getProjection(),
 				camera.getTransform().getPosition(),
 				core.getGame().getData().getViewDistance()
 		);
 		worldShader.setModelViewMatrix(Mat4.identity());
 		worldRenderer.render();
 		playerSelectionRenderer.render(worldShader);
-		
-		
+
+		/* ***** DEBUG RENDERING ENVIRONMENT MAP ***** */
 		if (playerViewport.getPlayerHandler().isShowEnvSphere())
 		{
 			envSphereShader.bind();
 			envSphereShader.setShaderBase(
-					camera.getProjection(), 
+					camera.getProjection(),
 					camera.getTransform().getPosition(),
 					core.getGame().getData().getViewDistance()
 			);
 			envSphereShader.setModelViewMatrix(Mat4.translate(playerViewport.getPlayerHandler().getEnvSpherePos()));
-			
+
 			Renderer.bindTextureCube(envCubemap.getCubemap());
 			envSphere.render();
 			Renderer.bindTextureCube(0);
 		}
+
+
 	}
 	
 	public GameCore getGameCore()

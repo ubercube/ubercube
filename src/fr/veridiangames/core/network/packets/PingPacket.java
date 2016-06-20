@@ -19,7 +19,7 @@
 
 package fr.veridiangames.core.network.packets;
 
-import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.game.entities.player.ServerPlayer;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
@@ -27,59 +27,55 @@ import fr.veridiangames.core.utils.DataBuffer;
 import java.net.InetAddress;
 
 /**
- * Created by Tybau on 20/06/2016.
+ * Created by Marc on 19/06/2016.
  */
-public class WeaponChangePacket extends Packet
+public class PingPacket extends Packet
 {
-    private int playerID;
-    private int weaponID;
+    private int userID;
+    private long pingTime;
+    private long ping;
 
-    public WeaponChangePacket()
+    public PingPacket()
     {
-        super(WEAPON_CHANGE);
+        super(PING);
     }
 
-    public WeaponChangePacket(Player player)
+    public PingPacket(int userID, long pingTime, long ping)
     {
-        super(WEAPON_CHANGE);
-
-        data.put(player.getID());
-        data.put(player.getWeaponManager().getWeaponID());
-
+        super(PING);
+        data.put(userID);
+        data.put(pingTime);
+        data.put(ping);
         data.flip();
     }
 
-    public WeaponChangePacket(WeaponChangePacket packet)
+    public PingPacket(PingPacket packet)
     {
-        super(WEAPON_CHANGE);
-
-        data.put(packet.playerID);
-        data.put(packet.weaponID);
-
+        super(PING);
+        data.put(packet.userID);
+        data.put(packet.pingTime);
+        data.put(packet.ping);
         data.flip();
     }
 
     public void read(DataBuffer buffer)
     {
-        playerID = buffer.getInt();
-        weaponID = buffer.getInt();
+        userID = buffer.getInt();
+        pingTime = buffer.getLong();
+        ping = buffer.getLong();
     }
 
     public void process(NetworkableServer server, InetAddress address, int port)
     {
-        server.sendToAll(new WeaponChangePacket(this));
+        ServerPlayer player = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(userID);
+        player.setPing((long)((pingTime - player.getPingTime()) / 1000.0f));
+        player.setPingTime(pingTime);
+        player.setTimeOutTests(0);
+        player.setPinged(true);
     }
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        if(playerID != client.getCore().getGame().getPlayer().getID())
-        {
-            Player p = (Player)client.getCore().getGame().getEntityManager().getEntities().get(playerID);
-            if(p != null)
-            {
-
-                p.getWeaponManager().setWeapon(weaponID);
-            }
-        }
+        client.send(new PingPacket(client.getCore().getGame().getPlayer().getID(), System.currentTimeMillis(), 0));
     }
 }

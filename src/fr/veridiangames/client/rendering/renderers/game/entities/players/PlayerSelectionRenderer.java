@@ -17,7 +17,7 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.client.rendering.renderers.game.entities;
+package fr.veridiangames.client.rendering.renderers.game.entities.players;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
