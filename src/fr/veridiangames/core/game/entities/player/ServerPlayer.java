@@ -28,11 +28,19 @@ import fr.veridiangames.core.maths.Vec3;
 public class ServerPlayer extends Player
 {
 	private int life;
+	private int timeOutTests;
+	private long pingTime;
+	private long ping;
+	private boolean pinged;
 
 	public ServerPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
 		super(id, name, position, rotation, address, port);
 		this.life = 100;
+		this.timeOutTests = 0;
+		this.pingTime = 0;
+		this.ping = 0;
+		this.pinged = false;
 	}
 
 	public int getLife()
@@ -43,5 +51,45 @@ public class ServerPlayer extends Player
 	public void setLife(int life)
 	{
 		this.life = life;
+	}
+
+	public int getTimeOutTests()
+	{
+		return timeOutTests;
+	}
+
+	public void setTimeOutTests(int timeOutTests)
+	{
+		this.timeOutTests = timeOutTests;
+	}
+
+	public long getPingTime()
+	{
+		return pingTime;
+	}
+
+	public void setPingTime(long pingTime)
+	{
+		this.pingTime = pingTime;
+	}
+
+	public long getPing()
+	{
+		return ping;
+	}
+
+	public void setPing(long ping)
+	{
+		this.ping = ping;
+	}
+
+	public boolean isPinged()
+	{
+		return pinged;
+	}
+
+	public void setPinged(boolean pinged)
+	{
+		this.pinged = pinged;
 	}
 }

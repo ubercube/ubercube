@@ -173,7 +173,7 @@ public class Main
 				ticks = 0;
 			}
 		}
-		net.send(new DisconnectPacket(core.getGame().getPlayer().getID()));
+		//net.send(new DisconnectPacket(core.getGame().getPlayer().getID()));
 		display.setDestroyed(true);
 		System.exit(0);
 	}

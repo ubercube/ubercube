@@ -68,7 +68,7 @@ public class Console
 		clines.clear();
 		for (int i = 0; i < lines.size(); i++)
 		{
-			clines.add(new CLine(lines.get(i) , Color4f.WHITE, 5, 5 + clines.size() * 12, font));
+			clines.add(new CLine(lines.get(i) , new Color4f(0.2f, 0.75f, 1f, 1f), 5, 5 + clines.size() * 12, font));
 		}
 	}
 	

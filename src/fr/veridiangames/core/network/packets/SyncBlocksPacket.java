@@ -50,8 +50,6 @@ public class SyncBlocksPacket extends Packet
 			data.put(b.y);
 			data.put(b.z);
 			data.put(b.w);
-
-            System.out.println("BLOCK: " + Integer.toHexString(b.w));
 		}
 		data.flip();
 	}
@@ -77,7 +75,6 @@ public class SyncBlocksPacket extends Packet
 		for (int i = 0; i < size; i++)
 		{
 			Vec4i block = new Vec4i(data.getInt(), data.getInt(), data.getInt(), data.getInt());
-			System.out.println("BLOCK: " + Integer.toHexString(block.w));
 			blocks.add(block);
 		}
 	}

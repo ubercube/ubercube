@@ -46,7 +46,7 @@ public class ECKeyMovement extends EComponent
 		super(KEY_MOVEMENT);
 		super.addDependencies(RENDER, RIGIDBODY);
 		
-		this.speed = speed;
+		this.speed = 1;
 		this.jumpForce = jumpForce;
 	}
 
@@ -72,9 +72,9 @@ public class ECKeyMovement extends EComponent
 			body.applyForce(leftDirection, -speed);
 
 		if (jump)
-			if (body.isGrounded())
-				body.applyForce(Vec3.UP, jumpForce);
+			body.applyForce(Vec3.UP, speed);
 
+		//if (body.isGrounded())
 
 		if (crouche)
 			body.applyForce(Vec3.UP, -speed);
