@@ -132,7 +132,7 @@ public class World
 				c.setShouldBeRendered(true);
 				return;
 			}
-			if (generatingChunks.size() < 10)
+			//if (generatingChunks.size() < 10)
 			{
 				float[][] 	noise = worldGen.getNoiseChunk(x, z);
 				Chunk c = new Chunk(x, y, z, noise, this);

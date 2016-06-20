@@ -159,8 +159,8 @@ public class ChunkRenderer
 		removed = true;
 		if (bufferSize == 0)
 			return;
-//		if (!isInViewDistance)
-//			return;
+		if (!isInViewDistance)
+			return;
 		if (!isInViewFrustum)
 			return;
 

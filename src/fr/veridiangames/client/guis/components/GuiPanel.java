@@ -28,9 +28,7 @@ import fr.veridiangames.client.rendering.textures.TextureData;
 public class GuiPanel extends GuiComponent
 {
 	private TextureData texture;
-	
 
-	
 	public GuiPanel(int x, int y, int w, int h)
 	{
 		super(false);

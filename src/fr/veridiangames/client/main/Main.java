@@ -22,6 +22,7 @@ package fr.veridiangames.client.main;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.maths.Quat;
+import fr.veridiangames.core.maths.Vec2i;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.packets.ConnectPacket;
 import fr.veridiangames.core.network.packets.DisconnectPacket;
@@ -54,7 +55,8 @@ public class Main
 	private Console			console;
 	private boolean 		connected;
 	private PlayerHUD		playerHUD;
-	
+	private GuiPanel		crosshair;
+
 	public void init()
 	{
 		main = this;
@@ -63,7 +65,8 @@ public class Main
 		GuiCanvas connectionCanvas = new ConnectionCanvas(net.getAddress().getHostAddress(), net.getPort(), display);
 		
 		GuiCanvas canvas = new GuiCanvas();
-		canvas.add(new GuiPanel(display.getWidth() / 2 - 1, display.getHeight() / 2 - 1, 2, 2).setColor(Color4f.WHITE).setBorder(3, new Color4f(0, 0, 0, 0.3f)));
+		crosshair = (GuiPanel) new GuiPanel(display.getWidth() / 2 - 1, display.getHeight() / 2 - 1, 2, 2).setColor(Color4f.WHITE).setBorder(3, new Color4f(0, 0, 0, 0.3f));
+		canvas.add(crosshair);
 		
 		playerHUD = new PlayerHUD(display.getWidth(), display.getHeight());
 		
@@ -77,6 +80,7 @@ public class Main
 
 	public void update()
 	{
+		crosshair.setPosition(new Vec2i(display.getWidth() / 2 - 1, display.getHeight() / 2 - 1));
 		//playerHUD.update(display);
 		if (!connected && net.isConnected())
 		{
