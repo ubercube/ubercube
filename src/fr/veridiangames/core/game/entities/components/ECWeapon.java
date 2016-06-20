@@ -19,9 +19,12 @@
 
 package fr.veridiangames.core.game.entities.components;
 
+import fr.veridiangames.client.network.NetworkClient;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.maths.Transform;
+import fr.veridiangames.core.network.NetworkableClient;
+import fr.veridiangames.core.network.packets.WeaponChangePacket;
 
 /**
  * Created by Marccspro on 7 f�vr. 2016.
@@ -77,7 +80,7 @@ public class ECWeapon extends EComponent
 		{
 			this.weaponID = weapon;
 			this.weapon = Weapon.weapons.get(weapon).newInstance();
-			Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getTransform();
+			Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
 			this.weapon.getTransform().setParent(parentTransform);
 		}
 		catch (InstantiationException e)

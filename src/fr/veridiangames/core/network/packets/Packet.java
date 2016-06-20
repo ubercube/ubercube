@@ -47,6 +47,7 @@ public abstract class Packet
 	public static final int RESPAWN				= 12;
 	public static final int PING 				= 13;
 	public static final int TIME_OUT			= 14;
+	public static final int WEAPON_CHANGE		= 15;
 
 	protected DataBuffer data;
 

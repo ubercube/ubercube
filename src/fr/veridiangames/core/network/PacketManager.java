@@ -49,6 +49,7 @@ public class PacketManager
 		packets.put(Packet.RESPAWN, RespawnPacket.class);
 		packets.put(Packet.PING, PingPacket.class);
 		packets.put(Packet.TIME_OUT, TimeoutPacket.class);
+		packets.put(Packet.WEAPON_CHANGE, WeaponChangePacket.class);
 	}
 	
 	public static Packet getPacket(int packet)

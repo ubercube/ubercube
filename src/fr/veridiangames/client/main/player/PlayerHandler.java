@@ -22,11 +22,15 @@ package fr.veridiangames.client.main.player;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
+import fr.veridiangames.core.game.entities.weapons.Weapon;
+import fr.veridiangames.core.game.entities.weapons.WeaponShovel;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.packets.BlockActionPacket;
 import fr.veridiangames.client.inputs.Input;
 import fr.veridiangames.client.network.NetworkClient;
+import fr.veridiangames.core.network.packets.WeaponChangePacket;
+import org.lwjgl.glfw.GLFW;
 
 /**
  * Created by Marccspro on 14 f�vr. 2016.
@@ -96,12 +100,40 @@ public class PlayerHandler
 		ray.setPosition(player.getPosition().copy().add(0, 2.5f * 0.5f, 0));
 		ray.setDirection(player.getViewDirection());
 
-		selection.update(ray.getHit());
-		applySelectionActions(ray, input);
+		/** Weapon switch **/
 
-		/** Debug system **/
-		debug.setParticleSpawn(input.getKeyDown(input.KEY_P));
-		debug.setParticleRemove(input.getKey(input.KEY_O));
+		if(input.getMouse().getDWheel() > 0)
+		{
+			if(weapon.getWeaponID() >= Weapon.weapons.size() - 1)
+			{
+				weapon.setWeapon(0);
+			}
+			else
+			{
+				weapon.setWeapon(weapon.getWeaponID() + 1);
+			}
+			weapon.getWeapon().setNet(this.net);
+			this.net.send(new WeaponChangePacket(player));
+		}
+		if(input.getMouse().getDWheel() < 0)
+		{
+			if(weapon.getWeaponID() <= 0)
+			{
+				weapon.setWeapon(Weapon.weapons.size() - 1);
+			}
+			else
+			{
+				weapon.setWeapon(weapon.getWeaponID() - 1);
+			}
+			weapon.getWeapon().setNet(this.net);
+			this.net.send(new WeaponChangePacket(player));
+		}
+
+		selection.update(ray.getHit());
+		if(weapon.getWeapon() instanceof WeaponShovel)
+		{
+			applySelectionActions(ray, input);
+		}
 	}
 	
 	private void applySelectionActions(ECRaycast ray, Input input)

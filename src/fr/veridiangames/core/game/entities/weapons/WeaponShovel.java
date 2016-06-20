@@ -19,18 +19,17 @@
 
 package fr.veridiangames.core.game.entities.weapons;
 
-import fr.veridiangames.core.game.entities.weapons.fire_weapons.FireWeapon;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 
-public class WeaponShovel extends FireWeapon
+public class WeaponShovel extends Weapon
 {
 	public WeaponShovel()
 	{
 		super(SHOVEL);
-		this.transform.setLocalScale(new Vec3(1, 1, -1));
-		this.setIdlePosition(new Transform(new Vec3(0.3f, -0.05f, 0)));
-		this.setZoomPosition(new Transform(new Vec3(0, 0, 0)));
+		this.transform.setLocalScale(new Vec3(0.3f, 0.3f, -0.3f));
+		this.setIdlePosition(new Transform(new Vec3(0.1f, -0.2f, 0.2f)));
+		this.setZoomPosition(new Transform(new Vec3(0.1f, -0.2f, 0.2f)));
 		this.setPosition(0);
 	}
 }
