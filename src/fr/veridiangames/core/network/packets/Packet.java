@@ -40,9 +40,10 @@ public abstract class Packet
 	public static final int BULLET_HIT_BLOCK	= 0x07;
 	public static final int PARTICLES_SPAWN 	= 0x08;
 	public static final int PARTICLES_REMOVE 	= 0x09;
-	public static final int BULLET_HIT_PLAYER 	= 0x0A;
-	public static final int DEATH				= 0x0B;
-	public static final int RESPAWN				= 0x0C;
+	public static final int BULLET_HIT_PLAYER 	= 0x10;
+	public static final int DEATH				= 0x11;
+	public static final int RESPAWN				= 0x12;
+	public static final int WEAPON_CHANGE		= 0x13;
 
 	protected DataBuffer data;
 
