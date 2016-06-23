@@ -29,7 +29,6 @@ import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.packets.EntityMovementPacket;
 import fr.veridiangames.core.network.packets.WeaponPositionPacket;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
-import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Indexer;
 
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class ClientPlayer extends Player
 {
 	private NetworkableClient net;
 
-	private int displayLife;
+	private int life;
 
 	private List<ParticleSystem> particleSystems;
 	
@@ -56,7 +55,7 @@ public class ClientPlayer extends Player
 		super.add(new ECDebug());
 		super.addTag("ClientPlayer");
 
-		this.displayLife = 100;
+		this.life = 100;
 
 		this.particleSystems = new ArrayList<>();
 	}
@@ -77,7 +76,10 @@ public class ClientPlayer extends Player
 			net.send(new EntityMovementPacket(this));
 			time = 0;
 		}
-		
+
+		if (this.life < 0) this.life = 0;
+		if (this.life > 100) this.life = 100;
+
 		if (this.getWeaponManager().getWeapon().hasPositionChanged())
 		{
 			this.getWeaponManager().getWeapon().setPositionChanged(false);
@@ -134,13 +136,13 @@ public class ClientPlayer extends Player
 		this.net = net;
 	}
 
-	public int getDisplayLife()
+	public int getLife()
 	{
-		return displayLife;
+		return life;
 	}
 
-	public void setDisplayLife(int displayLife)
+	public void setLife(int life)
 	{
-		this.displayLife = displayLife;
+		this.life = life;
 	}
 }

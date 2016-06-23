@@ -94,6 +94,9 @@ public class PlayerHandler
 		key.setJump(input.getKey(Input.KEY_SPACE));
 		key.setCrouche(input.getKey(Input.KEY_LEFT_SHIFT));
 
+		if (input.getKeyDown(Input.KEY_F))
+			key.setFly(!key.isFly());
+
 		mouse.setDX(input.getMouse().getDX());
 		mouse.setDY(input.getMouse().getDY());
 

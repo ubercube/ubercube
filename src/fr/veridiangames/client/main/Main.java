@@ -19,24 +19,29 @@
 
 package fr.veridiangames.client.main;
 
+import fr.veridiangames.client.guis.TrueTypeFont;
+import fr.veridiangames.client.main.player.PlayerHudCanvas;
+import fr.veridiangames.client.rendering.guis.GuiCanvas;
+import fr.veridiangames.client.rendering.guis.GuiComponent;
+import fr.veridiangames.client.rendering.guis.GuiManager;
+import fr.veridiangames.client.rendering.guis.StaticFont;
+import fr.veridiangames.client.rendering.guis.components.GuiLabel;
+import fr.veridiangames.client.rendering.guis.components.GuiPanel;
+import fr.veridiangames.client.rendering.guis.components.GuiProgressBar;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.maths.Quat;
-import fr.veridiangames.core.maths.Vec2i;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.packets.ConnectPacket;
-import fr.veridiangames.core.network.packets.DisconnectPacket;
-import fr.veridiangames.core.utils.Color4f;
-import fr.veridiangames.client.guis.GuiCanvas;
-import fr.veridiangames.client.guis.GuiManager;
-import fr.veridiangames.client.guis.canvases.ConnectionCanvas;
-import fr.veridiangames.client.guis.canvases.PlayerHUD;
-import fr.veridiangames.client.guis.components.GuiPanel;
 import fr.veridiangames.client.main.console.Console;
 import fr.veridiangames.client.main.player.PlayerHandler;
 import fr.veridiangames.client.network.NetworkClient;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.renderers.MainRenderer;
+import fr.veridiangames.core.network.packets.DisconnectPacket;
+import fr.veridiangames.core.utils.Color4f;
+
+import java.awt.*;
 
 /**
  * Created by Marccspro on 28 janv. 2016.
@@ -51,37 +56,43 @@ public class Main
 	private MainRenderer	mainRenderer;
 	private PlayerHandler	playerHandler;
 	private NetworkClient	net;
-	private GuiManager		guiManager;
 	private Console			console;
+	private GuiManager 		guiManager;
 	private boolean 		connected;
-	private PlayerHUD		playerHUD;
-	private GuiPanel		crosshair;
 
 	public void init()
 	{
 		main = this;
-		this.guiManager = new GuiManager();
-		
-		GuiCanvas connectionCanvas = new ConnectionCanvas(net.getAddress().getHostAddress(), net.getPort(), display);
-		
-		GuiCanvas canvas = new GuiCanvas();
-		crosshair = (GuiPanel) new GuiPanel(display.getWidth() / 2 - 1, display.getHeight() / 2 - 1, 2, 2).setColor(Color4f.WHITE).setBorder(3, new Color4f(0, 0, 0, 0.3f));
-		canvas.add(crosshair);
-		
-		playerHUD = new PlayerHUD(display.getWidth(), display.getHeight());
-		
-		this.guiManager.add(connectionCanvas);
-		this.guiManager.add(canvas);
-		this.guiManager.setCanvas(0);
-		
+
 		this.playerHandler = new PlayerHandler(core, net);
 		this.mainRenderer = new MainRenderer(this, core);
+		this.guiManager = new GuiManager();
+
+		/* *** LOADING GUI *** */
+		GuiCanvas startGui = new GuiCanvas();
+
+		GuiPanel bg = new GuiPanel(0, 0, display.getWidth(), display.getHeight());
+		bg.setColor(Color4f.DARK_GRAY);
+		bg.setOrigin(GuiComponent.GuiOrigin.A);
+		bg.setScreenParent(GuiComponent.GuiCorner.SCALED);
+		startGui.add(bg);
+
+		GuiLabel loadingInfo = new GuiLabel("Loading game...", display.getWidth() / 2, display.getHeight() / 2, 42f);
+		loadingInfo.setOrigin(GuiComponent.GuiOrigin.CENTER);
+		loadingInfo.setScreenParent(GuiComponent.GuiCorner.CENTER);
+		startGui.add(loadingInfo);
+
+		this.guiManager.add(startGui);
+
+
+		/* *** PLAYER HUD GUI *** */
+		GuiCanvas playerHudGui = new PlayerHudCanvas(display, core);
+		this.guiManager.add(playerHudGui);
 	}
 
 	public void update()
 	{
-		crosshair.setPosition(new Vec2i(display.getWidth() / 2 - 1, display.getHeight() / 2 - 1));
-		//playerHUD.update(display);
+		guiManager.update();
 		if (!connected && net.isConnected())
 		{
 			display.getInput().getMouse().setGrabbed(true);
@@ -90,7 +101,7 @@ public class Main
 		if (net.isConnected())
 		{
 			guiManager.setCanvas(1);
-			console.update();
+			//console.update();
 			core.update();
 			playerHandler.update(display.getInput());
 			mainRenderer.update();
@@ -108,11 +119,11 @@ public class Main
 	public void render()
 	{
 		mainRenderer.renderAll(display);
-		//playerHUD.renderBlock();
-		if (net.isConnected())
-		{
-			console.render(display);
-		}
+		guiManager.render(display);
+//		if (net.isConnected())
+//		{
+//			console.render(display);
+//		}
 	}
 
 	public void start()
@@ -146,7 +157,6 @@ public class Main
 					second = true;
 					secondTime = 0;
 				}
-
 				updatedTime += tickTime;
 			}
 			else if (timer.getElapsed() - renderedTime >= renderTime)
@@ -167,7 +177,6 @@ public class Main
 					e.printStackTrace();
 				}
 			}
-			
 			if (second)
 			{
 				display.setFps(frames);
@@ -177,7 +186,7 @@ public class Main
 				ticks = 0;
 			}
 		}
-		//net.send(new DisconnectPacket(core.getGame().getPlayer().getID()));
+		net.send(new DisconnectPacket(core.getGame().getPlayer().getID()));
 		display.setDestroyed(true);
 		System.exit(0);
 	}
@@ -208,16 +217,11 @@ public class Main
 		net = new NetworkClient(clientID, address, port, this);
 		
 		float midWorld = core.getGame().getData().getWorldSize() / 2 * 16;
-		ClientPlayer player = new ClientPlayer(clientID, new String("ID" + clientID).substring(0, 6), new Vec3(midWorld, 22, midWorld), new Quat(), address, port);
+		ClientPlayer player = new ClientPlayer(clientID, new String("ID" + clientID).substring(0, 6), new Vec3(midWorld, 30, midWorld), new Quat(), address, port);
 		player.setNetwork(net);
 		
 		core.getGame().setPlayer(player);
 		net.send(new ConnectPacket(player));
-	}
-
-	public GuiManager getGuiManager()
-	{
-		return guiManager;
 	}
 
 	public PlayerHandler getPlayerHandler()

@@ -41,13 +41,16 @@ public class ECKeyMovement extends EComponent
 	private boolean crouche;
 	private boolean prone;
 
+	private boolean fly;
+
 	public ECKeyMovement(float speed, float jumpForce)
 	{
 		super(KEY_MOVEMENT);
 		super.addDependencies(RENDER, RIGIDBODY);
-		
+
 		this.speed = speed;
 		this.jumpForce = jumpForce;
+		this.fly = true;
 	}
 
 	public void update(GameCore core)
@@ -58,7 +61,7 @@ public class ECKeyMovement extends EComponent
 		Vec3 leftDirection = rotation.getLeft().copy().mul(1, 0, 1).normalize();
 
 		Rigidbody body = ((ECRigidbody) parent.get(RIGIDBODY)).getBody();
-		
+
 		if (up)
 			body.applyForce(forwardDirection, speed);
 
@@ -71,10 +74,18 @@ public class ECKeyMovement extends EComponent
 		if (right)
 			body.applyForce(leftDirection, -speed);
 
-		if (jump)
-			if (body.isGrounded())
-				body.applyForce(Vec3.UP, jumpForce);
-
+		body.useGravity(!fly);
+		if (fly)
+		{
+			if (jump)
+				body.applyForce(Vec3.UP, speed);
+		}
+		else
+		{
+			if (jump)
+				if (body.isGrounded())
+					body.applyForce(Vec3.UP, jumpForce);
+		}
 
 		if (crouche)
 			body.applyForce(Vec3.UP, -speed);
@@ -168,5 +179,15 @@ public class ECKeyMovement extends EComponent
 	public void setJumpForce(float jumpForce)
 	{
 		this.jumpForce = jumpForce;
+	}
+
+	public boolean isFly()
+	{
+		return fly;
+	}
+
+	public void setFly(boolean fly)
+	{
+		this.fly = fly;
 	}
 }

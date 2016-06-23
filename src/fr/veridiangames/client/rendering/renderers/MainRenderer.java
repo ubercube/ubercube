@@ -23,7 +23,6 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.client.main.Main;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.renderers.game.GameRenderer;
-import fr.veridiangames.client.rendering.renderers.guis.GuiRenderer;
 
 /**
  * Created by Marccspro on 3 févr. 2016.
@@ -32,13 +31,11 @@ public class MainRenderer
 {
 	private Renderer		renderer;
 	private GameRenderer	gameRenderer;
-	private GuiRenderer		guiRenderer;
 
 	public MainRenderer(Main main, GameCore core)
 	{
 		this.renderer = new Renderer();
 		this.gameRenderer = new GameRenderer(main, core);
-		this.guiRenderer = new GuiRenderer(main.getGuiManager());
 	}
 
 	public void update()
@@ -64,6 +61,6 @@ public class MainRenderer
 
 	private void renderGui(Display display)
 	{
-		guiRenderer.render(display);
+
 	}
 }

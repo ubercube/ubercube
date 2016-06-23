@@ -130,6 +130,11 @@ public class WorldGen
 		
 		return noise[x][y];
 	}
+
+	public float getRandom()
+	{
+		return rand.nextFloat();
+	}
 	
 	public static void main(String[] args)
 	{

@@ -36,12 +36,17 @@ public class FireWeapon extends Weapon
 	private float shootForce;
 	
 	private int shootTimer = 0;
+
+	private int maxBullets;
+	private int bulletsLeft;
 	
 	public FireWeapon(int model)
 	{
 		super(model);
 		this.shootPoint = new Transform();
 		this.setShootForce(2);
+		this.maxBullets = 30;
+		this.bulletsLeft = maxBullets;
 	}
 	
 	public void update(GameCore core)
@@ -86,8 +91,22 @@ public class FireWeapon extends Weapon
 		
 		Vec3 shootVector = new Vec3(transform.getLocalPosition()).sub(transform.getLocalRotation().getForward().copy().mul(0, 0, 0.2f));
 		this.transform.setLocalPosition(shootVector);
+		this.removeBullet();
 	}
-	
+
+	private void removeBullet()
+	{
+		bulletsLeft--;
+
+		if (bulletsLeft < 0)
+			reloadBullets();
+	}
+
+	public void reloadBullets()
+	{
+		bulletsLeft = maxBullets;
+	}
+
 	public int getFireFrequency()
 	{
 		return fireFrequency;
@@ -117,5 +136,25 @@ public class FireWeapon extends Weapon
 	{
 		this.shootPoint = shootPoint;
 		this.shootPoint.setParent(this.transform);
+	}
+
+	public int getMaxBullets()
+	{
+		return maxBullets;
+	}
+
+	public void setMaxBullets(int maxBullets)
+	{
+		this.maxBullets = maxBullets;
+	}
+
+	public int getBulletsLeft()
+	{
+		return bulletsLeft;
+	}
+
+	public void setBulletsLeft(int bulletsLeft)
+	{
+		this.bulletsLeft = bulletsLeft;
 	}
 }

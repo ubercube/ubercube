@@ -40,8 +40,7 @@ public class ModelLoader
 			BufferedReader reader = new BufferedReader(new FileReader(modelPath));
 			String line = reader.readLine();
 			
-			System.out.println(line);
-			String minData[] = line.split("//")[1].split(","); 
+			String minData[] = line.split("//")[1].split(",");
 			String maxData[] = line.split("//")[2].split(","); 
 			
 			int size = Integer.valueOf(line.split("//")[0]);

@@ -46,8 +46,6 @@ public class WeaponChangePacket extends Packet
         data.put(player.getID());
         data.put(player.getWeaponManager().getWeaponID());
 
-        System.out.println("Départ client:  " + player.getID() + "   :   " + player.getWeaponManager().getWeaponID());
-
         data.flip();
     }
 
@@ -58,8 +56,6 @@ public class WeaponChangePacket extends Packet
         data.put(packet.playerID);
         data.put(packet.weaponID);
 
-        System.out.println("Départ serveur:  " + packet.playerID + "   :   " + packet.weaponID);
-
         data.flip();
     }
 
@@ -67,8 +63,6 @@ public class WeaponChangePacket extends Packet
     {
         playerID = buffer.getInt();
         weaponID = buffer.getInt();
-
-        System.out.println("Changement read:  " + playerID + "   :   " + weaponID);
     }
 
     public void process(NetworkableServer server, InetAddress address, int port)
@@ -81,10 +75,8 @@ public class WeaponChangePacket extends Packet
         if(playerID != client.getCore().getGame().getPlayer().getID())
         {
             Player p = (Player)client.getCore().getGame().getEntityManager().getEntities().get(playerID);
-            System.out.println("Changement niveau joueur:  " + playerID + "   :   " + weaponID);
             if(p != null)
             {
-
                 p.getWeaponManager().setWeapon(weaponID);
             }
         }

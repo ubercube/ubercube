@@ -39,6 +39,8 @@ import fr.veridiangames.client.rendering.renderers.Renderer;
  */
 public class Display
 {
+	private static Display 	instance;
+
 	private long		window;
 	private boolean		closed;
 	private boolean		destroy;
@@ -56,6 +58,7 @@ public class Display
 
 	public Display(String title, int width, int height)
 	{
+		instance = this;
 		this.title = title;
 		this.width = width;
 		this.height = height;
@@ -257,5 +260,10 @@ public class Display
 	public void setTps(int tps)
 	{
 		this.tps = tps;
+	}
+
+	public static Display getInstance()
+	{
+		return instance;
 	}
 }

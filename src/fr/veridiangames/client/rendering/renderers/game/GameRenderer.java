@@ -28,15 +28,11 @@ import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.client.main.Main;
 import fr.veridiangames.client.rendering.Camera;
 import fr.veridiangames.client.rendering.player.PlayerViewport;
-import fr.veridiangames.client.rendering.primitives.SpherePrimitive;
-import fr.veridiangames.client.rendering.renderers.Renderer;
 import fr.veridiangames.client.rendering.renderers.game.entities.EntityRenderer;
 import fr.veridiangames.client.rendering.renderers.game.entities.EntityWeaponRenderer;
 import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerRenderer;
 import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerSelectionRenderer;
 import fr.veridiangames.client.rendering.renderers.game.world.WorldRenderer;
-
-import static javax.swing.text.html.HTML.Tag.HEAD;
 
 /**
  * Created by Marccspro on 3 f�vr. 2016.
@@ -63,7 +59,6 @@ public class GameRenderer
 	private PlayerNameRenderer 		playerNameRenderer;
 	private PlayerViewport			playerViewport;
 
-	private SpherePrimitive			envSphere;
 	private EnvCubemap				envCubemap;
 	private Camera 					envCamera;
 
@@ -89,7 +84,6 @@ public class GameRenderer
 
 		this.playerViewport = new PlayerViewport(main.getDisplay(), main);
 
-		this.envSphere = new SpherePrimitive(3);
 		this.envCubemap = new EnvCubemap(512);
 		this.envCamera = new Camera(90.0f, 512, 512, 0.5f, 100.0f);
 	}
@@ -244,24 +238,6 @@ public class GameRenderer
 		worldShader.setModelViewMatrix(Mat4.identity());
 		worldRenderer.render();
 		playerSelectionRenderer.render(worldShader);
-
-		/* ***** DEBUG RENDERING ENVIRONMENT MAP ***** */
-		if (playerViewport.getPlayerHandler().isShowEnvSphere())
-		{
-			envSphereShader.bind();
-			envSphereShader.setShaderBase(
-					camera.getProjection(),
-					camera.getTransform().getPosition(),
-					core.getGame().getData().getViewDistance()
-			);
-			envSphereShader.setModelViewMatrix(Mat4.translate(playerViewport.getPlayerHandler().getEnvSpherePos()));
-
-			Renderer.bindTextureCube(envCubemap.getCubemap());
-			envSphere.render();
-			Renderer.bindTextureCube(0);
-		}
-
-
 	}
 	
 	public GameCore getGameCore()

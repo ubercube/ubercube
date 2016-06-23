@@ -26,10 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import fr.veridiangames.client.rendering.guis.components.GuiLabel;
 import fr.veridiangames.core.maths.Mat4;
 import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.client.guis.TrueTypeFont;
-import fr.veridiangames.client.guis.components.GuiLabel;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.shaders.GuiShader;
 
@@ -96,9 +96,8 @@ public class Console
 		
 		CLine(String text, Color4f color, int x, int y, TrueTypeFont font)
 		{
-			label = new GuiLabel(text, x, y, font);
+			label = new GuiLabel(text, x, y, 12);
 			label.setColor(color);
-			label.setShadowDistance(1);
 		}
 		
 		void update()

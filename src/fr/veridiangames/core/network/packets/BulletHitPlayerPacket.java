@@ -80,7 +80,6 @@ public class BulletHitPlayerPacket extends Packet
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        System.out.println("Life : " + life);
-        client.getCore().getGame().getPlayer().setDisplayLife(life);
+        client.getCore().getGame().getPlayer().setLife(life);
     }
 }

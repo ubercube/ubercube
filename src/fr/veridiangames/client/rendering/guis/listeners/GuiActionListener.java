@@ -17,37 +17,8 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.client.guis.components;
+package fr.veridiangames.client.rendering.guis.listeners;
 
-import fr.veridiangames.core.maths.Vec2i;
-import fr.veridiangames.client.rendering.textures.TextureData;
-
-/**
- * Created by Marccspro on 1 avr. 2016.
- */
-public class GuiPanel extends GuiComponent
-{
-	private TextureData texture;
-
-	public GuiPanel(int x, int y, int w, int h)
-	{
-		super(false);
-		this.position = new Vec2i(x, y);
-		this.size = new Vec2i(w, h);
-	}
-	
-	public void update()
-	{
-		
-	}
-	
-	public boolean isTextured()
-	{
-		return texture != null;
-	}
-
-	public TextureData getTextureData()
-	{
-		return texture;
-	}
+public interface GuiActionListener {
+	public void onAction();
 }
