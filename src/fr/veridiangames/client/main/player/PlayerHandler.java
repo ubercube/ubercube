@@ -129,9 +129,10 @@ public class PlayerHandler
 			this.net.send(new WeaponChangePacket(player));
 		}
 
-		selection.update(ray.getHit());
+		selection.update(null);
 		if(weapon.getWeapon() instanceof WeaponShovel)
 		{
+			selection.update(ray.getHit());
 			applySelectionActions(ray, input);
 		}
 	}

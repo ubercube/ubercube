@@ -77,7 +77,6 @@ public class WeaponChangePacket extends Packet
             Player p = (Player)client.getCore().getGame().getEntityManager().getEntities().get(playerID);
             if(p != null)
             {
-
                 p.getWeaponManager().setWeapon(weaponID);
             }
         }

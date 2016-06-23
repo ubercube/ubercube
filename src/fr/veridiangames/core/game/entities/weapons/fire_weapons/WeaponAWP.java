@@ -28,8 +28,8 @@ public class WeaponAWP extends FireWeapon
 	{
 		super(AWP);
 		this.transform.setLocalScale(new Vec3(1, 1, 1));
-		this.setIdlePosition(new Transform(new Vec3(0.3f, -0.05f, 0)));
-		this.setZoomPosition(new Transform(new Vec3(0, 0, 0)));
+		this.setIdlePosition(new Transform(new Vec3(0.3f, -0.4f, 0)));
+		this.setZoomPosition(new Transform(new Vec3(-0.1f, -0.45f, 0)));
 		this.setPosition(0);
 	}
 }
