@@ -25,7 +25,10 @@ import fr.veridiangames.core.game.Game;
  * Created by Marccspro on 29 janv. 2016.
  */
 public class GameCore
-{	
+{
+	public static final String GAME_NAME = "Ubercube";
+	public static final String GAME_VERSION = "Pre-Alpha 1";
+
 	private static GameCore instance;
 
 	public double deltaTime;

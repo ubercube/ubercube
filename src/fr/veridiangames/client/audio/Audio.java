@@ -17,21 +17,12 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.core.game.entities.weapons.fire_weapons;
+package fr.veridiangames.client.audio;
 
-import fr.veridiangames.core.maths.Transform;
-import fr.veridiangames.core.maths.Vec3;
-
-public class WeaponAWP extends FireWeapon
+/**
+ * Created by Marc on 24/06/2016.
+ */
+public class Audio
 {
-	public WeaponAWP()
-	{
-		super(AWP);
-		this.transform.setLocalScale(new Vec3(1, 1, 1));
-		this.setIdlePosition(new Transform(new Vec3(0.3f, -0.05f, 0)));
-		this.setHidePosition(new Transform(new Vec3(0.3f, -0.05f - 1f, 0)));
-		this.setZoomPosition(new Transform(new Vec3(0, 0, 0)));
-		this.setPosition(2);
-		this.start();
-	}
+    public static final int AK47_BULLET_SHOT = AudioSystem.loadWav("res/audio/GunShot.wav");
 }

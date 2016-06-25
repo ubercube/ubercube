@@ -86,6 +86,14 @@ public class PlayerHudCanvas extends GuiCanvas
         crosshairFront.setScreenParent(GuiComponent.GuiCorner.CENTER);
         super.add(crosshairFront);
 
+        GuiLabel gameVersionLabel = new GuiLabel(GameCore.GAME_NAME + " " + GameCore.GAME_VERSION, 10, 10, 20f);
+        gameVersionLabel.setOrigin(GuiComponent.GuiOrigin.A);
+        gameVersionLabel.setScreenParent(GuiComponent.GuiCorner.TL);
+        gameVersionLabel.setColor(Color4f.WHITE);
+        gameVersionLabel.setDropShadow(2);
+        gameVersionLabel.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
+        super.add(gameVersionLabel);
+
     }
 
     public void update()

@@ -33,7 +33,7 @@ public class MainComponent
 	public static void main(String[] args)
 	{
 		Main main = new Main();
-		main.setDisplay(new Display("Ubercube Revision 3", 1280, 720));
+		main.setDisplay(new Display("Ubercube", 1280, 720));
 		main.setGameCore(new GameCore());
 
 		SecureRandom rand = new SecureRandom();

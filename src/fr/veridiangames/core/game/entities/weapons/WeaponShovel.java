@@ -29,7 +29,9 @@ public class WeaponShovel extends Weapon
 		super(SHOVEL);
 		this.transform.setLocalScale(new Vec3(0.3f, 0.3f, -0.3f));
 		this.setIdlePosition(new Transform(new Vec3(0.1f, -0.2f, 0.2f)));
+		this.setHidePosition(new Transform(new Vec3(0.1f, -0.2f - 1f, 0.2f)));
 		this.setZoomPosition(new Transform(new Vec3(0.1f, -0.2f, 0.2f)));
-		this.setPosition(0);
+		this.setPosition(2);
+		this.start();
 	}
 }
