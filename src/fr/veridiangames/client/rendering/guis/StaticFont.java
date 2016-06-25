@@ -54,7 +54,7 @@ public class StaticFont {
 	public static Font HPSimplified_Rg(int style, float size) {
 		Font font = null;
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream("res/fonts/HPSimplified_Rg.ttf"));
+			font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream("res/fonts/Kroftsmann.ttf"));
 		} catch (FontFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

@@ -24,6 +24,7 @@ import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
 import fr.veridiangames.core.maths.Quat;
+import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.packets.EntityMovementPacket;
@@ -105,7 +106,7 @@ public class ClientPlayer extends Player
             particleSystems.clear();
         }
 	}
-	
+
 	public ECRaycast getRaycast()
 	{
 		return ((ECRaycast) super.get(EComponent.RAYCAST));

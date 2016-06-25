@@ -43,9 +43,11 @@ public class AudioTester
         AudioSource source = new AudioSource();
         source.setVolume(1f);
         source.setLooping(true);
+        source.setSound(Audio.AK47_BULLET_SHOT);
 
-        source.play(Audio.AK47_BULLET_SHOT);
+        source.setPlaying(true);
 
+        source.update();
 
         Scanner sc = new Scanner(System.in);
         String next = "";

@@ -24,5 +24,5 @@ package fr.veridiangames.client.audio;
  */
 public class Audio
 {
-    public static final int AK47_BULLET_SHOT = AudioSystem.loadWav("res/audio/GunShot.wav");
+    public static final int AK47_BULLET_SHOT = AudioSystem.loadWav("res/audio/GunShot3.wav");
 }

@@ -21,6 +21,7 @@ package fr.veridiangames.core.game.entities.components;
 
 import fr.veridiangames.client.network.NetworkClient;
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.network.NetworkableClient;
@@ -44,6 +45,7 @@ public class ECWeapon extends EComponent
 	public void init(GameCore core)
 	{
 		this.weapon = Weapon.weapons.get(weaponID);
+		this.weapon.setHolder((Player) parent);
 		this.weapon.onChange();
 		Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
 		this.weapon.getTransform().setParent(parentTransform);
@@ -69,6 +71,7 @@ public class ECWeapon extends EComponent
 		this.weaponID = weapon;
 		this.weapon.onChange();
 		this.weapon = Weapon.weapons.get(weapon);
+		this.weapon.setHolder((Player) parent);
 		this.weapon.init();
 		Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
 		this.weapon.getTransform().setParent(parentTransform);

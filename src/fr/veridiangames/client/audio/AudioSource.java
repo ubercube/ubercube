@@ -29,32 +29,81 @@ import static org.lwjgl.openal.AL10.*;
 
 public class AudioSource
 {
+    private boolean destroyed;
+
     private int source;
+    private int soundBuffer;
+
+    private float volume;
+    private float lastVolume;
+    private float pitch;
+    private float lastPitch;
+    private float globalVolume;
+    private float lastGlobalVolume;
+    private boolean loop;
+    private boolean lastLoop;
+
+    private boolean playing;
+    private boolean paused;
+    private boolean stop;
 
     public AudioSource()
     {
         source = alGenSources();
     }
 
-    public void play(int buffer)
-    {
-        alSourceStop(source);
-        alSourcei(source, AL_BUFFER, buffer);
-        alSourcePlay(source);
-    }
-
-    public void delete()
+    public void destroy()
     {
         stop();
         alDeleteSources(source);
+        destroyed = true;
     }
 
-    public void pause()
+    public void update()
+    {
+        if (paused)
+            pause();
+
+        if (playing)
+            play();
+
+        if (stop)
+            stop();
+
+        if (volume != lastVolume)
+        {
+            alSourcef(source, AL_GAIN, volume);
+            lastVolume = volume;
+        }
+        if (pitch != lastPitch)
+        {
+            alSourcef(source, AL_PITCH, pitch);
+            lastPitch = pitch;
+        }
+        if (globalVolume != lastGlobalVolume)
+        {
+            alSourcef(source, AL_GAIN, volume * globalVolume);
+            lastGlobalVolume = globalVolume;
+        }
+        if (loop != lastLoop)
+        {
+            alSourcei(source, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
+            lastLoop = loop;
+        }
+    }
+
+    private void play()
+    {
+        alSourcei(source, AL_BUFFER, soundBuffer);
+        alSourcePlay(source);
+    }
+
+    private void pause()
     {
         alSourcePause(source);
     }
 
-    public void stop()
+    private void stop()
     {
         alSourceStop(source);
     }
@@ -64,14 +113,14 @@ public class AudioSource
         alSource3f(source, AL_POSITION, position.x, position.y, position.z);
     }
 
-    public void setDirection(Vec3 direction)
+    public void setVelocity(Vec3 velocity)
     {
-        alSource3f(source, AL_VELOCITY, direction.x, direction.y, direction.z);
+        alSource3f(source, AL_VELOCITY, velocity.x, velocity.y, velocity.z);
     }
 
     public void setLooping(boolean loop)
     {
-        alSourcei(source, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
+        this.loop = loop;
     }
 
     public boolean isPlaying()
@@ -81,11 +130,76 @@ public class AudioSource
 
     public void setVolume(float volume)
     {
-        alSourcef(source, AL_GAIN, volume);
+        this.volume = volume;
     }
 
     public void setPitch(float pitch)
     {
-        alSourcef(source, AL_PITCH, pitch);
+        this.pitch = pitch;
+    }
+
+    public int getSourceID()
+    {
+        return source;
+    }
+
+    public float getVolume()
+    {
+        return volume;
+    }
+
+    public float getPitch()
+    {
+        return pitch;
+    }
+
+    public float getGlobalVolume()
+    {
+        return globalVolume;
+    }
+
+    public void setGlobalVolume(float globalVolume)
+    {
+        this.globalVolume = globalVolume;
+    }
+
+    public int getSound()
+    {
+        return soundBuffer;
+    }
+
+    public void setSound(int sound)
+    {
+        this.soundBuffer = sound;
+    }
+
+    public void setPlaying(boolean playing)
+    {
+        this.playing = playing;
+    }
+
+    public boolean isPaused()
+    {
+        return paused;
+    }
+
+    public void setPaused(boolean paused)
+    {
+        this.paused = paused;
+    }
+
+    public boolean isStop()
+    {
+        return stop;
+    }
+
+    public void setStop(boolean stop)
+    {
+        this.stop = stop;
+    }
+
+    public boolean isDestroyed()
+    {
+        return destroyed;
     }
 }

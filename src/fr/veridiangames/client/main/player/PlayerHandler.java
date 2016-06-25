@@ -19,6 +19,7 @@
 
 package fr.veridiangames.client.main.player;
 
+import fr.veridiangames.client.audio.AudioListener;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
@@ -61,7 +62,9 @@ public class PlayerHandler
 		ECRaycast ray = player.getRaycast();
 		ECWeapon weapon = player.getWeaponManager();
 		ECDebug debug = player.getDebugComponent();
-		
+
+		AudioListener.setTransform(player.getTransform());
+
 		mouse.setDX(0);
 		mouse.setDY(0);
 		
@@ -71,14 +74,7 @@ public class PlayerHandler
 			input.getMouse().setGrabbed(false);
 		if (!input.getMouse().isGrabbed())
 			return;
-		
-		if (input.getKeyUp(Input.KEY_W))
-		{
-			showEnvSphere = !showEnvSphere;
-			envSpherePos = player.getPosition().copy().add(0, 2.5f * 0.5f, 0).copy().add(player.getRotation().getForward().copy().mul(5));
-		}
-		
-		
+
 		if (input.getMouse().getButton(0))
 			weapon.getWeapon().shoot();
 		
@@ -161,8 +157,6 @@ public class PlayerHandler
 	
 	private void removeBlock(Vec3i block)
 	{
-//		core.getGame().getWorld().removeBlock(block.x, block.y, block.z);
-//		core.getGame().getWorld().updateRequest(block.x, block.y, block.z);
 		net.send(new BlockActionPacket(core.getGame().getPlayer().getID(), 0, block.x, block.y, block.z, 0));
 	}
 	

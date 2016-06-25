@@ -21,14 +21,9 @@ package fr.veridiangames.core.game.entities.player;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
-import fr.veridiangames.core.game.entities.components.ECModel;
-import fr.veridiangames.core.game.entities.components.ECName;
-import fr.veridiangames.core.game.entities.components.ECNetwork;
-import fr.veridiangames.core.game.entities.components.ECRender;
-import fr.veridiangames.core.game.entities.components.ECRigidbody;
-import fr.veridiangames.core.game.entities.components.ECWeapon;
-import fr.veridiangames.core.game.entities.components.EComponent;
+import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.maths.Quat;
+import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 
 /**
@@ -47,6 +42,7 @@ public class Player extends Entity
 		super.add(new ECModel(0));
 		super.add(new ECNetwork(address, port));
 		super.add(new ECWeapon(0));
+		super.add(new ECAudioSource());
 
 		this.dead = false;
 	}
@@ -81,6 +77,11 @@ public class Player extends Entity
 	public Quat getRotation()
 	{
 		return ((ECRender) this.get(EComponent.RENDER)).getEyeTransform().getRotation();
+	}
+
+	public Transform getTransform()
+	{
+		return new Transform(getPosition(), getRotation());
 	}
 	
 	public void setPositionSmoothly(Vec3 position)
@@ -118,6 +119,11 @@ public class Player extends Entity
 	public ECWeapon getWeaponManager()
 	{
 		return ((ECWeapon) super.get(EComponent.WEAPON));
+	}
+
+	public ECAudioSource getAudioSource()
+	{
+		return ((ECAudioSource) super.get(EComponent.AUDIO_SOURCE));
 	}
 
 	public boolean isDead()

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.fire_weapons.WeaponAK47;
 import fr.veridiangames.core.game.entities.weapons.fire_weapons.WeaponAWP;
 import fr.veridiangames.core.maths.Transform;
@@ -58,6 +59,7 @@ public abstract class Weapon
 	protected Transform runPosition;
 	
 	protected Transform transform;
+	protected Player holder;
 	
 	protected int model;
 	
@@ -193,5 +195,15 @@ public abstract class Weapon
 	public void setNet(NetworkableClient net)
 	{
 		this.net = net;
+	}
+
+	public Player getHolder()
+	{
+		return holder;
+	}
+
+	public void setHolder(Player holder)
+	{
+		this.holder = holder;
 	}
 }

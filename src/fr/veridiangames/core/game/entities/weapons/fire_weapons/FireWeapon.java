@@ -21,6 +21,7 @@ package fr.veridiangames.core.game.entities.weapons.fire_weapons;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.bullets.Bullet;
+import fr.veridiangames.core.game.entities.components.ECAudioSource;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
@@ -81,6 +82,7 @@ public class FireWeapon extends Weapon
 		Bullet bullet = new Bullet(Indexer.getUniqueID(), "", this.shootPoint.getPosition(), this.transform.getRotation(), shootForce);
 		bullet.setNetwork(net);
 		core.getGame().spawn(bullet);
+
 	}
 	
 	public void shoot()
@@ -92,6 +94,9 @@ public class FireWeapon extends Weapon
 		Vec3 shootVector = new Vec3(transform.getLocalPosition()).sub(transform.getLocalRotation().getForward().copy().mul(0, 0, 0.2f));
 		this.transform.setLocalPosition(shootVector);
 		this.removeBullet();
+		this.holder.getAudioSource().setSound(ECAudioSource.getSound("AK47_BULLET_SHOT"));
+		this.holder.getAudioSource().setLoop(false);
+		this.holder.getAudioSource().play();
 	}
 
 	private void removeBullet()

@@ -19,6 +19,7 @@
 
 package fr.veridiangames.client.main.player;
 
+import fr.veridiangames.client.main.Main;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
@@ -31,6 +32,8 @@ import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.fire_weapons.FireWeapon;
 import fr.veridiangames.core.utils.Color4f;
 
+import static sun.audio.AudioPlayer.player;
+
 /**
  * Created by Marc on 23/06/2016.
  */
@@ -41,6 +44,7 @@ public class PlayerHudCanvas extends GuiCanvas
     private GuiPanel playerHealth;
     private GuiLabel playerHealthText;
     private GuiLabel weaponStats;
+    private GuiLabel gameFpsLabel;
 
     public PlayerHudCanvas(Display display, GameCore core)
     {
@@ -67,7 +71,7 @@ public class PlayerHudCanvas extends GuiCanvas
         playerHealthText.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
         super.add(playerHealthText);
 
-        weaponStats = new GuiLabel("12/30", 60, display.getHeight() - 65 - 5 - 45, 45f);
+        weaponStats = new GuiLabel("12/30", 60, display.getHeight() - 65 - 5 - 45 + 3, 45f);
         weaponStats.setOrigin(GuiComponent.GuiOrigin.A);
         weaponStats.setScreenParent(GuiComponent.GuiCorner.BL);
         weaponStats.setColor(Color4f.WHITE);
@@ -94,11 +98,21 @@ public class PlayerHudCanvas extends GuiCanvas
         gameVersionLabel.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
         super.add(gameVersionLabel);
 
+        gameFpsLabel = new GuiLabel("60 Fps", 10, 40, 20f);
+        gameFpsLabel.setOrigin(GuiComponent.GuiOrigin.A);
+        gameFpsLabel.setScreenParent(GuiComponent.GuiCorner.TL);
+        gameFpsLabel.setColor(Color4f.WHITE);
+        gameFpsLabel.setDropShadow(2);
+        gameFpsLabel.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
+        super.add(gameFpsLabel);
     }
 
     public void update()
     {
         super.update();
+
+        Display display = Main.getMain().getDisplay();
+        gameFpsLabel.setText(display.getFps() + " Fps");
 
         ClientPlayer player = core.getGame().getPlayer();
         int life = player.getLife();
