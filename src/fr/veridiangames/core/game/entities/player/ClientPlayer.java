@@ -26,11 +26,14 @@ import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.packets.EntityMovementPacket;
 import fr.veridiangames.core.network.packets.WeaponPositionPacket;
+import fr.veridiangames.core.physics.Rigidbody;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
 import fr.veridiangames.core.utils.Indexer;
+import fr.veridiangames.core.utils.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +108,15 @@ public class ClientPlayer extends Player
             }
             particleSystems.clear();
         }
+
+		/* STEP */
+
+		Vec3i block = new Vec3i(getPosition().copy().add(getRotation().getForward().copy().normalize()));
+		if(getKeyComponent().isUp() && core.getGame().getWorld().getBlock(block.x, (int)getPosition().y - 1, block.z)!= 0){
+            Rigidbody body = ((ECRigidbody)get(EComponent.RIGIDBODY)).getBody();
+            if(body.isGrounded())
+                body.applyForce(Vec3.UP, 0.1f);
+		}
 	}
 
 	public ECRaycast getRaycast()
