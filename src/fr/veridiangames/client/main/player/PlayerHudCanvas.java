@@ -45,14 +45,26 @@ public class PlayerHudCanvas extends GuiCanvas
     private GuiLabel playerHealthText;
     private GuiLabel weaponStats;
     private GuiLabel gameFpsLabel;
+    private GuiPanel damageEffect;
+
+    private int health;
 
     public PlayerHudCanvas(Display display, GameCore core)
     {
         super();
         this.core = core;
 
+        damageEffect = new GuiPanel(0, 0, Display.getInstance().getWidth(), Display.getInstance().getHeight());
+        damageEffect.setColor(Color4f.RED);
+        damageEffect.setOrigin(GuiComponent.GuiOrigin.A);
+        damageEffect.setScreenParent(GuiComponent.GuiCorner.SCALED);
+        damageEffect.getColor().setAlpha(0);
+        super.add(damageEffect);
+
+        health = GameCore.getInstance().getGame().getPlayer().getLife();
+
         GuiPanel playerHealthShadow = new GuiPanel(35 + 2, display.getHeight() - 60 + 3, 300, 30);
-        playerHealthShadow.setColor(new Color4f(0f, 0f, 0f, 0.5f));
+        playerHealthShadow.setColor(new Color4f(0f, 0f, 0f, 0.3f));
         playerHealthShadow.setOrigin(GuiComponent.GuiOrigin.A);
         playerHealthShadow.setScreenParent(GuiComponent.GuiCorner.BL);
         super.add(playerHealthShadow);
@@ -129,5 +141,15 @@ public class PlayerHudCanvas extends GuiCanvas
             weaponStats.setUseable(true);
             weaponStats.setText(((FireWeapon) weapon).getBulletsLeft() + "/" + ((FireWeapon) weapon).getMaxBullets());
         }
+
+        if(life < health && damageEffect.getColor().getAlpha() < 0.75f)
+        {
+            damageEffect.getColor().setAlpha(damageEffect.getColor().getAlpha() + 0.25f);
+        }
+        if(damageEffect.getColor().getAlpha() > 0)
+        {
+            damageEffect.getColor().setAlpha(damageEffect.getColor().getAlpha() - 0.005f);
+        }
+        health = player.getLife();
     }
 }

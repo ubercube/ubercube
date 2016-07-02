@@ -127,7 +127,7 @@ public class PlayerHandler
 			weapon.getWeapon().setNet(this.net);
 			this.net.send(new WeaponChangePacket(player));
 		}
-		
+
 		selection.setShow(false);
 		if(weapon.getWeapon() instanceof WeaponShovel)
 		{

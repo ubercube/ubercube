@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.network.packets;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
 import fr.veridiangames.core.maths.Vec3;
@@ -79,7 +80,7 @@ public class RespawnPacket extends Packet
         p.setLife(100);
         p.setDead(false);
 
-        this.position = new Vec3(0, 30, 0);      // TODO : Modify position
+        this.position = new Vec3(GameCore.getInstance().getGame().getData().getWorldSize() * 8, 30, GameCore.getInstance().getGame().getData().getWorldSize() * 8);      // TODO : Modify position
 
         server.send(new RespawnPacket(this), p.getNetwork().getAddress(), p.getNetwork().getPort());
     }
