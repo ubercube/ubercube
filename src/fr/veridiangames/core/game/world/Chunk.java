@@ -19,6 +19,8 @@
 
 package fr.veridiangames.core.game.world;
 
+import fr.veridiangames.core.game.world.vegetations.Rock;
+import fr.veridiangames.core.game.world.vegetations.Tree;
 import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
@@ -68,17 +70,19 @@ public class Chunk
 	public void generateChunk()
 	{
 		this.blocks = new int[SIZE][SIZE][SIZE];
-		this.generationThread = new Thread("chunk-" + position.x + "-" + position.y + "-" + position.z + "-generation")
-		{
-			public void run()
-			{
-				generateTerrainData();
-			}
-		};
-		generationThread.start();
+//		this.generationThread = new Thread("chunk-" + position.x + "-" + position.y + "-" + position.z + "-generation")
+//		{
+//			public void run()
+//			{
+//				generateTerrainData();
+//				generateVegetation();
+//				generated = true;
+//			}
+//		};
+//		generationThread.start();
 	}
 
-	private void generateTerrainData()
+	public void generateTerrainData()
 	{
 		for (int x = 0; x < SIZE; x++)
 		{
@@ -90,37 +94,69 @@ public class Chunk
 					int yy = position.y * SIZE + y;
 					int zz = position.z * SIZE + z;
 					Vec4i modifiedBlock = world.getModifiedBlock(xx, yy, zz);
-					float noiseHeight = noise[x][z];
 					if (modifiedBlock != null)
 					{
 						blocks[x][y][z] = modifiedBlock.w;
 						continue;
 					}
+
+					float noiseHeight = noise[x][z];
+					if (yy > noiseHeight)
+						continue;
+					else if (yy > noiseHeight - 1)
+					{
+						float cn = Mathf.random(-0.02f, 0.02f);
+						Color4f ca = new Color4f(0.05f, 0.10f, 0.05f);
+						Color4f cb = new Color4f(0.1f, 0.50f, 0.1f);
+						float t = noiseHeight / 30.0f;
+						Color4f color = Color4f.mix(ca, cb, t).add(cn);
+						color.setAlpha(1f);
+						addBlock(x, y, z, color.getARGB());
+					}
 					else
 					{
-						if (yy > noiseHeight)
-							continue;
+						float cn = Mathf.random(-0.02f, 0.02f);
+						Color4f stone = new Color4f(0.5f, 0.5f, 0.5f).add(cn);
+						addBlock(x, y, z, stone.getARGB());
 					}
-
-					blocks[x][y][z] = 0;
-
-
-					float cn = Mathf.random(-0.02f, 0.02f);
-
-//					Color4f ca = new Color4f(50, 50, 50, 0);
-//					Color4f cb = new Color4f(100, 100, 100, 0);
-					Color4f ca = new Color4f(0.1f, 0.20f, 0.1f);
-					Color4f cb = new Color4f(0.1f, 0.50f, 0.1f, 0);
-					float t = noiseHeight / 30.0f;
-					Color4f color = Color4f.mix(ca, cb, t).add(cn);
-					color.setAlpha(1f);
-					blocks[x][y][z] = color.getARGB();
 				}
 			}
 		}
+	}
+
+	public void generateVegetation()
+	{
+		for (int x = 0; x < SIZE; x++)
+		{
+			for (int z = 0; z < SIZE; z++)
+			{
+				int xx = position.x * SIZE + x;
+				int zz = position.z * SIZE + z;
+
+				float noiseHeight = noise[x][z];
+
+				if (noiseHeight < 11)
+				{
+					if (world.getWorldGen().getRandom() > 0.995f)
+					{
+						Tree.oakTree(world, xx, (int) noiseHeight, zz);
+					}
+				}
+				else
+				{
+					if (world.getWorldGen().getRandom() > 0.9999f)
+					{
+						Rock.rock(world, xx, (int) noiseHeight, zz);
+					}
+				}
+
+			}
+		}
+
 		generated = true;
 	}
-	
+
+
 	public void update()
 	{
 		this.shouldBeRendered = false;

@@ -17,30 +17,8 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.core.game.entities.components;
+package fr.veridiangames.client.rendering.guis.listeners;
 
-import fr.veridiangames.core.maths.Vec3;
-
-/**
- * Created by Marccspro on 7 f�vr. 2016.
- */
-public class FuckedECPosition extends EComponent
-{
-	private Vec3 position;
-	
-	public FuckedECPosition(Vec3 position)
-	{
-		super(0000);
-		this.position = position;
-	}
-
-	public Vec3 getPosition()
-	{
-		return position;
-	}
-
-	public void setPosition(Vec3 position)
-	{
-		this.position = position;
-	}
+public interface GuiActionListener {
+	public void onAction();
 }

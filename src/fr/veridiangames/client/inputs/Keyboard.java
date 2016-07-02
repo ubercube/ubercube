@@ -26,7 +26,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 /**
  * Created by Marccspro on 9 f�vr. 2016.
  */
-class Keyboard extends GLFWKeyCallback {
+public class Keyboard extends GLFWKeyCallback {
 	
 	public static boolean AZERTY = true;
 	

@@ -21,6 +21,7 @@ package fr.veridiangames.core.game.entities.components;
 
 import fr.veridiangames.client.network.NetworkClient;
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.network.NetworkableClient;
@@ -43,20 +44,11 @@ public class ECWeapon extends EComponent
 	
 	public void init(GameCore core)
 	{
-		try
-		{
-			this.weapon = Weapon.weapons.get(weaponID).newInstance();
-			Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
-			this.weapon.getTransform().setParent(parentTransform);
-		}
-		catch (InstantiationException e)
-		{
-			e.printStackTrace();
-		}
-		catch (IllegalAccessException e)
-		{
-			e.printStackTrace();
-		}
+		this.weapon = Weapon.weapons.get(weaponID);
+		this.weapon.setHolder((Player) parent);
+		this.weapon.onChange();
+		Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
+		this.weapon.getTransform().setParent(parentTransform);
 	}
 	
 	public void update(GameCore core)
@@ -76,20 +68,12 @@ public class ECWeapon extends EComponent
 
 	public void setWeapon(int weapon)
 	{
-		try
-		{
-			this.weaponID = weapon;
-			this.weapon = Weapon.weapons.get(weapon).newInstance();
-			Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
-			this.weapon.getTransform().setParent(parentTransform);
-		}
-		catch (InstantiationException e)
-		{
-			e.printStackTrace();
-		}
-		catch (IllegalAccessException e)
-		{
-			e.printStackTrace();
-		}
+		this.weaponID = weapon;
+		this.weapon.onChange();
+		this.weapon = Weapon.weapons.get(weapon);
+		this.weapon.setHolder((Player) parent);
+		this.weapon.init();
+		Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
+		this.weapon.getTransform().setParent(parentTransform);
 	}
 }

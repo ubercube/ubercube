@@ -41,6 +41,7 @@ public class EntityManager
 	private List<Integer>			keys;
 	private Map<Integer, Entity>	entities;
 	private List<Integer>			renderableEntities;
+	private List<Integer>			audioSourcedEntities;
 	private List<Integer>			networkableEntities;
 	private List<Integer>			playerEntities;
 	private List<Integer>			particleEntities;
@@ -50,6 +51,7 @@ public class EntityManager
 		keys = new ArrayList<Integer>();
 		entities = new HashMap<Integer, Entity>();
 		renderableEntities = new ArrayList<Integer>();
+		audioSourcedEntities = new ArrayList<Integer>();
 		networkableEntities = new ArrayList<Integer>();
 		playerEntities = new ArrayList<Integer>();
 		particleEntities = new ArrayList<Integer>();
@@ -75,6 +77,9 @@ public class EntityManager
 		if (e.contains(EComponent.NETWORK))
 			networkableEntities.add(e.getID());
 
+		if (e.contains(EComponent.AUDIO_SOURCE))
+			audioSourcedEntities.add(e.getID());
+
 		if (e instanceof Player)
 			playerEntities.add(e.getID());
 
@@ -92,7 +97,10 @@ public class EntityManager
 
 		if (networkableEntities.contains(id))
 			networkableEntities.remove((Integer) id);
-		
+
+		if (audioSourcedEntities.contains(id))
+			audioSourcedEntities.remove((Integer) id);
+
 		if (playerEntities.contains(id))
 			playerEntities.remove((Integer) id);
 
@@ -196,7 +204,12 @@ public class EntityManager
 	{
 		return networkableEntities;
 	}
-	
+
+	public List<Integer> getAudioSourcedEntites()
+	{
+		return audioSourcedEntities;
+	}
+
 	public List<Integer> getPlayerEntites()
 	{
 		return playerEntities;

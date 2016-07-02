@@ -146,8 +146,6 @@ public class ModelVoxRenderer
 		int zSize = model.getZSize();
 		int[][][] data = model.getData();
 		
-		System.out.println(xSize + " " + ySize + " " + zSize);
-		
 		int facesSize = 0;
 		for (int x = 0; x < xSize; x++)
 		{

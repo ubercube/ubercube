@@ -90,6 +90,7 @@ public class BulletHitBlockPacket extends Packet
 	{
 		client.getCore().getGame().getWorld().addBlock(position.x, position.y, position.z, block);
 		client.getCore().getGame().getWorld().updateRequest(position.x, position.y, position.z);
+		client.getCore().getGame().getWorld().addModifiedBlock(position.x, position.y, position.z, block);
 	}
 
 

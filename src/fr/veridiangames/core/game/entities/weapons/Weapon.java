@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.fire_weapons.WeaponAK47;
 import fr.veridiangames.core.game.entities.weapons.fire_weapons.WeaponAWP;
 import fr.veridiangames.core.maths.Transform;
@@ -38,13 +39,13 @@ public abstract class Weapon
 	public static final int AWP 		= 1;
 	public static final int SHOVEL 		= 2;
 
-	public static List<Class<? extends Weapon>> weapons;
+	public static List<Weapon> weapons;
 	static
 	{
-		weapons = new ArrayList<Class<? extends Weapon>>();
-		weapons.add(WeaponAK47.class);
-		weapons.add(WeaponAWP.class);
-		weapons.add(WeaponShovel.class);
+		weapons = new ArrayList<>();
+		weapons.add(new WeaponAK47());
+		weapons.add(new WeaponAWP());
+		weapons.add(new WeaponShovel());
 	}
 	
 	protected Vec2 velocity;
@@ -58,6 +59,7 @@ public abstract class Weapon
 	protected Transform runPosition;
 	
 	protected Transform transform;
+	protected Player holder;
 	
 	protected int model;
 	
@@ -68,6 +70,25 @@ public abstract class Weapon
 		this.positionChanged = false;
 		this.velocity = new Vec2();
 	}
+
+	public void start()
+	{
+		currentPosition = 2;
+		this.transform.getLocalPosition().add(hidePosition.getLocalPosition());
+		this.transform.setLocalRotation(hidePosition.getLocalRotation());
+	}
+
+	public void init()
+	{
+		currentPosition = 0;
+	}
+
+	public void onChange()
+	{
+		currentPosition = 2;
+		this.transform.getLocalPosition().add(hidePosition.getLocalPosition());
+		this.transform.setLocalRotation(hidePosition.getLocalRotation());
+	}
 	
 	public void update(GameCore core)
 	{
@@ -75,8 +96,6 @@ public abstract class Weapon
 			setTransformSmoothly(idlePosition, 0.4f);
 		else if (currentPosition == 1)
 			setTransformSmoothly(zoomPosition, 0.4f);
-		else if (currentPosition == 2)
-			setTransformSmoothly(hidePosition, 0.4f);
 	}
 	
 	public void updateWeaponVelocity(float vx, float vy)
@@ -176,5 +195,15 @@ public abstract class Weapon
 	public void setNet(NetworkableClient net)
 	{
 		this.net = net;
+	}
+
+	public Player getHolder()
+	{
+		return holder;
+	}
+
+	public void setHolder(Player holder)
+	{
+		this.holder = holder;
 	}
 }

@@ -68,17 +68,17 @@ public class WorldRenderer
 			ChunkRenderer cr = new ChunkRenderer(c, world);
 			chunkRenderers.put(e.getKey(), cr);
 		}
-		for (int i = 0; i < garbage.size(); i++)
-		{
-			int index = garbage.get(i);
-			if (chunkRenderers.containsKey(index))
-			{
-				chunks.remove(index);
-				chunkRenderers.get(index).dispose();
-				chunkRenderers.remove(index);
-			}
-			garbage.remove(i);
-		}
+//		for (int i = 0; i < garbage.size(); i++)
+//		{
+//			int index = garbage.get(i);
+//			if (chunkRenderers.containsKey(index))
+//			{
+//				chunks.remove(index);
+//				chunkRenderers.get(index).dispose();
+//				chunkRenderers.remove(index);
+//			}
+//			garbage.remove(i);
+//		}
 		chunkDebug.updateInstances(chunks);
 		for (int i = 0;  i < updateRequests.size(); i++)
 		{

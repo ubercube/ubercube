@@ -17,37 +17,12 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.client.guis.components;
-
-import fr.veridiangames.core.maths.Vec2i;
-import fr.veridiangames.client.rendering.textures.TextureData;
+package fr.veridiangames.client.audio;
 
 /**
- * Created by Marccspro on 1 avr. 2016.
+ * Created by Marc on 24/06/2016.
  */
-public class GuiPanel extends GuiComponent
+public class Audio
 {
-	private TextureData texture;
-
-	public GuiPanel(int x, int y, int w, int h)
-	{
-		super(false);
-		this.position = new Vec2i(x, y);
-		this.size = new Vec2i(w, h);
-	}
-	
-	public void update()
-	{
-		
-	}
-	
-	public boolean isTextured()
-	{
-		return texture != null;
-	}
-
-	public TextureData getTextureData()
-	{
-		return texture;
-	}
+    public static final int AK47_BULLET_SHOT = AudioSystem.loadWav("res/audio/GunShot3.wav");
 }

@@ -32,7 +32,7 @@ public class GameData
 
 	public GameData()
 	{
-		worldSize = 100;
+		worldSize = 20;
 		//worldGen = new WorldGen(5);
 		worldGen = new WorldGen(42 /*new Random().nextInt(99999)*/, worldSize);
 		viewDistance = 16 * 12;

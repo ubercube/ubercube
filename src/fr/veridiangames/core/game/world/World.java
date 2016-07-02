@@ -46,6 +46,7 @@ public class World
 	private GameData	gameData;
 	private GameCore	core;
 	private int			worldSize;
+	private boolean 	generated;
 	
 	public World(GameCore core)
 	{
@@ -64,27 +65,59 @@ public class World
 	{
 		worldSize = gameData.getWorldSize();
 		worldGen = gameData.getWorldGen();
+
+		for (int x = 0; x < worldSize; x++)
+		{
+			for (int y = 0; y < 5; y++)
+			{
+				for (int z = 0; z < worldSize; z++)
+				{
+					int index = Indexer.index3i(x, y, z);
+					float[][] 	noise = worldGen.getNoiseChunk(x, z);
+					Chunk c = new Chunk(x, y, z, noise, this);
+					c.generateChunk();
+					c.generateTerrainData();
+					chunks.put(index, c);
+				}
+			}
+		}
+		for (int x = 0; x < worldSize; x++)
+		{
+			for (int y = 0; y < 5; y++)
+			{
+				for (int z = 0; z < worldSize; z++)
+				{
+					int index = Indexer.index3i(x, y, z);
+					Chunk c = chunks.get(index);
+					c.generateVegetation();
+				}
+			}
+		}
 	}
 	
 	public void update()
 	{
-		updateChunkGeneration();
+		for (Chunk c : chunks.values())
+		{
+			c.update();
+		}
 	}
-	
+
+	/* *** Used for huge maps. If ever needed again. ***
 	private void updateChunkGeneration()
 	{
 		Vec3 p = core.getGame().getPlayer().getPosition();
 
-		int x0 = (int) ((p.x - gameData.getViewDistance()) / (float)Chunk.SIZE);
-		int x1 = (int) ((p.x) / (float)Chunk.SIZE) + 1;
-		int x2 = (int) ((p.x + gameData.getViewDistance()) / (float)Chunk.SIZE) + 1;
+		int x0 = (int) ((p.x - gameData.getViewDistance()) / (float) Chunk.SIZE);
+		int x1 = (int) ((p.x) / (float) Chunk.SIZE) + 1;
+		int x2 = (int) ((p.x + gameData.getViewDistance()) / (float) Chunk.SIZE) + 1;
 
-		int y0 = (int) ((p.y - gameData.getViewDistance()) / (float)Chunk.SIZE);
-		int y1 = (int) ((p.y + gameData.getViewDistance()) / (float)Chunk.SIZE);
+		int y0 = (int) ((p.y - gameData.getViewDistance()) / (float) Chunk.SIZE);
+		int y1 = (int) ((p.y + gameData.getViewDistance()) / (float) Chunk.SIZE);
 
-		int z0 = (int) ((p.z - gameData.getViewDistance()) / (float)Chunk.SIZE);
-		int z1 = (int) ((p.z) / (float)Chunk.SIZE) + 1;
-		int z2 = (int) ((p.z + gameData.getViewDistance()) / (float)Chunk.SIZE) + 1;
+		int z0 = (int) ((p.z - gameData.getViewDistance()) / (float) Chunk.SIZE);
+		int z1 = (int) ((p.z) / (float) Chunk.SIZE) + 1;
+		int z2 = (int) ((p.z + gameData.getViewDistance()) / (float) Chunk.SIZE) + 1;
 
 		generateChunkCluster(x0, x1, y0, y1, z0, z1, worldSize);
 		generateChunkCluster(x1, x1, y0, y1, z1, z1, worldSize);
@@ -150,6 +183,8 @@ public class World
 			}
 		}
 	}
+	*/
+
 
 	public Chunk getChunk(int x, int y, int z)
 	{
@@ -275,7 +310,7 @@ public class World
 	
 	public void addBlock(int x, int y, int z, int block)
 	{
-		addModifiedBlock(x, y, z, block);
+		//addModifiedBlock(x, y, z, block);
 		int xc = x / Chunk.SIZE;
 		int yc = y / Chunk.SIZE;
 		int zc = z / Chunk.SIZE;
@@ -283,11 +318,11 @@ public class World
 		Chunk c = getChunk(xc, yc, zc);
 		if (c == null)
 			return;
-		
+
 		int xx = x % Chunk.SIZE;
 		int yy = y % Chunk.SIZE;
 		int zz = z % Chunk.SIZE;
-		
+
 		c.addBlock(xx, yy, zz, block);
 	}
 	
@@ -439,5 +474,10 @@ public class World
 		block = Color4f.mix(a, b, block.getAlpha() * 0.2f);
 
 		return block.getARGB();
+	}
+
+	public WorldGen getWorldGen()
+	{
+		return worldGen;
 	}
 }

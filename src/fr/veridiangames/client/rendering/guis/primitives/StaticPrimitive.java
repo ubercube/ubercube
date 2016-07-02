@@ -17,16 +17,16 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.client.rendering.primitives;
+package fr.veridiangames.client.rendering.guis.primitives;
 
-public class Triangle
-{
-	public int a, b, c;
+public class StaticPrimitive {
+	private static QuadPrimitive quadPrimitive;
+
+	static {
+		quadPrimitive = new QuadPrimitive();
+	}
 	
-	public Triangle(int a, int b, int c)
-	{
-		this.a = a;
-		this.b = b;
-		this.c = c;
+	public static QuadPrimitive quadPrimitive() {
+		return quadPrimitive;
 	}
 }

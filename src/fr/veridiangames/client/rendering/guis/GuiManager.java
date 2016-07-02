@@ -17,55 +17,51 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.client.guis;
+package fr.veridiangames.client.rendering.guis;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiManager
-{
-	private int 			canvas;
-	private List<GuiCanvas> guis;
-	
-	public GuiManager()
-	{
-		this.canvas = 0;
-		this.guis = new ArrayList<GuiCanvas>();
+import fr.veridiangames.client.rendering.Display;
+
+public class GuiManager {
+	private List<GuiCanvas> canvases;
+	private int currentCanvas;
+
+	public GuiManager() {
+		canvases = new ArrayList<>();
+		currentCanvas = 0;
 	}
 	
-	public void add(GuiCanvas gui)
-	{
-		guis.add(gui);
-	}
-	
-	public void update()
-	{	
-		GuiCanvas gui = guis.get(canvas);
-		gui.update();
-	}
-	
-	public List<GuiCanvas> getGuis()
-	{
-		return guis;
+	public void update() {
+		if (currentCanvas != -1)
+			canvases.get(currentCanvas).update();
 	}
 
-	public void setGuis(List<GuiCanvas> guis)
-	{
-		this.guis = guis;
+	public void render(Display display) {
+		if (currentCanvas != -1)
+			canvases.get(currentCanvas).render(display);
 	}
-	
-	public void setCanvas(int canvas)
+
+	public void add(GuiCanvas canvas)
 	{
-		this.canvas = canvas;
+		canvases.add(canvas);
 	}
-	
-	public GuiCanvas getCanvas()
-	{
-		return guis.get(canvas);
+
+	public List<GuiCanvas> getCanvases() {
+		return canvases;
 	}
-	
-	public int getCanvasID()
+
+	public void setCanvas(int canvasID)
 	{
-		return canvas;
+		currentCanvas = canvasID;
+		if (currentCanvas > canvases.size() - 1)
+			currentCanvas = -1;
+	}
+
+	public int getCanvas()
+	{
+		return currentCanvas;
 	}
 }

@@ -25,7 +25,6 @@ import java.util.List;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
-import fr.veridiangames.core.game.entities.components.FuckedECPosition;
 import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
@@ -50,7 +49,7 @@ public class Rigidbody
 	private Collider	collider;
 	private boolean 	grounded;
 	private Entity		parent;
-	
+	private boolean 	useGravity;
 	
 	private boolean networkView;
 
@@ -92,7 +91,8 @@ public class Rigidbody
 	{
 		if (networkView)
 			return;
-		
+		if (!useGravity)
+			return;
 		gravity.add(0, 3f, 0);
 		applyForce(gravity.copy().negate(), 1.0f / 60.0f / 60.0f);
 	}
@@ -232,5 +232,15 @@ public class Rigidbody
 	public void setNetworkView(boolean networkView)
 	{
 		this.networkView = networkView;
+	}
+
+	public boolean isGravity()
+	{
+		return useGravity;
+	}
+
+	public void useGravity(boolean useGravity)
+	{
+		this.useGravity = useGravity;
 	}
 }

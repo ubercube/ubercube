@@ -31,22 +31,21 @@ import fr.veridiangames.core.game.entities.Entity;
  */
 public abstract class EComponent
 {
-//	public static final int	POSITION		= 0x01;
-//	public static final int	ROTATION		= 0x02;
-	public static final int	KEY_MOVEMENT	= 0x03;
-	public static final int	MOUSE_LOOK		= 0x04;
-	public static final int	RENDER			= 0x05;
-	public static final int	MODEL			= 0x06;
-	public static final int	GRAVITY			= 0x07;
-	public static final int	COLLISION_H		= 0x08;
-	public static final int	JUMP			= 0x09;
-	public static final int	NETWORK			= 0x10;
-	public static final int	NAME			= 0x11;
-	public static final int	RIGIDBODY		= 0x12;
-	public static final int	RAYCAST			= 0x13;
-	public static final int	WEAPON			= 0x14;
-	public static final int DEBUG			= 0x15;
-	
+	public static final int	KEY_MOVEMENT	= 3;
+	public static final int	MOUSE_LOOK		= 4;
+	public static final int	RENDER			= 5;
+	public static final int	MODEL			= 6;
+	public static final int	GRAVITY			= 7;
+	public static final int	COLLISION_H		= 8;
+	public static final int	JUMP			= 9;
+	public static final int	NETWORK			= 10;
+	public static final int	NAME			= 11;
+	public static final int	RIGIDBODY		= 12;
+	public static final int	RAYCAST			= 13;
+	public static final int	WEAPON			= 14;
+	public static final int DEBUG			= 15;
+	public static final int AUDIO_SOURCE	= 16;
+
 	protected int				id;
 	protected Entity			parent;
 	protected List<Integer>		dependencies;
