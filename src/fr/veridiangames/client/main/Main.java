@@ -19,17 +19,14 @@
 
 package fr.veridiangames.client.main;
 
-import fr.veridiangames.client.audio.Audio;
+import fr.veridiangames.core.audio.Audio;
 import fr.veridiangames.client.audio.AudioManager;
-import fr.veridiangames.client.guis.TrueTypeFont;
 import fr.veridiangames.client.main.player.PlayerHudCanvas;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.GuiManager;
-import fr.veridiangames.client.rendering.guis.StaticFont;
 import fr.veridiangames.client.rendering.guis.components.GuiLabel;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
-import fr.veridiangames.client.rendering.guis.components.GuiProgressBar;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.ECAudioSource;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
@@ -43,8 +40,6 @@ import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.renderers.MainRenderer;
 import fr.veridiangames.core.network.packets.DisconnectPacket;
 import fr.veridiangames.core.utils.Color4f;
-
-import java.awt.*;
 
 /**
  * Created by Marccspro on 28 janv. 2016.
@@ -63,13 +58,15 @@ public class Main
 	private GuiManager 		guiManager;
 	private boolean 		connected;
 
+	public Main()
+	{
+		/* *** AUDIO INITIALISATION *** */
+		AudioManager.init();
+	}
+
 	public void init()
 	{
 		main = this;
-
-		/* *** AUDIO INITIALISATION *** */
-		AudioManager.init();
-		ECAudioSource.addSound("AK47_BULLET_SHOT", Audio.AK47_BULLET_SHOT);
 
 		/* *** INIT STUFF *** */
 		this.playerHandler = new PlayerHandler(core, net);

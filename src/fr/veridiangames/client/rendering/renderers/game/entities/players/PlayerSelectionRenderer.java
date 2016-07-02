@@ -102,7 +102,7 @@ public class PlayerSelectionRenderer
 	
 	public void render(WorldShader shader)
 	{
-		if (selection.hasSelection())
+		if (selection.isShowed())
 		{
 			shader.setModelViewMatrix(Mat4.translate(selection.getPos()).mul(Mat4.scale(selection.getSize())));
 			shader.setColor(1, 1, 1, 0.2f);

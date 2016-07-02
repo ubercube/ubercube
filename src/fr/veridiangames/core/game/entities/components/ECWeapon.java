@@ -23,9 +23,16 @@ import fr.veridiangames.client.network.NetworkClient;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
+import fr.veridiangames.core.game.entities.weapons.WeaponShovel;
+import fr.veridiangames.core.game.entities.weapons.fire_weapons.WeaponAK47;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.packets.WeaponChangePacket;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.lwjgl.system.Callback.get;
 
 /**
  * Created by Marccspro on 7 f�vr. 2016.
@@ -34,17 +41,22 @@ public class ECWeapon extends EComponent
 {
 	private int weaponID;
 	private Weapon weapon;
-	
+	private List<Weapon> weapons;
+
 	public ECWeapon(int weapon)
 	{
 		super(WEAPON);
 		super.addDependencies(RENDER);
 		this.weaponID = weapon;
+
+		this.weapons = new ArrayList<>();
+		this.weapons.add(new WeaponAK47());
+		this.weapons.add(new WeaponShovel());
 	}
 	
 	public void init(GameCore core)
 	{
-		this.weapon = Weapon.weapons.get(weaponID);
+		this.weapon = weapons.get(weaponID);
 		this.weapon.setHolder((Player) parent);
 		this.weapon.onChange();
 		Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
@@ -70,10 +82,15 @@ public class ECWeapon extends EComponent
 	{
 		this.weaponID = weapon;
 		this.weapon.onChange();
-		this.weapon = Weapon.weapons.get(weapon);
+		this.weapon = weapons.get(weapon);
 		this.weapon.setHolder((Player) parent);
 		this.weapon.init();
 		Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
 		this.weapon.getTransform().setParent(parentTransform);
+	}
+
+	public List<Weapon> getWeapons()
+	{
+		return weapons;
 	}
 }

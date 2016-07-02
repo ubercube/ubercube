@@ -222,9 +222,17 @@ public class NetworkServer implements Runnable, NetworkableServer
 	{
 		for (int i : core.getGame().getEntityManager().getNetworkableEntites())
 		{
+			boolean passeIteration = false;
 			for (int j = 0; j < ignoreID.length; j++)
+			{
 				if (i == ignoreID[j])
+				{
+					passeIteration = true;
 					continue;
+				}
+			}
+			if (passeIteration)
+				continue;
 
 			Entity e = core.getGame().getEntityManager().getEntities().get(i);
 			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);

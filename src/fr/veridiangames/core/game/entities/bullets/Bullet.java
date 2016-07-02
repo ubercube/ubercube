@@ -20,7 +20,10 @@
 package fr.veridiangames.core.game.entities.bullets;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.audio.Audio;
+import fr.veridiangames.core.game.Game;
 import fr.veridiangames.core.game.entities.Entity;
+import fr.veridiangames.core.game.entities.components.ECAudioSource;
 import fr.veridiangames.core.game.entities.components.ECName;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
@@ -28,6 +31,7 @@ import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
 import fr.veridiangames.core.game.entities.particles.ParticlesBulletHit;
 import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.game.world.Chunk;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
@@ -50,6 +54,14 @@ public class Bullet extends Entity
 		super(id);
 		super.add(new ECName(name));
 		super.add(new ECRender(spawnPoint, orientation, new Vec3(0.04f, 0.04f, 0.4f)));
+		ECAudioSource audioSource = new ECAudioSource();
+		audioSource.setPosition(spawnPoint);
+		audioSource.setVelocity(new Vec3());
+		audioSource.setSound(Audio.AK47_BULLET_SHOT);
+		audioSource.setLoop(false);
+		audioSource.play();
+
+		super.add(audioSource);
 		super.addTag("Bullet");
 
 		startPosition.set(this.getPosition());
@@ -82,12 +94,8 @@ public class Bullet extends Entity
 			}
 		}
 
-		Vec3 v = new Vec3(getPosition());
-		v.sub(startPosition);
-		float distance = Math.abs(v.sqrt());
-		if(distance > 1000){
+		if(isBulletOutOfMap(core))
 			this.destroy();
-		}
 
 		if (block != 0)
 		{
@@ -111,6 +119,20 @@ public class Bullet extends Entity
 		}
 	}
 
+	public boolean isBulletOutOfMap(GameCore core)
+	{
+		int m0 = 0;
+		int m1 = core.getGame().getData().getWorldSize() * Chunk.SIZE;
+		Vec3 p = getPosition();
+
+		if (p.x < m0 ||p.z < m0 || p.x > m1 || p.z > m1)
+			return true;
+		if (p.y < 0 || p.y > 100)
+			return true;
+
+		return false;
+	}
+
 	public Vec3 getPosition()
 	{
 		return ((ECRender) this.get(EComponent.RENDER)).getTransform().getPosition();
@@ -124,6 +146,16 @@ public class Bullet extends Entity
 	public void setNetwork(NetworkableClient net)
 	{
 		this.net = net;
+	}
+
+	public String getName()
+	{
+		return ((ECName) this.get(EComponent.NAME)).getName();
+	}
+
+	public ECAudioSource getAudioSource()
+	{
+		return (ECAudioSource) this.get(EComponent.AUDIO_SOURCE);
 	}
 	
 	public float getForce()

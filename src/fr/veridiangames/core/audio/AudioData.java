@@ -17,7 +17,7 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.client.audio;
+package fr.veridiangames.core.audio;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL10;

@@ -26,6 +26,7 @@ package fr.veridiangames.client.audio;
 import fr.veridiangames.core.maths.Vec3;
 
 import static org.lwjgl.openal.AL10.*;
+import static sun.misc.Version.println;
 
 public class AudioSource
 {
@@ -33,6 +34,11 @@ public class AudioSource
 
     private int source;
     private int soundBuffer;
+
+    private Vec3 position;
+    private Vec3 lastPosition;
+    private Vec3 velocity;
+    private Vec3 lastVelocity;
 
     private float volume;
     private float lastVolume;
@@ -47,9 +53,15 @@ public class AudioSource
     private boolean paused;
     private boolean stop;
 
-    public AudioSource()
+    public void init()
     {
         source = alGenSources();
+        int error = alGetError();
+        if (error != AL_NO_ERROR)
+        {
+            System.out.println(AudioManager.getALErrorString(error));
+        }
+        System.out.println("New source: " + source);
     }
 
     public void destroy()
@@ -61,6 +73,16 @@ public class AudioSource
 
     public void update()
     {
+        if (position != lastPosition)
+        {
+            alSource3f(source, AL_POSITION, position.x, position.y, position.z);
+            lastPosition = position;
+        }
+        if (velocity != lastVelocity)
+        {
+            alSource3f(source, AL_VELOCITY, velocity.x, velocity.y, velocity.z);
+            lastVelocity = velocity;
+        }
         if (paused)
             pause();
 
@@ -110,12 +132,12 @@ public class AudioSource
 
     public void setPosition(Vec3 position)
     {
-        alSource3f(source, AL_POSITION, position.x, position.y, position.z);
+        this.position = position;
     }
 
     public void setVelocity(Vec3 velocity)
     {
-        alSource3f(source, AL_VELOCITY, velocity.x, velocity.y, velocity.z);
+        this.velocity = velocity;
     }
 
     public void setLooping(boolean loop)
@@ -201,5 +223,10 @@ public class AudioSource
     public boolean isDestroyed()
     {
         return destroyed;
+    }
+
+    public void setDestroyed(boolean destroyed)
+    {
+        this.destroyed = destroyed;
     }
 }

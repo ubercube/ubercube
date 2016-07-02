@@ -34,6 +34,7 @@ public class PlayerSelection
 	private RaycastHit		hit;
 	private Vec3			pos;
 	private Vec3			size;
+	private boolean 		show;
 	
 	public PlayerSelection()
 	{
@@ -88,5 +89,15 @@ public class PlayerSelection
 			return false;
 		
 		return hit.getEntity() != null || hit.getBlock() != 0;
+	}
+
+	public boolean isShowed()
+	{
+		return show && hasSelection();
+	}
+
+	public void setShow(boolean show)
+	{
+		this.show = show;
 	}
 }
