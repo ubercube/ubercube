@@ -71,7 +71,7 @@ public class PlayerHudCanvas extends GuiCanvas
         playerHealthText.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
         super.add(playerHealthText);
 
-        weaponStats = new GuiLabel("12/30", 60, display.getHeight() - 65 - 5 - 45 + 3, 50f);
+        weaponStats = new GuiLabel("12/30", 60, display.getHeight() - 65 - 5 - 45 + 3, 45f);
         weaponStats.setOrigin(GuiComponent.GuiOrigin.A);
         weaponStats.setScreenParent(GuiComponent.GuiCorner.BL);
         weaponStats.setColor(Color4f.WHITE);
@@ -98,7 +98,7 @@ public class PlayerHudCanvas extends GuiCanvas
         gameVersionLabel.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
         super.add(gameVersionLabel);
 
-        gameFpsLabel = new GuiLabel("60 Fps", 10, 30, 20f);
+        gameFpsLabel = new GuiLabel("60 Fps", 10, 40, 20f);
         gameFpsLabel.setOrigin(GuiComponent.GuiOrigin.A);
         gameFpsLabel.setScreenParent(GuiComponent.GuiCorner.TL);
         gameFpsLabel.setColor(Color4f.WHITE);
