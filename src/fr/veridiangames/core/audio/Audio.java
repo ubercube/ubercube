@@ -17,12 +17,26 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.client.audio;
+package fr.veridiangames.core.audio;
+
+import static org.lwjgl.openal.AL10.alBufferData;
+import static org.lwjgl.openal.AL10.alGenBuffers;
 
 /**
  * Created by Marc on 24/06/2016.
  */
 public class Audio
 {
-    public static final int AK47_BULLET_SHOT = AudioSystem.loadWav("res/audio/GunShot3.wav");
+    public static final int AK47_BULLET_SHOT = loadWav("res/audio/GunShot3.wav");
+
+    public static int loadWav(String file)
+    {
+        int buffer = alGenBuffers();
+
+        AudioData audio = AudioData.create(file);
+        alBufferData(buffer, audio.getFormat(), audio.getDataBuffer(), audio.getSamplerate());
+        audio.dispose();
+
+        return buffer;
+    }
 }

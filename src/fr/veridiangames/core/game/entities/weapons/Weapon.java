@@ -30,6 +30,7 @@ import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec2;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
+import fr.veridiangames.core.network.packets.WeaponPositionPacket;
 
 public abstract class Weapon
 {
@@ -39,17 +40,8 @@ public abstract class Weapon
 	public static final int AWP 		= 1;
 	public static final int SHOVEL 		= 2;
 
-	public static List<Weapon> weapons;
-	static
-	{
-		weapons = new ArrayList<>();
-		weapons.add(new WeaponAK47());
-		weapons.add(new WeaponAWP());
-		weapons.add(new WeaponShovel());
-	}
-	
 	protected Vec2 velocity;
-	
+
 	protected int currentPosition;
 	protected boolean positionChanged;
 	
@@ -123,7 +115,7 @@ public abstract class Weapon
 	{
 		if (this.currentPosition != position)
 			this.positionChanged = true;
-		
+
 		this.currentPosition = position;
 	}
 

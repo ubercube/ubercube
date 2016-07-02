@@ -50,6 +50,7 @@ public class PacketManager
 		packets.put(Packet.PING, PingPacket.class);
 		packets.put(Packet.TIME_OUT, TimeoutPacket.class);
 		packets.put(Packet.WEAPON_CHANGE, WeaponChangePacket.class);
+		packets.put(Packet.BULLET_SHOOT, BulletShootPacket.class);
 	}
 	
 	public static Packet getPacket(int packet)

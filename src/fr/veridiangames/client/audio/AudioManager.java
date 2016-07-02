@@ -25,6 +25,7 @@ import fr.veridiangames.core.game.entities.components.ECAudioSource;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.maths.Vec3;
+import org.lwjgl.openal.AL10;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,12 +48,10 @@ public class AudioManager
         garbage = new ArrayList<>();
     }
 
-    public static boolean addSource(int id, AudioSource source)
+    public static void addSource(int id, AudioSource source)
     {
-        if (sources.containsKey(id))
-            return false;
+        source.init();
         sources.put(id, source);
-        return true;
     }
 
     public static void setGlobalVolume(float volume)
@@ -72,29 +71,39 @@ public class AudioManager
         {
             Entity e = entities.get(keys.get(i));
             ECAudioSource sourceComp = (ECAudioSource) e.get(EComponent.AUDIO_SOURCE);
-            if (!addSource(e.getID(), new AudioSource()))
+            if (sources.containsKey(e.getID()))
             {
                 AudioSource source = getSource(e.getID());
-                ECRender render = (ECRender) e.get(EComponent.RENDER);
-                source.setPosition(render.getTransform().getPosition());
-                source.setVelocity(render.getTransform().getForward());
+
                 source.setVolume(sourceComp.getVolume());
                 source.setPitch(sourceComp.getPitch());
                 source.setPlaying(sourceComp.isPlaying());
                 source.setPaused(sourceComp.isPaused());
                 source.setSound(sourceComp.getSound());
+                source.setPosition(sourceComp.getPosition());
+                source.setVelocity(sourceComp.getVelocity());
+                source.setDestroyed(e.isDestroyed());
+
+                if (sourceComp.isPlaying())
+                    sourceComp.stop();
+            }
+            else
+            {
+                addSource(e.getID(), new AudioSource());
             }
         }
         for (Map.Entry<Integer, AudioSource> entry : sources.entrySet())
         {
             AudioSource source = entry.getValue();
             source.update();
-            if (source.isDestroyed())
+            if (source.isDestroyed() || !keys.contains(entry.getKey()))
                 garbage.add(entry.getKey());
         }
         for (int i = 0; i < garbage.size(); i++)
         {
             int key = garbage.get(i);
+            if (sources.get(key) != null)
+                sources.get(key).destroy();
             sources.remove(key);
             garbage.remove(i);
         }
@@ -118,5 +127,26 @@ public class AudioManager
             source.destroy();
         }
         AudioSystem.destroy();
+    }
+
+    public static String getALErrorString(int err)
+    {
+        switch (err)
+        {
+            case AL10.AL_NO_ERROR:
+                return "AL_NO_ERROR";
+            case AL10.AL_INVALID_NAME:
+                return "AL_INVALID_NAME";
+            case AL10.AL_INVALID_ENUM:
+                return "AL_INVALID_ENUM";
+            case AL10.AL_INVALID_VALUE:
+                return "AL_INVALID_VALUE";
+            case AL10.AL_INVALID_OPERATION:
+                return "AL_INVALID_OPERATION";
+            case AL10.AL_OUT_OF_MEMORY:
+                return "AL_OUT_OF_MEMORY";
+            default:
+                return "No such error code";
+        }
     }
 }

@@ -103,7 +103,7 @@ public class PlayerHandler
 
 		if(input.getMouse().getDWheel() > 0)
 		{
-			if(weapon.getWeaponID() >= Weapon.weapons.size() - 1)
+			if(weapon.getWeaponID() >= weapon.getWeapons().size() - 1)
 			{
 				weapon.setWeapon(0);
 			}
@@ -118,7 +118,7 @@ public class PlayerHandler
 		{
 			if(weapon.getWeaponID() <= 0)
 			{
-				weapon.setWeapon(Weapon.weapons.size() - 1);
+				weapon.setWeapon(weapon.getWeapons().size() - 1);
 			}
 			else
 			{
@@ -127,10 +127,11 @@ public class PlayerHandler
 			weapon.getWeapon().setNet(this.net);
 			this.net.send(new WeaponChangePacket(player));
 		}
-
-		selection.update(null);
+		
+		selection.setShow(false);
 		if(weapon.getWeapon() instanceof WeaponShovel)
 		{
+			selection.setShow(true);
 			selection.update(ray.getHit());
 			applySelectionActions(ray, input);
 		}

@@ -19,16 +19,16 @@
 
 package fr.veridiangames.core.game.entities.components;
 
-import java.util.HashMap;
-
-import static sun.audio.AudioPlayer.player;
+import fr.veridiangames.core.maths.Vec2;
+import fr.veridiangames.core.maths.Vec3;
 
 /**
  * Created by Marccspro on 14 f�vr. 2016.
  */
 public class ECAudioSource extends EComponent
 {
-	private static HashMap<String, Integer> sounds;
+	private Vec3 position;
+	private Vec3 velocity;
 
 	private float volume;
 	private float pitch;
@@ -42,7 +42,6 @@ public class ECAudioSource extends EComponent
 	public ECAudioSource()
 	{
 		super(AUDIO_SOURCE);
-		sounds = new HashMap<>();
 	}
 
 	public void play()
@@ -100,19 +99,10 @@ public class ECAudioSource extends EComponent
 		this.sound = sound;
 	}
 
-	public static void addSound(String name, int sound)
-	{
-		sounds.put(name, sound);
-	}
 
 	public boolean isPlaying()
 	{
-		if (playing)
-		{
-			playing = false;
-			return true;
-		}
-		return false;
+		return playing;
 	}
 
 	public boolean isPaused()
@@ -120,13 +110,23 @@ public class ECAudioSource extends EComponent
 		return paused;
 	}
 
-	public static Integer getSound(String name)
+	public Vec3 getPosition()
 	{
-		return sounds.get(name);
+		return position;
 	}
 
-	public static HashMap<String, Integer> getSounds()
+	public void setPosition(Vec3 position)
 	{
-		return sounds;
+		this.position = position;
+	}
+
+	public Vec3 getVelocity()
+	{
+		return velocity;
+	}
+
+	public void setVelocity(Vec3 velocity)
+	{
+		this.velocity = velocity;
 	}
 }

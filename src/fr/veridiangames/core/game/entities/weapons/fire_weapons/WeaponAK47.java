@@ -32,7 +32,6 @@ public class WeaponAK47 extends FireWeapon
 		this.setHidePosition(new Transform(new Vec3(0.3f, -0.05f - 1f, 0)));
 		this.setZoomPosition(new Transform(new Vec3(0, 0, 0)));
 		this.setShootPoint(new Transform(new Vec3(0, -0.1f, -1.5f)));
-		this.setPosition(2);
-		this.start();
+		this.setPosition(0);
 	}
 }

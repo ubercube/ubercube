@@ -19,7 +19,7 @@
 
 package fr.veridiangames.client.audio;
 
-import fr.veridiangames.core.maths.Mathf;
+import fr.veridiangames.core.audio.Audio;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 

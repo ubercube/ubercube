@@ -55,16 +55,7 @@ public class AudioSystem
         createCapabilities(deviceCaps);
     }
 
-    public static int loadWav(String file)
-    {
-        int buffer = alGenBuffers();
 
-        AudioData audio = AudioData.create(file);
-        alBufferData(buffer, audio.getFormat(), audio.getDataBuffer(), audio.getSamplerate());
-        audio.dispose();
-
-        return buffer;
-    }
 
     /**
      *      A utiliser sinon OpenAL gueule à la fin
