@@ -57,7 +57,7 @@ public class GameLoadingScreen extends GuiCanvas
         bg.setScreenParent(GuiComponent.GuiCorner.SCALED);
         super.add(bg);
 
-        loadingInfo = new GuiLabel("Loading game...", display.getWidth() / 2, display.getHeight() - 80, 20f);
+        loadingInfo = new GuiLabel("Connecting...", display.getWidth() / 2, display.getHeight() - 80, 20f);
         loadingInfo.setOrigin(GuiComponent.GuiOrigin.CENTER);
         loadingInfo.setScreenParent(GuiComponent.GuiCorner.BC);
         super.add(loadingInfo);
@@ -107,7 +107,7 @@ public class GameLoadingScreen extends GuiCanvas
     {
         if (Main.getMain().isConnected())
         {
-            loadingInfo.setText("Game loaded !");
+            loadingInfo.setText("Connected !");
             joinGameButton.setClickable(true);
         }
     }

@@ -27,7 +27,8 @@ import static org.lwjgl.openal.AL10.alGenBuffers;
  */
 public class Audio
 {
-    public static final int AK47_BULLET_SHOT = loadWav("res/audio/GunShot3.wav");
+    public static final int AK47_BULLET_SHOT = loadWav("res/audio/Ak47Shoot.wav");
+    public static final int IMPACT = loadWav("res/audio/impact.wav");
 
     public static int loadWav(String file)
     {

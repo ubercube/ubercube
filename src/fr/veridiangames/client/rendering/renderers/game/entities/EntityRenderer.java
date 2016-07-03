@@ -119,9 +119,13 @@ public class EntityRenderer
 		for (int i = 0; i < indices.size(); i++)
 		{
 			Entity e = entities.get(indices.get(i));
+			if (e == null)
+				continue;
 			if (e instanceof Player)
 				continue;
 			if (e instanceof ParticleSystem)
+				continue;
+			if (!e.contains(EComponent.RENDER))
 				continue;
 
 			renderCount++;

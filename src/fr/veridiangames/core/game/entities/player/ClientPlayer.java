@@ -112,7 +112,7 @@ public class ClientPlayer extends Player
 
 		/* STEP */
 		Vec3i block = new Vec3i(getPosition().copy().add(getRotation().getForward().copy().normalize()));
-		if(getKeyComponent().isUp()
+		if(getKeyComponent().isUp() && !getKeyComponent().isJump()
 				&& core.getGame().getWorld().getBlock(block.x, (int)getPosition().y - 1, block.z) != 0
 				&& core.getGame().getWorld().getBlock(block.x, (int)getPosition().y, block.z) == 0)
 		{
