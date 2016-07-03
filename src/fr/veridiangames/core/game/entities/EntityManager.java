@@ -62,7 +62,7 @@ public class EntityManager
 		for (int i = 0; i < keys.size(); i++)
 		{
 			Entity e = get(keys.get(i));
-			e.update(core);
+			e.update(core);	//TODO: Null pointer
 			
 			if (e.isDestroyed())
 				remove(keys.get(i));
