@@ -48,7 +48,6 @@ public class DeathPacket extends Packet
     {
         super(DEATH);
         data.put(playerId);
-
         data.flip();
     }
 

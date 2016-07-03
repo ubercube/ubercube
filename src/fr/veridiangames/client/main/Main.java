@@ -19,7 +19,6 @@
 
 package fr.veridiangames.client.main;
 
-import fr.veridiangames.core.audio.Audio;
 import fr.veridiangames.client.audio.AudioManager;
 import fr.veridiangames.client.main.player.PlayerHudCanvas;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
@@ -28,7 +27,6 @@ import fr.veridiangames.client.rendering.guis.GuiManager;
 import fr.veridiangames.client.rendering.guis.components.GuiLabel;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
 import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.game.entities.components.ECAudioSource;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
@@ -57,6 +55,8 @@ public class Main
 	private Console			console;
 	private GuiManager 		guiManager;
 	private boolean 		connected;
+	private boolean 		joinGame;
+	private GameLoadingScreen gameLoading;
 
 	public Main()
 	{
@@ -87,8 +87,8 @@ public class Main
 		loadingInfo.setScreenParent(GuiComponent.GuiCorner.CENTER);
 		startGui.add(loadingInfo);
 
-		this.guiManager.add(startGui);
-
+		gameLoading = new GameLoadingScreen(display);
+		this.guiManager.add(gameLoading);
 
 		/* *** PLAYER HUD GUI *** */
 		GuiCanvas playerHudGui = new PlayerHudCanvas(display, core);
@@ -98,19 +98,29 @@ public class Main
 	public void update()
 	{
 		AudioManager.update(core);
+
 		guiManager.update();
-		if (!connected && net.isConnected())
+		gameLoading.update(this);
+
+		if (net.isConnected() && core.getGame().getWorld().isGenerated())
 		{
-			display.getInput().getMouse().setGrabbed(true);
-			connected = true;
-		}
-		if (net.isConnected())
-		{
-			guiManager.setCanvas(1);
-			//console.update();
-			core.update();
-			playerHandler.update(display.getInput());
-			mainRenderer.update();
+			if (!connected && net.isConnected())
+			{
+				connected = true;
+			}
+			if (!joinGame && gameLoading.hasJoinedGame())
+			{
+				display.getInput().getMouse().setGrabbed(true);
+				guiManager.setCanvas(1);
+				joinGame = true;
+			}
+			if (joinGame)
+			{
+				//console.update();
+				core.update();
+				playerHandler.update(display.getInput());
+				mainRenderer.update();
+			}
 		}
 	}
 
@@ -135,7 +145,7 @@ public class Main
 	public void start()
 	{
 		init();
-		
+
 		Timer timer = new Timer();
 		
 		double tickTime = 1000000000.0 / 60.0;
@@ -152,7 +162,8 @@ public class Main
 			second = false;
 			if (timer.getElapsed() - updatedTime >= tickTime)
 			{
-				display.getInput().update();
+				display.getInput().getMouse().update();
+				display.getInput().getKeyboardCallback().update();
 				update();
 				updatePhysics();
 				ticks++;
@@ -244,5 +255,15 @@ public class Main
 	public static Main getMain()
 	{
 		return main;
+	}
+
+	public boolean isConnected()
+	{
+		return connected;
+	}
+
+	public NetworkClient getNet()
+	{
+		return net;
 	}
 }

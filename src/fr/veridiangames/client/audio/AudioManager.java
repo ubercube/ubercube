@@ -82,7 +82,6 @@ public class AudioManager
                 source.setSound(sourceComp.getSound());
                 source.setPosition(sourceComp.getPosition());
                 source.setVelocity(sourceComp.getVelocity());
-                source.setDestroyed(e.isDestroyed());
 
                 if (sourceComp.isPlaying())
                     sourceComp.stop();
@@ -96,7 +95,7 @@ public class AudioManager
         {
             AudioSource source = entry.getValue();
             source.update();
-            if (source.isDestroyed() || !keys.contains(entry.getKey()))
+            if (source.isDestroyed() || (!keys.contains(entry.getKey()) && !source.isPlaying()))
                 garbage.add(entry.getKey());
         }
         for (int i = 0; i < garbage.size(); i++)

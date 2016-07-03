@@ -57,6 +57,7 @@ public class World
 		this.chunks = new HashMap<Integer, Chunk>();
 		this.chunkGarbage = new ArrayList<Integer>();
 		this.modifiedBlocks = new ArrayList<Vec4i>();
+		this.generated = false;
 
 		this.initWorldData();
 	}
@@ -65,34 +66,40 @@ public class World
 	{
 		worldSize = gameData.getWorldSize();
 		worldGen = gameData.getWorldGen();
+		World world = this;
 
-		for (int x = 0; x < worldSize; x++)
-		{
-			for (int y = 0; y < 5; y++)
-			{
-				for (int z = 0; z < worldSize; z++)
+				worldGen.addNoisePasses();
+				worldGen.calcFinalNoise();
+				for (int x = 0; x < worldSize; x++)
 				{
-					int index = Indexer.index3i(x, y, z);
-					float[][] 	noise = worldGen.getNoiseChunk(x, z);
-					Chunk c = new Chunk(x, y, z, noise, this);
-					c.generateChunk();
-					c.generateTerrainData();
-					chunks.put(index, c);
+					for (int y = 0; y < 5; y++)
+					{
+						for (int z = 0; z < worldSize; z++)
+						{
+							int index = Indexer.index3i(x, y, z);
+							float[][] 	noise = worldGen.getNoiseChunk(x, z);
+							Chunk c = new Chunk(x, y, z, noise, world);
+							c.generateChunk();
+							c.generateTerrainData();
+							chunks.put(index, c);
+						}
+					}
 				}
-			}
-		}
-		for (int x = 0; x < worldSize; x++)
-		{
-			for (int y = 0; y < 5; y++)
-			{
-				for (int z = 0; z < worldSize; z++)
+				for (int x = 0; x < worldSize; x++)
 				{
-					int index = Indexer.index3i(x, y, z);
-					Chunk c = chunks.get(index);
-					c.generateVegetation();
+					for (int y = 0; y < 5; y++)
+					{
+						for (int z = 0; z < worldSize; z++)
+						{
+							int index = Indexer.index3i(x, y, z);
+							Chunk c = chunks.get(index);
+							c.generateVegetation();
+						}
+					}
 				}
-			}
-		}
+
+				generated = true;
+
 	}
 	
 	public void update()
@@ -103,87 +110,89 @@ public class World
 		}
 	}
 
-	/* *** Used for huge maps. If ever needed again. ***
-	private void updateChunkGeneration()
-	{
-		Vec3 p = core.getGame().getPlayer().getPosition();
+	/**** Used for huge maps. If ever needed again. ****/
 
-		int x0 = (int) ((p.x - gameData.getViewDistance()) / (float) Chunk.SIZE);
-		int x1 = (int) ((p.x) / (float) Chunk.SIZE) + 1;
-		int x2 = (int) ((p.x + gameData.getViewDistance()) / (float) Chunk.SIZE) + 1;
 
-		int y0 = (int) ((p.y - gameData.getViewDistance()) / (float) Chunk.SIZE);
-		int y1 = (int) ((p.y + gameData.getViewDistance()) / (float) Chunk.SIZE);
+//	private void updateChunkGeneration()
+//	{
+//		Vec3 p = core.getGame().getPlayer().getPosition();
+//
+//		int x0 = (int) ((p.x - gameData.getViewDistance()) / (float) Chunk.SIZE);
+//		int x1 = (int) ((p.x) / (float) Chunk.SIZE) + 1;
+//		int x2 = (int) ((p.x + gameData.getViewDistance()) / (float) Chunk.SIZE) + 1;
+//
+//		int y0 = (int) ((p.y - gameData.getViewDistance()) / (float) Chunk.SIZE);
+//		int y1 = (int) ((p.y + gameData.getViewDistance()) / (float) Chunk.SIZE);
+//
+//		int z0 = (int) ((p.z - gameData.getViewDistance()) / (float) Chunk.SIZE);
+//		int z1 = (int) ((p.z) / (float) Chunk.SIZE) + 1;
+//		int z2 = (int) ((p.z + gameData.getViewDistance()) / (float) Chunk.SIZE) + 1;
+//
+//		generateChunkCluster(x0, x1, y0, y1, z0, z1, worldSize);
+//		generateChunkCluster(x1, x1, y0, y1, z1, z1, worldSize);
+//		generateChunkCluster(x1, x2, y0, y1, z1, z2, worldSize);
+//		generateChunkCluster(x0, x2, y0, y1, z0, z2, worldSize);
+//
+//		for (Chunk c : chunks.values())
+//		{
+//			if (!c.shouldBeRendered())
+//			{
+//				chunkGarbage.add(Indexer.index3i(c.getPosition()));
+//			}
+//			c.update();
+//		}
+//	}
+//
+//	private void generateChunkCluster(int x0, int x1, int y0, int y1, int z0, int z1, int size)
+//	{
+//		if (x0 < 0) x0 = 0;
+//		if (x1 >= size) x1 = size - 1;
+//		if (y0 < 0) y0 = 0;
+//		if (y1 >= 2) y1 = 2;
+//		if (z0 < 0) z0 = 0;
+//		if (z1 >= size) z1 = size - 1;
+//		for (int x = x0; x < x1; x++)
+//		{
+//			for (int y = y0; y < y1; y++)
+//			{
+//				for (int z = z0; z < z1; z++)
+//				{
+//					generateChunk(x, y, z);
+//				}
+//			}
+//		}
+//	}
+//
+//	private void generateChunk(int x, int y, int z)
+//	{
+//		int index = Indexer.index3i(x, y, z);
+//		if (!generatingChunks.containsKey(index))
+//		{
+//			if (chunks.containsKey(index))
+//			{
+//				Chunk c = chunks.get(index);
+//				c.setShouldBeRendered(true);
+//				return;
+//			}
+//			//if (generatingChunks.size() < 10)
+//			{
+//				float[][] 	noise = worldGen.getNoiseChunk(x, z);
+//				Chunk c = new Chunk(x, y, z, noise, this);
+//				generatingChunks.put(index, c);
+//				c.generateChunk();
+//			}
+//		}
+//		else
+//		{
+//			Chunk c = generatingChunks.get(index);
+//			if (c.isGenerated())
+//			{
+//				chunks.put(index, c);
+//				generatingChunks.remove(index);
+//			}
+//		}
+//	}
 
-		int z0 = (int) ((p.z - gameData.getViewDistance()) / (float) Chunk.SIZE);
-		int z1 = (int) ((p.z) / (float) Chunk.SIZE) + 1;
-		int z2 = (int) ((p.z + gameData.getViewDistance()) / (float) Chunk.SIZE) + 1;
-
-		generateChunkCluster(x0, x1, y0, y1, z0, z1, worldSize);
-		generateChunkCluster(x1, x1, y0, y1, z1, z1, worldSize);
-		generateChunkCluster(x1, x2, y0, y1, z1, z2, worldSize);
-		generateChunkCluster(x0, x2, y0, y1, z0, z2, worldSize);
-
-		for (Chunk c : chunks.values())
-		{
-			if (!c.shouldBeRendered())
-			{
-				chunkGarbage.add(Indexer.index3i(c.getPosition()));
-			}
-			c.update();
-		}
-	}
-
-	private void generateChunkCluster(int x0, int x1, int y0, int y1, int z0, int z1, int size)
-	{
-		if (x0 < 0) x0 = 0;
-		if (x1 >= size) x1 = size - 1;
-		if (y0 < 0) y0 = 0;
-		if (y1 >= 2) y1 = 2;
-		if (z0 < 0) z0 = 0;
-		if (z1 >= size) z1 = size - 1;
-		for (int x = x0; x < x1; x++)
-		{
-			for (int y = y0; y < y1; y++)
-			{
-				for (int z = z0; z < z1; z++)
-				{
-					generateChunk(x, y, z);
-				}
-			}
-		}
-	}
-
-	private void generateChunk(int x, int y, int z)
-	{
-		int index = Indexer.index3i(x, y, z);
-		if (!generatingChunks.containsKey(index))
-		{
-			if (chunks.containsKey(index))
-			{
-				Chunk c = chunks.get(index);
-				c.setShouldBeRendered(true);
-				return;
-			}
-			//if (generatingChunks.size() < 10)
-			{
-				float[][] 	noise = worldGen.getNoiseChunk(x, z);
-				Chunk c = new Chunk(x, y, z, noise, this);
-				generatingChunks.put(index, c);
-				c.generateChunk();
-			}
-		}
-		else
-		{
-			Chunk c = generatingChunks.get(index);
-			if (c.isGenerated())
-			{
-				chunks.put(index, c);
-				generatingChunks.remove(index);
-			}
-		}
-	}
-	*/
 
 
 	public Chunk getChunk(int x, int y, int z)
@@ -479,5 +488,10 @@ public class World
 	public WorldGen getWorldGen()
 	{
 		return worldGen;
+	}
+
+	public boolean isGenerated()
+	{
+		return generated;
 	}
 }

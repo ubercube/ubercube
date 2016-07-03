@@ -31,7 +31,7 @@ public abstract class GuiComponent
 {
 	public enum GuiOrigin
 	{
-		A, B, C, D, CENTER
+		A, B, C, D, TC, BC, LC, RC, CENTER
 	}
 
 	public enum GuiCorner
@@ -118,6 +118,22 @@ public abstract class GuiComponent
 		case D:
 			xOrigin = 0;
 			yOrigin = h;
+			break;
+		case TC:
+			xOrigin = w / 2;
+			yOrigin = 0;
+			break;
+		case BC:
+			xOrigin = w / 2;
+			yOrigin = h;
+			break;
+		case LC:
+			xOrigin = 0;
+			yOrigin = h / 2;
+			break;
+		case RC:
+			xOrigin = w;
+			yOrigin = h / 2;
 			break;
 		case CENTER:
 			xOrigin = w / 2;

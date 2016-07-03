@@ -93,6 +93,9 @@ public class EntityMovementPacket extends Packet
 		
 		player.setPosition(position);
 		player.setRotation(rotation);
+
+		if (position.y < 0)
+			server.sendToAll(new DeathPacket(id));
 		
 		server.sendToAll(new EntityMovementPacket(this));
 	}

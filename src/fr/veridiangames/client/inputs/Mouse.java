@@ -21,9 +21,13 @@ package fr.veridiangames.client.inputs;
 
 import java.util.ArrayList;
 
+import fr.veridiangames.core.maths.Vec2;
 import org.lwjgl.glfw.GLFW;
 
 import fr.veridiangames.client.rendering.Display;
+
+import static java.awt.SystemColor.window;
+import static org.lwjgl.glfw.GLFW.glfwSetCursorPos;
 
 /**
  * Created by Marccspro on 9 f�vr. 2016.
@@ -44,9 +48,9 @@ public class Mouse
 
 	private float dsx, dsy;
 
-	private ArrayList<Integer>	currentMouse	= new ArrayList<Integer>();
-	private ArrayList<Integer>	downMouse		= new ArrayList<Integer>();
-	private ArrayList<Integer>	upMouse			= new ArrayList<Integer>();
+	private ArrayList<Integer>	currentMouse	= new ArrayList<>();
+	private ArrayList<Integer>	downMouse		= new ArrayList<>();
+	private ArrayList<Integer>	upMouse			= new ArrayList<>();
 
 	private Display display;
 
@@ -141,6 +145,11 @@ public class Mouse
 	public float getDWheel()
 	{
 		return (dsx + dsy) / 2.0f;
+	}
+
+	public void setMousePosition(Vec2 position)
+	{
+		glfwSetCursorPos(display.getWindow(), position.x, position.y);
 	}
 
 	public boolean getButton(int button)

@@ -200,12 +200,6 @@ public class Input
 		this.mouse = new Mouse(display);
 	}
 	
-	public void update()
-	{
-		keyboard.update();
-		mouse.update();
-	}
-	
 	public boolean getKey(int key)
 	{
 		return keyboard.getKey(key);

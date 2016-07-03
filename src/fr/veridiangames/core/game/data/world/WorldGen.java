@@ -39,6 +39,7 @@ public class WorldGen
 	private float[][] 		noise;
 	private List<Structure> structs;
 	private Random 			rand;
+	private long 			seed;
 	
 	private int height;
 	private boolean usingHeight;
@@ -48,7 +49,7 @@ public class WorldGen
 	{
 		this.height = height;
 		this.usingHeight = true;
-		
+
 		heightData = new float[Chunk.SIZE][Chunk.SIZE];
 		for (int x = 0; x < Chunk.SIZE; x++)
 		{
@@ -65,12 +66,10 @@ public class WorldGen
 		this.size = size;
 		this.noise = new float[size * Chunk.SIZE][size * Chunk.SIZE];
 		this.rand = new Random(seed);
-		
-		addNoisePasses(seed);
-		calcFinalNoise();
+		this.seed = seed;
 	}
 
-	private void addNoisePasses(long seed)
+	public void addNoisePasses()
 	{
 		add(new NoisePass(seed, 60, 3, 0, 1));
 		add(new NoisePass(seed, 20, 10, 0.4f, -1));
@@ -82,7 +81,7 @@ public class WorldGen
 		noisePasses.add(pass);
 	}
 
-	private void calcFinalNoise()
+	public void calcFinalNoise()
 	{
 		for (int xx = 0; xx < size; xx++)
 		{

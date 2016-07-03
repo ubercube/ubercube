@@ -28,7 +28,7 @@ public class StaticFont {
 	public static Font square_bold(int style, float size) {
 		Font font = null;
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, StaticFont.class.getResourceAsStream("/tex/title/Square.ttf"));
+			font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream("res/fonts/Kroftsmann.ttf"));
 		} catch (FontFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

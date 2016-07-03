@@ -19,7 +19,6 @@
 
 package fr.veridiangames.core.physics;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fr.veridiangames.core.game.entities.Entity;
@@ -141,13 +140,13 @@ public class Rigidbody
 				Vec3 mtd = data.getMtd();
 
 				grounded = false;
-				if (data.getNormal().y == 1)
+				if (data.getNormal().y == 1 && velocity.y <= 0 && mainForce.y <= 0)
 				{
-					gravity.set(0, 0, 0);
+					gravity.y = 0;
 					mainForce.y = 0;
+					velocity.y = 0;
 					grounded = true;
 				}
-				mainForce.set(0, 0, 0);
 				this.collider.getPosition().add(mtd);
 			}
 		}
@@ -158,7 +157,14 @@ public class Rigidbody
 		this.position.set(collider.getPosition());
 		((ECRender) this.parent.get(EComponent.RENDER)).getTransform().setLocalPosition(position);
 	}
-	
+
+	public void killForces()
+	{
+		mainForce.set(0, 0, 0);
+		velocity.set(0, 0, 0);
+		gravity.set(0, 0, 0);
+	}
+
 	public Vec3 getPosition()
 	{
 		return position;

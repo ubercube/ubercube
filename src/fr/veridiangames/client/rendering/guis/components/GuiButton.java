@@ -39,7 +39,8 @@ public class GuiButton extends GuiComponent
 	private TrueTypeFont font;
 	private FontRenderer fontRenderer;
 	private int xTextOffs, yTextOffs;
-	private int offsetMargin = 10; 
+	private int offsetMargin = 10;
+	private boolean clickable;
 	
 	public Color4f idleColor, hoverColor, activeColor, fontColor;
 
@@ -78,18 +79,18 @@ public class GuiButton extends GuiComponent
 	
 	public void update() {
 		super.update();
-		if (!useable) {
-			fontColor = Color4f.LIGHT_GRAY;
+
+		if (!clickable) {
+			fontColor = Color4f.GRAY;
 		}else {			
 			fontColor = Color4f.WHITE;
 		}
 		
 		if (mouseInUse) return;
-		
-		
+
 		fontRenderer.setPosition(x + xTextOffs, y + yTextOffs);
 		
-		if (useable) {
+		if (clickable) {
 			if (mouseIn) {
 				color = hoverColor;
 			}
@@ -139,5 +140,15 @@ public class GuiButton extends GuiComponent
 	
 	public void dispose() {
 		fontRenderer.dispose();
+	}
+
+	public boolean isClickable()
+	{
+		return clickable;
+	}
+
+	public void setClickable(boolean clickable)
+	{
+		this.clickable = clickable;
 	}
 }

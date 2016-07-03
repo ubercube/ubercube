@@ -28,7 +28,7 @@ import fr.veridiangames.core.utils.Color4f;
 
 public class GuiPanel extends GuiComponent {
 	
-	public Texture texture;
+	private Texture texture;
 	Color4f borderColor;
 	int borderSize = 0;
 	
@@ -59,5 +59,15 @@ public class GuiPanel extends GuiComponent {
 	
 	public void dispose() {
 		
+	}
+
+	public Texture getTexture()
+	{
+		return texture;
+	}
+
+	public void setTexture(Texture texture)
+	{
+		this.texture = texture;
 	}
 }

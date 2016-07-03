@@ -55,11 +55,11 @@ public class Bullet extends Entity
 		super.add(new ECName(name));
 		super.add(new ECRender(spawnPoint, orientation, new Vec3(0.04f, 0.04f, 0.4f)));
 		ECAudioSource audioSource = new ECAudioSource();
-		audioSource.setPosition(spawnPoint);
-		audioSource.setVelocity(new Vec3());
-		audioSource.setSound(Audio.AK47_BULLET_SHOT);
-		audioSource.setLoop(false);
-		audioSource.play();
+//		audioSource.setPosition(spawnPoint);
+//		audioSource.setVelocity(new Vec3(0, 0, 0));
+//		audioSource.setSound(Audio.AK47_BULLET_SHOT);
+//		audioSource.setLoop(false);
+//		audioSource.play();
 
 		super.add(audioSource);
 		super.addTag("Bullet");

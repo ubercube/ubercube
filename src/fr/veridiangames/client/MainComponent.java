@@ -41,7 +41,7 @@ public class MainComponent
 		int 	clientID = 	rand.nextInt(999999999); //Integer.parseInt(args[0]);
 		String 	address = 	args[0];
 		int 	port = 		25565; //Integer.parseInt(args[1].split(":")[1]);
-		
+
 		main.openConnection(clientID, address, port);
 		main.start();
 	}

@@ -45,6 +45,7 @@ public class PlayerHudCanvas extends GuiCanvas
     private GuiLabel playerHealthText;
     private GuiLabel weaponStats;
     private GuiLabel gameFpsLabel;
+    private GuiLabel playerPosition;
     private GuiPanel damageEffect;
 
     private int health;
@@ -110,13 +111,21 @@ public class PlayerHudCanvas extends GuiCanvas
         gameVersionLabel.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
         super.add(gameVersionLabel);
 
-        gameFpsLabel = new GuiLabel("60 Fps", 10, 40, 20f);
+        gameFpsLabel = new GuiLabel("60 Fps", 10, 30, 20f);
         gameFpsLabel.setOrigin(GuiComponent.GuiOrigin.A);
         gameFpsLabel.setScreenParent(GuiComponent.GuiCorner.TL);
         gameFpsLabel.setColor(Color4f.WHITE);
         gameFpsLabel.setDropShadow(2);
         gameFpsLabel.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
         super.add(gameFpsLabel);
+
+        playerPosition = new GuiLabel("0 - 0 - 0", display.getWidth() / 2, 10, 20f);
+        playerPosition.setOrigin(GuiComponent.GuiOrigin.TC);
+        playerPosition.setScreenParent(GuiComponent.GuiCorner.TC);
+        playerPosition.setColor(Color4f.WHITE);
+        playerPosition.setDropShadow(2);
+        playerPosition.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
+        super.add(playerPosition);
     }
 
     public void update()
@@ -151,5 +160,10 @@ public class PlayerHudCanvas extends GuiCanvas
             damageEffect.getColor().setAlpha(damageEffect.getColor().getAlpha() - 0.005f);
         }
         health = player.getLife();
+
+        int px = (int) player.getPosition().x;
+        int py = (int) player.getPosition().y;
+        int pz = (int) player.getPosition().z;
+        playerPosition.setText(px + " - " + py + " - " + pz);
     }
 }

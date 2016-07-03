@@ -80,7 +80,11 @@ public class RespawnPacket extends Packet
         p.setLife(100);
         p.setDead(false);
 
-        this.position = new Vec3(GameCore.getInstance().getGame().getData().getWorldSize() * 8, 30, GameCore.getInstance().getGame().getData().getWorldSize() * 8);      // TODO : Modify position
+        int x = GameCore.getInstance().getGame().getData().getWorldSize() * 8;
+        int y = GameCore.getInstance().getGame().getData().getWorldSize() * 8;
+        int height = (int) GameCore.getInstance().getGame().getData().getWorldGen().getNoise(x, y) + 15;
+        System.out.println("HEIGHT: " + height);
+        this.position = new Vec3(x, height, y);      // TODO : Modify position
 
         server.send(new RespawnPacket(this), p.getNetwork().getAddress(), p.getNetwork().getPort());
     }
@@ -89,6 +93,7 @@ public class RespawnPacket extends Packet
     public void process(NetworkableClient client, InetAddress address, int port)
     {
         ClientPlayer p = client.getCore().getGame().getPlayer();
+        p.getRigidBody().getBody().killForces();
         p.setPosition(this.position);
         p.setLife(100);
         p.setDead(false);

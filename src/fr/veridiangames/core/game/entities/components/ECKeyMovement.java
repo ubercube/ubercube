@@ -83,7 +83,7 @@ public class ECKeyMovement extends EComponent
 		else
 		{
 			if (jump)
-				if (body.isGrounded())
+				if (body.isGrounded() && body.getVelocity().y <= 0)
 					body.applyForce(Vec3.UP, jumpForce);
 		}
 
