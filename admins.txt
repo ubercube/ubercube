@@ -1,4 +1,0 @@
-#Server Admin Players
-#
-# | Username | User ID |
-#

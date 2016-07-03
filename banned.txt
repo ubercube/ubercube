@@ -1,4 +1,0 @@
-#Server Banned Players
-#
-# | Username | User ID |
-#
