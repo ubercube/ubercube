@@ -123,6 +123,8 @@ public class Bullet extends Entity
 			this.net.send(new BulletHitPlayerPacket(player));
 			this.destroy();
 		}
+
+		getPosition().y -= 1/(float)60 * (4.0f/getForce());
 	}
 
 	public boolean isBulletOutOfMap(GameCore core)

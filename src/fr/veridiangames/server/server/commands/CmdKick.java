@@ -19,7 +19,14 @@
 
 package fr.veridiangames.server.server.commands;
 
+import fr.veridiangames.core.game.entities.Entity;
+import fr.veridiangames.core.game.entities.components.ECName;
+import fr.veridiangames.core.game.entities.components.EComponent;
+import fr.veridiangames.core.network.packets.DisconnectPacket;
+import fr.veridiangames.core.network.packets.KickPacket;
 import fr.veridiangames.server.server.NetworkServer;
+
+import java.util.Map.*;
 
 public class CmdKick extends Command
 {
@@ -30,7 +37,28 @@ public class CmdKick extends Command
 
 	public void process(NetworkServer server, String[] params)
 	{
-		String player = params[1];
-		server.log(player + " has been kicked !");
+		if(params.length == 2){
+			try{
+				int id = -1;
+				String name = "";
+				for(Entry<Integer,Entity> e : server.getCore().getGame().getEntityManager().getEntities().entrySet()){
+					name = ((ECName) server.getCore().getGame().getEntityManager().get(e.getKey()).get(EComponent.NAME)).getName();
+					if(params[1].equals(name)){
+						id = e.getKey();
+					}
+				}
+				if(id == -1){
+					server.log("Player not found !");
+					return;
+				}
+				server.getCore().getGame().remove(id);
+				server.sendToAll(new KickPacket(id));
+				server.log(name + " has been kicked !");
+			}catch(Exception e){
+				server.log("Player ID not found !");
+			}
+		}else{
+			server.log("Syntax incorrect !\nkick [Player Name]");
+		}
 	}
 }

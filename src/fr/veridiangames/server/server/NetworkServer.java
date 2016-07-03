@@ -124,7 +124,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 				{
 					if (System.nanoTime() - before > 1000000000.0)
 					{
-						log("ping");
+						//log("ping");
 						for (int i = 0; i < core.getGame().getEntityManager().getPlayerEntites().size(); i++)
 						{
 							int key = core.getGame().getEntityManager().getPlayerEntites().get(i);

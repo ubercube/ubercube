@@ -20,6 +20,7 @@
 package fr.veridiangames.core.utils;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -60,6 +61,10 @@ public class Log
 
 	public static void addLine(String filename, String text)
 	{
+		File f = null;
+		if(!(f = new File(FileUtils.UBERCUBE_ROOT_DIR)).exists()){
+			f.mkdir();
+		}
 		BufferedWriter bufWriter = null;
 		FileWriter fileWriter = null;
 		try

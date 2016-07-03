@@ -49,6 +49,7 @@ public abstract class Packet
 	public static final int TIME_OUT			= 14;
 	public static final int WEAPON_CHANGE		= 15;
 	public static final int BULLET_SHOOT		= 16;
+	public static final int KICK				= 17;
 
 	protected DataBuffer data;
 
