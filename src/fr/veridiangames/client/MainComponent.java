@@ -29,7 +29,7 @@ import java.security.SecureRandom;
  * Created by Marccspro on 28 janv. 2016.
  */
 public class MainComponent
-{	
+{
 	public static void main(String[] args)
 	{
 		Main main = new Main();
@@ -39,9 +39,9 @@ public class MainComponent
 		SecureRandom rand = new SecureRandom();
 		rand.setSeed(System.nanoTime());
 		int 	clientID = 	rand.nextInt(999999999); //Integer.parseInt(args[0]);
-		String 	address = 	args[0];
-		int 	port = 		25565; //Integer.parseInt(args[1].split(":")[1]);
-		String name = new String("ID" + clientID).substring(0, 6);
+		String 	address = 	args[0].split(":")[0];
+		int 	port = 		Integer.parseInt(args[0].split(":")[1]);
+		String name = args[1];
 
 		main.openConnection(clientID, name, address, port);
 		main.start();
