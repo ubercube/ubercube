@@ -45,15 +45,17 @@ import fr.veridiangames.core.utils.Indexer;
  */
 public class Bullet extends Entity
 {
+	private int holderID;
 	private float				force;
 	private NetworkableClient	net;
 	private Vec3 startPosition = new Vec3();
 
-	public Bullet(int id, String name, Vec3 spawnPoint, Quat orientation, float force)
+	public Bullet(int id, int holderID, String name, Vec3 spawnPoint, Quat orientation, float force)
 	{
 		super(id);
 		super.add(new ECName(name));
 		super.add(new ECRender(spawnPoint, orientation, new Vec3(0.04f, 0.04f, 0.4f)));
+		this.holderID = holderID;
 		ECAudioSource audioSource = new ECAudioSource();
 //		audioSource.setPosition(spawnPoint);
 //		audioSource.setVelocity(new Vec3(0, 0, 0));
@@ -88,6 +90,9 @@ public class Bullet extends Entity
 			block = core.getGame().getWorld().getBlockAt(stepedPosition);
 			blockPosition = stepedPosition.copy();
 			e = core.getGame().getEntityManager().getEntityAt(stepedPosition, "NetPlayer");
+			if (e != null)
+				if (e.getID() == holderID)
+					e = null;
 			if (block == 0 && e == null)
 			{
 				position.set(stepedPosition);
@@ -114,7 +119,8 @@ public class Bullet extends Entity
 			ParticleSystem blood = new ParticlesBlood(Indexer.getUniqueID(), getPosition().copy());
 			blood.setParticleVelocity(getRotation().getBack().copy().mul(0.02f));
 			blood.setNetwork(net);
-			this.net.send(new BulletHitPlayerPacket((Player) e));
+			Player player = (Player) e;
+			this.net.send(new BulletHitPlayerPacket(player));
 			this.destroy();
 		}
 	}

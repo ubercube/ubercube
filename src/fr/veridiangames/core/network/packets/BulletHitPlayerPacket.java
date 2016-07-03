@@ -26,6 +26,8 @@ import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
 
+import static sun.audio.AudioPlayer.player;
+
 /**
  * Created by Marccspro on 26 f�vr. 2016.
  */
@@ -33,6 +35,7 @@ public class BulletHitPlayerPacket extends Packet
 {
     private int playerId;
     private int life;
+    private boolean hitable;
 
     public BulletHitPlayerPacket()
 
@@ -45,15 +48,17 @@ public class BulletHitPlayerPacket extends Packet
         super(BULLET_HIT_PLAYER);
         data.put(player.getID());
         data.put(0);
+        data.put(player.isHitable() ? 1 : 0);
 
         data.flip();
     }
 
-    public BulletHitPlayerPacket(BulletHitPlayerPacket packet, int life)
+    public BulletHitPlayerPacket(BulletHitPlayerPacket packet, boolean hitable, int life)
     {
         super(BULLET_HIT_PLAYER);
         data.put(packet.playerId);
         data.put(life);
+        data.put(hitable ? 1 : 0);
 
         data.flip();
     }
@@ -62,20 +67,25 @@ public class BulletHitPlayerPacket extends Packet
     {
         playerId = data.getInt();
         life = data.getInt();
+        hitable = data.getInt() == 0 ? false : true;
     }
 
     public void process(NetworkableServer server, InetAddress address, int port)
     {
         ServerPlayer p = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId);
-        p.setLife(p.getLife() - 20);    // TODO : Modify damage
-
-        if(p.getLife() <= 0)
+        p.setHitable(hitable);
+        System.out.println(hitable);
+        if (hitable)
         {
-            server.sendToAll(new DeathPacket(playerId));
-            ((ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId)).setDead(true);
+            p.setLife(p.getLife() - 20);    // TODO : Modify damage
+            if(p.getLife() <= 0)
+            {
+                server.sendToAll(new DeathPacket(playerId));
+                ((ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId)).setDead(true);
+            }
+            else
+                server.send(new BulletHitPlayerPacket(this, p.isHitable(), p.getLife()), p.getNetwork().getAddress(), p.getNetwork().getPort());
         }
-        else
-            server.send(new BulletHitPlayerPacket(this, p.getLife()), p.getNetwork().getAddress(), p.getNetwork().getPort());
     }
 
     public void process(NetworkableClient client, InetAddress address, int port)

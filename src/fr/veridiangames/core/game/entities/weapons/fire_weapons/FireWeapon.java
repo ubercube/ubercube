@@ -80,14 +80,10 @@ public class FireWeapon extends Weapon
 	
 	private void shootBullet(GameCore core)
 	{
-		Bullet bullet = new Bullet(Indexer.getUniqueID(), "", this.shootPoint.getPosition(), this.transform.getRotation(), shootForce);
+		Bullet bullet = new Bullet(Indexer.getUniqueID(), holder.getID(), "", this.shootPoint.getPosition(), this.transform.getRotation(), shootForce);
 		net.send(new BulletShootPacket(holder.getID(), bullet));
 		bullet.setNetwork(net);
 		core.getGame().spawn(bullet);
-
-
-
-
 	}
 	
 	public void shoot()

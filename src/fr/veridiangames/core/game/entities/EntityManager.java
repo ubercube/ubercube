@@ -146,7 +146,7 @@ public class EntityManager
 	public Entity getEntityAt(Vec3 point, String... targetTags)
 	{
 		Entity result = null;
-		try 
+		try
 		{
 			for (int i = 0; i < entities.size(); i++)
 			{

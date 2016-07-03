@@ -112,7 +112,7 @@ public class BulletShootPacket extends Packet
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		Bullet bullet = new Bullet(id, name, position, rotation, shootForce);
+		Bullet bullet = new Bullet(id, clientID, name, position, rotation, shootForce);
 		bullet.setNetwork(client);
 		client.getCore().getGame().spawn(bullet);
 	}

@@ -65,47 +65,47 @@ public class AudioManager
 
     public static void update(GameCore core)
     {
-        Map<Integer, Entity> entities = core.getGame().getEntityManager().getEntities();
-        List<Integer> keys = core.getGame().getEntityManager().getAudioSourcedEntites();
-        for (int i = 0; i < keys.size(); i++)
-        {
-            Entity e = entities.get(keys.get(i));
-            ECAudioSource sourceComp = (ECAudioSource) e.get(EComponent.AUDIO_SOURCE);
-            if (sources.containsKey(e.getID()))
-            {
-                AudioSource source = getSource(e.getID());
-
-                source.setVolume(sourceComp.getVolume());
-                source.setPitch(sourceComp.getPitch());
-                source.setPlaying(sourceComp.isPlaying());
-                source.setPaused(sourceComp.isPaused());
-                source.setSound(sourceComp.getSound());
-                source.setPosition(sourceComp.getPosition());
-                source.setVelocity(sourceComp.getVelocity());
-
-                if (sourceComp.isPlaying())
-                    sourceComp.stop();
-            }
-            else
-            {
-                addSource(e.getID(), new AudioSource());
-            }
-        }
-        for (Map.Entry<Integer, AudioSource> entry : sources.entrySet())
-        {
-            AudioSource source = entry.getValue();
-            source.update();
-            if (source.isDestroyed() || (!keys.contains(entry.getKey()) && !source.isPlaying()))
-                garbage.add(entry.getKey());
-        }
-        for (int i = 0; i < garbage.size(); i++)
-        {
-            int key = garbage.get(i);
-            if (sources.get(key) != null)
-                sources.get(key).destroy();
-            sources.remove(key);
-            garbage.remove(i);
-        }
+//        Map<Integer, Entity> entities = core.getGame().getEntityManager().getEntities();
+//        List<Integer> keys = core.getGame().getEntityManager().getAudioSourcedEntites();
+//        for (int i = 0; i < keys.size(); i++)
+//        {
+//            Entity e = entities.get(keys.get(i));
+//            ECAudioSource sourceComp = (ECAudioSource) e.get(EComponent.AUDIO_SOURCE);
+//            if (sources.containsKey(e.getID()))
+//            {
+//                AudioSource source = getSource(e.getID());
+//
+//                source.setVolume(sourceComp.getVolume());
+//                source.setPitch(sourceComp.getPitch());
+//                source.setPlaying(sourceComp.isPlaying());
+//                source.setPaused(sourceComp.isPaused());
+//                source.setSound(sourceComp.getSound());
+//                source.setPosition(sourceComp.getPosition());
+//                source.setVelocity(sourceComp.getVelocity());
+//
+//                if (sourceComp.isPlaying())
+//                    sourceComp.stop();
+//            }
+//            else
+//            {
+//                addSource(e.getID(), new AudioSource());
+//            }
+//        }
+//        for (Map.Entry<Integer, AudioSource> entry : sources.entrySet())
+//        {
+//            AudioSource source = entry.getValue();
+//            source.update();
+//            if (source.isDestroyed() || (!keys.contains(entry.getKey()) && !source.isPlaying()))
+//                garbage.add(entry.getKey());
+//        }
+//        for (int i = 0; i < garbage.size(); i++)
+//        {
+//            int key = garbage.get(i);
+//            if (sources.get(key) != null)
+//                sources.get(key).destroy();
+//            sources.remove(key);
+//            garbage.remove(i);
+//        }
     }
 
     public static AudioSource getSource(int id)

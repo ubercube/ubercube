@@ -32,6 +32,7 @@ public class ServerPlayer extends Player
 	private long pingTime;
 	private long ping;
 	private boolean pinged;
+	private boolean hitable;
 
 	public ServerPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
@@ -91,5 +92,16 @@ public class ServerPlayer extends Player
 	public void setPinged(boolean pinged)
 	{
 		this.pinged = pinged;
+	}
+
+	@Override
+	public boolean isHitable()
+	{
+		return hitable;
+	}
+
+	public void setHitable(boolean hitable)
+	{
+		this.hitable = hitable;
 	}
 }

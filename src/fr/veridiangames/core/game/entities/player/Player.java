@@ -33,6 +33,7 @@ public class Player extends Entity
 {
 	private Vec3 newPosition;
 	private boolean dead;
+	private boolean hitable;
 	
 	public Player(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
@@ -45,11 +46,17 @@ public class Player extends Entity
 		super.add(new ECAudioSource());
 
 		this.dead = false;
+		this.hitable = false;
 	}
-	
+
+	int time = 0;
 	public void update(GameCore core)
 	{
 		super.update(core);
+		time++;
+		if (time > 60 * 5)
+			hitable = true;
+
 		if (newPosition != null)
 		{
 			Vec3 smoothPosition = getPosition().copy().add(newPosition.copy().sub(getPosition()).mul(0.2f));
@@ -133,6 +140,16 @@ public class Player extends Entity
 
 	public void setDead(boolean dead)
 	{
+		if (dead)
+		{
+			time = 0;
+			hitable = false;
+		}
 		this.dead = dead;
+	}
+
+	public boolean isHitable()
+	{
+		return hitable;
 	}
 }

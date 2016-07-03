@@ -229,13 +229,13 @@ public class Main
 		this.display = display;
 	}
 	
-	public void openConnection(int clientID, String address, int port)
+	public void openConnection(int clientID, String name, String address, int port)
 	{
 		this.console = new Console();
 		net = new NetworkClient(clientID, address, port, this);
 		
 		float midWorld = core.getGame().getData().getWorldSize() / 2 * 16;
-		ClientPlayer player = new ClientPlayer(clientID, new String("ID" + clientID).substring(0, 6), new Vec3(midWorld, 30, midWorld), new Quat(), address, port);
+		ClientPlayer player = new ClientPlayer(clientID, name, new Vec3(midWorld, 30, midWorld), new Quat(), address, port);
 		player.setNetwork(net);
 		
 		core.getGame().setPlayer(player);
