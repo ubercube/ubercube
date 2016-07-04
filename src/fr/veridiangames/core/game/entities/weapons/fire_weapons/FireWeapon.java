@@ -80,6 +80,7 @@ public class FireWeapon extends Weapon
 	
 	private void shootBullet(GameCore core)
 	{
+		Vec3 shootPosition = this.holder.getEyePosition().copy().add(holder.getTransform().getForward());
 		Bullet bullet = new Bullet(Indexer.getUniqueID(), holder.getID(), "", this.shootPoint.getPosition(), this.transform.getRotation(), shootForce);
 		net.send(new BulletShootPacket(holder.getID(), bullet));
 		bullet.setNetwork(net);

@@ -51,8 +51,8 @@ public class GameLoadingScreen extends GuiCanvas
         this.joinGame = false;
 
         GuiPanel bg = new GuiPanel(0, 0, display.getWidth(), display.getHeight());
-        bg.setTexture(TextureLoader.loadTexture("res/textures/LoadingBG.png", GL_LINEAR, false));
-        bg.setColor(Color4f.WHITE);
+        //bg.setTexture(TextureLoader.loadTexture("res/textures/LoadingBG.png", GL_LINEAR, false));
+        bg.setColor(new Color4f(0, 0, 0, 0.5f));
         bg.setOrigin(GuiComponent.GuiOrigin.A);
         bg.setScreenParent(GuiComponent.GuiCorner.SCALED);
         super.add(bg);

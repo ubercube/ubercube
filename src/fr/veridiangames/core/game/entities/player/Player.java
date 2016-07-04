@@ -133,6 +133,11 @@ public class Player extends Entity
 		return ((ECAudioSource) super.get(EComponent.AUDIO_SOURCE));
 	}
 
+	public Vec3 getEyePosition()
+	{
+		return getPosition().copy().add(0, 2.5f * 0.5f, 0);
+	}
+
 	public boolean isDead()
 	{
 		return dead;

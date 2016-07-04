@@ -362,6 +362,10 @@ public class Vec3 {
 		return x == v.x && y == v.y && z == v.z;
 	}
 
+	public boolean equals(float x, float y, float z)  {
+		return this.x == x && this.y == y && this.z == z;
+	}
+
 	public void println() {
 		System.out.println(this);
 	}
