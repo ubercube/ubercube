@@ -140,7 +140,7 @@ public class Rigidbody
 				Vec3 mtd = data.getMtd();
 
 				grounded = false;
-				if (data.getNormal().y == 1 && velocity.y <= 0 && mainForce.y <= 0)
+				if (data.getNormal().equals(0, 1, 0) && velocity.y <= 0 && mainForce.y <= 0)
 				{
 					gravity.y = 0;
 					mainForce.y = 0;

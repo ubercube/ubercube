@@ -69,7 +69,7 @@ public class WeaponPositionPacket extends Packet
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		ECWeapon weapon = (ECWeapon) client.getCore().getGame().getEntityManager().get(clientID).get(EComponent.WEAPON);
+		ECWeapon weapon = (ECWeapon) client.getCore().getGame().getEntityManager().get(clientID).get(EComponent.WEAPON); //TODO: Null pointer
 		weapon.getWeapon().setPosition(weaponPosition);
 	}
 }

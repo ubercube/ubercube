@@ -33,6 +33,8 @@ import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Vec3;
 
+import static javax.swing.text.html.HTML.Tag.HEAD;
+
 /**
  * Created by Marccspro on 3 f�vr. 2016.
  */
@@ -62,6 +64,11 @@ public class EntityManager
 		for (int i = 0; i < keys.size(); i++)
 		{
 			Entity e = get(keys.get(i));
+			if (e == null)
+			{
+				remove(keys.get(i));
+				continue;
+			}
 			e.update(core);	//TODO: Null pointer
 			
 			if (e.isDestroyed())
@@ -142,7 +149,30 @@ public class EntityManager
 		
 		return result;
 	}
-	
+
+	public List<Entity> getEntitiesAt(Vec3 point)
+	{
+		List<Entity> result = new ArrayList<>();
+		for (int i = 0; i < entities.size(); i++)
+		{
+			Entity e = entities.get(keys.get(i));
+			if (e.contains(EComponent.RENDER))
+			{
+				Vec3 epos = ((ECRender) e.get(EComponent.RENDER)).getTransform().getPosition();
+				Vec3 esize = ((ECRender) e.get(EComponent.RENDER)).getScale();
+
+				if (point.x > epos.x - esize.x && point.x < epos.x + esize.x &&
+						point.y > epos.y - esize.y && point.y < epos.y + esize.y &&
+						point.z > epos.z - esize.z && point.z < epos.z + esize.z)
+				{
+					result.add(e);
+					break;
+				}
+			}
+		}
+		return result;
+	}
+
 	public Entity getEntityAt(Vec3 point, String... targetTags)
 	{
 		Entity result = null;

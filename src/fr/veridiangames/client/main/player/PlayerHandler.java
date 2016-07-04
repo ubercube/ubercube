@@ -96,7 +96,7 @@ public class PlayerHandler
 		mouse.setDX(input.getMouse().getDX());
 		mouse.setDY(input.getMouse().getDY());
 
-		ray.setPosition(player.getPosition().copy().add(0, 2.5f * 0.5f, 0));
+		ray.setPosition(player.getEyePosition().copy());
 		ray.setDirection(player.getViewDirection());
 
 		/** Weapon switch **/
