@@ -140,12 +140,24 @@ public class Rigidbody
 				Vec3 mtd = data.getMtd();
 
 				grounded = false;
-				if (data.getNormal().equals(0, 1, 0) && velocity.y <= 0 && mainForce.y <= 0)
+				if (data.getNormal().y == 1 && velocity.y <= 0 && mainForce.y <= 0)
 				{
 					gravity.y = 0;
 					mainForce.y = 0;
 					velocity.y = 0;
 					grounded = true;
+				}
+				if (data.getNormal().x != 0)
+				{
+					gravity.x = 0;
+					mainForce.x = 0;
+					velocity.x = 0;
+				}
+				if (data.getNormal().z != 0)
+				{
+					gravity.z = 0;
+					mainForce.z = 0;
+					velocity.z = 0;
 				}
 				this.collider.getPosition().add(mtd);
 			}

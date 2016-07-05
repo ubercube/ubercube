@@ -60,6 +60,8 @@ public class DisconnectPacket extends Packet
 
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
+		if (!server.getCore().getGame().getEntityManager().getEntities().containsKey(id))
+			return;
 		String name = ((ECName) server.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
 		server.getCore().getGame().remove(id);
 		server.sendToAll(new DisconnectPacket(this));

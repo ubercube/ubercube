@@ -88,7 +88,8 @@ public class PlayerHandler
 		key.setLeft(input.getKey(Input.KEY_Q));
 		key.setRight(input.getKey(Input.KEY_D));
 		key.setJump(input.getKey(Input.KEY_SPACE));
-		key.setCrouche(input.getKey(Input.KEY_LEFT_SHIFT));
+		key.setRun(input.getKey(Input.KEY_LEFT_SHIFT));
+		key.setCrouche(input.getKey(Input.KEY_LEFT_CONTROL));
 
 		if (input.getKeyDown(Input.KEY_F))
 			key.setFly(!key.isFly());

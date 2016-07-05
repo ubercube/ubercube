@@ -30,6 +30,8 @@ import fr.veridiangames.core.physics.Rigidbody;
 public class ECKeyMovement extends EComponent
 {
 	private float speed;
+	private float walkSpeed;
+	private float runSpeed;
 	private float jumpForce;
 	
 	private boolean	up;
@@ -41,14 +43,17 @@ public class ECKeyMovement extends EComponent
 	private boolean crouche;
 	private boolean prone;
 
+	private boolean run;
+
 	private boolean fly;
 
-	public ECKeyMovement(float speed, float jumpForce)
+	public ECKeyMovement(float walkSpeed, float runSpeed, float jumpForce)
 	{
 		super(KEY_MOVEMENT);
 		super.addDependencies(RENDER, RIGIDBODY);
 
-		this.speed = speed;
+		this.walkSpeed = walkSpeed;
+		this.runSpeed = runSpeed;
 		this.jumpForce = jumpForce;
 		this.fly = true;
 	}
@@ -61,6 +66,11 @@ public class ECKeyMovement extends EComponent
 		Vec3 leftDirection = rotation.getLeft().copy().mul(1, 0, 1).normalize();
 
 		Rigidbody body = ((ECRigidbody) parent.get(RIGIDBODY)).getBody();
+
+		if (run)
+			speed = runSpeed;
+		else
+			speed = walkSpeed;
 
 		if (up)
 			body.applyForce(forwardDirection, speed);
@@ -87,8 +97,8 @@ public class ECKeyMovement extends EComponent
 					body.applyForce(Vec3.UP, jumpForce);
 		}
 
-		if (crouche)
-			body.applyForce(Vec3.UP, -speed);
+//		if (crouche)
+//			body.applyForce(Vec3.UP, -speed);
 	}
 
 	public boolean isUp()
@@ -189,5 +199,15 @@ public class ECKeyMovement extends EComponent
 	public void setFly(boolean fly)
 	{
 		this.fly = fly;
+	}
+
+	public boolean isRun()
+	{
+		return run;
+	}
+
+	public void setRun(boolean run)
+	{
+		this.run = run;
 	}
 }
