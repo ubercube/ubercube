@@ -87,8 +87,8 @@ public class NetworkServerTCP implements Runnable
         for (ClientSocket client : clients)
         {
             Socket sock = client.getSocket();
-            String sockIp = sock.getInetAddress().getHostName();
-            String ip = address.getHostName();
+            String sockIp = sock.getInetAddress().getHostAddress();
+            String ip = address.getHostAddress();
             if (sockIp.equals(ip) && sock.getPort() == port)
                 return client;
         }
