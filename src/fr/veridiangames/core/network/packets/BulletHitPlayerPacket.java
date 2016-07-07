@@ -26,8 +26,6 @@ import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
 
-import static sun.audio.AudioPlayer.player;
-
 /**
  * Created by Marccspro on 26 f�vr. 2016.
  */
@@ -73,19 +71,14 @@ public class BulletHitPlayerPacket extends Packet
     public void process(NetworkableServer server, InetAddress address, int port)
     {
         ServerPlayer p = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId);
-        p.setHitable(hitable);
-        System.out.println(hitable);
-        if (hitable)
+        p.setLife(p.getLife() - 20);    // TODO : Modify damage
+        if(p.getLife() <= 0)
         {
-            p.setLife(p.getLife() - 20);    // TODO : Modify damage
-            if(p.getLife() <= 0)
-            {
-                server.sendToAll(new DeathPacket(playerId));
-                ((ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId)).setDead(true);
-            }
-            else
-                server.send(new BulletHitPlayerPacket(this, p.isHitable(), p.getLife()), p.getNetwork().getAddress(), p.getNetwork().getPort());
+            server.tcpSendToAll(new DeathPacket(playerId));
+            ((ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId)).setDead(true);
         }
+        else
+            server.tcpSend(new BulletHitPlayerPacket(this, p.isHitable(), p.getLife()), p.getNetwork().getAddress(), p.getNetwork().getPort());
     }
 
     public void process(NetworkableClient client, InetAddress address, int port)

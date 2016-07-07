@@ -19,16 +19,11 @@
 
 package fr.veridiangames.client.network;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.network.NetworkableClient;
-import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.client.main.Main;
@@ -37,108 +32,61 @@ import fr.veridiangames.client.main.console.Console;
 /**
  * Created by Marccspro on 24 f�vr. 2016.
  */
-public class NetworkClient implements Runnable, NetworkableClient
+public class NetworkClient implements NetworkableClient
 {
 	private boolean running = false;
 
-	private int 			id;
-	private int				port;
-	private InetAddress		address;
-	private DatagramSocket	socket;
+	private int 			port;
+	private InetAddress 	address;
 	private Main 			main;
 	private Console 		console;
 	private boolean 		connected;
 
-	public NetworkClient(int id, String address, int port, Main main)
-	{
-		this.main = main;
-		this.console = main.getConsole();
-		connect(id, address, port);
-		new Thread(this, "receive-thread").start();
-	}
+	private NetworkClientTCP tcp;
+	private NetworkClientUDP udp;
 
-	private boolean connect(int id, String address, int port)
+	public NetworkClient(int id, String address, int port, Main main)
 	{
 		try
 		{
-			this.id = id;
 			this.address = InetAddress.getByName(address);
+			this.main = main;
+			this.console = main.getConsole();
 			this.port = port;
-			this.socket = new DatagramSocket();
-			
-			log("Connecting to " + address + ":" + port);
-			
-			return true;
-		}
-		catch (SocketException e)
-		{
-			e.printStackTrace();
-			return false;
+
+			tcp = new NetworkClientTCP(this, id, address, port);
+			udp = new NetworkClientUDP(this, id, address, port);
 		}
 		catch (UnknownHostException e)
 		{
 			e.printStackTrace();
-			return false;
 		}
 	}
 	
-	public void run()
+	public void tcpSend(DataBuffer data)
 	{
-		running = true;
-		
-		while (running)
-		{
-			try
-			{
-				byte[] data = new byte[2048];
-				DatagramPacket packet = new DatagramPacket(data, data.length);
-				socket.receive(packet);
-				parsePacket(packet);
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
+		tcp.send(data.getData());
 	}
 	
-	public void parsePacket(DatagramPacket receive)
+	public void tcpSend(Packet packet)
 	{
-		DataBuffer data = new DataBuffer(receive.getData());
-		Packet packet = PacketManager.getPacket(data.getInt());
-		packet.read(data);
-		packet.process(this, receive.getAddress(), receive.getPort());
+		log("packet: " + packet);
+		tcpSend(packet.getData());
 	}
-	
-	public void send(DataBuffer data)
+
+	public void udpSend(DataBuffer data)
 	{
-		new Thread("send-thread")
-		{
-			public void run()
-			{
-				try
-				{
-					DatagramPacket packet = new DatagramPacket(data.getData(), data.getData().length, address, port);
-					socket.send(packet);
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}.start();
+		udp.send(data.getData());
 	}
-	
-	public void send(Packet packet)
+
+	public void udpSend(Packet packet)
 	{
-		send(packet.getData());
+		udpSend(packet.getData());
 	}
 	
 	public void stop()
 	{
-		socket.close();
 		log("Network has terminated !");
-
 		System.exit(0);
 	}
 
@@ -176,5 +124,15 @@ public class NetworkClient implements Runnable, NetworkableClient
 	public InetAddress getAddress()
 	{
 		return address;
+	}
+
+	public NetworkClientTCP getTcp()
+	{
+		return tcp;
+	}
+
+	public NetworkClientUDP getUdp()
+	{
+		return udp;
 	}
 }

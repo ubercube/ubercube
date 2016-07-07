@@ -19,7 +19,6 @@
 
 package fr.veridiangames.core.network.packets;
 
-import fr.veridiangames.core.audio.Audio;
 import fr.veridiangames.core.game.entities.bullets.Bullet;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
@@ -107,7 +106,7 @@ public class BulletShootPacket extends Packet
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
 		id = Indexer.getUniqueID();
-		server.sendToAny(new BulletShootPacket(this), clientID);
+		server.udpSendToAny(new BulletShootPacket(this), clientID);
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)

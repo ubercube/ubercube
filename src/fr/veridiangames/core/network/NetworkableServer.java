@@ -32,13 +32,24 @@ public interface NetworkableServer
 {
 	public GameCore getCore();
 	public void log(String msg);
+
+	//UDP stuff
+	public void tcpSend(DataBuffer data, InetAddress address, int port);
+	public void tcpSend(Packet packet, InetAddress address, int port);
 	
-	public void send(DataBuffer data, InetAddress address, int port);
-	public void send(Packet packet, InetAddress address, int port);
+	public void tcpSendToAll(DataBuffer data);
+	public void tcpSendToAll(Packet data);
 	
-	public void sendToAll(DataBuffer data);
-	public void sendToAll(Packet data);
-	
-	public void sendToAny(DataBuffer data, int... ignoreID);
-	public void sendToAny(Packet data, int... ignoreID);
+	public void tcpSendToAny(DataBuffer data, int... ignoreID);
+	public void tcpSendToAny(Packet data, int... ignoreID);
+
+	//TCP stuff
+	public void udpSend(DataBuffer data, InetAddress address, int port);
+	public void udpSend(Packet packet, InetAddress address, int port);
+
+	public void udpSendToAll(DataBuffer data);
+	public void udpSendToAll(Packet data);
+
+	public void udpSendToAny(DataBuffer data, int... ignoreID);
+	public void udpSendToAny(Packet data, int... ignoreID);
 }

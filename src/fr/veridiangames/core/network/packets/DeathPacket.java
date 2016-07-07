@@ -20,8 +20,6 @@
 package fr.veridiangames.core.network.packets;
 
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
-import fr.veridiangames.core.game.entities.player.ClientPlayer;
-import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
@@ -69,7 +67,7 @@ public class DeathPacket extends Packet
         {
             client.log("You died !");
             client.getCore().getGame().getPlayer().setDead(true);
-            client.send(new RespawnPacket(client.getCore().getGame().getPlayer().getID()));
+            client.tcpSend(new RespawnPacket(client.getCore().getGame().getPlayer().getID()));
         }
         client.getCore().getGame().spawn(new ParticleSystem(Indexer.getUniqueID(), "Death", ((Player)client.getCore().getGame().getEntityManager().getEntities().get(playerId)).getPosition())
             .setParticleVelocity(new Vec3(0, 0.2f, 0))

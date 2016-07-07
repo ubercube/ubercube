@@ -33,7 +33,7 @@ public class PacketManager
 	
 	static
 	{
-		packets = new HashMap<Integer, Class<? extends Packet>>();
+		packets = new HashMap<>();
 		packets.put(Packet.CONNECT, ConnectPacket.class);
 		packets.put(Packet.ENTITY_SYNC, EntitySyncPacket.class);
 		packets.put(Packet.ENTITY_MOVEMENT, EntityMovementPacket.class);

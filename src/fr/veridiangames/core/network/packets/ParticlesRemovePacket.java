@@ -61,7 +61,7 @@ public class ParticlesRemovePacket extends Packet
 
     public void process(NetworkableServer server, InetAddress address, int port)
     {
-        server.sendToAll(new ParticlesRemovePacket(this));
+        server.tcpSendToAll(new ParticlesRemovePacket(this));
     }
 
     public void process(NetworkableClient client, InetAddress address, int port)

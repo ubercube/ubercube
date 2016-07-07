@@ -19,7 +19,6 @@
 
 package fr.veridiangames.client.main;
 
-import fr.veridiangames.client.audio.AudioManager;
 import fr.veridiangames.client.main.player.PlayerHudCanvas;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
@@ -61,7 +60,7 @@ public class Main
 	public Main()
 	{
 		/* *** AUDIO INITIALISATION *** */
-		AudioManager.init();
+//		AudioManager.init();
 	}
 
 	public void init()
@@ -97,7 +96,7 @@ public class Main
 
 	public void update()
 	{
-		AudioManager.update(core);
+//		AudioManager.update(core);
 
 		guiManager.update();
 		gameLoading.update(this);
@@ -203,9 +202,9 @@ public class Main
 				ticks = 0;
 			}
 		}
-		net.send(new DisconnectPacket(core.getGame().getPlayer().getID()));
+		net.tcpSend(new DisconnectPacket(core.getGame().getPlayer().getID()));
 		display.setDestroyed(true);
-		AudioManager.destroy();
+//		AudioManager.destroy();
 		System.exit(0);
 	}
 
@@ -239,7 +238,7 @@ public class Main
 		player.setNetwork(net);
 		
 		core.getGame().setPlayer(player);
-		net.send(new ConnectPacket(player));
+		net.tcpSend(new ConnectPacket(player));
 	}
 
 	public PlayerHandler getPlayerHandler()

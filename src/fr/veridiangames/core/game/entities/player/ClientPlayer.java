@@ -24,22 +24,16 @@ import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
 import fr.veridiangames.core.maths.Quat;
-import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
-import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.NetworkableClient;
-import fr.veridiangames.core.network.packets.DeathPacket;
 import fr.veridiangames.core.network.packets.EntityMovementPacket;
 import fr.veridiangames.core.network.packets.WeaponPositionPacket;
 import fr.veridiangames.core.physics.Rigidbody;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
 import fr.veridiangames.core.utils.Indexer;
-import fr.veridiangames.core.utils.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static javax.swing.text.html.HTML.Tag.HEAD;
 
 /**
  * Created by Marccspro on 3 f�vr. 2016.
@@ -80,7 +74,7 @@ public class ClientPlayer extends Player
 		time++;
 		if (time % 60 == 5)
 		{
-			net.send(new EntityMovementPacket(this));
+			net.udpSend(new EntityMovementPacket(this));
 			time = 0;
 		}
 
@@ -90,7 +84,7 @@ public class ClientPlayer extends Player
 		if (this.getWeaponManager().getWeapon().hasPositionChanged())
 		{
 			this.getWeaponManager().getWeapon().setPositionChanged(false);
-			net.send(new WeaponPositionPacket(this.getID(), this.getWeaponManager().getWeapon().getCurrentPosition()));
+			net.tcpSend(new WeaponPositionPacket(this.getID(), this.getWeaponManager().getWeapon().getCurrentPosition()));
 		}
 
 		/** Debug **/

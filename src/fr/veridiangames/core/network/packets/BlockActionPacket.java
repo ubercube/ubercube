@@ -21,9 +21,6 @@ package fr.veridiangames.core.network.packets;
 
 import java.net.InetAddress;
 
-import fr.veridiangames.core.game.entities.Entity;
-import fr.veridiangames.core.game.entities.components.ECName;
-import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
@@ -71,12 +68,12 @@ public class BlockActionPacket extends Packet
 		if (action == 0)
 		{
 			server.getCore().getGame().getWorld().addModifiedBlock(x, y, z, 0);
-			server.sendToAll(new BlockActionPacket(clientID, action, x, y, z, block));
+			server.tcpSendToAll(new BlockActionPacket(clientID, action, x, y, z, block));
 		}
 		else if (action == 1)
 		{
 			server.getCore().getGame().getWorld().addModifiedBlock(x, y, z, block);
-			server.sendToAll(new BlockActionPacket(clientID, action, x, y, z, block));
+			server.tcpSendToAll(new BlockActionPacket(clientID, action, x, y, z, block));
 		}
 	}
 

@@ -17,28 +17,23 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.core.network;
+package fr.veridiangames.server.server;
 
-import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.network.packets.Packet;
-import fr.veridiangames.core.utils.DataBuffer;
+import java.net.InetAddress;
 
 /**
- * Created by Marccspro on 26 f�vr. 2016.
+ * Created by Marc on 05/07/2016.
  */
-public interface NetworkableClient
+public class NetworkPacket
 {
-	public GameCore getCore();
-	public void log(String msg);
+    public byte[] data;
+    public InetAddress address;
+    public int port;
 
-	//UDP stuff
-	public void tcpSend(DataBuffer data);
-	public void tcpSend(Packet packet);
-
-	//TCP stuff
-	public void udpSend(DataBuffer data);
-	public void udpSend(Packet packet);
-
-	public void setConnected(boolean connected);
-	public boolean isConnected();
+    public NetworkPacket(byte[] data, InetAddress address, int port)
+    {
+        this.data = data;
+        this.address = address;
+        this.port = port;
+    }
 }

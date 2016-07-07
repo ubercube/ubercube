@@ -88,7 +88,7 @@ public class ParticlesSpawnPacket extends Packet
 
     public void process(NetworkableServer server, InetAddress address, int port)
     {
-        server.sendToAll(new ParticlesSpawnPacket(this));
+        server.udpSendToAll(new ParticlesSpawnPacket(this));
     }
 
     public void process(NetworkableClient client, InetAddress address, int port)

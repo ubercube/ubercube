@@ -20,8 +20,6 @@
 package fr.veridiangames.core.game.entities.bullets;
 
 import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.audio.Audio;
-import fr.veridiangames.core.game.Game;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.ECAudioSource;
 import fr.veridiangames.core.game.entities.components.ECName;
@@ -107,7 +105,7 @@ public class Bullet extends Entity
 			Vec3i impactPosition = new Vec3i(position);
 			Vec3 normal = new Vec3(impactPosition).gtNorm(position);
 
-			this.net.send(new BulletHitBlockPacket(new Vec3i(blockPosition), 0.1f, block));
+			this.net.tcpSend(new BulletHitBlockPacket(new Vec3i(blockPosition), 0.1f, block));
 
 			ParticleSystem hitParticles = new ParticlesBulletHit(Indexer.getUniqueID(), getPosition().copy());
 			hitParticles.setNetwork(net);
@@ -120,7 +118,7 @@ public class Bullet extends Entity
 			blood.setParticleVelocity(getRotation().getBack().copy().mul(0.02f));
 			blood.setNetwork(net);
 			Player player = (Player) e;
-			this.net.send(new BulletHitPlayerPacket(player));
+			this.net.tcpSend(new BulletHitPlayerPacket(player));
 			this.destroy();
 		}
 	}

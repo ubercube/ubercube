@@ -23,7 +23,6 @@ import fr.veridiangames.client.audio.AudioListener;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
-import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.WeaponShovel;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
@@ -31,7 +30,6 @@ import fr.veridiangames.core.network.packets.BlockActionPacket;
 import fr.veridiangames.client.inputs.Input;
 import fr.veridiangames.client.network.NetworkClient;
 import fr.veridiangames.core.network.packets.WeaponChangePacket;
-import org.lwjgl.glfw.GLFW;
 
 /**
  * Created by Marccspro on 14 f�vr. 2016.
@@ -113,7 +111,7 @@ public class PlayerHandler
 				weapon.setWeapon(weapon.getWeaponID() + 1);
 			}
 			weapon.getWeapon().setNet(this.net);
-			this.net.send(new WeaponChangePacket(player));
+			this.net.tcpSend(new WeaponChangePacket(player));
 		}
 		if(input.getMouse().getDWheel() < 0)
 		{
@@ -126,7 +124,7 @@ public class PlayerHandler
 				weapon.setWeapon(weapon.getWeaponID() - 1);
 			}
 			weapon.getWeapon().setNet(this.net);
-			this.net.send(new WeaponChangePacket(player));
+			this.net.tcpSend(new WeaponChangePacket(player));
 		}
 
 		selection.setShow(false);
@@ -160,7 +158,7 @@ public class PlayerHandler
 	
 	private void removeBlock(Vec3i block)
 	{
-		net.send(new BlockActionPacket(core.getGame().getPlayer().getID(), 0, block.x, block.y, block.z, 0));
+		net.tcpSend(new BlockActionPacket(core.getGame().getPlayer().getID(), 0, block.x, block.y, block.z, 0));
 	}
 	
 	private void placeBlock(Vec3 point)
@@ -182,7 +180,7 @@ public class PlayerHandler
 		int yp = (int) check.y;
 		int zp = (int) check.z;
 
-		net.send(new BlockActionPacket(core.getGame().getPlayer().getID(), 1, x + xp, y + yp, z + zp, 0x7f555555));
+		net.tcpSend(new BlockActionPacket(core.getGame().getPlayer().getID(), 1, x + xp, y + yp, z + zp, 0x7f555555));
 	}
 	
 	public PlayerSelection getSelection()

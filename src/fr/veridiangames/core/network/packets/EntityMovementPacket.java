@@ -21,8 +21,6 @@ package fr.veridiangames.core.network.packets;
 
 import java.net.InetAddress;
 
-import fr.veridiangames.core.game.entities.Entity;
-import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
@@ -90,14 +88,14 @@ public class EntityMovementPacket extends Packet
 		Player player = (Player) server.getCore().getGame().getEntityManager().getEntities().get(id);
 		if (player == null) 
 			return;
-		
+
 		player.setPosition(position);
 		player.setRotation(rotation);
 
 		if (position.y < 0)
-			server.sendToAll(new DeathPacket(id));
+			server.tcpSendToAll(new DeathPacket(id));
 		
-		server.sendToAll(new EntityMovementPacket(this));
+		server.udpSendToAll(new EntityMovementPacket(this));
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)

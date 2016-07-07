@@ -83,7 +83,7 @@ public class BulletHitBlockPacket extends Packet
 		if(Color4f.getColorFromARGB(block).getAlpha() <= 0)
 			this.block = 0;
 		server.getCore().getGame().getWorld().addModifiedBlock(position.x, position.y, position.z, block);
-		server.sendToAll(new BulletHitBlockPacket(this));
+		server.tcpSendToAll(new BulletHitBlockPacket(this));
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)

@@ -83,10 +83,9 @@ public class RespawnPacket extends Packet
         int x = GameCore.getInstance().getGame().getData().getWorldSize() * 8;
         int y = GameCore.getInstance().getGame().getData().getWorldSize() * 8;
         int height = (int) GameCore.getInstance().getGame().getData().getWorldGen().getNoise(x, y) + 15;
-        System.out.println("HEIGHT: " + height);
         this.position = new Vec3(x, height, y);      // TODO : Modify position
 
-        server.send(new RespawnPacket(this), p.getNetwork().getAddress(), p.getNetwork().getPort());
+        server.tcpSend(new RespawnPacket(this), p.getNetwork().getAddress(), p.getNetwork().getPort());
     }
 
     @Override

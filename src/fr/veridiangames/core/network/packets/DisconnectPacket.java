@@ -64,7 +64,7 @@ public class DisconnectPacket extends Packet
 			return;
 		String name = ((ECName) server.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
 		server.getCore().getGame().remove(id);
-		server.sendToAll(new DisconnectPacket(this));
+		server.tcpSendToAll(new DisconnectPacket(this));
 		server.log(name + " disconnected...");
 	}
 

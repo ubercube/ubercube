@@ -171,7 +171,7 @@ public class ParticleSystem extends Entity
 
     public void destroy() {
 		if(net != null)
-        	net.send(new ParticlesRemovePacket(this));
+        	net.tcpSend(new ParticlesRemovePacket(this));
 		else
 			getCore().getGame().getEntityManager().remove(getID());
     }
@@ -346,7 +346,7 @@ public class ParticleSystem extends Entity
 
     public ParticleSystem setNetwork(NetworkableClient net) {
         this.net = net;
-        this.net.send(new ParticlesSpawnPacket(this));
+        this.net.udpSend(new ParticlesSpawnPacket(this));
         return this;
     }
 

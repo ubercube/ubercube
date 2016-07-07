@@ -64,7 +64,7 @@ public class WeaponPositionPacket extends Packet
 
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
-		server.sendToAny(new WeaponPositionPacket(clientID, weaponPosition), clientID);
+		server.tcpSendToAny(new WeaponPositionPacket(clientID, weaponPosition), clientID);
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)

@@ -99,11 +99,7 @@ public class ConnectPacket extends Packet
 	{
 		server.getCore().getGame().spawn(new ServerPlayer(id, name, position, rotation, address.getHostName(), port));
 		server.log(name + " just connected !");
-		server.sendToAll(new ConnectPacket(this));
-		for (int i = 0; i < server.getCore().getGame().getWorld().getModifiedBlocks().size(); i++)
-		{
-			System.out.println("COLOR: " + Integer.toHexString(server.getCore().getGame().getWorld().getModifiedBlocks().get(i).w));
-		}
+		server.tcpSendToAll(new ConnectPacket(this));
 
 		/* SENDING MULTIPLE PACKETS TO AVOID READ OVERFLOW OF 2048 */
 		int modifiedBlocksSize = server.getCore().getGame().getWorld().getModifiedBlocks().size();
@@ -120,7 +116,7 @@ public class ConnectPacket extends Packet
 				int index = i * icount + j;
 				dataToSend.add(currentData.get(index));
 			}
-			server.send(new SyncBlocksPacket(dataToSend), address, port);
+			server.tcpSend(new SyncBlocksPacket(dataToSend), address, port);
 		}
 
 		for (int i = 0; i < server.getCore().getGame().getEntityManager().getNetworkableEntites().size(); i++)
@@ -130,7 +126,7 @@ public class ConnectPacket extends Packet
 				continue;
 			Entity e = server.getCore().getGame().getEntityManager().getEntities().get(id);
 			if (e instanceof Player)
-				server.send(new EntitySyncPacket((Player) e), address, port);
+				server.tcpSend(new EntitySyncPacket((Player) e), address, port);
 		}
 	}
 

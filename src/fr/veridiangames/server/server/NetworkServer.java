@@ -19,11 +19,8 @@
 
 package fr.veridiangames.server.server;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
+import java.io.*;
+import java.net.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -34,7 +31,6 @@ import fr.veridiangames.core.game.entities.components.ECNetwork;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
 import fr.veridiangames.core.network.NetworkableServer;
-import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.network.packets.PingPacket;
 import fr.veridiangames.core.network.packets.TimeoutPacket;
@@ -45,9 +41,8 @@ import fr.veridiangames.server.server.commands.CmdHelp;
 import fr.veridiangames.server.server.commands.CmdKick;
 import fr.veridiangames.server.server.commands.CmdStop;
 import fr.veridiangames.server.server.commands.Command;
-
-import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
-import static sun.audio.AudioPlayer.player;
+import fr.veridiangames.server.server.tcp.NetworkServerTCP;
+import fr.veridiangames.server.server.udp.NetworkServerUDP;
 
 /**
  * Created by Marccspro on 24 f�vr. 2016.
@@ -55,7 +50,10 @@ import static sun.audio.AudioPlayer.player;
 public class NetworkServer implements Runnable, NetworkableServer
 {
 	private int						port;
-	private DatagramSocket			socket;
+
+	private NetworkServerTCP tcp;
+	private NetworkServerUDP udp;
+
 	private GameCore				core;
 	private Scanner					scanner;
 	private Map<String, Command>	commands;
@@ -64,33 +62,21 @@ public class NetworkServer implements Runnable, NetworkableServer
 	{
 		this.port = port;
 		this.scanner = scanner;
-		this.commands = new HashMap<String, Command>();
+		this.commands = new HashMap<>();
 		this.commands.put("help", new CmdHelp());
 		this.commands.put("stop", new CmdStop());
 		this.commands.put("kick", new CmdKick());
 		
-		
 		log("Requesting server start on the " + SystemUtils.getDate());
+		log("Starting server for " + GameCore.GAME_NAME + " " + GameCore.GAME_VERSION + " v" + GameCore.GAME_SUB_VERSION);
 		log("Setting up server files...");
 		FileManager.init();
 		log("Requesting connection on port " + port + "...");
-		openConnection();
-	}
 
-	private void openConnection()
-	{
-		try
-		{
-			this.socket = new DatagramSocket(port);
-			new Thread(this, "server-thread").start();
-		}
-		catch (SocketException e)
-		{
-			log("Server already listening on port: " + port);
-			log("Server Failed to connect !");
-			log("Terminating...");
-			System.exit(0);
-		}
+		tcp = new NetworkServerTCP(this, port);
+		udp = new NetworkServerUDP(this, port);
+
+		new Thread(this, "server-main-thread").start();
 	}
 
 	public void run()
@@ -98,11 +84,9 @@ public class NetworkServer implements Runnable, NetworkableServer
 		log("Server successfully started on port " + port + " !");
 		log("Type \"help\" to list every command.");
 		log("Type \"stop\" to stop the server.");
-		ping();
-		receive();
+		//ping();
 		while (true)
 		{
-			System.out.print("> ");
 			String cmd = scanner.nextLine();
 			String[] params = cmd.split(" ");
 			String cmdName = params[0];
@@ -133,12 +117,12 @@ public class NetworkServer implements Runnable, NetworkableServer
 							player.setTimeOutTests(player.getTimeOutTests() + 1);
 							if (player.getTimeOutTests() > 5)
 							{
-								sendToAll(new TimeoutPacket(key));
+								tcpSendToAll(new TimeoutPacket(key));
 								core.getGame().getEntityManager().remove(key);
 								log(player.getName() + " timed out !");
 							}
 							log("Pinging " + player.getName() + "... " + player.getPing() + "ms");
-							send(new PingPacket(player.getID(), 0L, player.getPing()), player.getNetwork().getAddress(), player.getNetwork().getPort());
+							tcpSend(new PingPacket(player.getID(), 0L, player.getPing()), player.getNetwork().getAddress(), player.getNetwork().getPort());
 						}
 						before += 1000000000.0;
 					}
@@ -147,78 +131,32 @@ public class NetworkServer implements Runnable, NetworkableServer
 		}.start();
 	}
 
-	private void receive()
+	public void tcpSend(DataBuffer data, InetAddress address, int port)
 	{
-		new Thread("receive-thread")
-		{
-			public void run()
-			{
-				while (true)
-				{
-					try
-					{
-						byte[] data = new byte[2048];
-						DatagramPacket receive = new DatagramPacket(data, data.length);
-						socket.receive(receive);
-						parsePacket(receive);
-					}
-					catch (IOException e)
-					{
-						e.printStackTrace();
-					}
-				}
-			}
-		}.start();
+		tcp.send(data.getData(), address, port);
 	}
 
-	public void parsePacket(DatagramPacket receive)
+	public void tcpSend(Packet packet, InetAddress address, int port)
 	{
-		DataBuffer data = new DataBuffer(receive.getData());
-		Packet packet = PacketManager.getPacket(data.getInt());
-		packet.read(data);
-		packet.process(this, receive.getAddress(), receive.getPort());
+		tcpSend(packet.getData(), address, port);
 	}
 
-	public void send(DataBuffer data, InetAddress address, int port)
-	{
-		new Thread("send-thread")
-		{
-			public void run()
-			{
-				try
-				{
-					DatagramPacket packet = new DatagramPacket(data.getData(), data.getData().length, address, port);
-					socket.send(packet);
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}.start();
-	}
-
-	public void send(Packet packet, InetAddress address, int port)
-	{
-		send(packet.getData(), address, port);
-	}
-
-	public void sendToAll(DataBuffer data)
+	public void tcpSendToAll(DataBuffer data)
 	{
 		for (int i : core.getGame().getEntityManager().getNetworkableEntites())
 		{
 			Entity e = core.getGame().getEntityManager().getEntities().get(i);
 			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);
-			send(data, net.getAddress(), net.getPort());
+			tcpSend(data, net.getAddress(), net.getPort());
 		}
 	}
 
-	public void sendToAll(Packet packet)
+	public void tcpSendToAll(Packet packet)
 	{
-		sendToAll(packet.getData());
+		tcpSendToAll(packet.getData());
 	}
 
-	public void sendToAny(DataBuffer data, int... ignoreID)
+	public void tcpSendToAny(DataBuffer data, int... ignoreID)
 	{
 		for (int i : core.getGame().getEntityManager().getNetworkableEntites())
 		{
@@ -236,19 +174,79 @@ public class NetworkServer implements Runnable, NetworkableServer
 
 			Entity e = core.getGame().getEntityManager().getEntities().get(i);
 			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);
-			send(data, net.getAddress(), net.getPort());
+			tcpSend(data, net.getAddress(), net.getPort());
 		}
 	}
 
-	public void sendToAny(Packet packet, int... ignoreID)
+	public void tcpSendToAny(Packet packet, int... ignoreID)
 	{
-		sendToAny(packet.getData(), ignoreID);
+		tcpSendToAny(packet.getData(), ignoreID);
+	}
+
+	public void udpSend(DataBuffer data, InetAddress address, int port)
+	{
+		udp.send(data.getData(), address, port);
+	}
+
+	public void udpSend(Packet packet, InetAddress address, int port)
+	{
+		udpSend(packet.getData(), address, port);
+	}
+
+	public void udpSendToAll(DataBuffer data)
+	{
+		for (int i : core.getGame().getEntityManager().getNetworkableEntites())
+		{
+			Entity e = core.getGame().getEntityManager().getEntities().get(i);
+			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);
+			udpSend(data, net.getAddress(), net.getPort());
+		}
+	}
+
+	public void udpSendToAll(Packet packet)
+	{
+		udpSendToAll(packet.getData());
+	}
+
+	public void udpSendToAny(DataBuffer data, int... ignoreID)
+	{
+		for (int i : core.getGame().getEntityManager().getNetworkableEntites())
+		{
+			boolean passeIteration = false;
+			for (int j = 0; j < ignoreID.length; j++)
+			{
+				if (i == ignoreID[j])
+				{
+					passeIteration = true;
+					continue;
+				}
+			}
+			if (passeIteration)
+				continue;
+
+			Entity e = core.getGame().getEntityManager().getEntities().get(i);
+			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);
+			udpSend(data, net.getAddress(), net.getPort());
+		}
+	}
+
+	public void udpSendToAny(Packet packet, int... ignoreID)
+	{
+		udpSendToAny(packet.getData(), ignoreID);
 	}
 
 	public void stop()
 	{
-		socket.close();
-		log("Server stopped !");
+		try
+		{
+			tcp.stop();
+			udp.stop();
+			log("Server stopped !");
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public int getPort()

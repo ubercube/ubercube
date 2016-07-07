@@ -21,7 +21,6 @@ package fr.veridiangames.core.game.entities.weapons.fire_weapons;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.bullets.Bullet;
-import fr.veridiangames.core.game.entities.components.ECAudioSource;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
@@ -82,7 +81,7 @@ public class FireWeapon extends Weapon
 	{
 		Vec3 shootPosition = this.holder.getEyePosition().copy().add(holder.getTransform().getForward());
 		Bullet bullet = new Bullet(Indexer.getUniqueID(), holder.getID(), "", this.shootPoint.getPosition(), this.transform.getRotation(), shootForce);
-		net.send(new BulletShootPacket(holder.getID(), bullet));
+		net.udpSend(new BulletShootPacket(holder.getID(), bullet));
 		bullet.setNetwork(net);
 		core.getGame().spawn(bullet);
 	}
