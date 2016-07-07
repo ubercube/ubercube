@@ -56,6 +56,7 @@ public class NetworkClientTCP implements Runnable
             this.address = InetAddress.getByName(address);
             this.port = port;
             this.socket = new Socket(address, port);
+            this.socket.setTcpNoDelay(true);
             log("Connected to the TCP protocol !");
             new Thread(this, "tcp-thread").start();
         }
@@ -101,8 +102,6 @@ public class NetworkClientTCP implements Runnable
             {
                 try
                 {
-                    log("LENGTH: " + bytes.length);
-
                     out.writeInt(bytes.length);
                     out.write(bytes, 0, bytes.length);
                 }

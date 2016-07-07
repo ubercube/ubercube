@@ -30,6 +30,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 
 /**
  * Created by Marc on 07/07/2016.
@@ -43,8 +44,16 @@ public class ClientSocket implements Runnable
 
     public ClientSocket(Socket socket, NetworkServer server)
     {
-        this.socket = socket;
-        this.server = server;
+        try
+        {
+            this.socket = socket;
+            this.socket.setTcpNoDelay(true);
+            this.server = server;
+        } catch (SocketException e)
+        {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     public void run()
@@ -63,7 +72,6 @@ public class ClientSocket implements Runnable
             try
             {
                 int len = in.readInt();
-                System.out.println("READ SIZE: " + len);
                 byte[] bytes = new byte[len];
                 in.readFully(bytes);
                 DataBuffer data = new DataBuffer(bytes);
