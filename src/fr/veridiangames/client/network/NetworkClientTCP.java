@@ -47,14 +47,11 @@ public class NetworkClientTCP implements Runnable
     private DataInputStream in;
     private DataOutputStream out;
 
-    private List<NetworkPacket> packets;
-
     public NetworkClientTCP(NetworkClient client, int id, String address, int port)
     {
 
         this.client = client;
         this.id = id;
-        this.packets = new ArrayList<>();
         try
         {
             this.address = InetAddress.getByName(address);
@@ -87,7 +84,11 @@ public class NetworkClientTCP implements Runnable
                     int len = in.readInt();
                     System.out.println(in + " || " + len);
                     byte[] bytes = new byte[len];
-                    in.readFully(bytes);
+                    if (len > 0)
+                    {
+                        in.readFully(bytes);
+                        continue;
+                    }
                     DataBuffer data = new DataBuffer(bytes);
                     Packet packet = PacketManager.getPacket(data.getInt());
                     if (packet == null)
@@ -114,6 +115,9 @@ public class NetworkClientTCP implements Runnable
             return;
         try
         {
+            if (bytes.length == 0)
+                return;
+
             out.writeInt(bytes.length);
             out.write(bytes, 0, bytes.length);
         }

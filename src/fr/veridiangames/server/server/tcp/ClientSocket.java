@@ -66,8 +66,11 @@ public class ClientSocket implements Runnable
                 try
                 {
                     int len = in.readInt();
+                    System.out.println("receiveing size: " + len);
                     byte[] bytes = new byte[len];
-                    in.readFully(bytes);
+                    if (len > 0)
+                        in.readFully(bytes);
+
                     DataBuffer data = new DataBuffer(bytes);
                     int packetID = data.getInt();
                     Packet packet = PacketManager.getPacket(packetID);
@@ -93,6 +96,10 @@ public class ClientSocket implements Runnable
     {
         try
         {
+            if (bytes.length == 0)
+                return;
+
+            System.out.println("Sending size: " + bytes.length);
             out.writeInt(bytes.length);
             out.write(bytes, 0, bytes.length);
         }

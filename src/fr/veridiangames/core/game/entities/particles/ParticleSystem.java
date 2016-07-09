@@ -346,7 +346,7 @@ public class ParticleSystem extends Entity
 
     public ParticleSystem setNetwork(NetworkableClient net) {
         this.net = net;
-        this.net.udpSend(new ParticlesSpawnPacket(this));
+        this.net.tcpSend(new ParticlesSpawnPacket(this));
         return this;
     }
 
