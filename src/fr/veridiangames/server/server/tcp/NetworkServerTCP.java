@@ -19,7 +19,7 @@
 
 package fr.veridiangames.server.server.tcp;
 
-import fr.veridiangames.server.server.NetworkPacket;
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.server.server.NetworkServer;
 
 import java.io.IOException;
@@ -84,13 +84,22 @@ public class NetworkServerTCP implements Runnable
 
     public ClientSocket getClient(InetAddress address, int port)
     {
-        for (ClientSocket client : clients)
+        for (int i = 0; i < clients.size(); i++)
         {
-            Socket sock = client.getSocket();
-            String sockIp = sock.getInetAddress().getHostAddress();
-            String ip = address.getHostAddress();
-            if (sockIp.equals(ip) && sock.getPort() == port)
-                return client;
+            try
+            {
+                ClientSocket client = clients.get(i);
+                Socket sock = client.getSocket();
+                String sockIp = sock.getInetAddress().getHostAddress();
+                String ip = address.getHostAddress();
+                if (sockIp.equals(ip) && sock.getPort() == port)
+                    return client;
+            }
+            catch (Exception e)
+            {
+                clients.remove(i);
+                return null;
+            }
         }
         return null;
     }
@@ -104,6 +113,23 @@ public class NetworkServerTCP implements Runnable
     {
         log("Closing TCP connection...");
         socket.close();
+    }
+
+    public void disconnectClient(InetAddress address, int port)
+    {
+        ClientSocket client = getClient(address, port);
+        if (client == null)
+        {
+            clients.remove(client);
+            return;
+        }
+        client.stop();
+        clients.remove(client);
+    }
+
+    public List<ClientSocket> getClients()
+    {
+        return clients;
     }
 }
 

@@ -22,13 +22,11 @@ package fr.veridiangames.server.server.tcp;
 import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
-import fr.veridiangames.server.server.NetworkPacket;
 import fr.veridiangames.server.server.NetworkServer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -62,28 +60,32 @@ public class ClientSocket implements Runnable
         {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
+
+            while (socket != null)
+            {
+                try
+                {
+                    int len = in.readInt();
+                    byte[] bytes = new byte[len];
+                    in.readFully(bytes);
+                    DataBuffer data = new DataBuffer(bytes);
+                    int packetID = data.getInt();
+                    Packet packet = PacketManager.getPacket(packetID);
+                    if (packet == null)
+                        continue;
+                    System.out.println("receiving: " + packet);
+                    packet.read(data);
+                    packet.process(server, socket.getInetAddress(), socket.getPort());
+                }
+                catch (IOException e)
+                {
+                    socket = null;
+                }
+            }
         }
         catch (IOException e)
         {
             e.printStackTrace();
-        }
-        while (socket != null)
-        {
-            try
-            {
-                int len = in.readInt();
-                byte[] bytes = new byte[len];
-                in.readFully(bytes);
-                DataBuffer data = new DataBuffer(bytes);
-                int packetID = data.getInt();
-                Packet packet = PacketManager.getPacket(packetID);
-                packet.read(data);
-                packet.process(server, socket.getInetAddress(), socket.getPort());
-            }
-            catch (IOException e)
-            {
-                socket = null;
-            }
         }
     }
 
@@ -95,6 +97,17 @@ public class ClientSocket implements Runnable
             out.write(bytes, 0, bytes.length);
         }
         catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void stop()
+    {
+        try
+        {
+            socket.close();
+        } catch (IOException e)
         {
             e.printStackTrace();
         }

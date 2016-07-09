@@ -35,6 +35,7 @@ import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.network.packets.PingPacket;
 import fr.veridiangames.core.network.packets.TimeoutPacket;
 import fr.veridiangames.core.utils.DataBuffer;
+import fr.veridiangames.core.utils.Sleep;
 import fr.veridiangames.core.utils.SystemUtils;
 import fr.veridiangames.server.FileManager;
 import fr.veridiangames.server.server.commands.CmdHelp;
@@ -43,6 +44,7 @@ import fr.veridiangames.server.server.commands.CmdStop;
 import fr.veridiangames.server.server.commands.Command;
 import fr.veridiangames.server.server.tcp.NetworkServerTCP;
 import fr.veridiangames.server.server.udp.NetworkServerUDP;
+
 
 /**
  * Created by Marccspro on 24 f�vr. 2016.
@@ -68,7 +70,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 		this.commands.put("kick", new CmdKick());
 		
 		log("Requesting server start on the " + SystemUtils.getDate());
-		log("Starting server for " + GameCore.GAME_NAME + " " + GameCore.GAME_VERSION + " v" + GameCore.GAME_SUB_VERSION);
+		log("Starting server for " + GameCore.GAME_NAME + " " + GameCore.GAME_VERSION_NAME + " v" + GameCore.GAME_SUB_VERSION);
 		log("Setting up server files...");
 		FileManager.init();
 		log("Requesting connection on port " + port + "...");
@@ -84,7 +86,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 		log("Server successfully started on port " + port + " !");
 		log("Type \"help\" to list every command.");
 		log("Type \"stop\" to stop the server.");
-		//ping();
+		ping();
 		while (true)
 		{
 			String cmd = scanner.nextLine();
@@ -108,7 +110,8 @@ public class NetworkServer implements Runnable, NetworkableServer
 				{
 					if (System.nanoTime() - before > 1000000000.0)
 					{
-						log("ping");
+						Sleep.sleep(2);
+						//log("ping");
 						for (int i = 0; i < core.getGame().getEntityManager().getPlayerEntites().size(); i++)
 						{
 							int key = core.getGame().getEntityManager().getPlayerEntites().get(i);
@@ -118,10 +121,10 @@ public class NetworkServer implements Runnable, NetworkableServer
 							if (player.getTimeOutTests() > 5)
 							{
 								tcpSendToAll(new TimeoutPacket(key));
-								core.getGame().getEntityManager().remove(key);
+								core.getGame().remove(key);
 								log(player.getName() + " timed out !");
 							}
-							log("Pinging " + player.getName() + "... " + player.getPing() + "ms");
+							//log("pinging " + player.getName());
 							tcpSend(new PingPacket(player.getID(), 0L, player.getPing()), player.getNetwork().getAddress(), player.getNetwork().getPort());
 						}
 						before += 1000000000.0;
@@ -138,13 +141,15 @@ public class NetworkServer implements Runnable, NetworkableServer
 
 	public void tcpSend(Packet packet, InetAddress address, int port)
 	{
+		log("Sending: " + packet);
 		tcpSend(packet.getData(), address, port);
 	}
 
 	public void tcpSendToAll(DataBuffer data)
 	{
-		for (int i : core.getGame().getEntityManager().getNetworkableEntites())
+		for (int ii = 0; ii < core.getGame().getEntityManager().getNetworkableEntites().size(); ii++)
 		{
+			int i = core.getGame().getEntityManager().getNetworkableEntites().get(ii);
 			Entity e = core.getGame().getEntityManager().getEntities().get(i);
 			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);
 			tcpSend(data, net.getAddress(), net.getPort());
@@ -158,8 +163,9 @@ public class NetworkServer implements Runnable, NetworkableServer
 
 	public void tcpSendToAny(DataBuffer data, int... ignoreID)
 	{
-		for (int i : core.getGame().getEntityManager().getNetworkableEntites())
+		for (int ii = 0; ii < core.getGame().getEntityManager().getNetworkableEntites().size(); ii++)
 		{
+			int i = core.getGame().getEntityManager().getNetworkableEntites().get(ii);
 			boolean passeIteration = false;
 			for (int j = 0; j < ignoreID.length; j++)
 			{
@@ -195,8 +201,9 @@ public class NetworkServer implements Runnable, NetworkableServer
 
 	public void udpSendToAll(DataBuffer data)
 	{
-		for (int i : core.getGame().getEntityManager().getNetworkableEntites())
+		for (int ii = 0; ii < core.getGame().getEntityManager().getNetworkableEntites().size(); ii++)
 		{
+			int i = core.getGame().getEntityManager().getNetworkableEntites().get(ii);
 			Entity e = core.getGame().getEntityManager().getEntities().get(i);
 			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);
 			udpSend(data, net.getAddress(), net.getPort());
@@ -210,8 +217,9 @@ public class NetworkServer implements Runnable, NetworkableServer
 
 	public void udpSendToAny(DataBuffer data, int... ignoreID)
 	{
-		for (int i : core.getGame().getEntityManager().getNetworkableEntites())
+		for (int ii = 0; ii < core.getGame().getEntityManager().getNetworkableEntites().size(); ii++)
 		{
+			int i = core.getGame().getEntityManager().getNetworkableEntites().get(ii);
 			boolean passeIteration = false;
 			for (int j = 0; j < ignoreID.length; j++)
 			{
@@ -264,6 +272,16 @@ public class NetworkServer implements Runnable, NetworkableServer
 		return core;
 	}
 
+	public NetworkServerTCP getTcp()
+	{
+		return tcp;
+	}
+
+	public NetworkServerUDP getUdp()
+	{
+		return udp;
+	}
+
 	public void log(String msg)
 	{
 		System.out.println(msg);
@@ -273,4 +291,6 @@ public class NetworkServer implements Runnable, NetworkableServer
 	{
 		return commands;
 	}
+
+
 }

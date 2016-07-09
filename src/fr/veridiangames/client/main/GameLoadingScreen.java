@@ -82,6 +82,7 @@ public class GameLoadingScreen extends GuiCanvas
                 " - Tybau (Engineer)\n" +
                 " - Jimi Vacarians (Engineer)\n" +
                 " - Nik' (Art/Design)\n" +
+                " - MrDev023 (Engineer)\n" +
                 "\n" +
                 "\n" +
                 "Credits to:\n" +

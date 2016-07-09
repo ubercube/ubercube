@@ -25,8 +25,6 @@ import fr.veridiangames.client.rendering.Display;
 
 import java.security.SecureRandom;
 
-import static javax.swing.text.html.HTML.Tag.HEAD;
-
 /**
  * Created by Marccspro on 28 janv. 2016.
  */

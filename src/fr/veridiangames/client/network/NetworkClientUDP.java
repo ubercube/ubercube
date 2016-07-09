@@ -71,6 +71,8 @@ public class NetworkClientUDP implements Runnable
                 DataBuffer data = new DataBuffer(receive.getData());
                 int packetID = data.getInt();
                 Packet packet = PacketManager.getPacket(packetID);
+                if (packet == null)
+                    continue;
                 packet.read(data);
                 packet.process(client, receive.getAddress(), receive.getPort());
             }

@@ -17,23 +17,26 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.server.server;
-
-import java.net.InetAddress;
+package fr.veridiangames.core.utils;
 
 /**
- * Created by Marc on 05/07/2016.
+ * Created by Marc on 08/07/2016.
  */
-public class NetworkPacket
+public class Sleep
 {
-    public byte[] data;
-    public InetAddress address;
-    public int port;
-
-    public NetworkPacket(byte[] data, InetAddress address, int port)
+    public static void sleep()
     {
-        this.data = data;
-        this.address = address;
-        this.port = port;
+        sleep(1);
+    }
+
+    public static void sleep(int factor)
+    {
+        try
+        {
+            Thread.sleep(factor);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

@@ -45,14 +45,14 @@ public class AudioSystem
 
     public static void init()
     {
-        buffers = new ArrayList<>();
-
-        device = alcOpenDevice((ByteBuffer)null);
-        ALCCapabilities deviceCaps = ALC.createCapabilities(device);
-
-        context = alcCreateContext(device, (IntBuffer)null);
-        alcMakeContextCurrent(context);
-        createCapabilities(deviceCaps);
+//        buffers = new ArrayList<>();
+//
+//        device = alcOpenDevice((ByteBuffer)null);
+//        ALCCapabilities deviceCaps = ALC.createCapabilities(device);
+//
+//        context = alcCreateContext(device, (IntBuffer)null);
+//        alcMakeContextCurrent(context);
+//        createCapabilities(deviceCaps);
     }
 
 
@@ -62,11 +62,11 @@ public class AudioSystem
      */
     public static void destroy()
     {
-        for (int i = 0; i < buffers.size(); i++)
-        {
-            alDeleteBuffers(buffers.get(i));
-        }
-        alcCloseDevice(device);
-        alcDestroyContext(context);
+//        for (int i = 0; i < buffers.size(); i++)
+//        {
+//            alDeleteBuffers(buffers.get(i));
+//        }
+//        alcCloseDevice(device);
+//        alcDestroyContext(context);
     }
 }

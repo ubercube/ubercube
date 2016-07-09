@@ -22,7 +22,8 @@ package fr.veridiangames.client.network;
 import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
-import fr.veridiangames.server.server.NetworkPacket;
+import fr.veridiangames.core.utils.Sleep;
+import fr.veridiangames.core.network.NetworkPacket;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -46,11 +47,14 @@ public class NetworkClientTCP implements Runnable
     private DataInputStream in;
     private DataOutputStream out;
 
+    private List<NetworkPacket> packets;
+
     public NetworkClientTCP(NetworkClient client, int id, String address, int port)
     {
 
         this.client = client;
         this.id = id;
+        this.packets = new ArrayList<>();
         try
         {
             this.address = InetAddress.getByName(address);
@@ -76,16 +80,26 @@ public class NetworkClientTCP implements Runnable
         {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
-
-            while (true)
+            while (socket != null)
             {
-                int len = in.readInt();
-                byte[] bytes = new byte[len];
-                in.readFully(bytes);
-                DataBuffer data = new DataBuffer(bytes);
-                Packet packet = PacketManager.getPacket(data.getInt());
-                packet.read(data);
-                packet.process(client, socket.getInetAddress(), socket.getPort());
+                try
+                {
+                    int len = in.readInt();
+                    System.out.println(in + " || " + len);
+                    byte[] bytes = new byte[len];
+                    in.readFully(bytes);
+                    DataBuffer data = new DataBuffer(bytes);
+                    Packet packet = PacketManager.getPacket(data.getInt());
+                    if (packet == null)
+                        continue;
+                    log("receiving: " + packet);
+                    packet.read(data);
+                    packet.process(client, socket.getInetAddress(), socket.getPort());
+                }
+                catch (IOException e)
+                {
+                    socket = null;
+                }
             }
         }
         catch (IOException e)
@@ -96,21 +110,17 @@ public class NetworkClientTCP implements Runnable
 
     public void send(byte[] bytes)
     {
-        new Thread("tcpSend-thread")
+        if (out == null)
+            return;
+        try
         {
-            public void run()
-            {
-                try
-                {
-                    out.writeInt(bytes.length);
-                    out.write(bytes, 0, bytes.length);
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
+            out.writeInt(bytes.length);
+            out.write(bytes, 0, bytes.length);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void log(String msg)

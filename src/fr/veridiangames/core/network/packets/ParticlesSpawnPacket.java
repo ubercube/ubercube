@@ -24,6 +24,7 @@ import fr.veridiangames.core.game.entities.particles.ParticlesManager;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
+import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.DataBuffer;
 
 import java.net.InetAddress;
@@ -38,6 +39,7 @@ public class ParticlesSpawnPacket extends Packet
     private int     playerId;
     private Vec3    position;
     private Vec3    velocity;
+    private int     color;
 
     public ParticlesSpawnPacket()
     {
@@ -58,6 +60,8 @@ public class ParticlesSpawnPacket extends Packet
         data.put(system.getParticleVelocity().y);
         data.put(system.getParticleVelocity().z);
 
+        data.put(system.getParticleColor().getARGB());
+
         data.flip();
     }
 
@@ -75,6 +79,8 @@ public class ParticlesSpawnPacket extends Packet
         data.put(packet.velocity.y);
         data.put(packet.velocity.z);
 
+        data.put(packet.color);
+
         data.flip();
     }
 
@@ -84,6 +90,7 @@ public class ParticlesSpawnPacket extends Packet
         particleName = buffer.getString();
         position = new Vec3(buffer.getFloat(), buffer.getFloat(), buffer.getFloat());
         velocity = new Vec3(buffer.getFloat(), buffer.getFloat(), buffer.getFloat());
+        color = buffer.getInt();
     }
 
     public void process(NetworkableServer server, InetAddress address, int port)
@@ -93,6 +100,10 @@ public class ParticlesSpawnPacket extends Packet
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        client.getCore().getGame().spawn(new ParticleSystem(id, ParticlesManager.getParticleSystem(particleName)).setPosition(position).setParticleVelocity(velocity));
+        client.getCore().getGame().spawn(new ParticleSystem(id,
+                ParticlesManager.getParticleSystem(particleName))
+                .setPosition(position)
+                .setParticleVelocity(velocity)
+                .setParticleColor(new Color4f(color)));
     }
 }

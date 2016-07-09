@@ -21,6 +21,7 @@ package fr.veridiangames.core.network.packets;
 
 import java.net.InetAddress;
 
+import fr.veridiangames.core.game.entities.components.ECNetwork;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.components.ECName;
 import fr.veridiangames.core.network.NetworkableClient;
@@ -63,13 +64,17 @@ public class DisconnectPacket extends Packet
 		if (!server.getCore().getGame().getEntityManager().getEntities().containsKey(id))
 			return;
 		String name = ((ECName) server.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
+		ECNetwork net = ((ECNetwork) server.getCore().getGame().getEntityManager().get(id).get(EComponent.NETWORK));
 		server.getCore().getGame().remove(id);
 		server.tcpSendToAll(new DisconnectPacket(this));
+		server.getTcp().disconnectClient(net.getAddress(), net.getPort());
 		server.log(name + " disconnected...");
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
+		if (!client.getCore().getGame().getEntityManager().getEntities().containsKey(id))
+			return;
 		String name = ((ECName) client.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
 		client.getCore().getGame().remove(id);
 		client.log(name + " disconnected...");

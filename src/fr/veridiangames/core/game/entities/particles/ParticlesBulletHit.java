@@ -30,16 +30,16 @@ public class ParticlesBulletHit extends ParticleSystem {
 
     public ParticlesBulletHit()
     {
-        this(Indexer.getUniqueID(), new Vec3());
+        this(Indexer.getUniqueID(), new Vec3(), new Color4f(0.3f, 0.15f, 0f));
     }
 
-    public ParticlesBulletHit(int id, Vec3 position)
+    public ParticlesBulletHit(int id, Vec3 position, Color4f color)
     {
         super(id, ParticlesManager.BULLET_HIT, position);
         super.useCollision(true);
         super.setGravity(new Vec3(0, -0.002f, 0));
         super.setScaleInterval(0.01f, 0.1f);
-        super.setParticleColors(new Color4f(0.3f, 0.15f, 0f));
+        super.setParticleColor(color);
         super.setImpulsion(true);
         super.setDuration(0);
         super.setParticleCount(30);

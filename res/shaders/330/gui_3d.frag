@@ -13,5 +13,5 @@ uniform int useVColor;
 void main(void)
 {
 	vec4 textureColor = texture(tex, v_coords);
-	fragColor = textureColor * vec4(0, 0, 0, 1);
+	fragColor = textureColor * in_color;
 }

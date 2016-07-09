@@ -27,7 +27,8 @@ import fr.veridiangames.core.game.Game;
 public class GameCore
 {
 	public static final String GAME_NAME = "Ubercube";
-	public static final String GAME_VERSION = "Pre-Alpha 1";
+	public static final String GAME_VERSION = "0.0.1";
+	public static final String GAME_VERSION_NAME = "Pre-Alpha 1";
 	public static final String GAME_SUB_VERSION = "001";
 
 	private static GameCore instance;

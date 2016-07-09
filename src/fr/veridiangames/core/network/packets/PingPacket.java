@@ -68,6 +68,8 @@ public class PingPacket extends Packet
     public void process(NetworkableServer server, InetAddress address, int port)
     {
         ServerPlayer player = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(userID);
+        if (player == null)
+            return;
         player.setPing((long)((pingTime - player.getPingTime()) / 1000.0f));
         player.setPingTime(pingTime);
         player.setTimeOutTests(0);

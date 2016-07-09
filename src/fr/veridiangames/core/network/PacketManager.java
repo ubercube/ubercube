@@ -57,6 +57,8 @@ public class PacketManager
 	{
 		try
 		{
+			if (!packets.containsKey(packet))
+				return null;
 			return (Packet) packets.get(packet).newInstance();
 		}
 		catch (InstantiationException e)

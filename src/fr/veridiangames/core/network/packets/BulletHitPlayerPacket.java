@@ -74,6 +74,8 @@ public class BulletHitPlayerPacket extends Packet
     public void process(NetworkableServer server, InetAddress address, int port)
     {
         ServerPlayer p = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId);
+        if (p == null)
+            return;
         p.setLife(p.getLife() - 20);    // TODO : Modify damage
         if(p.getLife() <= 0)
         {

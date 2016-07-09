@@ -153,6 +153,12 @@ public class Rigidbody
 					mainForce.x = 0;
 					velocity.x = 0;
 				}
+//				if (data.getNormal().y != 0)
+//				{
+//					gravity.y = 0;
+//					mainForce.y = 0;
+//					velocity.y = 0;
+//				}
 				if (data.getNormal().z != 0)
 				{
 					gravity.z = 0;

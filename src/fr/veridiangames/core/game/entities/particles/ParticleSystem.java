@@ -51,7 +51,7 @@ public class ParticleSystem extends Entity
 	private int 			    particleLifeTime;
 	private int				    particleLifeTimeRandomness;
 
-	private Color4f[] 		    particleColors;
+	private Color4f 			particleColor;
 	private float			    particleColorRandomness;
 
 	private Vec3 			    particleVelocity;
@@ -83,7 +83,7 @@ public class ParticleSystem extends Entity
 		this.particleSpawnBox = new Vec3();
 
 		this.particleLifeTime = 50;
-		this.particleColors = new Color4f[] {new Color4f(1.0f, 0.0f, 1.0f)};
+		this.particleColor = new Color4f(1.0f, 0.0f, 1.0f);
 		this.particleVelocity = new Vec3();
 
 		this.particleLifeTimeRandomness = 10;
@@ -115,7 +115,7 @@ public class ParticleSystem extends Entity
         this.particleSpawnBox = system.getParticleSpawnBox();
 
         this.particleLifeTime = system.getParticleLifeTime();
-        this.particleColors = system.getParticleColors();
+        this.particleColor = system.getParticleColor();
         this.particleVelocity = system.getParticleVelocity();
 
         this.particleLifeTimeRandomness = system.getParticleLifeTimeRandomness();
@@ -227,13 +227,13 @@ public class ParticleSystem extends Entity
         return this;
     }
 
-	public Color4f[] getParticleColors()
+	public Color4f getParticleColor()
 	{
-		return particleColors;
+		return particleColor;
 	}
 
-	public ParticleSystem setParticleColors(Color4f... particleColors) {
-		this.particleColors = particleColors;
+	public ParticleSystem setParticleColor(Color4f particleColor) {
+		this.particleColor = particleColor;
 		return this;
 	}
 

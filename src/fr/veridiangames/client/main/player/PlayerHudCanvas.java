@@ -27,12 +27,9 @@ import fr.veridiangames.client.rendering.guis.components.GuiLabel;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
-import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.fire_weapons.FireWeapon;
 import fr.veridiangames.core.utils.Color4f;
-
-import static sun.audio.AudioPlayer.player;
 
 /**
  * Created by Marc on 23/06/2016.
@@ -103,7 +100,7 @@ public class PlayerHudCanvas extends GuiCanvas
         crosshairFront.setScreenParent(GuiComponent.GuiCorner.CENTER);
         super.add(crosshairFront);
 
-        GuiLabel gameVersionLabel = new GuiLabel(GameCore.GAME_NAME + " " + GameCore.GAME_VERSION, 10, 10, 20f);
+        GuiLabel gameVersionLabel = new GuiLabel(GameCore.GAME_NAME + " " + GameCore.GAME_VERSION_NAME, 10, 10, 20f);
         gameVersionLabel.setOrigin(GuiComponent.GuiOrigin.A);
         gameVersionLabel.setScreenParent(GuiComponent.GuiCorner.TL);
         gameVersionLabel.setColor(Color4f.WHITE);

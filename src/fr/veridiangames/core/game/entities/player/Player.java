@@ -31,6 +31,8 @@ import fr.veridiangames.core.maths.Vec3;
  */
 public class Player extends Entity
 {
+	public static final int MAX_LIFE = 100;
+
 	private Vec3 newPosition;
 	private boolean dead;
 	private boolean hitable;

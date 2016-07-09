@@ -22,20 +22,16 @@ package fr.veridiangames.server.server.udp;
 import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
-import fr.veridiangames.server.server.NetworkPacket;
+import fr.veridiangames.core.network.NetworkPacket;
 import fr.veridiangames.server.server.NetworkServer;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
 
 /**
  * Created by Marc on 05/07/2016.
@@ -78,6 +74,8 @@ public class NetworkServerUDP implements Runnable
                 DataBuffer data = new DataBuffer(receive.getData());
                 int packetID = data.getInt();
                 Packet packet = PacketManager.getPacket(packetID);
+                if (packet == null)
+                    continue;
                 packet.read(data);
                 packet.process(server, receive.getAddress(), receive.getPort());
             }

@@ -48,7 +48,7 @@ public class Particle
         transform.setLocalRotation(Quat.euler(system.getRandom().nextFloat(), system.getRandom().nextFloat(), system.getRandom().nextFloat()));
 
         float colorRandomness = system.getRandom().nextFloat() * system.getParticleColorRandomness() - system.getParticleColorRandomness() / 2;
-        color = system.getParticleColors()[system.getRandom().nextInt(system.getParticleColors().length)].copy().add(new Color4f(colorRandomness, colorRandomness, colorRandomness, 0));
+        color = system.getParticleColor().copy().add(new Color4f(colorRandomness, colorRandomness, colorRandomness, 0));
 
         lifeTime = system.getParticleLifeTime() + system.getRandom().nextInt(system.getParticleLifeTimeRandomness());
 

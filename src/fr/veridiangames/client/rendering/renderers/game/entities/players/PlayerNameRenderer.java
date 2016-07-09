@@ -21,6 +21,7 @@ package fr.veridiangames.client.rendering.renderers.game.entities.players;
 
 import fr.veridiangames.client.guis.TrueTypeFont;
 import fr.veridiangames.client.rendering.Camera;
+import fr.veridiangames.client.rendering.guis.StaticFont;
 import fr.veridiangames.client.rendering.renderers.guis.Font3DRenderer;
 import fr.veridiangames.client.rendering.shaders.Gui3DShader;
 import fr.veridiangames.core.GameCore;
@@ -46,7 +47,7 @@ public class PlayerNameRenderer
 
     public PlayerNameRenderer()
     {
-        font = new TrueTypeFont(new Font("Arial", Font.BOLD, 32), true);
+        font = new TrueTypeFont(StaticFont.Kroftsmann(0, 30), true);
         playerFontRenderers = new ArrayList<>();
     }
 
@@ -61,7 +62,8 @@ public class PlayerNameRenderer
                 continue;
             String name = ((Player) e).getName();
             Vec3 position = ((Player) e).getPosition();
-            playerFontRenderers.add(new Font3DRenderer(font, name, position.copy().add(0, 2.3f, 0)));
+            Font3DRenderer renderer = new Font3DRenderer(font, name, position.copy().add(0, 2.3f, 0));
+            playerFontRenderers.add(renderer);
         }
     }
 
@@ -69,7 +71,7 @@ public class PlayerNameRenderer
     {
         for (int i = 0; i < playerFontRenderers.size(); i++)
         {
-            playerFontRenderers.get(i).render(shader, camera, Color4f.BLUE, 0);
+            playerFontRenderers.get(i).render(shader, camera, Color4f.WHITE, 4);
         }
     }
 }

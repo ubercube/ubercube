@@ -210,7 +210,21 @@ public class Font3DRenderer
 		float dist = camera.getTransform().getPosition().copy().sub(transform.getPosition()).magnitude();
 
 		transform.setLocalRotation(camera.getTransform().getRotation());
-		transform.setLocalScale(new Vec3(dist / (float) font.fontTexture.getHeight() * 0.5f));
+		transform.setLocalScale(new Vec3(10.0f / (float) font.fontTexture.getHeight() * 0.5f));
+
+		if (dropShadow > 0)
+		{
+			shader.setModelViewMatrix(transform.toMatrix().mul(Mat4.translate(-w / 2 + dropShadow, -h / 2 - dropShadow, 0.3f)));
+			shader.setColor(new Color4f(0, 0, 0, 0.8f));
+			glEnableVertexAttribArray(0);
+			glEnableVertexAttribArray(1);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo);
+			glVertexAttribPointer(0, 3, GL_FLOAT, false, 5*4, 0);
+			glVertexAttribPointer(1, 2, GL_FLOAT, false, 5*4, 12);
+			glDrawArrays(GL_QUADS, 0, text.length() * 4);
+			glEnableVertexAttribArray(1);
+			glEnableVertexAttribArray(0);
+		}
 
 		shader.setModelViewMatrix(transform.toMatrix().mul(Mat4.translate(-w / 2, -h / 2, 0)));
 		shader.setColor(color);
