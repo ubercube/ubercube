@@ -159,7 +159,6 @@ public class Rigidbody
 					mainForce.z = 0;
 					velocity.z = 0;
 				}
-				System.out.println(mtd);
 				this.collider.getPosition().add(mtd);
 			}
 		}

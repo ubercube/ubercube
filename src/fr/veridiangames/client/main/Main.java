@@ -38,6 +38,8 @@ import fr.veridiangames.client.rendering.renderers.MainRenderer;
 import fr.veridiangames.core.network.packets.DisconnectPacket;
 import fr.veridiangames.core.utils.Color4f;
 
+import javax.swing.*;
+
 /**
  * Created by Marccspro on 28 janv. 2016.
  */
@@ -119,6 +121,47 @@ public class Main
 				core.update();
 				playerHandler.update(display.getInput());
 				mainRenderer.update();
+			}
+		}
+
+		if (core.getGame().getPlayer().isKicked())
+		{
+			joinGame = false;
+			Object[] options = {"OK"};
+			int n = JOptionPane.showOptionDialog(null,
+					"You got kicked !","Warning",
+					JOptionPane.PLAIN_MESSAGE,
+					JOptionPane.QUESTION_MESSAGE,
+					null,
+					options,
+					options[0]);
+
+			if (n == JOptionPane.YES_OPTION)
+			{
+				net.setConnected(false);
+				connected = false;
+				net.stop();
+				System.exit(0);
+			}
+		}
+		if (core.getGame().getPlayer().isTimedOut())
+		{
+			joinGame = false;
+			Object[] options = {"OK"};
+			int n = JOptionPane.showOptionDialog(null,
+					"Time out: connection lost !","Warning",
+					JOptionPane.PLAIN_MESSAGE,
+					JOptionPane.QUESTION_MESSAGE,
+					null,
+					options,
+					options[0]);
+
+			if (n == JOptionPane.YES_OPTION)
+			{
+				net.setConnected(false);
+				connected = false;
+				net.stop();
+				System.exit(0);
 			}
 		}
 	}

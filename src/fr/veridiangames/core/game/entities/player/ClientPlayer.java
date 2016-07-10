@@ -45,6 +45,7 @@ public class ClientPlayer extends Player
 	private int life;
 	private int timeoutTime;
 	private boolean timedOut;
+	private boolean kicked;
 	private List<ParticleSystem> particleSystems;
 	
 	public ClientPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
@@ -68,18 +69,23 @@ public class ClientPlayer extends Player
 		this.getWeaponManager().getWeapon().setNet(net);
 	}
 	
-	int time = 0;
+	int movementTime = 0;
+	int timeOutTime = 0;
 	public void update(GameCore core)
 	{
 		super.update(core);
-		time++;
-		if (time % 60 == 5)
+		movementTime++;
+		if (movementTime % 60 == 5)
 		{
 			net.udpSend(new EntityMovementPacket(this));
+			movementTime = 0;
+		}
+		timeOutTime++;
+		if (timeOutTime % 60 == 0)
+		{
 			timeoutTime++;
 			if (timeoutTime > 10)
 				timedOut = true;
-			time = 0;
 		}
 
 		if (this.life < 0) this.life = 0;
@@ -182,5 +188,15 @@ public class ClientPlayer extends Player
 	public void setTimedOut(boolean timedOut)
 	{
 		this.timedOut = timedOut;
+	}
+
+	public boolean isKicked()
+	{
+		return kicked;
+	}
+
+	public void setKicked(boolean kicked)
+	{
+		this.kicked = kicked;
 	}
 }
