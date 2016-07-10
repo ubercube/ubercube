@@ -136,8 +136,8 @@ public class DataBuffer
 	{
 		if (readID >= data.length)
 		{
-			System.err.println("Read Overflow..." + writeID + "\n\tMax capacity: " + data.length);
-			return 0;
+			System.err.println("Read Overflow..." + readID + "\n\tMax capacity: " + data.length);
+			return -1;
 		}
 		return data[readID++];
 	}

@@ -63,8 +63,8 @@ public class NetworkServerTCP implements Runnable
         {
             while (true)
             {
-                Socket newClient = this.socket.accept();
-                ClientSocket client = new ClientSocket(newClient, server);
+                Socket acceptedClient = this.socket.accept();
+                ClientSocket client = new ClientSocket(acceptedClient, server);
                 clients.add(client);
                 client.start();
             }

@@ -43,7 +43,8 @@ public class ClientPlayer extends Player
 	private NetworkableClient net;
 
 	private int life;
-
+	private int timeoutTime;
+	private boolean timedOut;
 	private List<ParticleSystem> particleSystems;
 	
 	public ClientPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
@@ -75,6 +76,9 @@ public class ClientPlayer extends Player
 		if (time % 60 == 5)
 		{
 			net.udpSend(new EntityMovementPacket(this));
+			timeoutTime++;
+			if (timeoutTime > 10)
+				timedOut = true;
 			time = 0;
 		}
 
@@ -84,7 +88,7 @@ public class ClientPlayer extends Player
 		if (this.getWeaponManager().getWeapon().hasPositionChanged())
 		{
 			this.getWeaponManager().getWeapon().setPositionChanged(false);
-			net.tcpSend(new WeaponPositionPacket(this.getID(), this.getWeaponManager().getWeapon().getCurrentPosition()));
+			net.udpSend(new WeaponPositionPacket(this.getID(), this.getWeaponManager().getWeapon().getCurrentPosition()));
 		}
 
 		/** Debug **/
@@ -158,5 +162,25 @@ public class ClientPlayer extends Player
 	public void setLife(int life)
 	{
 		this.life = life;
+	}
+
+	public int getTimeoutTime()
+	{
+		return timeoutTime;
+	}
+
+	public void setTimeoutTime(int timeoutTime)
+	{
+		this.timeoutTime = timeoutTime;
+	}
+
+	public boolean isTimedOut()
+	{
+		return timedOut;
+	}
+
+	public void setTimedOut(boolean timedOut)
+	{
+		this.timedOut = timedOut;
 	}
 }

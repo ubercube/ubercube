@@ -125,7 +125,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 								log(player.getName() + " timed out !");
 							}
 							//log("pinging " + player.getName());
-							tcpSend(new PingPacket(player.getID(), 0L, player.getPing()), player.getNetwork().getAddress(), player.getNetwork().getPort());
+							udpSend(new PingPacket(player.getID(), 0L, player.getPing()), player.getNetwork().getAddress(), player.getNetwork().getPort());
 						}
 						before += 1000000000.0;
 					}
@@ -141,7 +141,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 
 	public void tcpSend(Packet packet, InetAddress address, int port)
 	{
-		log("Sending: " + packet);
+		log("[OUT] Sending: " + packet);
 		tcpSend(packet.getData(), address, port);
 	}
 
@@ -158,6 +158,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 
 	public void tcpSendToAll(Packet packet)
 	{
+		log("[OUT] Sending to all: " + packet);
 		tcpSendToAll(packet.getData());
 	}
 

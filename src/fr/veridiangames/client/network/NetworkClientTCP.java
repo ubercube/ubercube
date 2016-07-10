@@ -22,12 +22,11 @@ package fr.veridiangames.client.network;
 import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
+import fr.veridiangames.core.utils.DataStream;
 import fr.veridiangames.core.utils.Sleep;
 import fr.veridiangames.core.network.NetworkPacket;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,14 +37,14 @@ import java.util.List;
  */
 public class NetworkClientTCP implements Runnable
 {
-    private NetworkClient   client;
-    private int 			id;
-    private int				port;
-    private InetAddress     address;
-    private Socket          socket;
+    private NetworkClient client;
+    private int id;
+    private int port;
+    private InetAddress address;
+    private Socket socket;
 
-    private DataInputStream in;
-    private DataOutputStream out;
+    private InputStream in;
+    private OutputStream out;
 
     public NetworkClientTCP(NetworkClient client, int id, String address, int port)
     {
@@ -60,12 +59,10 @@ public class NetworkClientTCP implements Runnable
             this.socket.setTcpNoDelay(true);
             log("Connected to the TCP protocol !");
             new Thread(this, "tcp-thread").start();
-        }
-        catch (UnknownHostException e)
+        } catch (UnknownHostException e)
         {
             e.printStackTrace();
-        }
-        catch (IOException e)
+        } catch (IOException e)
         {
             e.printStackTrace();
         }
@@ -75,35 +72,29 @@ public class NetworkClientTCP implements Runnable
     {
         try
         {
-            in = new DataInputStream(socket.getInputStream());
-            out = new DataOutputStream(socket.getOutputStream());
+            in = socket.getInputStream();
+            out = socket.getOutputStream();
             while (socket != null)
             {
                 try
                 {
-                    int len = in.readInt();
-                    System.out.println(in + " || " + len);
-                    byte[] bytes = new byte[len];
-                    if (len > 0)
-                    {
-                        in.readFully(bytes);
-                        continue;
-                    }
+                    byte[] bytes = DataStream.read(in);
                     DataBuffer data = new DataBuffer(bytes);
                     Packet packet = PacketManager.getPacket(data.getInt());
                     if (packet == null)
+                    {
                         continue;
-                    log("receiving: " + packet);
+                    }
+                    log("[IN] received: " + packet);
+                    log("[IN]-> received size: " + data.size());
                     packet.read(data);
                     packet.process(client, socket.getInetAddress(), socket.getPort());
-                }
-                catch (IOException e)
+                } catch (IOException e)
                 {
                     socket = null;
                 }
             }
-        }
-        catch (IOException e)
+        } catch (IOException e)
         {
             e.printStackTrace();
         }
@@ -117,11 +108,9 @@ public class NetworkClientTCP implements Runnable
         {
             if (bytes.length == 0)
                 return;
-
-            out.writeInt(bytes.length);
-            out.write(bytes, 0, bytes.length);
-        }
-        catch (IOException e)
+            log("[OUT]-> sending size: " + bytes.length);
+            DataStream.write(out, bytes);
+        } catch (IOException e)
         {
             e.printStackTrace();
         }

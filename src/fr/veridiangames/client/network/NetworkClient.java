@@ -70,7 +70,7 @@ public class NetworkClient implements NetworkableClient
 	
 	public void tcpSend(Packet packet)
 	{
-		log("packet: " + packet);
+		log("[OUT] packet: " + packet);
 		tcpSend(packet.getData());
 	}
 

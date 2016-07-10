@@ -67,7 +67,7 @@ public class WeaponChangePacket extends Packet
 
     public void process(NetworkableServer server, InetAddress address, int port)
     {
-        server.tcpSendToAll(new WeaponChangePacket(this));
+        server.udpSendToAll(new WeaponChangePacket(this));
     }
 
     public void process(NetworkableClient client, InetAddress address, int port)

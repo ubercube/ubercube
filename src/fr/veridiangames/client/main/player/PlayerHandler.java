@@ -111,7 +111,7 @@ public class PlayerHandler
 				weapon.setWeapon(weapon.getWeaponID() + 1);
 			}
 			weapon.getWeapon().setNet(this.net);
-			this.net.tcpSend(new WeaponChangePacket(player));
+			this.net.udpSend(new WeaponChangePacket(player));
 		}
 		if(input.getMouse().getDWheel() < 0)
 		{
@@ -124,7 +124,7 @@ public class PlayerHandler
 				weapon.setWeapon(weapon.getWeaponID() - 1);
 			}
 			weapon.getWeapon().setNet(this.net);
-			this.net.tcpSend(new WeaponChangePacket(player));
+			this.net.udpSend(new WeaponChangePacket(player));
 		}
 
 		selection.setShow(false);

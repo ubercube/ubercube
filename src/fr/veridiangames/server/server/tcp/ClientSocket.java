@@ -22,11 +22,10 @@ package fr.veridiangames.server.server.tcp;
 import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
+import fr.veridiangames.core.utils.DataStream;
 import fr.veridiangames.server.server.NetworkServer;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -36,8 +35,8 @@ import java.net.SocketException;
 public class ClientSocket implements Runnable
 {
     private Socket socket;
-    private DataInputStream in;
-    private DataOutputStream out;
+    private InputStream in;
+    private OutputStream out;
     private NetworkServer server;
 
     public ClientSocket(Socket socket, NetworkServer server)
@@ -58,25 +57,22 @@ public class ClientSocket implements Runnable
     {
         try
         {
-            in = new DataInputStream(socket.getInputStream());
-            out = new DataOutputStream(socket.getOutputStream());
+            in = socket.getInputStream();
+            out = socket.getOutputStream();
 
             while (socket != null)
             {
                 try
                 {
-                    int len = in.readInt();
-                    System.out.println("receiveing size: " + len);
-                    byte[] bytes = new byte[len];
-                    if (len > 0)
-                        in.readFully(bytes);
-
+                    System.out.println("Receiving something...");
+                    byte[] bytes = DataStream.read(in);
                     DataBuffer data = new DataBuffer(bytes);
+
                     int packetID = data.getInt();
                     Packet packet = PacketManager.getPacket(packetID);
                     if (packet == null)
                         continue;
-                    System.out.println("receiving: " + packet);
+                    System.out.println("[IN]-> received: " + packet);
                     packet.read(data);
                     packet.process(server, socket.getInetAddress(), socket.getPort());
                 }
@@ -99,9 +95,8 @@ public class ClientSocket implements Runnable
             if (bytes.length == 0)
                 return;
 
-            System.out.println("Sending size: " + bytes.length);
-            out.writeInt(bytes.length);
-            out.write(bytes, 0, bytes.length);
+            System.out.println("[OUT] -> Sending size: " + bytes.length);
+            DataStream.write(out, bytes);
         }
         catch (IOException e)
         {

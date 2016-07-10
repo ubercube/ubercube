@@ -78,6 +78,6 @@ public class PingPacket extends Packet
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        client.tcpSend(new PingPacket(client.getCore().getGame().getPlayer().getID(), System.currentTimeMillis(), 0));
+        client.udpSend(new PingPacket(client.getCore().getGame().getPlayer().getID(), System.currentTimeMillis(), 0));
     }
 }
