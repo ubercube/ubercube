@@ -31,15 +31,20 @@ public class Tree
 {
     public static void oakTree(World world, int x, int y, int z) {
         for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+            for (int j = 0; j < 10; j++) {
                 for (int k = 0; k < 9; k++) {
                     float ii = i - 4.5f;
                     float jj = j - 4.5f;
                     float kk = k - 4.5f;
                     float l = Mathf.sqrt(ii * ii + jj * jj + kk * kk);
 
+
                     if (l < 4.5f) {
-                        world.addBlock(x + (int)ii, y + (int)jj + 9, z + (int)kk, Block.LEAF.copy().add(Mathf.random() * 0.1f).getARGB());
+                        if(Mathf.sqrt(ii * ii + (jj + 1) * (jj + 1) + kk * kk) >= 4.5f){
+                            world.addBlock(x + (int)ii, y + (int)jj + 9, z + (int)kk, new Color4f(0.9f, 0.9f, 0.98f).add(world.getWorldGen().getRandom() * 0.02f).getARGB());
+                        }else{
+                            world.addBlock(x + (int)ii, y + (int)jj + 9, z + (int)kk, Block.LEAF.copy().add(Mathf.random() * 0.1f).getARGB());
+                        }
                     }
                 }
             }

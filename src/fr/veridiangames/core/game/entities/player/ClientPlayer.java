@@ -21,6 +21,7 @@ package fr.veridiangames.core.game.entities.player;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.*;
+import fr.veridiangames.core.game.entities.particles.ParticleSnow;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
 import fr.veridiangames.core.maths.Quat;
@@ -47,6 +48,8 @@ public class ClientPlayer extends Player
 	private boolean timedOut;
 	private boolean kicked;
 	private List<ParticleSystem> particleSystems;
+
+	private ParticleSnow snow;
 	
 	public ClientPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
@@ -61,6 +64,9 @@ public class ClientPlayer extends Player
 		this.life = Player.MAX_LIFE;
 
 		this.particleSystems = new ArrayList<>();
+
+		snow = new ParticleSnow(Indexer.getUniqueID(), position.copy().add(0, 10, 0));
+		GameCore.getInstance().getGame().spawn(snow);
 	}
 	
 	public void init(GameCore core)
@@ -126,6 +132,8 @@ public class ClientPlayer extends Player
             if(body.isGrounded())
                 body.applyForce(Vec3.UP, 0.175f);
 		}
+
+		snow.setPosition(getPosition().copy().add(0, 15, 0));
 	}
 
 	public ECRaycast getRaycast()
