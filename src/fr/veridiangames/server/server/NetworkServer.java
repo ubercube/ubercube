@@ -110,7 +110,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 				{
 					if (System.nanoTime() - before > 1000000000.0)
 					{
-						Sleep.sleep(2);
+						Sleep.sleep(3);
 						//log("ping");
 						for (int i = 0; i < core.getGame().getEntityManager().getPlayerEntites().size(); i++)
 						{
@@ -125,7 +125,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 								log(player.getName() + " timed out !");
 							}
 							//log("pinging " + player.getName());
-							udpSend(new PingPacket(player.getID(), 0L, player.getPing()), player.getNetwork().getAddress(), player.getNetwork().getPort());
+							tcpSend(new PingPacket(player.getID(), 0L, player.getPing()), player.getNetwork().getAddress(), player.getNetwork().getPort());
 						}
 						before += 1000000000.0;
 					}

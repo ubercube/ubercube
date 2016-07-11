@@ -23,7 +23,7 @@ import fr.veridiangames.client.audio.AudioListener;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
-import fr.veridiangames.core.game.entities.weapons.WeaponShovel;
+import fr.veridiangames.core.game.entities.weapons.meleeWeapon.WeaponShovel;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.packets.BlockActionPacket;
@@ -73,14 +73,6 @@ public class PlayerHandler
 		if (!input.getMouse().isGrabbed())
 			return;
 
-		if (input.getMouse().getButton(0))
-			weapon.getWeapon().shoot();
-		
-		if (input.getMouse().getButton(1))
-			weapon.getWeapon().setPosition(1);
-		else
-			weapon.getWeapon().setPosition(0);
-
 		key.setUp(input.getKey(Input.KEY_Z));
 		key.setDown(input.getKey(Input.KEY_S));
 		key.setLeft(input.getKey(Input.KEY_Q));
@@ -88,6 +80,14 @@ public class PlayerHandler
 		key.setJump(input.getKey(Input.KEY_SPACE));
 		key.setRun(input.getKey(Input.KEY_LEFT_SHIFT));
 		key.setCrouche(input.getKey(Input.KEY_LEFT_CONTROL));
+
+		if (input.getMouse().getButton(0))
+			weapon.getWeapon().onAction();
+		
+		if (input.getMouse().getButton(1))
+			weapon.getWeapon().setPosition(1);
+		else
+			weapon.getWeapon().setPosition(0);
 
 		if (input.getKeyDown(Input.KEY_F))
 			key.setFly(!key.isFly());

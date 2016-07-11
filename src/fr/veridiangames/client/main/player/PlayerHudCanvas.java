@@ -28,7 +28,7 @@ import fr.veridiangames.client.rendering.guis.components.GuiPanel;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
-import fr.veridiangames.core.game.entities.weapons.fire_weapons.FireWeapon;
+import fr.veridiangames.core.game.entities.weapons.fireWeapons.FireWeapon;
 import fr.veridiangames.core.utils.Color4f;
 
 /**

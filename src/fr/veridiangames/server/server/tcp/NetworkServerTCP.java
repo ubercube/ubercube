@@ -19,7 +19,6 @@
 
 package fr.veridiangames.server.server.tcp;
 
-import fr.veridiangames.core.GameCore;
 import fr.veridiangames.server.server.NetworkServer;
 
 import java.io.IOException;
@@ -63,6 +62,7 @@ public class NetworkServerTCP implements Runnable
         {
             while (true)
             {
+                log("Accepting client");
                 Socket acceptedClient = this.socket.accept();
                 ClientSocket client = new ClientSocket(acceptedClient, server);
                 clients.add(client);

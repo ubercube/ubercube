@@ -19,20 +19,15 @@
 
 package fr.veridiangames.core.game.entities.components;
 
-import fr.veridiangames.client.network.NetworkClient;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
-import fr.veridiangames.core.game.entities.weapons.WeaponShovel;
-import fr.veridiangames.core.game.entities.weapons.fire_weapons.WeaponAK47;
+import fr.veridiangames.core.game.entities.weapons.meleeWeapon.WeaponShovel;
+import fr.veridiangames.core.game.entities.weapons.fireWeapons.WeaponAK47;
 import fr.veridiangames.core.maths.Transform;
-import fr.veridiangames.core.network.NetworkableClient;
-import fr.veridiangames.core.network.packets.WeaponChangePacket;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.lwjgl.system.Callback.get;
 
 /**
  * Created by Marccspro on 7 f�vr. 2016.

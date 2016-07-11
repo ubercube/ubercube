@@ -57,6 +57,10 @@ public class NetworkClientTCP implements Runnable
             this.port = port;
             this.socket = new Socket(address, port);
             this.socket.setTcpNoDelay(true);
+            this.socket.setTrafficClass(0x04);
+            this.socket.setKeepAlive(false);
+            this.socket.setReuseAddress(false);
+            this.socket.setSoTimeout(10000);
             log("Connected to the TCP protocol !");
             new Thread(this, "tcp-thread").start();
         } catch (UnknownHostException e)

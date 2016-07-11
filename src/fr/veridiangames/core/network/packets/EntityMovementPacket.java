@@ -89,6 +89,7 @@ public class EntityMovementPacket extends Packet
 		if (player == null) 
 			return;
 
+		//TODO: Prevent teleporation and speed hack
 		player.setPosition(position);
 		player.setRotation(rotation);
 

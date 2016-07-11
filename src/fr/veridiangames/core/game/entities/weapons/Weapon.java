@@ -19,18 +19,10 @@
 
 package fr.veridiangames.core.game.entities.weapons;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.Player;
-import fr.veridiangames.core.game.entities.weapons.fire_weapons.WeaponAK47;
-import fr.veridiangames.core.game.entities.weapons.fire_weapons.WeaponAWP;
-import fr.veridiangames.core.maths.Transform;
-import fr.veridiangames.core.maths.Vec2;
-import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.maths.*;
 import fr.veridiangames.core.network.NetworkableClient;
-import fr.veridiangames.core.network.packets.WeaponPositionPacket;
 
 public abstract class Weapon
 {
@@ -49,15 +41,19 @@ public abstract class Weapon
 	protected Transform zoomPosition;
 	protected Transform hidePosition;
 	protected Transform runPosition;
+	protected Vec3 		runRotation;
 	
 	protected Transform transform;
+	protected Vec3 		rotationFactor;
 	protected Player holder;
+	protected boolean zoomed;
 	
 	protected int model;
 	
 	public Weapon(int model)
 	{
 		this.model = model;
+		this.rotationFactor = new Vec3(0, 0, 0);
 		this.transform = new Transform();
 		this.positionChanged = false;
 		this.velocity = new Vec2();
@@ -88,11 +84,28 @@ public abstract class Weapon
 			setTransformSmoothly(idlePosition, 0.4f);
 		else if (currentPosition == 1)
 			setTransformSmoothly(zoomPosition, 0.4f);
+		rotationFactor.mul(0.7f);
+		this.transform.setLocalRotation(Quat.euler(rotationFactor));
 	}
 	
-	public void updateWeaponVelocity(float vx, float vy)
+	public void updateWeaponVelocity(Vec3 velocity, float dx, float dy, float factor)
 	{
-		
+		rotationFactor.add(dy * factor, dx * factor, -dx * factor);
+		rotationFactor.add(velocity.z * 0.2f, 0, velocity.x * 0.2f);
+	}
+
+	public void updateRunPosition()
+	{
+		rotationFactor.add(runRotation.copy().mul(0.01f));
+	}
+
+	int bobbingTime = 0;
+	public void updateBobbing(float velocity, float factor, float speed)
+	{
+		bobbingTime++;
+		float bobbing = Mathf.sin(bobbingTime * speed) * factor * velocity;
+		float bobbingX = (Mathf.sin(bobbingTime * speed * 0.5f) * factor * velocity);
+		rotationFactor.add(bobbing, bobbingX, 0);
 	}
 	
 	public Transform getTransform()
@@ -104,18 +117,18 @@ public abstract class Weapon
 	{
 		Vec3 positionAddFactor = transform.getLocalPosition().copy().sub(this.transform.getLocalPosition()).mul(smoothFactor);
 		this.transform.getLocalPosition().add(positionAddFactor);
-		this.transform.setLocalRotation(transform.getLocalRotation());
 	}
 
-	public void shoot()
-	{
-	}
+	public abstract void onAction();
 	
 	public void setPosition(int position)
 	{
 		if (this.currentPosition != position)
 			this.positionChanged = true;
 
+		zoomed = false;
+		if (position == 1)
+			zoomed = true;
 		this.currentPosition = position;
 	}
 

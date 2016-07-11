@@ -17,15 +17,24 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.core.game.entities.weapons.fire_weapons;
+package fr.veridiangames.core.game.entities.weapons.fireWeapons;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.bullets.Bullet;
+import fr.veridiangames.core.game.entities.components.ECKeyMovement;
+import fr.veridiangames.core.game.entities.components.ECRigidbody;
+import fr.veridiangames.core.game.entities.player.ClientPlayer;
+import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
+import fr.veridiangames.core.maths.Mathf;
+import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.packets.BulletShootPacket;
+import fr.veridiangames.core.physics.Rigidbody;
 import fr.veridiangames.core.utils.Indexer;
+
+import static sun.audio.AudioPlayer.player;
 
 public class FireWeapon extends Weapon
 {
@@ -35,6 +44,7 @@ public class FireWeapon extends Weapon
 	private boolean shooting;
 	private boolean shot;
 	private float shootForce;
+	private float shootPecision;
 	
 	private int shootTimer = 0;
 
@@ -48,13 +58,32 @@ public class FireWeapon extends Weapon
 		this.setShootForce(2);
 		this.maxBullets = 30;
 		this.bulletsLeft = maxBullets;
+		this.runRotation = new Vec3(10f, -20f, 0);
+		this.shootPecision = 0.02f;
 	}
 	
 	public void update(GameCore core)
 	{
 		super.update(core);
-		super.updateWeaponVelocity(0, 0);
-		
+		ClientPlayer player = core.getGame().getPlayer();
+		if (holder.getID() == player.getID() && !zoomed)
+		{
+			ECKeyMovement movement = player.getKeyComponent();
+			float dx = player.getMouseComponent().getDx();
+			float dy = player.getMouseComponent().getDy();
+			Vec3 movementVelocity = new Vec3(movement.getVelocity(1)).mul(1, 0, 1);
+			if (movement.isRun())
+			{
+				super.updateBobbing(movementVelocity.magnitude(), 0.2f, 0.3f);
+				super.updateRunPosition();
+			}
+			else
+			{
+				super.updateBobbing(movementVelocity.magnitude(), 0.15f, 0.2f);
+				super.updateWeaponVelocity(movement.getVelocity(1), dx, dy, 0.0005f);
+			}
+		}
+
 		if (shooting)
 		{
 			if (!shot)
@@ -84,17 +113,29 @@ public class FireWeapon extends Weapon
 		net.udpSend(new BulletShootPacket(holder.getID(), bullet));
 		bullet.setNetwork(net);
 		core.getGame().spawn(bullet);
+
+		this.rotationFactor.add(-0.1f, 0, 0);
 	}
 	
+	public void onAction()
+	{
+		shoot();
+	}
+
 	public void shoot()
 	{
 		shooting = true;
 		if (shot)
 			return;
-		
+
 		Vec3 shootVector = new Vec3(transform.getLocalPosition()).sub(transform.getLocalRotation().getForward().copy().mul(0, 0, 0.2f));
 		this.transform.setLocalPosition(shootVector);
 		this.removeBullet();
+
+		if (!zoomed)
+		{
+			this.rotationFactor.add(Mathf.random(-shootPecision, shootPecision), Mathf.random(-shootPecision, shootPecision), 0);
+		}
 	}
 
 	private void removeBullet()
@@ -102,7 +143,10 @@ public class FireWeapon extends Weapon
 		bulletsLeft--;
 
 		if (bulletsLeft < 0)
+		{
+			bulletsLeft = 0;
 			reloadBullets();
+		}
 	}
 
 	public void reloadBullets()

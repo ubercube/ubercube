@@ -17,54 +17,20 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.core.game.entities.components;
+package fr.veridiangames.core.game.entities.weapons.fireWeapons;
 
-import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.maths.Mathf;
-import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 
-/**
- * Created by Marccspro on 31 janv. 2016.
- */
-public class ECMouseLook extends EComponent
+public class WeaponAWP extends FireWeapon
 {
-	private float	dx, dy;
-	private float	speed;
-
-	public ECMouseLook(float speed)
+	public WeaponAWP()
 	{
-		super(MOUSE_LOOK);
-
-		this.speed = speed;
-	}
-
-	public void update(GameCore core)
-	{
-		Transform transform = ((ECRender) parent.get(EComponent.RENDER)).getTransform();
-		
-		transform.rotate(Vec3.UP, dx * speed);
-		transform.rotate(transform.getRight(), dy * speed);
-	}
-
-	public void setDX(float dx)
-	{
-		this.dx = dx;
-	}
-	
-	public void setDY(float dy)
-	{
-		this.dy = dy;
-	}
-
-	public float getDx()
-	{
-		return dx;
-	}
-
-	public float getDy()
-	{
-		return dy;
+		super(AWP);
+		this.transform.setLocalScale(new Vec3(1, 1, 1));
+		this.setIdlePosition(new Transform(new Vec3(0.3f, -0.05f, 0)));
+		this.setHidePosition(new Transform(new Vec3(0.3f, -0.05f - 1f, 0)));
+		this.setZoomPosition(new Transform(new Vec3(0, 0, 0)));
+		this.setPosition(0);
 	}
 }

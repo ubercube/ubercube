@@ -37,11 +37,10 @@ public class ServerMain
 	private NetworkServer 	server;
 	private GameCore 		core;
 	
-	public ServerMain()
+	public ServerMain(int port)
 	{
 		this.scanner = new Scanner(System.in);
 		this.core = new GameCore();
-		int port = 25565;
 
 		this.server = new NetworkServer(port, scanner);
 		this.server.setGameCore(core);
@@ -49,6 +48,6 @@ public class ServerMain
 
 	public static void main(String[] args)
 	{
-		new ServerMain();
+		new ServerMain(Integer.parseInt(args[0]));
 	}
 }

@@ -109,26 +109,7 @@ public class Quat {
 	}
 	
 	public static Quat euler(Vec3 euler) {
-		float c1 = (float) Math.cos(euler.x / 2);
-		float s1 = (float) Math.sin(euler.x / 2);
-		
-		float c2 = (float) Math.cos(euler.y / 2);
-		float s2 = (float) Math.sin(euler.y / 2);
-		
-		float c3 = (float) Math.cos(euler.z / 2);
-		float s3 = (float) Math.sin(euler.z / 2);
-		
-		float c1c2 = c1 * c2;
-		float s1s2 = s1 * s2;
-		
-		Quat r = new Quat();
-		
-		r.x = c1c2 * s3 + s1s2 * c3;
-		r.y = s1 * c2 * c3 + c1 * s2 * s3;
-		r.z = c1 * s2 * c3 - s1 * c2 * s3;
-		r.w = c1c2 * c3 - s1s2 * s3;
-		
-		return r;
+		return Quat.euler(euler.x, euler.z, euler.y);
 	}
 
 	public static Quat lookAt(Vec3 sourcePoint, Vec3 destPoint)

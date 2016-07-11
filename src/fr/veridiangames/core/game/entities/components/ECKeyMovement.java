@@ -22,6 +22,7 @@ package fr.veridiangames.core.game.entities.components;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.maths.Vec4;
 import fr.veridiangames.core.physics.Rigidbody;
 
 /**
@@ -38,7 +39,8 @@ public class ECKeyMovement extends EComponent
 	private boolean	down;
 	private boolean	left;
 	private boolean	right;
-	
+	private boolean	ctrl;
+
 	private boolean jump;
 	private boolean crouche;
 	private boolean prone;
@@ -47,11 +49,14 @@ public class ECKeyMovement extends EComponent
 
 	private boolean fly;
 
+	private Vec3 velocity;
+
 	public ECKeyMovement(float walkSpeed, float runSpeed, float jumpForce)
 	{
 		super(KEY_MOVEMENT);
 		super.addDependencies(RENDER, RIGIDBODY);
 
+		this.velocity = new Vec3();
 		this.walkSpeed = walkSpeed;
 		this.runSpeed = runSpeed;
 		this.jumpForce = jumpForce;
@@ -72,21 +77,37 @@ public class ECKeyMovement extends EComponent
 		else
 			speed = walkSpeed;
 
+		velocity.mul(0.9f);
+
 		if (up)
+		{
 			body.applyForce(forwardDirection, speed);
+			velocity.add(0, 0, speed);
+		}
 
 		if (down)
+		{
 			body.applyForce(forwardDirection, -speed);
+			velocity.add(0, 0, -speed);
+		}
 
 		if (left)
+		{
 			body.applyForce(leftDirection, speed);
+			velocity.add(speed, 0, 0);
+		}
 
 		if (right)
+		{
 			body.applyForce(leftDirection, -speed);
+			velocity.add(-speed, 0, 0);
+		}
 
 		body.useGravity(!fly);
 		if (fly)
 		{
+			if (jump)
+				body.applyForce(Vec3.UP, speed);
 			if (jump)
 				body.applyForce(Vec3.UP, speed);
 		}
@@ -97,6 +118,7 @@ public class ECKeyMovement extends EComponent
 					body.applyForce(Vec3.UP, jumpForce);
 		}
 
+		velocity.add(0, body.getVelocity().y, 0);
 //		if (crouche)
 //			body.applyForce(Vec3.UP, -speed);
 	}
@@ -209,5 +231,20 @@ public class ECKeyMovement extends EComponent
 	public void setRun(boolean run)
 	{
 		this.run = run;
+	}
+
+	public Vec3 getVelocity(float factor)
+	{
+		return velocity.copy().mul(factor);
+	}
+
+	public boolean isCtrl()
+	{
+		return ctrl;
+	}
+
+	public void setCtrl(boolean ctrl)
+	{
+		this.ctrl = ctrl;
 	}
 }

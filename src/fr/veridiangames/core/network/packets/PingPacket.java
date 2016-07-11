@@ -82,6 +82,6 @@ public class PingPacket extends Packet
         {
             client.getCore().getGame().getPlayer().setTimeoutTime(0);
         }
-        client.udpSend(new PingPacket(client.getCore().getGame().getPlayer().getID(), System.currentTimeMillis(), 0));
+        client.tcpSend(new PingPacket(client.getCore().getGame().getPlayer().getID(), System.currentTimeMillis(), 0));
     }
 }

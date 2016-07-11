@@ -45,6 +45,10 @@ public class ClientSocket implements Runnable
         {
             this.socket = socket;
             this.socket.setTcpNoDelay(true);
+            this.socket.setTrafficClass(0x04);
+            this.socket.setKeepAlive(true);
+            this.socket.setReuseAddress(false);
+            this.socket.setSoTimeout(10000);
             this.server = server;
         } catch (SocketException e)
         {
