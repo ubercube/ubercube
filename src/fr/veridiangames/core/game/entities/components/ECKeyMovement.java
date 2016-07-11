@@ -108,8 +108,8 @@ public class ECKeyMovement extends EComponent
 		{
 			if (jump)
 				body.applyForce(Vec3.UP, speed);
-			if (jump)
-				body.applyForce(Vec3.UP, speed);
+			if (ctrl)
+				body.applyForce(Vec3.UP.copy().negate(), speed);
 		}
 		else
 		{
@@ -119,8 +119,6 @@ public class ECKeyMovement extends EComponent
 		}
 
 		velocity.add(0, body.getVelocity().y, 0);
-//		if (crouche)
-//			body.applyForce(Vec3.UP, -speed);
 	}
 
 	public boolean isUp()

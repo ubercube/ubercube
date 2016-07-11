@@ -32,14 +32,14 @@ import java.net.SocketException;
 /**
  * Created by Marc on 07/07/2016.
  */
-public class ClientSocket implements Runnable
+public class RemoteClient implements Runnable
 {
     private Socket socket;
-    private InputStream in;
-    private OutputStream out;
+    private DataInputStream in;
+    private DataOutputStream out;
     private NetworkServer server;
 
-    public ClientSocket(Socket socket, NetworkServer server)
+    public RemoteClient(Socket socket, NetworkServer server)
     {
         try
         {
@@ -61,24 +61,26 @@ public class ClientSocket implements Runnable
     {
         try
         {
-            in = socket.getInputStream();
-            out = socket.getOutputStream();
+            in = new DataInputStream(socket.getInputStream());
+            out = new DataOutputStream(socket.getOutputStream());
 
             while (socket != null)
             {
                 try
                 {
-                    System.out.println("Receiving something...");
-                    byte[] bytes = DataStream.read(in);
-                    DataBuffer data = new DataBuffer(bytes);
-
-                    int packetID = data.getInt();
-                    Packet packet = PacketManager.getPacket(packetID);
-                    if (packet == null)
-                        continue;
-                    System.out.println("[IN]-> received: " + packet);
-                    packet.read(data);
-                    packet.process(server, socket.getInetAddress(), socket.getPort());
+                    if (in.available() > 0)
+                    {
+                        System.out.println("Receiving something...");
+                        byte[] bytes = DataStream.read(in);
+                        DataBuffer data = new DataBuffer(bytes);
+                        int packetID = data.getInt();
+                        Packet packet = PacketManager.getPacket(packetID);
+                        if (packet == null)
+                            continue;
+                        System.out.println("[IN]-> received: " + packet);
+                        packet.read(data);
+                        packet.process(server, socket.getInetAddress(), socket.getPort());
+                    }
                 }
                 catch (IOException e)
                 {

@@ -26,19 +26,19 @@ import java.io.*;
  */
 public class DataStream
 {
-    public static void write(OutputStream out, byte[] bytes) throws IOException
+    public static void write(DataOutputStream out, byte[] data) throws IOException
     {
-        DataOutputStream dout = new DataOutputStream(out);
-        dout.writeInt(bytes.length);
-        dout.write(bytes);
+        out.writeInt(data.length);
+        out.write(data);
+        out.flush();
     }
 
-    public static byte[] read(InputStream in) throws IOException
+    public static byte[] read(DataInputStream in) throws IOException
     {
-        DataInputStream din = new DataInputStream(in);
-        int length = din.readInt();
-        byte[] bytes = new byte[length];
-        din.readFully(bytes, 0, bytes.length);
-        return bytes;
+        int length = in.readInt();
+        System.out.println("LENGTH: " + length);
+        byte[] data = new byte[length];
+        in.readFully(data, 0, data.length);
+        return data;
     }
 }

@@ -31,6 +31,9 @@ public abstract class Weapon
 	public static final int AK47 		= 0;
 	public static final int AWP 		= 1;
 	public static final int SHOVEL 		= 2;
+	public static final int GRENADE 	= 3;
+
+	private boolean destroyed;
 
 	protected Vec2 velocity;
 
@@ -120,7 +123,9 @@ public abstract class Weapon
 	}
 
 	public abstract void onAction();
-	
+	public abstract void onActionUp();
+	public abstract void onActionDown();
+
 	public void setPosition(int position)
 	{
 		if (this.currentPosition != position)
@@ -210,5 +215,15 @@ public abstract class Weapon
 	public void setHolder(Player holder)
 	{
 		this.holder = holder;
+	}
+
+	public boolean isDestroyed()
+	{
+		return destroyed;
+	}
+
+	public void destroy()
+	{
+		this.destroyed = true;
 	}
 }

@@ -31,6 +31,8 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.imageio.ImageIO.read;
+
 
 /**
  * Created by Marc on 05/07/2016.
@@ -43,8 +45,8 @@ public class NetworkClientTCP implements Runnable
     private InetAddress address;
     private Socket socket;
 
-    private InputStream in;
-    private OutputStream out;
+    private DataInputStream in;
+    private DataOutputStream out;
 
     public NetworkClientTCP(NetworkClient client, int id, String address, int port)
     {
@@ -76,23 +78,24 @@ public class NetworkClientTCP implements Runnable
     {
         try
         {
-            in = socket.getInputStream();
-            out = socket.getOutputStream();
+            in = new DataInputStream(socket.getInputStream());
+            out = new DataOutputStream(socket.getOutputStream());
             while (socket != null)
             {
                 try
                 {
-                    byte[] bytes = DataStream.read(in);
-                    DataBuffer data = new DataBuffer(bytes);
-                    Packet packet = PacketManager.getPacket(data.getInt());
-                    if (packet == null)
+                    if (in.available() > 0)
                     {
-                        continue;
+                        byte[] bytes = DataStream.read(in);
+                        DataBuffer data = new DataBuffer(bytes);
+                        Packet packet = PacketManager.getPacket(data.getInt());
+                        if (packet == null)
+                            continue;
+                        log("[IN] received: " + packet);
+                        log("[IN]-> received size: " + data.size());
+                        packet.read(data);
+                        packet.process(client, socket.getInetAddress(), socket.getPort());
                     }
-                    log("[IN] received: " + packet);
-                    log("[IN]-> received size: " + data.size());
-                    packet.read(data);
-                    packet.process(client, socket.getInetAddress(), socket.getPort());
                 } catch (IOException e)
                 {
                     socket = null;

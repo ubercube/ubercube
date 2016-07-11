@@ -122,6 +122,16 @@ public class FireWeapon extends Weapon
 		shoot();
 	}
 
+	public void onActionUp()
+	{
+
+	}
+
+	public void onActionDown()
+	{
+
+	}
+
 	public void shoot()
 	{
 		shooting = true;

@@ -20,6 +20,7 @@
 package fr.veridiangames.client.main;
 
 import fr.veridiangames.client.main.player.PlayerHudCanvas;
+import fr.veridiangames.client.main.screens.GameLoadingScreen;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.GuiManager;

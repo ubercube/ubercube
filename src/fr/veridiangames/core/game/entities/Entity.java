@@ -25,7 +25,11 @@ import java.util.List;
 import java.util.Map;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.components.ECRender;
+import fr.veridiangames.core.game.entities.components.ECRigidbody;
 import fr.veridiangames.core.game.entities.components.EComponent;
+import fr.veridiangames.core.game.world.Chunk;
+import fr.veridiangames.core.maths.Vec3;
 
 /**
  * Created by Marccspro on 30 janv. 2016.
@@ -69,7 +73,35 @@ public class Entity
 			e.update(core);
 		}
 	}
-	
+
+	public boolean outOfMap()
+	{
+		if (this.contains(EComponent.RIGIDBODY))
+		{
+			int m0 = 0;
+			int m1 = core.getGame().getData().getWorldSize() * Chunk.SIZE;
+			Vec3 p = ((ECRigidbody) this.get(EComponent.RIGIDBODY)).getBody().getPosition();
+
+			if (p.x < m0 ||p.z < m0 || p.x > m1 || p.z > m1)
+				return true;
+			if (p.y < 0 || p.y > 100)
+				return true;
+		}
+		else if (this.contains(EComponent.RENDER))
+		{
+			int m0 = 0;
+			int m1 = core.getGame().getData().getWorldSize() * Chunk.SIZE;
+			Vec3 p = ((ECRender) this.get(EComponent.RENDER)).getTransform().getPosition();
+
+			if (p.x < m0 ||p.z < m0 || p.x > m1 || p.z > m1)
+				return true;
+			if (p.y < 0 || p.y > 100)
+				return true;
+			return false;
+		}
+		return false;
+	}
+
 	public boolean contains(int component)
 	{
 		return components.containsKey(component);

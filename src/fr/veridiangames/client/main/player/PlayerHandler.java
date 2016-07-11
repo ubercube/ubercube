@@ -80,10 +80,15 @@ public class PlayerHandler
 		key.setJump(input.getKey(Input.KEY_SPACE));
 		key.setRun(input.getKey(Input.KEY_LEFT_SHIFT));
 		key.setCrouche(input.getKey(Input.KEY_LEFT_CONTROL));
+		key.setCtrl(input.getKey(Input.KEY_LEFT_CONTROL));
 
 		if (input.getMouse().getButton(0))
 			weapon.getWeapon().onAction();
-		
+		if (input.getMouse().getButtonDown(0))
+			weapon.getWeapon().onActionDown();
+		if (input.getMouse().getButtonUp(0))
+			weapon.getWeapon().onActionUp();
+
 		if (input.getMouse().getButton(1))
 			weapon.getWeapon().setPosition(1);
 		else

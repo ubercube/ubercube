@@ -49,6 +49,9 @@ public class Rigidbody
 	private boolean 	grounded;
 	private Entity		parent;
 	private boolean 	useGravity;
+	private float 		bounceFactor;
+
+	private List<String> ignores;
 	
 	private boolean networkView;
 
@@ -162,6 +165,12 @@ public class Rigidbody
 				this.collider.getPosition().add(mtd);
 			}
 		}
+
+		if (bounceFactor > 0 && grounded)
+		{
+			applyForce(Vec3.UP, bounceFactor);
+			bounceFactor *= 0.9f;
+		}
 	}
 	
 	public void updatePosition()
@@ -222,9 +231,34 @@ public class Rigidbody
 		return dragFactor;
 	}
 
-	public void setDragFactor(float dragFactor)
+	public float getAirDragFactor()
 	{
-		this.dragFactor = dragFactor;
+		return airDragFactor;
+	}
+
+	public void setAirDragFactor(float airDragFactor)
+	{
+		this.airDragFactor = airDragFactor;
+	}
+
+	public float getFrictionFactor()
+	{
+		return frictionFactor;
+	}
+
+	public void setFrictionFactor(float frictionFactor)
+	{
+		this.frictionFactor = frictionFactor;
+	}
+
+	public float getBounceFactor()
+	{
+		return bounceFactor;
+	}
+
+	public void setBounceFactor(float bounceFactor)
+	{
+		this.bounceFactor = bounceFactor;
 	}
 
 	public boolean isGrounded()

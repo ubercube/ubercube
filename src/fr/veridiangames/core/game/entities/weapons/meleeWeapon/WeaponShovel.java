@@ -40,4 +40,14 @@ public class WeaponShovel extends MeleeWeapon
 	{
 
 	}
+
+	public void onActionUp()
+	{
+
+	}
+
+	public void onActionDown()
+	{
+
+	}
 }
