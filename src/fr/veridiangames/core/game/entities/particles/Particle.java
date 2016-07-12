@@ -35,6 +35,7 @@ public class Particle
     private Vec3        velocity;
     private boolean     collision;
     private Vec3        gravity;
+    private boolean     rendered;
 
     public Particle(ParticleSystem system)
     {
@@ -60,6 +61,11 @@ public class Particle
 
         collision = false;
         gravity = system.getGravity();
+    }
+
+    public void updateCulling()
+    {
+
     }
 
     public Transform getTransform()
@@ -103,5 +109,15 @@ public class Particle
 
     public void setGravity(Vec3 gravity) {
         this.gravity = gravity;
+    }
+
+    public boolean isRendered()
+    {
+        return rendered;
+    }
+
+    public void setRendered(boolean rendered)
+    {
+        this.rendered = rendered;
     }
 }

@@ -133,7 +133,7 @@ public class ClientPlayer extends Player
                 body.applyForce(Vec3.UP, 0.175f);
 		}
 
-		snow.setPosition(getPosition().copy().add(0, 15, 0));
+		snow.setPosition(getPosition().copy().add(0, 15, 0).add(getTransform().getForward().copy().mul(20, 0, 20)));
 	}
 
 	public ECRaycast getRaycast()
