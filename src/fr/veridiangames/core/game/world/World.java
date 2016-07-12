@@ -409,7 +409,7 @@ public class World
 					{
 						AABoxCollider c = new AABoxCollider();
 						c.setPosition(new Vec3(x + 0.5f, y + 0.5f, z + 0.5f));
-						result.add(c);			
+						result.add(c);
 					}
 				}	
 			}	

@@ -105,13 +105,21 @@ public class Chunk
 						continue;
 					else if (yy > noiseHeight - 1)
 					{
-						float cn = Mathf.random(-0.02f, 0.02f);
-						Color4f ca = new Color4f(0.05f, 0.10f, 0.05f);
-						Color4f cb = new Color4f(0.1f, 0.50f, 0.1f);
-						float t = noiseHeight / 30.0f;
-						Color4f color = Color4f.mix(ca, cb, t).add(cn);
-						color.setAlpha(1f);
-						addBlock(x, y, z, color.getARGB());
+						float snow = (float)(yy - 10) / 6;
+						if(snow > 1) snow = 1;
+						if(snow > world.getWorldGen().getRandom()){
+							Color4f color = new Color4f(0.9f, 0.9f, 0.98f).add(world.getWorldGen().getRandom() * 0.02f);
+							color.setAlpha(1f);
+							addBlock(x, y, z, color.getARGB());
+						}else{
+							float cn = Mathf.random(-0.02f, 0.02f);
+							Color4f ca = new Color4f(0.05f, 0.10f, 0.05f);
+							Color4f cb = new Color4f(0.1f, 0.50f, 0.1f);
+							float t = noiseHeight / 30.0f;
+							Color4f color = Color4f.mix(ca, cb, t).add(cn);
+							color.setAlpha(1f);
+							addBlock(x, y, z, color.getARGB());
+						}
 					}
 					else
 					{
