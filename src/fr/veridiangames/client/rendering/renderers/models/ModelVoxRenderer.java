@@ -26,6 +26,7 @@ import static org.lwjgl.opengl.GL30.*;
 
 import java.nio.FloatBuffer;
 
+import fr.veridiangames.core.loaders.ModelLoader;
 import org.lwjgl.BufferUtils;
 
 import fr.veridiangames.core.game.data.models.ModelVox;
@@ -35,6 +36,11 @@ import fr.veridiangames.client.rendering.buffers.Buffers;
 
 public class ModelVoxRenderer
 {
+	public static final ModelVoxRenderer AK47_RENDERER = new ModelVoxRenderer(ModelLoader.loadVox("res/weapons/AK47.vox"), new Vec3(0.5f, 1f, 1f));
+	public static final ModelVoxRenderer AWP_RENDERER = new ModelVoxRenderer(ModelLoader.loadVox("res/weapons/AWP.vox"));
+	public static final ModelVoxRenderer SHOVEL_RENDERER = new ModelVoxRenderer(ModelLoader.loadVox("res/weapons/SHOVEL.vox"));
+	public static final ModelVoxRenderer GRENADE_RENDERER = new ModelVoxRenderer(ModelLoader.loadVox("res/weapons/grenade.vox"));
+
 	public final static int FACE_SIZE = 4 * (3 + 4 + 3);
 	private int vao, vbo;
 	private FloatBuffer vertexBuffer;

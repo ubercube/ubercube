@@ -17,8 +17,9 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.client.main;
+package fr.veridiangames.client.main.screens;
 
+import fr.veridiangames.client.main.Main;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;

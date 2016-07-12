@@ -35,7 +35,7 @@ public class NetworkServerTCP implements Runnable
 {
     private NetworkServer server;
     private ServerSocket socket;
-    private List<ClientSocket> clients;
+    private List<RemoteClient> clients;
 
     public NetworkServerTCP(NetworkServer server, int port)
     {
@@ -64,7 +64,7 @@ public class NetworkServerTCP implements Runnable
             {
                 log("Accepting client");
                 Socket acceptedClient = this.socket.accept();
-                ClientSocket client = new ClientSocket(acceptedClient, server);
+                RemoteClient client = new RemoteClient(acceptedClient, server);
                 clients.add(client);
                 client.start();
             }
@@ -77,18 +77,18 @@ public class NetworkServerTCP implements Runnable
 
     public void send(byte[] bytes, InetAddress address, int port)
     {
-        ClientSocket client = getClient(address, port);
+        RemoteClient client = getClient(address, port);
         if (client != null)
             client.send(bytes);
     }
 
-    public ClientSocket getClient(InetAddress address, int port)
+    public RemoteClient getClient(InetAddress address, int port)
     {
         for (int i = 0; i < clients.size(); i++)
         {
             try
             {
-                ClientSocket client = clients.get(i);
+                RemoteClient client = clients.get(i);
                 Socket sock = client.getSocket();
                 String sockIp = sock.getInetAddress().getHostAddress();
                 String ip = address.getHostAddress();
@@ -117,7 +117,7 @@ public class NetworkServerTCP implements Runnable
 
     public void disconnectClient(InetAddress address, int port)
     {
-        ClientSocket client = getClient(address, port);
+        RemoteClient client = getClient(address, port);
         if (client == null)
         {
             clients.remove(client);
@@ -127,7 +127,7 @@ public class NetworkServerTCP implements Runnable
         clients.remove(client);
     }
 
-    public List<ClientSocket> getClients()
+    public List<RemoteClient> getClients()
     {
         return clients;
     }

@@ -37,6 +37,7 @@ import fr.veridiangames.client.rendering.renderers.Renderer;
 import fr.veridiangames.client.rendering.renderers.models.ModelVoxRenderer;
 import fr.veridiangames.client.rendering.shaders.WeaponShader;
 
+import static fr.veridiangames.client.rendering.renderers.models.ModelVoxRenderer.*;
 import static java.awt.Color.red;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -45,10 +46,6 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class EntityWeaponRenderer
 {
-	private static final ModelVoxRenderer AK47_RENDERER = new ModelVoxRenderer(ModelLoader.loadVox("res/weapons/AK47.vox"), new Vec3(0.5f, 1f, 1f));
-	private static final ModelVoxRenderer AWP_RENDERER = new ModelVoxRenderer(ModelLoader.loadVox("res/weapons/AWP.vox"));
-	private static final ModelVoxRenderer SHOVEL_RENDERER = new ModelVoxRenderer(ModelLoader.loadVox("res/weapons/SHOVEL.vox"));
-
 	public void renderEntityWeapons(WeaponShader shader, int cubemap, Map<Integer, Entity> entities, List<Integer> indices)
 	{
 		renderPlayerWeapon(shader, cubemap, entities);
@@ -58,7 +55,7 @@ public class EntityWeaponRenderer
 		for (int i = 0; i < indices.size(); i++)
 		{
 			int playerID = GameCore.getInstance().getGame().getPlayer().getID();
-			int entityID = indices.get(i);
+			int entityID = indices.get(i); // TODO: Null
 
 			if (entityID == playerID)
 				continue;
@@ -110,6 +107,9 @@ public class EntityWeaponRenderer
 				break;
 			case Weapon.SHOVEL:
 				SHOVEL_RENDERER.render();
+				break;
+			case Weapon.GRENADE:
+				GRENADE_RENDERER.render();
 				break;
 		}
 	}

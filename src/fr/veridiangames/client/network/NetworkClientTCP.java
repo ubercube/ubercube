@@ -19,6 +19,7 @@
 
 package fr.veridiangames.client.network;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
@@ -30,6 +31,8 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.imageio.ImageIO.read;
 
 
 /**
@@ -43,8 +46,10 @@ public class NetworkClientTCP implements Runnable
     private InetAddress address;
     private Socket socket;
 
-    private InputStream in;
-    private OutputStream out;
+    private DataInputStream in;
+    private DataOutputStream out;
+    private BufferedInputStream bin;
+    private BufferedOutputStream bout;
 
     public NetworkClientTCP(NetworkClient client, int id, String address, int port)
     {
@@ -76,23 +81,28 @@ public class NetworkClientTCP implements Runnable
     {
         try
         {
-            in = socket.getInputStream();
-            out = socket.getOutputStream();
+            bin = new BufferedInputStream(socket.getInputStream());
+            bout = new BufferedOutputStream(socket.getOutputStream());
+            in = new DataInputStream(bin);
+            out = new DataOutputStream(bout);
             while (socket != null)
             {
                 try
                 {
-                    byte[] bytes = DataStream.read(in);
-                    DataBuffer data = new DataBuffer(bytes);
-                    Packet packet = PacketManager.getPacket(data.getInt());
-                    if (packet == null)
+                    if (bin.available() > 0)
                     {
-                        continue;
+                        byte[] bytes = DataStream.read(in);
+                        DataBuffer data = new DataBuffer(bytes);
+                        Packet packet = PacketManager.getPacket(data.getInt());
+                        if (packet == null)
+                            continue;
+                        if (GameCore.isDisplayNetworkDebug())
+                            log("[IN] received: " + packet);
+                        if (GameCore.isDisplayNetworkDebug())
+                            log("[IN]-> received size: " + data.size());
+                        packet.read(data);
+                        packet.process(client, socket.getInetAddress(), socket.getPort());
                     }
-                    log("[IN] received: " + packet);
-                    log("[IN]-> received size: " + data.size());
-                    packet.read(data);
-                    packet.process(client, socket.getInetAddress(), socket.getPort());
                 } catch (IOException e)
                 {
                     socket = null;
@@ -112,7 +122,8 @@ public class NetworkClientTCP implements Runnable
         {
             if (bytes.length == 0)
                 return;
-            log("[OUT]-> sending size: " + bytes.length);
+            if (GameCore.isDisplayNetworkDebug())
+                log("[OUT]-> sending size: " + bytes.length);
             DataStream.write(out, bytes);
         } catch (IOException e)
         {

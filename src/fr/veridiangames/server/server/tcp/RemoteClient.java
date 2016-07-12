@@ -19,6 +19,7 @@
 
 package fr.veridiangames.server.server.tcp;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
@@ -32,14 +33,18 @@ import java.net.SocketException;
 /**
  * Created by Marc on 07/07/2016.
  */
-public class ClientSocket implements Runnable
+public class RemoteClient implements Runnable
 {
     private Socket socket;
-    private InputStream in;
-    private OutputStream out;
+
+    private BufferedInputStream bin;
+    private BufferedOutputStream bout;
+    private DataInputStream in;
+    private DataOutputStream out;
+
     private NetworkServer server;
 
-    public ClientSocket(Socket socket, NetworkServer server)
+    public RemoteClient(Socket socket, NetworkServer server)
     {
         try
         {
@@ -61,24 +66,29 @@ public class ClientSocket implements Runnable
     {
         try
         {
-            in = socket.getInputStream();
-            out = socket.getOutputStream();
-
+            bin = new BufferedInputStream(socket.getInputStream());
+            bout = new BufferedOutputStream(socket.getOutputStream());
+            in = new DataInputStream(bin);
+            out = new DataOutputStream(bout);
             while (socket != null)
             {
                 try
                 {
-                    System.out.println("Receiving something...");
-                    byte[] bytes = DataStream.read(in);
-                    DataBuffer data = new DataBuffer(bytes);
-
-                    int packetID = data.getInt();
-                    Packet packet = PacketManager.getPacket(packetID);
-                    if (packet == null)
-                        continue;
-                    System.out.println("[IN]-> received: " + packet);
-                    packet.read(data);
-                    packet.process(server, socket.getInetAddress(), socket.getPort());
+                    if (bin.available() > 0)
+                    {
+                        if (GameCore.isDisplayNetworkDebug())
+                            System.out.println("Receiving something...");
+                        byte[] bytes = DataStream.read(in);
+                        DataBuffer data = new DataBuffer(bytes);
+                        int packetID = data.getInt();
+                        Packet packet = PacketManager.getPacket(packetID);
+                        if (packet == null)
+                            continue;
+                        if (GameCore.isDisplayNetworkDebug())
+                            System.out.println("[IN]-> received: " + packet);
+                        packet.read(data);
+                        packet.process(server, socket.getInetAddress(), socket.getPort());
+                    }
                 }
                 catch (IOException e)
                 {
@@ -98,8 +108,8 @@ public class ClientSocket implements Runnable
         {
             if (bytes.length == 0)
                 return;
-
-            System.out.println("[OUT] -> Sending size: " + bytes.length);
+            if (GameCore.isDisplayNetworkDebug())
+                System.out.println("[OUT] -> Sending size: " + bytes.length);
             DataStream.write(out, bytes);
         }
         catch (IOException e)

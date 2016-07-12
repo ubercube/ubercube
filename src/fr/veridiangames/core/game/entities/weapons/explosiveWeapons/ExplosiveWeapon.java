@@ -19,9 +19,15 @@
 
 package fr.veridiangames.core.game.entities.weapons.explosiveWeapons;
 
+import fr.veridiangames.core.game.entities.weapons.Weapon;
+
 /**
  * Created by Marc on 11/07/2016.
  */
-public class ExplosiveWeapon
+public abstract class ExplosiveWeapon extends Weapon
 {
+    public ExplosiveWeapon(int model)
+    {
+        super(model);
+    }
 }
