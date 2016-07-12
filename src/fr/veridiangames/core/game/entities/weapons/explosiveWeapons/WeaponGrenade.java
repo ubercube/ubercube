@@ -55,7 +55,12 @@ public class WeaponGrenade extends ExplosiveWeapon
 
     public void onActionUp()
     {
-        GameCore.getInstance().getGame().spawn(new Grenade(Indexer.getUniqueID(), this.holder.getID(), transform.getPosition().copy().add(this.holder.getTransform().getForward().copy()), transform.getRotation(), 1f));
+        GameCore.getInstance().getGame().spawn(
+            new Grenade(Indexer.getUniqueID(),
+                this.holder.getID(),
+                transform.getPosition().copy().add(this.holder.getTransform().getForward().copy().mul(1.2f)),
+                transform.getRotation(), 0.5f)
+        );
     }
 
     public void onActionDown()

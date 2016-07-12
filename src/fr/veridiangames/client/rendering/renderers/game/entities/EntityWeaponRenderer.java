@@ -55,7 +55,7 @@ public class EntityWeaponRenderer
 		for (int i = 0; i < indices.size(); i++)
 		{
 			int playerID = GameCore.getInstance().getGame().getPlayer().getID();
-			int entityID = indices.get(i);
+			int entityID = indices.get(i); // TODO: Null
 
 			if (entityID == playerID)
 				continue;

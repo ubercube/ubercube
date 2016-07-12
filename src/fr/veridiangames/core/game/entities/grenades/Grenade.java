@@ -53,12 +53,15 @@ public class Grenade extends Entity
         super(id);
         super.add(new ECName("Grenade"));
         super.add(new ECRender(spawnPoint, direction, new Vec3(0.2f)));
-        super.add(new ECRigidbody(this, spawnPoint, direction, new AABoxCollider(new Vec3(0.2f)), false));
+        super.add(new ECRigidbody(this, spawnPoint, direction, new AABoxCollider(new Vec3(0.52f)), false));
         super.addTag("Grenade");
-        getBody().useGravity(true);
-        getBody().setAirDragFactor(0.97f);
-        getBody().setFrictionFactor(0.1f);
-        getBody().setBounceFactor(0.1f);
+
+        this.getBody().useGravity(true);
+        this.getBody().setAirDragFactor(0.99f);
+        this.getBody().setFrictionFactor(0.0f);
+        this.getBody().setBounceFactor(0.5f);
+        this.getBody().applyForce(direction.getForward().copy(), force);
+
         this.holderID = holderID;
         startPosition.set(this.getPosition());
 
@@ -68,13 +71,6 @@ public class Grenade extends Entity
     public void update(GameCore core)
     {
         super.update(core);
-        Vec3 position = getPosition().copy();
-        Vec3 direction = getRotation().getForward().copy();
-        if (!throwed)
-        {
-            getBody().applyForce(direction, force);
-            throwed = true;
-        }
     }
 
     public Rigidbody getBody() {return ((ECRigidbody) this.get(EComponent.RIGIDBODY)).getBody(); }

@@ -108,26 +108,20 @@ public class NetworkServer implements Runnable, NetworkableServer
 				long before = System.nanoTime();
 				while (true)
 				{
-					if (System.nanoTime() - before > 1000000000.0)
+					Sleep.sleep(5000);
+					for (int i = 0; i < core.getGame().getEntityManager().getPlayerEntites().size(); i++)
 					{
-						Sleep.sleep(3);
-						//log("ping");
-						for (int i = 0; i < core.getGame().getEntityManager().getPlayerEntites().size(); i++)
+						int key = core.getGame().getEntityManager().getPlayerEntites().get(i);
+						ServerPlayer player = (ServerPlayer) core.getGame().getEntityManager().getEntities().get(key);
+						player.setPinged(false);
+						player.setTimeOutTests(player.getTimeOutTests() + 1);
+						if (player.getTimeOutTests() > 5)
 						{
-							int key = core.getGame().getEntityManager().getPlayerEntites().get(i);
-							ServerPlayer player = (ServerPlayer) core.getGame().getEntityManager().getEntities().get(key);
-							player.setPinged(false);
-							player.setTimeOutTests(player.getTimeOutTests() + 1);
-							if (player.getTimeOutTests() > 5)
-							{
-								tcpSendToAll(new TimeoutPacket(key));
-								core.getGame().remove(key);
-								log(player.getName() + " timed out !");
-							}
-							//log("pinging " + player.getName());
-							tcpSend(new PingPacket(player.getID(), 0L, player.getPing()), player.getNetwork().getAddress(), player.getNetwork().getPort());
+							tcpSendToAll(new TimeoutPacket(key));
+							core.getGame().remove(key);
+							log(player.getName() + " timed out !");
 						}
-						before += 1000000000.0;
+						tcpSend(new PingPacket(player.getID(), 0L, player.getPing()), player.getNetwork().getAddress(), player.getNetwork().getPort());
 					}
 				}
 			}
@@ -141,7 +135,8 @@ public class NetworkServer implements Runnable, NetworkableServer
 
 	public void tcpSend(Packet packet, InetAddress address, int port)
 	{
-		log("[OUT] Sending: " + packet);
+		if (GameCore.isDisplayNetworkDebug())
+			log("[OUT] Sending: " + packet);
 		tcpSend(packet.getData(), address, port);
 	}
 
@@ -158,7 +153,8 @@ public class NetworkServer implements Runnable, NetworkableServer
 
 	public void tcpSendToAll(Packet packet)
 	{
-		log("[OUT] Sending to all: " + packet);
+		if (GameCore.isDisplayNetworkDebug())
+			log("[OUT] Sending to all: " + packet);
 		tcpSendToAll(packet.getData());
 	}
 

@@ -27,9 +27,10 @@ import fr.veridiangames.core.game.Game;
 public class GameCore
 {
 	public static final String GAME_NAME = "Ubercube";
-	public static final String GAME_VERSION = "0.0.1";
 	public static final String GAME_VERSION_NAME = "Pre-Alpha 1";
 	public static final String GAME_SUB_VERSION = "002";
+
+	private static boolean displayNetworkDebug = false;
 
 	private static GameCore instance;
 
@@ -67,5 +68,15 @@ public class GameCore
 	public static GameCore getInstance()
 	{
 		return instance;
+	}
+
+	public static boolean isDisplayNetworkDebug()
+	{
+		return displayNetworkDebug;
+	}
+
+	public static void setDisplayNetworkDebug(boolean displayNetworkDebug)
+	{
+		GameCore.displayNetworkDebug = displayNetworkDebug;
 	}
 }

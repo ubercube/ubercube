@@ -19,6 +19,8 @@
 
 package fr.veridiangames.core.utils;
 
+import fr.veridiangames.core.GameCore;
+
 import java.io.*;
 
 /**
@@ -36,7 +38,8 @@ public class DataStream
     public static byte[] read(DataInputStream in) throws IOException
     {
         int length = in.readInt();
-        System.out.println("LENGTH: " + length);
+        if (GameCore.isDisplayNetworkDebug())
+            System.out.println("LENGTH: " + length);
         byte[] data = new byte[length];
         in.readFully(data, 0, data.length);
         return data;

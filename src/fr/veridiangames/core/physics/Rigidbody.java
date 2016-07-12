@@ -79,6 +79,14 @@ public class Rigidbody
 		if (grounded)
 		{
 			dragFactor = frictionFactor;
+//			if (bounceFactor > 0)
+//			{
+//				applyForce(Vec3.UP, bounceFactor);
+//				bounceFactor *= 0.8f;
+//				if (bounceFactor < 0.1f)
+//					bounceFactor = 0;
+//			}
+			System.out.println("Grounded");
 		}
 		else
 		{
@@ -133,6 +141,7 @@ public class Rigidbody
 		if (networkView)
 			return;
 
+		grounded = false;
 		List<AABoxCollider> blocks = world.getAABoxInRange(position, 3);
 		for (int i = 0; i < blocks.size(); i++)
 		{
@@ -142,7 +151,6 @@ public class Rigidbody
 			{
 				Vec3 mtd = data.getMtd();
 
-				grounded = false;
 				if (data.getNormal().y == 1 && velocity.y <= 0 && mainForce.y <= 0)
 				{
 					gravity.y = 0;
@@ -164,12 +172,6 @@ public class Rigidbody
 				}
 				this.collider.getPosition().add(mtd);
 			}
-		}
-
-		if (bounceFactor > 0 && grounded)
-		{
-			applyForce(Vec3.UP, bounceFactor);
-			bounceFactor *= 0.9f;
 		}
 	}
 	

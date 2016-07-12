@@ -84,7 +84,7 @@ public class ClientPlayer extends Player
 		if (timeOutTime % 60 == 0)
 		{
 			timeoutTime++;
-			if (timeoutTime > 10)
+			if (timeoutTime > 20)
 				timedOut = true;
 		}
 

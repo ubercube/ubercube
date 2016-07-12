@@ -70,7 +70,8 @@ public class NetworkClient implements NetworkableClient
 	
 	public void tcpSend(Packet packet)
 	{
-		log("[OUT] packet: " + packet);
+		if (GameCore.isDisplayNetworkDebug())
+			log("[OUT] packet: " + packet);
 		tcpSend(packet.getData());
 	}
 
