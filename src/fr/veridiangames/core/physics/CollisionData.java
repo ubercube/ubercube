@@ -27,18 +27,35 @@ import fr.veridiangames.core.maths.Vec3;
 public class CollisionData
 {
 	private Vec3	normal;
-	private Vec3 	mtd;
-	private boolean	collision;
+//	private Vec3 	mtd;
+//	private boolean	collision;
 
-	public CollisionData(Vec3 normal, boolean collision)
+	private float mtdX;
+	private float mtdY;
+	private float mtdZ;
+
+	private boolean collision;
+	private boolean	collisionX;
+	private boolean	collisionY;
+	private boolean	collisionZ;
+
+	public CollisionData(boolean collision, boolean collisionX, boolean collisionY, boolean collisionZ)
 	{
-		this.normal = normal;
 		this.collision = collision;
+		this.collisionX = collisionX;
+		this.collisionY = collisionY;
+		this.collisionZ = collisionZ;
 	}
-	
-	public CollisionData() {
-		this(new Vec3(), false);
-	}
+
+//	public CollisionData(Vec3 normal, boolean collision)
+//	{
+//		this.normal = normal;
+//		this.collision = collision;
+//	}
+//
+//	public CollisionData() {
+//		this(new Vec3(), false);
+//	}
 	
 	public Vec3 getNormal()
 	{
@@ -54,19 +71,76 @@ public class CollisionData
 	{
 		return collision;
 	}
+//	public void setCollision(boolean collision)
+//	{
+//		this.collision = collision;
+//	}
+//	public Vec3 getMtd()
+//	{
+//		return mtd;
+//	}
+//	public void setMtd(Vec3 mtd)
+//	{
+//		this.mtd = mtd;
+//	}
 
-	public void setCollision(boolean collision)
+	public float getMtdX()
 	{
-		this.collision = collision;
+		return mtdX;
 	}
 
-	public Vec3 getMtd()
+	public float getMtdY()
 	{
-		return mtd;
+		return mtdY;
 	}
 
-	public void setMtd(Vec3 mtd)
+	public float getMtdZ()
 	{
-		this.mtd = mtd;
+		return mtdZ;
+	}
+
+	public boolean isCollisionX()
+	{
+		return collisionX;
+	}
+
+	public boolean isCollisionY()
+	{
+		return collisionY;
+	}
+
+	public boolean isCollisionZ()
+	{
+		return collisionZ;
+	}
+
+	public void setMtdX(float mtdX)
+	{
+		this.mtdX = mtdX;
+	}
+
+	public void setMtdY(float mtdY)
+	{
+		this.mtdY = mtdY;
+	}
+
+	public void setMtdZ(float mtdZ)
+	{
+		this.mtdZ = mtdZ;
+	}
+
+	public void setCollisionX(boolean collisionX)
+	{
+		this.collisionX = collisionX;
+	}
+
+	public void setCollisionY(boolean collisionY)
+	{
+		this.collisionY = collisionY;
+	}
+
+	public void setCollisionZ(boolean collisionZ)
+	{
+		this.collisionZ = collisionZ;
 	}
 }

@@ -20,6 +20,7 @@
 package fr.veridiangames.core.physics.colliders;
 
 import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.physics.CollisionData;
 import fr.veridiangames.core.physics.CollisionDetector;
 import fr.veridiangames.core.physics.CollisionHandler;
@@ -44,17 +45,52 @@ public class AABoxCollider extends Collider
 	
 	public CollisionData getCollisionData(Collider collider)
 	{
-		CollisionData result = new CollisionData();
-		result.setCollision(CollisionDetector.detectAABBvsAABB(this,(AABoxCollider) collider));
-		if (result.isCollision())
+
+		boolean collision = CollisionDetector.detectAABBvsAABB(this,(AABoxCollider) collider);
+		boolean xCollision = CollisionDetector.detectAxisX(this,(AABoxCollider) collider);
+		boolean yCollision = CollisionDetector.detectAxisY(this,(AABoxCollider) collider);
+		boolean zCollision = CollisionDetector.detectAxisZ(this,(AABoxCollider) collider);
+
+		CollisionData data = new CollisionData(collision, xCollision, yCollision, zCollision);
+		Vec3 normal = new Vec3();
+		if (collision)
 		{
-			Vec3 normal = new Vec3(position).gtNorm(collider.getPosition());
-			result.setNormal(normal);
-			
-			Vec3 mtd = CollisionHandler.mtdAABBvsAABB(this, (AABoxCollider) collider);
-			result.setMtd(mtd);
+			if (xCollision)
+			{
+				float mtd = CollisionHandler.mtdAxisX(this,(AABoxCollider) collider);
+				data.setMtdX(mtd);
+				if (mtd != 0)
+					normal.x = mtd > 0 ? 1 : -1;
+			}
+			if (yCollision)
+			{
+				float mtd = CollisionHandler.mtdAxisY(this,(AABoxCollider) collider);
+				data.setMtdY(mtd);
+				if (mtd != 0)
+					normal.y = mtd > 0 ? 1 : -1;
+			}
+			if (zCollision)
+			{
+				float mtd = CollisionHandler.mtdAxisZ(this,(AABoxCollider) collider);
+				data.setMtdZ(mtd);
+				if (mtd != 0)
+					normal.z = mtd > 0 ? 1 : -1;
+			}
+			data.setNormal(normal);
 		}
-		return result;
+
+//		data.setCollision(CollisionDetector.detectAABBvsAABB(this,(AABoxCollider) collider));
+//		if (data.isCollision())
+//		{
+//			Vec3 normal = new Vec3(position).gtNorm(collider.getPosition());
+//			data.setNormal(normal);
+//
+//			Vec3 mtd = CollisionHandler.mtdAABBvsAABB(this, (AABoxCollider) collider);
+//			data.setMtd(mtd);
+//
+//		}
+
+		return data;
 	}
 	
 

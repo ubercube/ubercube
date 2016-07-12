@@ -19,6 +19,7 @@
 
 package fr.veridiangames.client.rendering.renderers.game.entities.particles;
 
+import fr.veridiangames.client.rendering.Camera;
 import fr.veridiangames.client.rendering.buffers.Buffers;
 import fr.veridiangames.client.rendering.shaders.Shader;
 import fr.veridiangames.core.game.entities.Entity;
@@ -117,7 +118,7 @@ public class ParticleRenderer
         glBindVertexArray(0);
     }
 
-    public void updateInstances(Map<Integer, Entity> entities, List<Integer> indices)
+    public void updateInstances(Camera camera, Map<Integer, Entity> entities, List<Integer> indices)
     {
         renderCount = 0;
         instanceBuffer.clear();
@@ -131,9 +132,9 @@ public class ParticleRenderer
                 for (int j = 0; j < particles.size(); j++)
                 {
                     Particle p = particles.get(j);
-
+                    if (!camera.isInViewFrustum(p.getTransform().getPosition().copy(), 0))
+                        continue;
                     renderCount++;
-
                     if (renderCount >= 10000)
                         break;
 

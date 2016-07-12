@@ -49,4 +49,43 @@ public class CollisionDetector
 		
 		return false;
 	}
+
+	public static boolean detectAxisX(AABoxCollider a, AABoxCollider b)
+	{
+		float ax0 = a.getPosition().x - a.getSize().x;
+		float ax1 = a.getPosition().x + a.getSize().x;
+
+		float bx0 = b.getPosition().x - b.getSize().x;
+		float bx1 = b.getPosition().x + b.getSize().x;
+
+		if (ax0 < bx1 && ax1 >= bx0)
+			return true;
+		return false;
+	}
+
+	public static boolean detectAxisY(AABoxCollider a, AABoxCollider b)
+	{
+		float ay0 = a.getPosition().y - a.getSize().y;
+		float ay1 = a.getPosition().y + a.getSize().y;
+
+		float by0 = b.getPosition().y - b.getSize().y;
+		float by1 = b.getPosition().y + b.getSize().y;
+
+		if (ay0 < by1 && ay1 >= by0)
+			return true;
+		return false;
+	}
+
+	public static boolean detectAxisZ(AABoxCollider a, AABoxCollider b)
+	{
+		float az0 = a.getPosition().z - a.getSize().z;
+		float az1 = a.getPosition().z + a.getSize().z;
+
+		float bz0 = b.getPosition().z - b.getSize().z;
+		float bz1 = b.getPosition().z + b.getSize().z;
+
+		if (az0 < bz1 && az1 >= bz0)
+			return true;
+		return false;
+	}
 }

@@ -100,6 +100,7 @@ public class GameRenderer
 			core.getGame().getEntityManager().getRenderableEntites()
 		);
 		particleRenderer.updateInstances(
+			playerViewport.getCamera(),
 			core.getGame().getEntityManager().getEntities(),
 			core.getGame().getEntityManager().getParticleEntities()
 		);

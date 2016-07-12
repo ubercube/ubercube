@@ -25,6 +25,7 @@ import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.world.World;
+import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
@@ -103,7 +104,7 @@ public class Rigidbody
 			return;
 		if (!useGravity)
 			return;
-		gravity.add(0, 3f, 0);
+		gravity.add(0, 2.5f, 0);
 		applyForce(gravity.copy().negate(), 1.0f / 60.0f / 60.0f);
 	}
 	
@@ -135,46 +136,59 @@ public class Rigidbody
 		Vec3 mtd = CollisionHandler.mtdAABBvsAABB(a, b).copy();
 		this.collider.getPosition().add(mtd);
 	}
-	
+
 	public void handleWorldCollision(World world)
 	{
 		if (networkView)
 			return;
 
 		grounded = false;
+		Vec3 axis = new Vec3();
 		List<AABoxCollider> blocks = world.getAABoxInRange(position, 3);
 		for (int i = 0; i < blocks.size(); i++)
 		{
-			AABoxCollider b = blocks.get(blocks.size() - i - 1);
+			AABoxCollider b = blocks.get(i);
 			CollisionData data = collider.getCollisionData(b);
+
 			if (data.isCollision())
 			{
-				Vec3 mtd = data.getMtd();
-
-				if (data.getNormal().y == 1 && velocity.y <= 0 && mainForce.y <= 0)
-				{
-					gravity.y = 0;
-					mainForce.y = 0;
-					velocity.y = 0;
-					grounded = true;
-				}
-				if (data.getNormal().x != 0)
+				float collisionMTD = Mathf.nearest(data.getMtdX(), Mathf.nearest(data.getMtdY(), data.getMtdZ(), 0), 0);
+				if (data.isCollisionX() && axis.x == 0 && data.getMtdX() == collisionMTD)
 				{
 					gravity.x = 0;
 					mainForce.x = 0;
 					velocity.x = 0;
+					float mtd = data.getMtdX();
+					this.collider.getPosition().x += mtd;
+					axis.x = 1;
 				}
-				if (data.getNormal().z != 0)
+				else if (data.isCollisionY() && axis.y == 0 && data.getMtdY() == collisionMTD)
+				{
+					if (velocity.y < 0)
+						grounded = true;
+					gravity.y = 0;
+					mainForce.y = 0;
+					velocity.y = 0;
+					float mtd = data.getMtdY();
+					this.collider.getPosition().y += mtd;
+					axis.y = 1;
+				}
+				else if (data.isCollisionZ() && axis.z == 0 && data.getMtdZ() == collisionMTD)
 				{
 					gravity.z = 0;
 					mainForce.z = 0;
 					velocity.z = 0;
+					float mtd = data.getMtdZ();
+					this.collider.getPosition().z += mtd;
+					axis.z = 1;
 				}
-				this.collider.getPosition().add(mtd);
 			}
+
+			if (axis.equals(1, 1, 1))
+				break;
 		}
 	}
-	
+
 	public void updatePosition()
 	{		
 		this.position.set(collider.getPosition());

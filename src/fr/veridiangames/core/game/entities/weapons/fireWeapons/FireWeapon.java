@@ -80,7 +80,7 @@ public class FireWeapon extends Weapon
 			else
 			{
 				super.updateBobbing(movementVelocity.magnitude(), 0.15f, 0.2f);
-				super.updateWeaponVelocity(movement.getVelocity(1), dx, dy, 0.0005f);
+				super.updateWeaponVelocity(movement.getVelocity(1), dx, dy, 0.0008f);
 			}
 		}
 

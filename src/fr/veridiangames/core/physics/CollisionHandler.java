@@ -64,4 +64,28 @@ public class CollisionHandler
 		mtd = absNormal.copy().mul(dist).mul(-side);
 		return mtd;
 	}
+
+	public static float mtdAxisX(AABoxCollider a, AABoxCollider b)
+	{
+		float posDiff = b.getPosition().x - a.getPosition().x;
+		float dist = -Mathf.abs(Mathf.abs(posDiff) - a.getSize().x - b.getSize().x);
+
+		return Mathf.norm(posDiff) * dist;
+	}
+
+	public static float mtdAxisY(AABoxCollider a, AABoxCollider b)
+	{
+		float posDiff = b.getPosition().y - a.getPosition().y;
+		float dist = -Mathf.abs(Mathf.abs(posDiff) - a.getSize().y - b.getSize().y);
+
+		return Mathf.norm(posDiff) * dist;
+	}
+
+	public static float mtdAxisZ(AABoxCollider a, AABoxCollider b)
+	{
+		float posDiff = b.getPosition().z - a.getPosition().z;
+		float dist = -Mathf.abs(Mathf.abs(posDiff) - a.getSize().z - b.getSize().z);
+
+		return Mathf.norm(posDiff) * dist;
+	}
 }

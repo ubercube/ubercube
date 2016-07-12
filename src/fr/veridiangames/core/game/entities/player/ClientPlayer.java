@@ -55,7 +55,7 @@ public class ClientPlayer extends Player
 	{
 		super(id, name, position, rotation, address, port);
 		super.add(new ECRigidbody(this, position, rotation, new AABoxCollider(new Vec3(0.3f, 2.8f * 0.5f, 0.3f)), false));
-		super.add(new ECKeyMovement(0.01f, 0.015f, 0.3f));
+		super.add(new ECKeyMovement(0.01f, 0.015f, 0.35f));
 		super.add(new ECMouseLook(0.3f));
 		super.add(new ECRaycast(5, 0.01f, "ClientPlayer", "Bullet", "ParticleSystem"));
 		super.add(new ECDebug());
@@ -123,7 +123,7 @@ public class ClientPlayer extends Player
         }
 
 		/* STEP */
-		Vec3 block = new Vec3(getPosition().copy().add(this.getViewDirection().copy().normalize().add(0, 0.5f, 0)));
+		Vec3 block = new Vec3(getPosition().copy().add(this.getViewDirection().copy().normalize().mul(1.25f).add(0, 0.5f, 0)));
 		if(getKeyComponent().isUp() && !getKeyComponent().isJump() && !getKeyComponent().isRun()
 				&& core.getGame().getWorld().getBlock((int)block.x, (int)getPosition().y - 1, (int)block.z) != 0
 				&& core.getGame().getWorld().getBlock((int)block.x, (int)getPosition().y, (int)block.z) == 0)

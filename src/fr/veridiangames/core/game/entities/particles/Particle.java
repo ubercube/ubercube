@@ -63,11 +63,6 @@ public class Particle
         gravity = system.getGravity();
     }
 
-    public void updateCulling()
-    {
-
-    }
-
     public Transform getTransform()
     {
         return transform;

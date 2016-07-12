@@ -35,7 +35,7 @@ public class ParticleSnow extends ParticleSystem{
         super.setParticleColor(new Color4f(0.8f, 0.8f, 0.9f));
         super.setImpulsion(false);
         super.setParticleCount(15);
-        super.setParticleLifeTime(200);
+        super.setParticleLifeTime(400);
         super.setParticleLifeTimeRandomness(200);
         super.setParticleVelocityRandomness(0.02f);
         super.setParticleSpawnBox(new Vec3(75, 0, 75));

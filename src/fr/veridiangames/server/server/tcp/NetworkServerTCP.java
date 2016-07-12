@@ -58,21 +58,23 @@ public class NetworkServerTCP implements Runnable
 
     public void run()
     {
-        try
+        while (socket != null)
         {
-            while (true)
+            try
             {
                 log("Accepting client");
                 Socket acceptedClient = this.socket.accept();
                 RemoteClient client = new RemoteClient(acceptedClient, server);
                 clients.add(client);
                 client.start();
+
+            }
+            catch (IOException e)
+            {
+                socket = null;
             }
         }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+
     }
 
     public void send(byte[] bytes, InetAddress address, int port)
