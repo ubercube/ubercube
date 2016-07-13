@@ -30,6 +30,7 @@ public class ParticlesManager {
     public static final String BLOOD = "ParticleBlood";
     public static final String BULLET_HIT = "ParticleBulletHit";
     public static final String SNOW = "ParticleSnow";
+    public static final String EXPLOSION = "Explosion";
 
     private static Map<String, Class<? extends ParticleSystem>> particles;
 
@@ -39,6 +40,7 @@ public class ParticlesManager {
         particles.put(BLOOD, ParticlesBlood.class);
         particles.put(BULLET_HIT, ParticlesBulletHit.class);
         particles.put(SNOW, ParticlesBulletHit.class);
+        particles.put(EXPLOSION, ParticlesExplosion.class);
     }
 
     public static ParticleSystem getParticleSystem(String particleName)

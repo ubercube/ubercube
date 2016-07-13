@@ -25,13 +25,16 @@ import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
 import fr.veridiangames.core.game.entities.particles.ParticlesBulletHit;
+import fr.veridiangames.core.game.entities.particles.ParticlesExplosion;
 import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.packets.BulletHitBlockPacket;
 import fr.veridiangames.core.network.packets.BulletHitPlayerPacket;
+import fr.veridiangames.core.network.packets.DamageForcePacket;
 import fr.veridiangames.core.physics.Rigidbody;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
 import fr.veridiangames.core.utils.Color4f;
@@ -47,19 +50,21 @@ public class Grenade extends Entity
     private boolean             throwed;
     private NetworkableClient   net;
     private Vec3                startPosition = new Vec3();
+    int timer;
 
     public Grenade(int id, int holderID, Vec3 spawnPoint, Quat direction, float force)
     {
         super(id);
         super.add(new ECName("Grenade"));
         super.add(new ECRender(spawnPoint, direction, new Vec3(0.2f)));
-        super.add(new ECRigidbody(this, spawnPoint, direction, new AABoxCollider(new Vec3(0.52f)), false));
+        super.add(new ECRigidbody(this, spawnPoint, direction, new AABoxCollider(new Vec3(0.2f, 0.8f, 0.2f)), false));
         super.addTag("Grenade");
 
         this.getBody().useGravity(true);
-        this.getBody().setAirDragFactor(0.99f);
-        this.getBody().setFrictionFactor(0.0f);
-        this.getBody().setBounceFactor(0.5f);
+        this.getBody().setIgnoreOthers(true);
+        this.getBody().setAirDragFactor(1f);
+        this.getBody().setFrictionFactor(0.8f);
+        this.getBody().setBounceFactor(0.2f);
         this.getBody().applyForce(direction.getForward().copy(), force);
 
         this.holderID = holderID;
@@ -71,6 +76,20 @@ public class Grenade extends Entity
     public void update(GameCore core)
     {
         super.update(core);
+
+        timer++;
+
+        if (timer > 60 * 2)
+        {
+            explose();
+        }
+    }
+
+    private void explose()
+    {
+        getCore().getGame().spawn(new ParticlesExplosion(Indexer.getUniqueID(), getPosition().copy()));
+        net.tcpSend(new DamageForcePacket(getPosition().copy(), 4));
+        this.destroy();
     }
 
     public Rigidbody getBody() {return ((ECRigidbody) this.get(EComponent.RIGIDBODY)).getBody(); }
@@ -85,9 +104,10 @@ public class Grenade extends Entity
         return ((ECRender) this.get(EComponent.RENDER)).getTransform().getRotation();
     }
 
-    public void setNetwork(NetworkableClient net)
+    public Entity setNetwork(NetworkableClient net)
     {
         this.net = net;
+        return this;
     }
 
     public String getName()

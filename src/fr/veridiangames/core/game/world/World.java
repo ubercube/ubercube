@@ -27,6 +27,7 @@ import java.util.Map;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.data.GameData;
 import fr.veridiangames.core.game.data.world.WorldGen;
+import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.maths.Vec4i;
@@ -214,7 +215,25 @@ public class World
 		updateChunk(index);
 		checkChunksAroundOther(c, x % Chunk.SIZE, y % Chunk.SIZE, z % Chunk.SIZE);
 	}
-	
+
+	public void updateRequest(int xp, int yp, int zp, int radius)
+	{
+		for (int x = 0; x < radius * 2; x++)
+		{
+			for (int y = 0; y < radius * 2; y++)
+			{
+				for (int z = 0; z < radius * 2; z++)
+				{
+					int xx = x + xp - radius;
+					int yy = y + yp - radius;
+					int zz = z + zp - radius;
+
+					updateRequest(xx, yy, zz);
+				}
+			}
+		}
+	}
+
 	public void checkChunksAroundOther(Chunk c, int x, int y, int z)
 	{
 		int xx = c.position.x;
@@ -480,9 +499,57 @@ public class World
 		Color4f a = block;
 		Color4f b = Color4f.BLACK;
 
-		block = Color4f.mix(a, b, block.getAlpha() * 0.2f);
+		System.out.println("A: " + block.getAlpha() + " " + damage);
+		block = Color4f.mix(a, b, 1.0f - (block.getAlpha() * 0.5f + 0.5f));
+		System.out.println("B: " + block.getAlpha() + " " + damage);
 
 		return block.getARGB();
+	}
+
+	public void applyDamageForce(Vec3 pos, float force, boolean setBlockAndUpdate)
+	{
+		for (int x = 0; x < force * 2; x++)
+		{
+			for (int y = 0; y < force * 2; y++)
+			{
+				for (int z = 0; z < force * 2; z++)
+				{
+					int xp = (int) (pos.x + x - force);
+					int yp = (int) (pos.y + y - force);
+					int zp = (int) (pos.z + z - force);
+
+					if (getBlock(xp, yp, zp) == 0)
+						continue;
+
+					float xx = x - force;
+					float yy = y - force;
+					float zz = z - force;
+
+					float dist = Mathf.sqrt(xx * xx + yy * yy + zz * zz);
+
+					if (dist < force)
+					{
+						float dammageAmnt = (1.0f - dist / force) * 3f;
+						if (dammageAmnt < 0) dammageAmnt = 0;
+						if (dammageAmnt > 1) dammageAmnt = 1;
+
+						int block = applyBlockDamage(getBlock(xp, yp, zp), dammageAmnt);
+						float alpha = Color4f.getColorFromARGB(block).getAlpha();
+						if (alpha <= 0)
+							block = 0;
+						addModifiedBlock(xp, yp, zp, block);
+						if (setBlockAndUpdate)
+						{
+							if (block == 0)
+								removeBlock(xp, yp, zp);
+							else
+								addBlock(xp, yp, zp, block);
+							updateRequest(xp, yp, zp);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public WorldGen getWorldGen()

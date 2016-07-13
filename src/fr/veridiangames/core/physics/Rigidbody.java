@@ -24,6 +24,7 @@ import java.util.List;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
+import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Quat;
@@ -52,9 +53,16 @@ public class Rigidbody
 	private boolean 	useGravity;
 	private float 		bounceFactor;
 
-	private List<String> ignores;
+	private Vec3 	collidingAxis;
+	private boolean collidingX;
+	private boolean collidingY;
+	private boolean collidingZ;
+
+	private float restitution = 1;
+	private boolean ignoreOthers;
 	
 	private boolean networkView;
+	private Vec3 		movementAxis;
 
 	public Rigidbody(Entity e, Vec3 position, Quat rotation, Collider collider, boolean networkView)
 	{
@@ -65,35 +73,39 @@ public class Rigidbody
 		this.velocity = new Vec3();
 		this.collider = collider;
 		this.collider.setPosition(position.copy());
-		this.dragFactor = 0f;
 		this.airDragFactor = 0.9f;
 		this.frictionFactor = 0.3f;
+		this.dragFactor = airDragFactor;
 		this.networkView = networkView;
 		this.mainForce = new Vec3();
+		this.collidingAxis = new Vec3(1, 1, 1);
+	}
+
+	public void updateDragFactor()
+	{
+		if (grounded)
+		{
+			dragFactor = frictionFactor;
+			if (restitution > 0)
+			{
+				restitution = velocity.magnitude() * 0.4f;
+				applyForce(Vec3.UP, restitution);
+				restitution *= bounceFactor;
+				if (restitution < 0.01f)
+					restitution = 0;
+			}
+		}
+		else
+		{
+			dragFactor = 0.9f; //airDragFactor;
+		}
 	}
 
 	public void updateVelocity()
 	{
 		if (networkView)
 			return;
-		
-		if (grounded)
-		{
-			dragFactor = frictionFactor;
-//			if (bounceFactor > 0)
-//			{
-//				applyForce(Vec3.UP, bounceFactor);
-//				bounceFactor *= 0.8f;
-//				if (bounceFactor < 0.1f)
-//					bounceFactor = 0;
-//			}
-			System.out.println("Grounded");
-		}
-		else
-		{
-			dragFactor = airDragFactor;
-		}
-		
+
 		collider.getPosition().add(velocity);
 		velocity.mul(dragFactor);
 	}
@@ -112,7 +124,7 @@ public class Rigidbody
 	{
 		if (networkView)
 			return;
-		
+
 		velocity.add(mainForce);
 		mainForce.set(0, 0, 0);
 		grounded = false;
@@ -122,6 +134,16 @@ public class Rigidbody
 	{
 		Vec3 forceVector = direction.copy().mul(force);
 		mainForce.add(forceVector);
+	}
+
+	public void applyMovementForce(Vec3 direction, float force)
+	{
+		applyForce(direction, force);
+	}
+
+	public void resetAxisCollision()
+	{
+		collidingAxis.set(1, 1, 1);
 	}
 
 	public CollisionData getCollisionData(Rigidbody body)
@@ -142,6 +164,10 @@ public class Rigidbody
 		if (networkView)
 			return;
 
+		collidingX = false;
+		collidingY = false;
+		collidingZ = false;
+
 		grounded = false;
 		Vec3 axis = new Vec3();
 		List<AABoxCollider> blocks = world.getAABoxInRange(position, 3);
@@ -161,6 +187,8 @@ public class Rigidbody
 					float mtd = data.getMtdX();
 					this.collider.getPosition().x += mtd;
 					axis.x = 1;
+					collidingAxis.x = 0;
+					collidingX = true;
 				}
 				else if (data.isCollisionY() && axis.y == 0 && data.getMtdY() == collisionMTD)
 				{
@@ -172,6 +200,8 @@ public class Rigidbody
 					float mtd = data.getMtdY();
 					this.collider.getPosition().y += mtd;
 					axis.y = 1;
+					collidingAxis.y = 0;
+					collidingY = true;
 				}
 				else if (data.isCollisionZ() && axis.z == 0 && data.getMtdZ() == collisionMTD)
 				{
@@ -181,9 +211,10 @@ public class Rigidbody
 					float mtd = data.getMtdZ();
 					this.collider.getPosition().z += mtd;
 					axis.z = 1;
+					collidingAxis.z = 0;
+					collidingZ = true;
 				}
 			}
-
 			if (axis.equals(1, 1, 1))
 				break;
 		}
@@ -310,5 +341,15 @@ public class Rigidbody
 	public void useGravity(boolean useGravity)
 	{
 		this.useGravity = useGravity;
+	}
+
+	public boolean isIgnoreOthers()
+	{
+		return ignoreOthers;
+	}
+
+	public void setIgnoreOthers(boolean ignoreOthers)
+	{
+		this.ignoreOthers = ignoreOthers;
 	}
 }

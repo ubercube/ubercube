@@ -35,12 +35,13 @@ public class WeaponGrenade extends ExplosiveWeapon
 {
     private int grenadetCount;
     private List<Grenade> grenades;
+    private float force;
 
     public WeaponGrenade(int num)
     {
         super(GRENADE);
         this.transform.setLocalScale(new Vec3(1, 1, -1));
-        this.setIdlePosition(new Transform(new Vec3(0.3f, -0.05f, 0)));
+        this.setIdlePosition(new Transform(new Vec3(0.4f, -0.5f, 1)));
         this.setHidePosition(new Transform(new Vec3(0.3f, -0.05f - 1f, 0)));
         this.setZoomPosition(new Transform(new Vec3(0, 0, 0)));
         this.setPosition(0);
@@ -48,9 +49,17 @@ public class WeaponGrenade extends ExplosiveWeapon
         this.grenades = new ArrayList<>();
     }
 
+    public void update(GameCore core)
+    {
+        super.update(core);
+
+        this.getTransform().getLocalPosition().z = 1 - force * 0.15f;
+    }
+
     public void onAction()
     {
-
+        force += 0.3f;
+        force *= 0.9f;
     }
 
     public void onActionUp()
@@ -58,9 +67,11 @@ public class WeaponGrenade extends ExplosiveWeapon
         GameCore.getInstance().getGame().spawn(
             new Grenade(Indexer.getUniqueID(),
                 this.holder.getID(),
-                transform.getPosition().copy().add(this.holder.getTransform().getForward().copy().mul(1.2f)),
-                transform.getRotation(), 0.5f)
+                transform.getPosition().copy().add(this.holder.getTransform().getForward().copy().mul(1.5f)),
+                transform.getRotation(), force).setNetwork(net)
         );
+
+        force = 0;
     }
 
     public void onActionDown()

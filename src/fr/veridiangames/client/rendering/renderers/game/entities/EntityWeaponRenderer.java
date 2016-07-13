@@ -89,7 +89,7 @@ public class EntityWeaponRenderer
 		if (render == null || weaponComp == null)
 			return;
 		
-		int weapon = weaponComp.getWeaponID();
+		int weapon = weaponComp.getWeapon().getModel();
 		shader.setModelViewMatrix(weaponComp.getWeapon().getTransform().toMatrix().mul(Mat4.scale(1f/16f, 1f/16f, 1f/16f)));
 		
 		renderWeapon(weapon);

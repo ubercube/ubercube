@@ -33,7 +33,7 @@ public class PhysicsEngine
 
 	public PhysicsEngine()
 	{
-		bodys = new ArrayList<Rigidbody>();
+		bodys = new ArrayList<>();
 	}
 
 	public void update(GameCore core)
@@ -49,7 +49,10 @@ public class PhysicsEngine
 				Rigidbody b = bodys.get(j);
 				if (a == b)
 					continue;
-				
+
+				if (a.isIgnoreOthers() || b.isIgnoreOthers())
+					continue;
+
 				CollisionData data = a.getCollisionData(b);
 				if (data.isCollision())
 				{
@@ -58,6 +61,7 @@ public class PhysicsEngine
 			}
 			a.handleWorldCollision(core.getGame().getWorld());
 			a.updatePosition();
+			a.updateDragFactor();
 		}
 	}
 

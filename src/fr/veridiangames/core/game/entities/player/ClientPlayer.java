@@ -61,6 +61,9 @@ public class ClientPlayer extends Player
 		super.add(new ECDebug());
 		super.addTag("ClientPlayer");
 
+		getRigidBody().getBody().setFrictionFactor(0.89f);
+		getRigidBody().getBody().setAirDragFactor(0.9f);
+
 		this.life = Player.MAX_LIFE;
 
 		this.particleSystems = new ArrayList<>();

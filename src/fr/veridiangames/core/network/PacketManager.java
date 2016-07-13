@@ -52,6 +52,7 @@ public class PacketManager
 		packets.put(Packet.WEAPON_CHANGE, WeaponChangePacket.class);
 		packets.put(Packet.BULLET_SHOOT, BulletShootPacket.class);
 		packets.put(Packet.KICK, KickPacket.class);
+		packets.put(Packet.DAMAGE_FORCE, DamageForcePacket.class);
 	}
 	
 	public static Packet getPacket(int packet)

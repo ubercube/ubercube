@@ -103,18 +103,19 @@ public class ConnectPacket extends Packet
 
 		/* SENDING MULTIPLE PACKETS TO AVOID READ OVERFLOW OF 2048 */
 		int modifiedBlocksSize = server.getCore().getGame().getWorld().getModifiedBlocks().size();
-		int packetCount = (int) Mathf.ceil((float) (modifiedBlocksSize * 16) / Packet.MAX_SIZE);
+		int packetCount = (int) ((float) (modifiedBlocksSize * 16) / (Packet.MAX_SIZE - 500)) + 1;
 		List<Vec4i> currentData = server.getCore().getGame().getWorld().getModifiedBlocks();
 		for (int i = 0; i < packetCount; i++)
 		{
 			List<Vec4i> dataToSend = new ArrayList<>();
-			float count = (float)modifiedBlocksSize / packetCount;
+			float count = (float)modifiedBlocksSize / packetCount + 1;
 			int icount = (int) count;
 
 			for (int j = 0; j < count; j++)
 			{
 				int index = i * icount + j;
-				dataToSend.add(currentData.get(index));
+				if (index < currentData.size())
+					dataToSend.add(currentData.get(index));
 			}
 			server.tcpSend(new SyncBlocksPacket(dataToSend), address, port);
 		}
