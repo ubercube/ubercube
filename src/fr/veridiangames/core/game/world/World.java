@@ -356,6 +356,9 @@ public class World
 	
 	public void removeBlock(int x, int y, int z)
 	{
+		if (y == 0)
+			return;
+
 		addModifiedBlock(x, y, z, 0);
 		int xc = x / Chunk.SIZE;
 		int yc = y / Chunk.SIZE;
@@ -487,21 +490,28 @@ public class World
 
 	public int getBlockDamage(int x, int y, int z, float damage)
 	{
-		return applyBlockDamage(getBlock(x, y, z), damage);
+		return applyBlockDamage(x, y, z, damage);
 	}
 
-	public int applyBlockDamage(int blck, float damage)
+	public int applyBlockDamage(int x, int y, int z, float damage)
 	{
-		Color4f block = Color4f.getColorFromARGB(blck);
+		int blockID = 0;
+
+
+		Vec4i modBlock = getModifiedBlock(x, y, z);
+		if (modBlock != null)
+			blockID = modBlock.w;
+		else
+			blockID = getBlock(x, y, z);
+
+		Color4f block = Color4f.getColorFromARGB(blockID);
 
 		block.setAlpha(block.getAlpha() - damage);
 
 		Color4f a = block;
 		Color4f b = Color4f.BLACK;
 
-		System.out.println("A: " + block.getAlpha() + " " + damage);
-		block = Color4f.mix(a, b, 1.0f - (block.getAlpha() * 0.5f + 0.5f));
-		System.out.println("B: " + block.getAlpha() + " " + damage);
+		block = Color4f.mix(a, b, 1.0f - (block.getAlpha() * 0.3f + 0.7f));
 
 		return block.getARGB();
 	}
@@ -533,11 +543,10 @@ public class World
 						if (dammageAmnt < 0) dammageAmnt = 0;
 						if (dammageAmnt > 1) dammageAmnt = 1;
 
-						int block = applyBlockDamage(getBlock(xp, yp, zp), dammageAmnt);
+						int block = applyBlockDamage(xp, yp, zp, dammageAmnt);
 						float alpha = Color4f.getColorFromARGB(block).getAlpha();
 						if (alpha <= 0)
 							block = 0;
-						addModifiedBlock(xp, yp, zp, block);
 						if (setBlockAndUpdate)
 						{
 							if (block == 0)
@@ -546,6 +555,7 @@ public class World
 								addBlock(xp, yp, zp, block);
 							updateRequest(xp, yp, zp);
 						}
+						addModifiedBlock(xp, yp, zp, block);
 					}
 				}
 			}
@@ -562,3 +572,20 @@ public class World
 		return generated;
 	}
 }
+/*
+[ERR] java.lang.NullPointerException
+[ERR]     at org.lwjgl.system.APIUtil.apiGetManifestValue(APIUtil.java:97)
+[ERR]     at org.lwjgl.system.Library.chec
+[OUT] 	  glfwInit... kHash(Library.java:260)
+[OUT] ====== Loading Display... ======
+[ERR]     at org.lwjgl.system.Library.<clinit>(Library.java:44)
+[ERR]     at org.lwjgl.system.MemoryAccess.<clinit>(MemoryAccess.java:17)
+[ERR]     at org.lwjgl.system.ThreadLocalUtil$UnsafeState.<clinit>(ThreadL
+[ERR]     at org.lwjgl.system.ThreadLocalUtil.getInstance(ThreadLocalUtil.java:43) ocalUtil.java:86)
+[ERR]     at org.lwjgl.system.ThreadLocalUtil.<clinit>(ThreadLocalUtil.java:20)
+[ERR]     at org.lwjgl.system.MemoryStack.stackPush(MemoryStack.java:577)
+[ERR]     at org.lwjgl.system.Callback.<clinit>(Callback.java:35)
+[ERR]     at fr.veridiangames.client.inputs.Input.<init>(Input.java:199)
+[ERR]     at fr.veridiangames.client.rendering.Display.<init>(Display.java:67)
+[ERR]     at fr.veridiangames.client.MainComponent.main(MainComponent.java:36)
+*/

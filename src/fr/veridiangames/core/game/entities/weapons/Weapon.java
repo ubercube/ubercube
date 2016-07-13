@@ -27,11 +27,6 @@ import fr.veridiangames.core.network.NetworkableClient;
 public abstract class Weapon
 {
 	protected NetworkableClient	net;
-	
-	public static final int AK47 		= 0;
-	public static final int AWP 		= 1;
-	public static final int SHOVEL 		= 2;
-	public static final int GRENADE 	= 3;
 
 	private boolean destroyed;
 

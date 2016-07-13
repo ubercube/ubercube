@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.game.entities.weapons.meleeWeapon;
 
+import fr.veridiangames.core.game.entities.Model;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
@@ -27,8 +28,8 @@ public class WeaponShovel extends MeleeWeapon
 {
 	public WeaponShovel()
 	{
-		super(SHOVEL);
-		this.transform.setLocalScale(new Vec3(0.3f, 0.3f, -0.3f));
+		super(Model.SHOVEL);
+		this.transform.setLocalScale(new Vec3(0.3f, 0.3f, 0.3f));
 		this.setIdlePosition(new Transform(new Vec3(0.1f, -0.2f, 0.2f)));
 		this.setHidePosition(new Transform(new Vec3(0.1f, -0.2f - 1f, 0.2f)));
 		this.setZoomPosition(new Transform(new Vec3(0.1f, -0.2f, 0.2f)));

@@ -19,7 +19,7 @@
 
 package fr.veridiangames.client.main.screens;
 
-import fr.veridiangames.client.main.Main;
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
@@ -28,14 +28,9 @@ import fr.veridiangames.client.rendering.guis.components.GuiLabel;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
 import fr.veridiangames.client.rendering.guis.components.GuiTextArea;
 import fr.veridiangames.client.rendering.guis.listeners.GuiActionListener;
-import fr.veridiangames.client.rendering.textures.TextureLoader;
-import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.utils.Color4f;
 
 import java.awt.*;
-
-import static org.lwjgl.opengl.GL11.GL_LINE;
-import static org.lwjgl.opengl.GL11.GL_LINEAR;
 
 /**
  * Created by Marc on 02/07/2016.
@@ -105,9 +100,9 @@ public class GameLoadingScreen extends GuiCanvas
         super.add(creditsTitle);
     }
 
-    public void update(Main main)
+    public void update(Ubercube main)
     {
-        if (Main.getMain().isConnected())
+        if (Ubercube.getInstance().isConnected())
         {
             loadingInfo.setText("Connected !");
             joinGameButton.setClickable(true);

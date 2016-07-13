@@ -21,7 +21,7 @@ package fr.veridiangames.client.rendering.player;
 
 import fr.veridiangames.core.game.data.GameData;
 import fr.veridiangames.core.maths.Vec3;
-import fr.veridiangames.client.main.Main;
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.main.player.PlayerHandler;
 import fr.veridiangames.client.rendering.Camera;
 import fr.veridiangames.client.rendering.Display;
@@ -35,7 +35,7 @@ public class PlayerViewport
 	private GameData		gameData;
 	private PlayerHandler	player;
 
-	public PlayerViewport(Display display, Main main)
+	public PlayerViewport(Display display, Ubercube main)
 	{
 		this.gameData = main.getGameCore().getGame().getData();
 		this.player = main.getPlayerHandler();

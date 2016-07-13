@@ -19,6 +19,7 @@
 
 package fr.veridiangames.client.main.player;
 
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.audio.AudioListener;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.*;
@@ -65,7 +66,10 @@ public class PlayerHandler
 
 		mouse.setDX(0);
 		mouse.setDY(0);
-		
+
+		if (Ubercube.getInstance().isConsole())
+			return;
+
 		if (input.getMouse().getButton(0))
 			input.getMouse().setGrabbed(true);
 		if (input.getKey(Input.KEY_ESCAPE))

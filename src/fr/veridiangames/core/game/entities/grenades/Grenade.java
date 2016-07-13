@@ -21,6 +21,7 @@ package fr.veridiangames.core.game.entities.grenades;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
+import fr.veridiangames.core.game.entities.Model;
 import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
@@ -29,6 +30,7 @@ import fr.veridiangames.core.game.entities.particles.ParticlesExplosion;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.maths.Quat;
+import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.NetworkableClient;
@@ -56,9 +58,11 @@ public class Grenade extends Entity
     {
         super(id);
         super.add(new ECName("Grenade"));
-        super.add(new ECRender(spawnPoint, direction, new Vec3(0.2f)));
+        super.add(new ECRender(spawnPoint, direction, new Vec3(1f)));
+        super.add(new ECModel(Model.GRENADE));
         super.add(new ECRigidbody(this, spawnPoint, direction, new AABoxCollider(new Vec3(0.2f, 0.8f, 0.2f)), false));
         super.addTag("Grenade");
+        this.getRender().getTransform();
 
         this.getBody().useGravity(true);
         this.getBody().setIgnoreOthers(true);
@@ -93,6 +97,8 @@ public class Grenade extends Entity
     }
 
     public Rigidbody getBody() {return ((ECRigidbody) this.get(EComponent.RIGIDBODY)).getBody(); }
+
+    public ECRender getRender() { return (ECRender) this.get(EComponent.RENDER); }
 
     public Vec3 getPosition()
     {

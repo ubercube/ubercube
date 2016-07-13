@@ -20,6 +20,7 @@
 package fr.veridiangames.core.utils;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.network.packets.Packet;
 
 import java.io.*;
 
@@ -30,17 +31,22 @@ public class DataStream
 {
     public static void write(DataOutputStream out, byte[] data) throws IOException
     {
-        out.writeInt(data.length);
-        out.write(data);
+
+        if (data.length > Packet.MAX_SIZE)
+            throw new RuntimeException("Packet size overflow: " + data.length + "  MAX SIZE: " + Packet.MAX_SIZE);
+        byte[] bytes = new byte[Packet.MAX_SIZE];
+        for (int i = 0; i < data.length; i++)
+        {
+            bytes[i] = data[i];
+        }
+
+        out.write(bytes);
         out.flush();
     }
 
     public static byte[] read(DataInputStream in) throws IOException
     {
-        int length = in.readInt();
-        if (GameCore.isDisplayNetworkDebug())
-            System.out.println("LENGTH: " + length);
-        byte[] data = new byte[length];
+        byte[] data = new byte[Packet.MAX_SIZE];
         in.readFully(data, 0, data.length);
         return data;
     }

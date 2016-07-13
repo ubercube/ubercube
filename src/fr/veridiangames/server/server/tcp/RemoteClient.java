@@ -19,16 +19,20 @@
 
 package fr.veridiangames.server.server.tcp;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.utils.DataStream;
+import fr.veridiangames.core.utils.Sleep;
 import fr.veridiangames.server.server.NetworkServer;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Marc on 07/07/2016.
@@ -44,6 +48,8 @@ public class RemoteClient implements Runnable
 
     private NetworkServer server;
 
+    private List<Packet> packets;
+
     public RemoteClient(Socket socket, NetworkServer server)
     {
         try
@@ -55,6 +61,7 @@ public class RemoteClient implements Runnable
             this.socket.setReuseAddress(false);
             this.socket.setSoTimeout(10000);
             this.server = server;
+            this.packets = new ArrayList<>();
         } catch (SocketException e)
         {
             e.printStackTrace();
@@ -64,6 +71,7 @@ public class RemoteClient implements Runnable
 
     public void run()
     {
+        processPackets();
         try
         {
             bin = new BufferedInputStream(socket.getInputStream());
@@ -87,7 +95,7 @@ public class RemoteClient implements Runnable
                         if (GameCore.isDisplayNetworkDebug())
                             System.out.println("[IN]-> received: " + packet);
                         packet.read(data);
-                        packet.process(server, socket.getInetAddress(), socket.getPort());
+                        packets.add(packet);
                     }
                 }
                 catch (IOException e)
@@ -102,20 +110,45 @@ public class RemoteClient implements Runnable
         }
     }
 
+    private void processPackets()
+    {
+        new Thread("tcp-process-thread")
+        {
+            public void run()
+            {
+                while (true)
+                {
+                    Sleep.sleep(100);
+                    for (int i = 0; i < packets.size(); i++)
+                    {
+                        packets.get(i).process(server, socket.getInetAddress(), socket.getPort());
+                        packets.remove(i);
+                    }
+                }
+            }
+        }.start();
+    }
+
     public void send(byte[] bytes)
     {
-        try
+        new Thread("tcp-send-thread")
         {
-            if (bytes.length == 0)
-                return;
-            if (GameCore.isDisplayNetworkDebug())
-                System.out.println("[OUT] -> Sending size: " + bytes.length);
-            DataStream.write(out, bytes);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+            public void run()
+            {
+                try
+                {
+                    if (bytes.length == 0)
+                        return;
+                    if (GameCore.isDisplayNetworkDebug())
+                        System.out.println("[OUT] -> Sending size: " + bytes.length);
+                    DataStream.write(out, bytes);
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     public void stop()

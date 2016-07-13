@@ -26,7 +26,7 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
-import fr.veridiangames.client.main.Main;
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.main.console.Console;
 
 /**
@@ -38,20 +38,18 @@ public class NetworkClient implements NetworkableClient
 
 	private int 			port;
 	private InetAddress 	address;
-	private Main 			main;
-	private Console 		console;
+	private Ubercube 		main;
 	private boolean 		connected;
 
 	private NetworkClientTCP tcp;
 	private NetworkClientUDP udp;
 
-	public NetworkClient(int id, String address, int port, Main main)
+	public NetworkClient(int id, String address, int port, Ubercube main)
 	{
 		try
 		{
 			this.address = InetAddress.getByName(address);
 			this.main = main;
-			this.console = main.getConsole();
 			this.port = port;
 
 			tcp = new NetworkClientTCP(this, id, address, port);
@@ -99,14 +97,8 @@ public class NetworkClient implements NetworkableClient
 	public void log(String msg)
 	{
 		System.out.println(msg);
-		console.print(msg);
 	}
 	
-	public void setConsole(Console c)
-	{
-		this.console = c;
-	}
-
 	public void setConnected(boolean connected)
 	{
 		this.connected = connected;

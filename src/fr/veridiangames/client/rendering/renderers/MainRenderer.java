@@ -20,7 +20,7 @@
 package fr.veridiangames.client.rendering.renderers;
 
 import fr.veridiangames.core.GameCore;
-import fr.veridiangames.client.main.Main;
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.renderers.game.GameRenderer;
 
@@ -32,7 +32,7 @@ public class MainRenderer
 	private Renderer		renderer;
 	private GameRenderer	gameRenderer;
 
-	public MainRenderer(Main main, GameCore core)
+	public MainRenderer(Ubercube main, GameCore core)
 	{
 		this.renderer = new Renderer();
 		this.gameRenderer = new GameRenderer(main, core);

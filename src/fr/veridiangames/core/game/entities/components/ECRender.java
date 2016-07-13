@@ -45,7 +45,7 @@ public class ECRender extends EComponent
 		this.eyePoint.setLocalPosition(transform.getPosition().copy().add(0, 2.5f / 2.0f, 0));
 		this.eyePoint.setLocalRotation(transform.getRotation());
 	}
-	
+
 	public Transform getTransform()
 	{
 		return transform;
@@ -55,7 +55,7 @@ public class ECRender extends EComponent
 	{
 		this.transform = transform;
 	}
-	
+
 	public Transform getEyeTransform()
 	{
 		return eyePoint;

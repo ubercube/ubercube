@@ -17,9 +17,9 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.client.main;
+package fr.veridiangames.client;
 
-import fr.veridiangames.client.main.player.PlayerHudCanvas;
+import fr.veridiangames.client.main.screens.PlayerHudScreen;
 import fr.veridiangames.client.main.screens.GameLoadingScreen;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
@@ -44,23 +44,23 @@ import javax.swing.*;
 /**
  * Created by Marccspro on 28 janv. 2016.
  */
-public class Main
+public class Ubercube
 {
-	private static Main main;
+	private static Ubercube instance;
 
-	private GameCore		core;
-	private Display			display;
+	private GameCore			core;
+	private Display				display;
 	
-	private MainRenderer	mainRenderer;
-	private PlayerHandler	playerHandler;
-	private NetworkClient	net;
-	private Console			console;
-	private GuiManager 		guiManager;
-	private boolean 		connected;
-	private boolean 		joinGame;
-	private GameLoadingScreen gameLoading;
+	private MainRenderer		mainRenderer;
+	private PlayerHandler		playerHandler;
+	private NetworkClient		net;
+	private GuiManager 			guiManager;
+	private boolean 			connected;
+	private boolean 			joinGame;
+	private GameLoadingScreen 	gameLoading;
+	private boolean 			console;
 
-	public Main()
+	public Ubercube()
 	{
 		/* *** AUDIO INITIALISATION *** */
 //		AudioManager.init();
@@ -68,7 +68,7 @@ public class Main
 
 	public void init()
 	{
-		main = this;
+		instance = this;
 
 		/* *** INIT STUFF *** */
 		this.playerHandler = new PlayerHandler(core, net);
@@ -93,7 +93,7 @@ public class Main
 		this.guiManager.add(gameLoading);
 
 		/* *** PLAYER HUD GUI *** */
-		GuiCanvas playerHudGui = new PlayerHudCanvas(display, core);
+		GuiCanvas playerHudGui = new PlayerHudScreen(display, core);
 		this.guiManager.add(playerHudGui);
 	}
 
@@ -189,10 +189,10 @@ public class Main
 	{
 		init();
 
-		Timer timer = new Timer();
+		fr.veridiangames.client.main.Timer timer = new fr.veridiangames.client.main.Timer();
 		
 		double tickTime = 1000000000.0 / 60.0;
-		double renderTime = 1000000000.0 / 9000.0;
+		double renderTime = 1000000000.0 / 120.0;
 		double updatedTime = 0.0;
 		double renderedTime = 0.0;
 		
@@ -274,7 +274,6 @@ public class Main
 	
 	public void openConnection(int clientID, String name, String address, int port)
 	{
-		this.console = new Console();
 		net = new NetworkClient(clientID, address, port, this);
 		
 		float midWorld = core.getGame().getData().getWorldSize() / 2 * 16;
@@ -290,14 +289,10 @@ public class Main
 		return playerHandler;
 	}
 	
-	public Console getConsole()
+
+	public static Ubercube getInstance()
 	{
-		return console;
-	}
-	
-	public static Main getMain()
-	{
-		return main;
+		return instance;
 	}
 
 	public boolean isConnected()
@@ -308,5 +303,21 @@ public class Main
 	public NetworkClient getNet()
 	{
 		return net;
+	}
+
+	public void setScreen(GuiCanvas canvas)
+	{
+		guiManager.add(canvas);
+		guiManager.setCanvas(guiManager.getCanvases().indexOf(canvas));
+	}
+
+	public boolean isConsole()
+	{
+		return console;
+	}
+
+	public void setConsole(boolean console)
+	{
+		this.console = console;
 	}
 }

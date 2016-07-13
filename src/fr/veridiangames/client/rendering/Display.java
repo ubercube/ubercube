@@ -64,16 +64,14 @@ public class Display
 		this.height = height;
 		this.closed = false;
 		this.windowSizeBuffer = BufferUtils.createByteBuffer(4);
-		this.input = new Input(this);
 		this.init();
 	}
 
 	private void init()
 	{
-		Log.println("====== Loading Display... ======");
-
 		Log.println("glfwInit...");
-		glfwInit();
+		if (!glfwInit())
+			throw new IllegalStateException("Unable to initialize GLFW");
 
 		glfwDefaultWindowHints();
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
@@ -82,7 +80,9 @@ public class Display
 
 		Log.println("glfwCreateWindow...");
 		window = glfwCreateWindow(width, height, title, NULL, NULL);
-		
+		if (window == NULL)
+			throw new RuntimeException("Failed to create the GLFW window");
+
 		long monitor = glfwGetPrimaryMonitor();
 		if (monitor != 0)
 		{
@@ -93,6 +93,7 @@ public class Display
 
 		glfwDefaultWindowHints();
 		Log.println("glfw inputs callbacks...");
+		this.input = new Input(this);
 		glfwSetKeyCallback(window, input.getKeyboardCallback());
 		glfwSetCursorPosCallback(window, input.getMouse().getCursorPosCallback());
 		glfwSetMouseButtonCallback(window, input.getMouse().getMouseButtonCallback());
@@ -107,8 +108,6 @@ public class Display
 
 		Log.println("GL.createCapabilities()...");
 		GL.createCapabilities();
-
-		Log.println("====== Display loaded ! ========");
 		
 		Renderer.setDX11();
 	}

@@ -79,7 +79,7 @@ public class BulletHitBlockPacket extends Packet
 
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
-		this.block = server.getCore().getGame().getWorld().applyBlockDamage(this.block, damage);
+		this.block = server.getCore().getGame().getWorld().applyBlockDamage(position.x, position.y, position.z, damage);
 		if(Color4f.getColorFromARGB(block).getAlpha() <= 0)
 			this.block = 0;
 		server.getCore().getGame().getWorld().addModifiedBlock(position.x, position.y, position.z, block);

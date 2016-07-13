@@ -51,9 +51,10 @@ public class NetworkClientTCP implements Runnable
     private BufferedInputStream bin;
     private BufferedOutputStream bout;
 
+    private List<Packet> packets;
+
     public NetworkClientTCP(NetworkClient client, int id, String address, int port)
     {
-
         this.client = client;
         this.id = id;
         try
@@ -66,6 +67,7 @@ public class NetworkClientTCP implements Runnable
             this.socket.setKeepAlive(false);
             this.socket.setReuseAddress(false);
             this.socket.setSoTimeout(10000);
+            this.packets = new ArrayList<>();
             log("Connected to the TCP protocol !");
             new Thread(this, "tcp-thread").start();
         } catch (UnknownHostException e)
@@ -79,6 +81,7 @@ public class NetworkClientTCP implements Runnable
 
     public void run()
     {
+        processPackets();
         try
         {
             bin = new BufferedInputStream(socket.getInputStream());
@@ -101,7 +104,7 @@ public class NetworkClientTCP implements Runnable
                         if (GameCore.isDisplayNetworkDebug())
                             log("[IN]-> received size: " + data.size());
                         packet.read(data);
-                        packet.process(client, socket.getInetAddress(), socket.getPort());
+                        packets.add(packet);
                     }
                 } catch (IOException e)
                 {
@@ -114,21 +117,46 @@ public class NetworkClientTCP implements Runnable
         }
     }
 
+    private void processPackets()
+    {
+        new Thread("tcp-process-thread")
+        {
+            public void run()
+            {
+                while (true)
+                {
+                    Sleep.sleep(10);
+                    for (int i = 0; i < packets.size(); i++)
+                    {
+                        packets.get(i).process(client, socket.getInetAddress(), socket.getPort());
+                        packets.remove(i);
+                    }
+                }
+            }
+        }.start();
+    }
+
     public void send(byte[] bytes)
     {
-        if (out == null)
-            return;
-        try
+        new Thread("tcp-send-thread")
         {
-            if (bytes.length == 0)
-                return;
-            if (GameCore.isDisplayNetworkDebug())
-                log("[OUT]-> sending size: " + bytes.length);
-            DataStream.write(out, bytes);
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+            public void run()
+            {
+                if (out == null)
+                    return;
+                try
+                {
+                    if (bytes.length == 0)
+                        return;
+                    if (GameCore.isDisplayNetworkDebug())
+                        log("[OUT]-> sending size: " + bytes.length);
+                    DataStream.write(out, bytes);
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     public void log(String msg)

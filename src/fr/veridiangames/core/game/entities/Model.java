@@ -17,32 +17,15 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.client;
-
-import fr.veridiangames.core.GameCore;
-import fr.veridiangames.client.rendering.Display;
-
-import java.security.SecureRandom;
+package fr.veridiangames.core.game.entities;
 
 /**
- * Created by Marccspro on 28 janv. 2016.
+ * Created by Marc on 13/07/2016.
  */
-public class MainComponent
+public class Model
 {
-	public static void main(String[] args)
-	{
-		Ubercube main = new Ubercube();
-		main.setDisplay(new Display("Ubercube", 1280, 720));
-		main.setGameCore(new GameCore());
-
-		SecureRandom rand = new SecureRandom();
-		rand.setSeed(System.nanoTime());
-		int 	clientID = 	rand.nextInt(999999999); //Integer.parseInt(args[0]);
-		String 	address = 	args[0].split(":")[0];
-		int 	port = 		Integer.parseInt(args[0].split(":")[1]);
-		String name = args[1];
-
-		main.openConnection(clientID, name, address, port);
-		main.start();
-	}
+    public static final int AK47 		= 0;
+    public static final int AWP 		= 1;
+    public static final int SHOVEL 		= 2;
+    public static final int GRENADE 	= 3;
 }

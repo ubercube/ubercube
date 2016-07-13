@@ -23,22 +23,18 @@ import java.util.List;
 import java.util.Map;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.Model;
 import org.lwjgl.opengl.GL11;
 
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.ECWeapon;
 import fr.veridiangames.core.game.entities.components.EComponent;
-import fr.veridiangames.core.game.entities.weapons.Weapon;
-import fr.veridiangames.core.loaders.ModelLoader;
 import fr.veridiangames.core.maths.Mat4;
-import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.client.rendering.renderers.Renderer;
-import fr.veridiangames.client.rendering.renderers.models.ModelVoxRenderer;
-import fr.veridiangames.client.rendering.shaders.WeaponShader;
+import fr.veridiangames.client.rendering.shaders.ModelShader;
 
 import static fr.veridiangames.client.rendering.renderers.models.ModelVoxRenderer.*;
-import static java.awt.Color.red;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -46,7 +42,7 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class EntityWeaponRenderer
 {
-	public void renderEntityWeapons(WeaponShader shader, int cubemap, Map<Integer, Entity> entities, List<Integer> indices)
+	public void renderEntityWeapons(ModelShader shader, int cubemap, Map<Integer, Entity> entities, List<Integer> indices)
 	{
 		renderPlayerWeapon(shader, cubemap, entities);
 
@@ -66,7 +62,7 @@ public class EntityWeaponRenderer
 		Renderer.bindTextureCube(0);
 	}
 	
-	public void renderPlayerWeapon(WeaponShader shader, int cubemap, Map<Integer, Entity> entities)
+	public void renderPlayerWeapon(ModelShader shader, int cubemap, Map<Integer, Entity> entities)
 	{
 		Renderer.bindTextureCube(cubemap);
 		glDisable(GL11.GL_CULL_FACE);
@@ -77,7 +73,7 @@ public class EntityWeaponRenderer
 		Renderer.bindTextureCube(0);
 	}
 	
-	private void renderEntityWeapon(WeaponShader shader, int cubemap, Map<Integer, Entity> entities, int entity)
+	private void renderEntityWeapon(ModelShader shader, int cubemap, Map<Integer, Entity> entities, int entity)
 	{
 		Entity e = entities.get(entity);
 		if (e == null)
@@ -99,16 +95,16 @@ public class EntityWeaponRenderer
 	{
 		switch (weapon)
 		{
-			case Weapon.AK47:
+			case Model.AK47:
 				AK47_RENDERER.render();
 				break;
-			case Weapon.AWP:
+			case Model.AWP:
 				AWP_RENDERER.render();
 				break;
-			case Weapon.SHOVEL:
+			case Model.SHOVEL:
 				SHOVEL_RENDERER.render();
 				break;
-			case Weapon.GRENADE:
+			case Model.GRENADE:
 				GRENADE_RENDERER.render();
 				break;
 		}

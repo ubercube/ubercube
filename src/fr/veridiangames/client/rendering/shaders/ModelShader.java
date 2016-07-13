@@ -22,12 +22,12 @@ package fr.veridiangames.client.rendering.shaders;
 /**
  * Created by Marccspro on 8 f�vr. 2016.
  */
-public class WeaponShader extends MainShader
+public class ModelShader extends MainShader
 {
 	public static final String VERTEX_PATH = "/weapon.vert";
 	public static final String FRAGMENT_PATH = "/weapon.frag";
 	
-	public WeaponShader()
+	public ModelShader()
 	{
 		super(VERTEX_PATH, FRAGMENT_PATH);
 	}

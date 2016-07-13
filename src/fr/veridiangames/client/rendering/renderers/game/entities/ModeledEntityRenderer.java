@@ -20,25 +20,29 @@
 package fr.veridiangames.client.rendering.renderers.game.entities;
 
 import fr.veridiangames.client.rendering.buffers.Buffers;
+import fr.veridiangames.client.rendering.renderers.Renderer;
 import fr.veridiangames.client.rendering.shaders.Shader;
 import fr.veridiangames.core.game.entities.Entity;
+import fr.veridiangames.core.game.entities.Model;
+import fr.veridiangames.core.game.entities.components.ECModel;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Mat4;
 import fr.veridiangames.core.maths.Transform;
+import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.utils.Color4f;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
 import java.util.Map;
 
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static fr.veridiangames.client.rendering.renderers.models.ModelVoxRenderer.*;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
@@ -53,133 +57,48 @@ import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
  */
 public class ModeledEntityRenderer
 {
-    public static final int MAX_ENTITIES = 2000;
-
-    private FloatBuffer instanceBuffer;
-    private int vao, vbo, vio, ibo;
-    private int renderCount;
-
     public ModeledEntityRenderer()
     {
-        this.instanceBuffer = BufferUtils.createFloatBuffer(MAX_ENTITIES * 20);
-        for (int i = 0; i < MAX_ENTITIES; i++)
-        {
-            instanceBuffer.put(Mat4.identity().getComponents());
-            instanceBuffer.put(Color4f.YELLOW.toArray());
-        }
-        instanceBuffer.flip();
 
-        FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(cubeVertices().length);
-        verticesBuffer.put(cubeVertices());
-        verticesBuffer.flip();
-
-        IntBuffer indicesBuffer = BufferUtils.createIntBuffer(cubeIndices().length);
-        indicesBuffer.put(cubeIndices());
-        indicesBuffer.flip();
-
-        vao = Buffers.createVertexArray();
-        vbo = Buffers.createVertexBuffer();
-        vio = Buffers.createVertexBuffer();
-        ibo = Buffers.createVertexBuffer();
-
-        glBindVertexArray(vao);
-
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        glEnableVertexAttribArray(2);
-        glEnableVertexAttribArray(3);
-        glEnableVertexAttribArray(4);
-        glEnableVertexAttribArray(5);
-
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, 3 * 4, 0L);
-
-        glBindBuffer(GL_ARRAY_BUFFER, vio);
-        glBufferData(GL_ARRAY_BUFFER, instanceBuffer, GL_DYNAMIC_DRAW);
-        glVertexAttribPointer(1, 4, GL_FLOAT, false, 20 * 4, 64L);
-        glVertexAttribPointer(2, 4, GL_FLOAT, false, 20 * 4, 0L);
-        glVertexAttribPointer(3, 4, GL_FLOAT, false, 20 * 4, 16L);
-        glVertexAttribPointer(4, 4, GL_FLOAT, false, 20 * 4, 32L);
-        glVertexAttribPointer(5, 4, GL_FLOAT, false, 20 * 4, 48L);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
-
-        glVertexAttribDivisor(0, 0);
-        glVertexAttribDivisor(1, 1);
-        glVertexAttribDivisor(2, 1);
-        glVertexAttribDivisor(3, 1);
-        glVertexAttribDivisor(4, 1);
-        glVertexAttribDivisor(5, 1);
-
-        glBindVertexArray(0);
     }
 
-    public void updateInstances(Map<Integer, Entity> entities, List<Integer> indices)
+    public void render(Shader shader, int cubemap, Map<Integer, Entity> entities, List<Integer> indices)
     {
-        renderCount = 0;
-        instanceBuffer.clear();
+        Renderer.bindTextureCube(cubemap);
+        glDisable(GL11.GL_CULL_FACE);
+
         for (int i = 0; i < indices.size(); i++)
         {
             Entity e = entities.get(indices.get(i));
-            if (e == null)
-                continue;
-            if (e instanceof Player)
-                continue;
-            if (e instanceof ParticleSystem)
-                continue;
-            if (!e.contains(EComponent.RENDER))
+            if (!(e.contains(EComponent.RENDER) && e.contains(EComponent.MODEL)))
                 continue;
 
-            renderCount++;
-
-            //TODO: NullPointer
+            int model = ((ECModel) e.get(EComponent.MODEL)).getModel();
             Transform transform = ((ECRender) e.get(EComponent.RENDER)).getTransform();
-
-            instanceBuffer.put(transform.toMatrix().getComponents());
-            instanceBuffer.put(Color4f.YELLOW.toArray());
+            shader.setModelViewMatrix(transform.toMatrix().mul(Mat4.scale(1f/16f, 1f/16f, 1f/16f)));
+            renderModel(model);
         }
-        instanceBuffer.flip();
-        glBindBuffer(GL_ARRAY_BUFFER, vio);
-        glBufferData(GL_ARRAY_BUFFER, instanceBuffer, GL_DYNAMIC_DRAW);
+
+        Renderer.bindTextureCube(0);
+        glEnable(GL11.GL_CULL_FACE);
     }
 
-    public void render(Shader shader, Map<Integer, Entity> entities, List<Integer> indices)
+    private void renderModel(int model)
     {
-        glBindVertexArray(vao);
-        glDrawElementsInstanced(GL_TRIANGLES, cubeIndices().length, GL_UNSIGNED_INT, 0L, renderCount);
-        glBindVertexArray(0);
-    }
-
-    private float[] cubeVertices()
-    {
-        return new float[]
-                {
-                        -1, -1, -1,
-                        1, -1, -1,
-                        1, -1, 1,
-                        -1, -1, 1,
-
-                        -1, 1, -1,
-                        1, 1, -1,
-                        1, 1, 1,
-                        -1, 1, 1
-                };
-    }
-
-    private int[] cubeIndices()
-    {
-        return new int[]
-                {
-                        0, 1, 2, 0, 2, 3,
-                        1, 5, 6, 1, 6, 2,
-
-                        5, 4, 7, 5, 7, 6,
-                        4, 0, 3, 4, 3, 7,
-
-                        1, 0, 4, 1, 4, 5,
-                        3, 2, 6, 3, 6, 7
-                };
+        switch (model)
+        {
+            case Model.AK47:
+                AK47_RENDERER.render();
+                break;
+            case Model.AWP:
+                AWP_RENDERER.render();
+                break;
+            case Model.SHOVEL:
+                SHOVEL_RENDERER.render();
+                break;
+            case Model.GRENADE:
+                GRENADE_RENDERER.render();
+                break;
+        }
     }
 }

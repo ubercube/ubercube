@@ -17,9 +17,9 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.client.main.player;
+package fr.veridiangames.client.main.screens;
 
-import fr.veridiangames.client.main.Main;
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
@@ -34,7 +34,7 @@ import fr.veridiangames.core.utils.Color4f;
 /**
  * Created by Marc on 23/06/2016.
  */
-public class PlayerHudCanvas extends GuiCanvas
+public class PlayerHudScreen extends GuiCanvas
 {
     private GameCore core;
 
@@ -47,7 +47,7 @@ public class PlayerHudCanvas extends GuiCanvas
 
     private int health;
 
-    public PlayerHudCanvas(Display display, GameCore core)
+    public PlayerHudScreen(Display display, GameCore core)
     {
         super();
         this.core = core;
@@ -123,13 +123,15 @@ public class PlayerHudCanvas extends GuiCanvas
         playerPosition.setDropShadow(2);
         playerPosition.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
         super.add(playerPosition);
+
+        super.addCanvas(new ConsoleScreen(display, core, 10, Display.getInstance().getHeight() - 130, 600, 300));
     }
 
     public void update()
     {
         super.update();
 
-        Display display = Main.getMain().getDisplay();
+        Display display = Ubercube.getInstance().getDisplay();
         gameFpsLabel.setText(display.getFps() + " Fps");
 
         ClientPlayer player = core.getGame().getPlayer();

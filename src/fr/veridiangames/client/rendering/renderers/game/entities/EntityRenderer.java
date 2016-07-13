@@ -127,6 +127,8 @@ public class EntityRenderer
 				continue;
 			if (!e.contains(EComponent.RENDER))
 				continue;
+			if (e.contains(EComponent.MODEL))
+				continue;
 
 			renderCount++;
 

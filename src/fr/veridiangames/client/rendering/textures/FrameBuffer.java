@@ -27,7 +27,7 @@ import java.nio.ByteBuffer;
 
 import org.lwjgl.opengl.GL12;
 
-import fr.veridiangames.client.main.Main;
+import fr.veridiangames.client.Ubercube;
 
 public class FrameBuffer
 {
@@ -105,7 +105,7 @@ public class FrameBuffer
 	public void unbind()
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glViewport(0, 0, Main.getMain().getDisplay().getWidth(), Main.getMain().getDisplay().getHeight());
+		glViewport(0, 0, Ubercube.getInstance().getDisplay().getWidth(), Ubercube.getInstance().getDisplay().getHeight());
 	}
 
 	public int getFrameBufferID()

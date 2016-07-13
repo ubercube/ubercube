@@ -19,13 +19,14 @@
 
 package fr.veridiangames.client.rendering.renderers.game;
 
+import fr.veridiangames.client.rendering.renderers.game.entities.ModeledEntityRenderer;
 import fr.veridiangames.client.rendering.renderers.game.entities.particles.ParticleRenderer;
 import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerNameRenderer;
 import fr.veridiangames.client.rendering.shaders.*;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.maths.Mat4;
 import fr.veridiangames.core.maths.Quat;
-import fr.veridiangames.client.main.Main;
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.rendering.Camera;
 import fr.veridiangames.client.rendering.player.PlayerViewport;
 import fr.veridiangames.client.rendering.renderers.game.entities.EntityRenderer;
@@ -44,7 +45,7 @@ public class GameRenderer
 	private PlayerShader			playerShader;
 	private EntityShader			entityShader;
 	private WorldShader				worldShader;
-	private WeaponShader			weaponShader;
+	private ModelShader 			modelShader;
 	private EnvSphereShader			envSphereShader;
 
 	private Gui3DShader 			gui3DShader;
@@ -55,6 +56,7 @@ public class GameRenderer
 	private WorldRenderer			worldRenderer;
 	private PlayerSelectionRenderer playerSelectionRenderer;
 	private EntityWeaponRenderer 	entityWeaponRenderer;
+	private ModeledEntityRenderer 	modeledEntityRenderer;
 
 	private PlayerNameRenderer 		playerNameRenderer;
 	private PlayerViewport			playerViewport;
@@ -62,14 +64,14 @@ public class GameRenderer
 	private EnvCubemap				envCubemap;
 	private Camera 					envCamera;
 
-	public GameRenderer(Main main, GameCore core)
+	public GameRenderer(Ubercube main, GameCore core)
 	{
 		this.core = core;
 
 		this.playerShader = new PlayerShader();
 		this.entityShader = new EntityShader();
 		this.worldShader = new WorldShader();
-		this.weaponShader = new WeaponShader();
+		this.modelShader = new ModelShader();
 		this.envSphereShader = new EnvSphereShader();
 		this.envSphereShader = new EnvSphereShader();
 
@@ -78,6 +80,7 @@ public class GameRenderer
 		this.playerNameRenderer = new PlayerNameRenderer();
 		this.particleRenderer = new ParticleRenderer();
 		this.entityWeaponRenderer = new EntityWeaponRenderer();
+		this.modeledEntityRenderer = new ModeledEntityRenderer();
 		this.playerSelectionRenderer = new PlayerSelectionRenderer(main.getPlayerHandler().getSelection());
 		this.worldRenderer = new WorldRenderer(core);
 		this.gui3DShader = new Gui3DShader();
@@ -150,15 +153,15 @@ public class GameRenderer
 
 	public void renderPlayer(Camera camera)
 	{
-		weaponShader.bind();
-		weaponShader.setShaderBase(
+		modelShader.bind();
+		modelShader.setShaderBase(
 				camera.getProjection(),
 				camera.getTransform().getPosition(),
 				core.getGame().getData().getViewDistance()
 		);
 
 //		entityWeaponRenderer.renderPlayerWeapon(
-//				weaponShader,
+//				modelShader,
 //				envCubemap.getCubemap(),
 //				core.getGame().getEntityManager().getEntities(),
 //				core.getGame().getEntityManager().getPlayerEntites()
@@ -205,15 +208,21 @@ public class GameRenderer
 				core.getGame().getEntityManager().getParticleEntities()
 		);
 
-		/* ***** RENDERING WEAPONS ***** */
-		weaponShader.bind();
-		weaponShader.setShaderBase(
+		/* ***** RENDERING WEAPONS AND MODELS ***** */
+		modelShader.bind();
+		modelShader.setShaderBase(
 				camera.getProjection(),
 				camera.getTransform().getPosition(),
 				core.getGame().getData().getViewDistance()
 		);
 		entityWeaponRenderer.renderEntityWeapons(
-				weaponShader,
+				modelShader,
+				envCubemap.getCubemap(),
+				core.getGame().getEntityManager().getEntities(),
+				core.getGame().getEntityManager().getRenderableEntites()
+		);
+		modeledEntityRenderer.render(
+				modelShader,
 				envCubemap.getCubemap(),
 				core.getGame().getEntityManager().getEntities(),
 				core.getGame().getEntityManager().getRenderableEntites()

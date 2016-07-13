@@ -38,9 +38,9 @@ public class Keyboard extends GLFWKeyCallback {
 	
 	public boolean[] keys = new boolean[65536];
 	
-	public ArrayList<Integer> currentKeys = new ArrayList<Integer>();
-	private ArrayList<Integer> downKeys = new ArrayList<Integer>();
-	private ArrayList<Integer> upKeys = new ArrayList<Integer>();
+	public ArrayList<Integer> currentKeys = new ArrayList<>();
+	private ArrayList<Integer> downKeys = new ArrayList<>();
+	private ArrayList<Integer> upKeys = new ArrayList<>();
 	
 	public void invoke(long window, int key, int scancode, int action, int mods) {
 		//System.out.println("KEY(" + String.valueOf(Character.valueOf((char) key)) + "): 0x" + Integer.toHexString(key));
