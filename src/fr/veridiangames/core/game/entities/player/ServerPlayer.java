@@ -30,7 +30,6 @@ public class ServerPlayer extends Player
 	private int life;
 	private int timeOutTests;
 	private long pingTime;
-	private long ping;
 	private boolean pinged;
 	private boolean hitable;
 
@@ -40,7 +39,6 @@ public class ServerPlayer extends Player
 		this.life = 100;
 		this.timeOutTests = 0;
 		this.pingTime = 0;
-		this.ping = 0;
 		this.pinged = false;
 	}
 
@@ -72,16 +70,6 @@ public class ServerPlayer extends Player
 	public void setPingTime(long pingTime)
 	{
 		this.pingTime = pingTime;
-	}
-
-	public long getPing()
-	{
-		return ping;
-	}
-
-	public void setPing(long ping)
-	{
-		this.ping = ping;
 	}
 
 	public boolean isPinged()

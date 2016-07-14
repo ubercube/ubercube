@@ -36,6 +36,7 @@ public class Player extends Entity
 	private Vec3 newPosition;
 	private boolean dead;
 	private boolean hitable;
+	private int ping;
 	
 	public Player(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
@@ -48,6 +49,7 @@ public class Player extends Entity
 
 		this.dead = false;
 		this.hitable = false;
+		this.ping = 0;
 	}
 
 	int time = 0;
@@ -157,5 +159,15 @@ public class Player extends Entity
 	public boolean isHitable()
 	{
 		return hitable;
+	}
+
+	public int getPing()
+	{
+		return ping;
+	}
+
+	public void setPing(int ping)
+	{
+		this.ping = ping;
 	}
 }

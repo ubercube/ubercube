@@ -30,7 +30,7 @@ import fr.veridiangames.core.utils.DataBuffer;
  */
 public abstract class Packet
 {
-	public static final int MAX_SIZE = 2048;
+	public static final int MAX_SIZE = 512;
 
 	public static final int	DISCONNECT			= 0;
 	public static final int	CONNECT				= 1;
@@ -51,12 +51,13 @@ public abstract class Packet
 	public static final int BULLET_SHOOT		= 16;
 	public static final int KICK				= 17;
 	public static final int DAMAGE_FORCE		= 18;
+	public static final int TCHAT_MSG			= 19;
 
 	protected DataBuffer data;
 
 	public Packet(int packetID)
 	{
-		data = new DataBuffer();
+		data = new DataBuffer(MAX_SIZE);
 		data.put(packetID);
 	}
 

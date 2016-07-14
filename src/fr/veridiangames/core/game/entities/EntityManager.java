@@ -69,7 +69,7 @@ public class EntityManager
 				remove(keys.get(i));
 				continue;
 			}
-			e.update(core);	//TODO: Null pointer
+			e.update(core);
 			
 			if (e.isDestroyed())
 				remove(keys.get(i));

@@ -103,21 +103,31 @@ public class ConnectPacket extends Packet
 
 		/* SENDING MULTIPLE PACKETS TO AVOID READ OVERFLOW OF 2048 */
 		int modifiedBlocksSize = server.getCore().getGame().getWorld().getModifiedBlocks().size();
-		int packetCount = (int) ((float) (modifiedBlocksSize * 16) / (Packet.MAX_SIZE - 500)) + 1;
+		int packetCount = (int) ((float) (modifiedBlocksSize * 16) / (Packet.MAX_SIZE)) + 1;
 		List<Vec4i> currentData = server.getCore().getGame().getWorld().getModifiedBlocks();
-		for (int i = 0; i < packetCount; i++)
+		int count = (int) ((float) modifiedBlocksSize / (float) packetCount);
+
+		boolean finished = false;
+		for (int i = 0; i < packetCount + 16; i++)
 		{
 			List<Vec4i> dataToSend = new ArrayList<>();
-			float count = (float)modifiedBlocksSize / packetCount + 1;
-			int icount = (int) count;
 
 			for (int j = 0; j < count; j++)
 			{
-				int index = i * icount + j;
+				int index = i * count + j;
 				if (index < currentData.size())
+				{
 					dataToSend.add(currentData.get(index));
+				}
+				else
+				{
+					finished = true;
+					break;
+				}
 			}
 			server.tcpSend(new SyncBlocksPacket(dataToSend), address, port);
+			if (finished)
+				break;
 		}
 
 		for (int i = 0; i < server.getCore().getGame().getEntityManager().getNetworkableEntites().size(); i++)
@@ -143,5 +153,6 @@ public class ConnectPacket extends Packet
 			client.log("You just connected as " + name);
 			client.setConnected(true);
 		}
+		client.console(name + " just connected !");
 	}
 }

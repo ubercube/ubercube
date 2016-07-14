@@ -19,6 +19,7 @@
 
 package fr.veridiangames.server.server.tcp;
 
+import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.server.server.NetworkServer;
 
 import java.io.IOException;
@@ -45,6 +46,7 @@ public class NetworkServerTCP implements Runnable
             log("Starting TCP connection");
             this.clients = new ArrayList<>();
             this.socket = new ServerSocket(port);
+            this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
             new Thread(this, "tcp-thread").start();
         }
         catch (IOException e)
@@ -62,7 +64,6 @@ public class NetworkServerTCP implements Runnable
         {
             try
             {
-                log("Accepting client");
                 Socket acceptedClient = this.socket.accept();
                 RemoteClient client = new RemoteClient(acceptedClient, server);
                 clients.add(client);

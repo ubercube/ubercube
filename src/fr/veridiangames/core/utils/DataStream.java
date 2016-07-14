@@ -19,9 +19,7 @@
 
 package fr.veridiangames.core.utils;
 
-import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.network.packets.Packet;
-
 import java.io.*;
 
 /**
@@ -29,25 +27,19 @@ import java.io.*;
  */
 public class DataStream
 {
-    public static void write(DataOutputStream out, byte[] data) throws IOException
+    public static void write(OutputStream out, byte[] data) throws IOException
     {
-
         if (data.length > Packet.MAX_SIZE)
             throw new RuntimeException("Packet size overflow: " + data.length + "  MAX SIZE: " + Packet.MAX_SIZE);
-        byte[] bytes = new byte[Packet.MAX_SIZE];
-        for (int i = 0; i < data.length; i++)
-        {
-            bytes[i] = data[i];
-        }
 
-        out.write(bytes);
+        out.write(data);
         out.flush();
     }
 
-    public static byte[] read(DataInputStream in) throws IOException
+    public static byte[] read(InputStream in) throws IOException
     {
         byte[] data = new byte[Packet.MAX_SIZE];
-        in.readFully(data, 0, data.length);
+        in.read(data, 0, data.length);
         return data;
     }
 }

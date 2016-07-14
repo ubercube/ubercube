@@ -30,6 +30,7 @@ public interface NetworkableClient
 {
 	public GameCore getCore();
 	public void log(String msg);
+	public void console(String msg);
 
 	//UDP stuff
 	public void tcpSend(DataBuffer data);

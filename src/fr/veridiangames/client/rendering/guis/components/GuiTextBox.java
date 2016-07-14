@@ -23,6 +23,7 @@ import fr.veridiangames.client.inputs.Input;
 import fr.veridiangames.client.inputs.Mouse;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
+import fr.veridiangames.client.rendering.guis.StaticFont;
 import fr.veridiangames.client.rendering.guis.primitives.StaticPrimitive;
 import fr.veridiangames.client.rendering.shaders.GuiShader;
 import fr.veridiangames.core.utils.Color4f;
@@ -40,12 +41,13 @@ public class GuiTextBox extends GuiComponent
 	private boolean focused = false;
 	
 	public GuiTextBox(int x, int y, int w, int maxChars) {
-		super(x, y, w, 35, Color4f.WHITE);
+		super(x, y, w, 30, new Color4f(0, 0, 0, 0.35f));
 		this.maxChars = maxChars;
-		bgColor = new Color4f(0, 0, 0, 0.5f);
+		bgColor = new Color4f(0, 0, 0, 0.35f);
 		
-		label = new GuiLabel("", x, y, new Font("Arial", 1, 20));
-		label.setColor(Color4f.BLACK);
+		label = new GuiLabel("", x, y, StaticFont.Kroftsmann(0, 20));
+		label.setColor(Color4f.WHITE);
+		label.setDropShadow(2);
 	}
 	
 	int time = 0;
@@ -73,6 +75,7 @@ public class GuiTextBox extends GuiComponent
 	}
 	
 	public void addChar(char c) {
+		if (!focused) return;
 		if (text != null) if (text.length() >= maxChars) return;
 		if (text == null) text = "" + c;
 		else text += c;
@@ -93,13 +96,15 @@ public class GuiTextBox extends GuiComponent
 	}
 	
 	public void render(GuiShader shader) {
-		shader.setColor(bgColor);
-		StaticPrimitive.quadPrimitive().render(shader, x +w/2, y +h/2, 0, w/2, h/2, 0);
+//		shader.setColor(bgColor);
+//		StaticPrimitive.quadPrimitive().render(shader, x +w/2, y +h/2, 0, w/2, h/2, 0);
 		shader.setColor(color);
-		StaticPrimitive.quadPrimitive().render(shader, x +w/2, y +h/2, 0, w/2 - 4, h/2 - 4, 0);
+		StaticPrimitive.quadPrimitive().render(shader, x +w/2, y +h/2, 0, w/2, h/2, 0);
+		if (!focused)
+			time = 0;
 
 		if (time % 60 > 30 && focused) {
-			shader.setColor(Color4f.BLACK);
+			shader.setColor(Color4f.WHITE);
 			StaticPrimitive.quadPrimitive().render(shader, x + textWidth + 8, y + h / 2, 0, 1.5f, 11, 0);
 		}
 		
@@ -164,10 +169,13 @@ public class GuiTextBox extends GuiComponent
 			if (getKey(input.KEY_Z)) {addChar('z'); return;}
 		}
 		
-		if (getKey(input.KEY_COMMA)) {addChar(','); return;}
+		if (getKey(input.KEY_COMMA) && input.getKey(Input.KEY_RIGHT_SHIFT)) {addChar('?'); return;}
+		else if (getKey(input.KEY_COMMA)) {addChar(','); return;}
+
 		if (getKey(input.KEY_PERIOD)) {addChar('.'); return;}
 		if (getKey(input.KEY_KP_DIVIDE)) {addChar(':'); return;}
 		if (getKey(input.KEY_KP_DECIMAL)) {addChar('.'); return;}
+		if (getKey(input.KEY_SPACE)) {addChar(' '); return;}
 
 		if (getKey(input.KEY_0)) {addChar('0'); return;}
 		if (getKey(input.KEY_1)) {addChar('1'); return;}
@@ -201,29 +209,30 @@ public class GuiTextBox extends GuiComponent
 	public boolean getKey(int key) {
 		Input input = Display.getInstance().getInput();
 		if (input.getKeyboardCallback().currentKeys.size() > 2) return false;
-		
-		if (input.getKey(key)) {
-			if (keyDown) {
-				if (keyCode == key) {
-					keyTime++;
-					if (keyTime > 30) {
-						keyBurse = true;
-					}
-					else return false;
-				}
-			}
-			
-			keyCode = key;
-			keyDown = input.getKey(key);
-			
-			return keyDown;
-		}
-		if (keyCode == key) {
-			keyDown = false;
-			keyCode = -1;
-			keyBurse = false;
-			keyTime = 0;
-		}
+		if (input.getKeyDown(key))
+			return true;
+//		if (input.getKey(key)) {
+//			if (keyDown) {
+//				if (keyCode == key) {
+//					keyTime++;
+//					if (keyTime > 30) {
+//						keyBurse = true;
+//					}
+//					else return false;
+//				}
+//			}
+//
+//			keyCode = key;
+//			keyDown = input.getKey(key);
+//
+//			return keyDown;
+//		}
+//		if (keyCode == key) {
+//			keyDown = false;
+//			keyCode = -1;
+//			keyBurse = false;
+//			keyTime = 0;
+//		}
 		
 		return false;
 	}
@@ -241,4 +250,16 @@ public class GuiTextBox extends GuiComponent
 		textWidth = 0;
 		label.setText("");
 	}
+
+	public boolean isFocused()
+	{
+		return focused;
+	}
+
+	public void setFocused(boolean focused)
+	{
+		this.focused = focused;
+	}
+
+
 }

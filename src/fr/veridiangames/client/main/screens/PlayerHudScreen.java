@@ -44,6 +44,7 @@ public class PlayerHudScreen extends GuiCanvas
     private GuiLabel gameFpsLabel;
     private GuiLabel playerPosition;
     private GuiPanel damageEffect;
+    private ConsoleScreen consoleScreen;
 
     private int health;
 
@@ -124,7 +125,11 @@ public class PlayerHudScreen extends GuiCanvas
         playerPosition.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
         super.add(playerPosition);
 
-        super.addCanvas(new ConsoleScreen(display, core, 10, Display.getInstance().getHeight() - 130, 600, 300));
+        consoleScreen = new ConsoleScreen(display, core, 10, Display.getInstance().getHeight() - 130, 600, 450);
+        super.addCanvas(consoleScreen);
+
+       PlayerListScreen playerListScreen = new PlayerListScreen(display, core, Display.getInstance().getWidth() / 2, Display.getInstance().getHeight() / 2);
+        super.addCanvas(playerListScreen);
     }
 
     public void update()
@@ -164,5 +169,10 @@ public class PlayerHudScreen extends GuiCanvas
         int py = (int) player.getPosition().y;
         int pz = (int) player.getPosition().z;
         playerPosition.setText(px + " - " + py + " - " + pz);
+    }
+
+    public ConsoleScreen getConsoleScreen()
+    {
+        return consoleScreen;
     }
 }

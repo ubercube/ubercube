@@ -22,12 +22,12 @@ package fr.veridiangames.client.network;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import fr.veridiangames.client.main.screens.ConsoleScreen;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.client.Ubercube;
-import fr.veridiangames.client.main.console.Console;
 
 /**
  * Created by Marccspro on 24 f�vr. 2016.
@@ -38,18 +38,18 @@ public class NetworkClient implements NetworkableClient
 
 	private int 			port;
 	private InetAddress 	address;
-	private Ubercube 		main;
+	private Ubercube 		ubercube;
 	private boolean 		connected;
 
 	private NetworkClientTCP tcp;
 	private NetworkClientUDP udp;
 
-	public NetworkClient(int id, String address, int port, Ubercube main)
+	public NetworkClient(int id, String address, int port, Ubercube ubercube)
 	{
 		try
 		{
 			this.address = InetAddress.getByName(address);
-			this.main = main;
+			this.ubercube = ubercube;
 			this.port = port;
 
 			tcp = new NetworkClientTCP(this, id, address, port);
@@ -91,14 +91,21 @@ public class NetworkClient implements NetworkableClient
 
 	public GameCore getCore()
 	{
-		return main.getGameCore();
+		return ubercube.getGameCore();
 	}
 	
 	public void log(String msg)
 	{
 		System.out.println(msg);
 	}
-	
+
+	public void console(String msg)
+	{
+		ConsoleScreen console = ubercube.getConsole();
+		if (console != null)
+			console.log(msg);
+	}
+
 	public void setConnected(boolean connected)
 	{
 		this.connected = connected;

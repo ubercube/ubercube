@@ -203,7 +203,7 @@ public class FontRenderer {
 		if (dropShadow != 0)
 		{
 			shader.setModelViewMatrix(Mat4.translate(x + dropShadow, y + dropShadow, 0));
-			shader.setColor(0, 0, 0, 0.8f);
+			shader.setColor(0, 0, 0, 0.8f * color.getAlpha());
 			glEnableVertexAttribArray(0);
 			glEnableVertexAttribArray(1);
 			glBindBuffer(GL_ARRAY_BUFFER, vbo);

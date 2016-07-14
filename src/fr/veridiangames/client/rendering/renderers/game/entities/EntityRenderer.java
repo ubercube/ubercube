@@ -132,7 +132,6 @@ public class EntityRenderer
 
 			renderCount++;
 
-			//TODO: NullPointer
 			Transform transform = ((ECRender) e.get(EComponent.RENDER)).getTransform();
 
 			instanceBuffer.put(transform.toMatrix().getComponents());
