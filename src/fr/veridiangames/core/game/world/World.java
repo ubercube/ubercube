@@ -571,6 +571,10 @@ public class World
 	{
 		return generated;
 	}
+
+	public int getWorldSize() {
+		return worldSize;
+	}
 }
 /*
 [ERR] java.lang.NullPointerException

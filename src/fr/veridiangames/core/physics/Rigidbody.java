@@ -25,6 +25,7 @@ import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.game.world.Chunk;
 import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Quat;
@@ -218,6 +219,15 @@ public class Rigidbody
 			if (axis.equals(1, 1, 1))
 				break;
 		}
+
+		if (collider.getPosition().x < 0)
+			collider.getPosition().x = 0;
+		if (collider.getPosition().z < 0)
+			collider.getPosition().z = 0;
+		if (collider.getPosition().x > world.getWorldSize() * Chunk.SIZE)
+			collider.getPosition().x = world.getWorldSize() * Chunk.SIZE;
+		if (collider.getPosition().z > world.getWorldSize()* Chunk.SIZE)
+			collider.getPosition().z = world.getWorldSize() * Chunk.SIZE;
 	}
 
 	public void updatePosition()
