@@ -19,10 +19,12 @@
 
 package fr.veridiangames.core.network.packets;
 
+import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
+import fr.veridiangames.core.utils.Sleep;
 
 import java.net.InetAddress;
 
@@ -70,8 +72,7 @@ public class PingPacket extends Packet
         ServerPlayer player = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(userID);
         if (player == null)
             return;
-        player.setPing((long)((pingTime - player.getPingTime()) / 1000.0f));
-        player.setPingTime(pingTime);
+        player.setPing((int) (System.currentTimeMillis() - pingTime));
         player.setTimeOutTests(0);
         player.setPinged(true);
     }
@@ -82,6 +83,8 @@ public class PingPacket extends Packet
         {
             client.getCore().getGame().getPlayer().setTimeoutTime(0);
         }
-        client.tcpSend(new PingPacket(client.getCore().getGame().getPlayer().getID(), System.currentTimeMillis(), 0));
+        if (client.getCore().getGame().getEntityManager().getEntities().containsKey(userID))
+            ((Player) client.getCore().getGame().getEntityManager().get(userID)).setPing((int) ping);
+        client.tcpSend(new PingPacket(client.getCore().getGame().getPlayer().getID(), pingTime, ping));
     }
 }

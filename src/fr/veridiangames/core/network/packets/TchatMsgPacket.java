@@ -19,8 +19,6 @@
 
 package fr.veridiangames.core.network.packets;
 
-import fr.veridiangames.core.game.entities.components.ECName;
-import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
@@ -28,45 +26,46 @@ import fr.veridiangames.core.utils.DataBuffer;
 import java.net.InetAddress;
 
 /**
- * Created by Marccspro on 26 f�vr. 2016.
+ * Created by Marccspro on 13/07/2016.
  */
-public class TimeoutPacket extends Packet
+public class TchatMsgPacket extends Packet
 {
-	private int id;
+    private String msg;
 
-	public TimeoutPacket()
-	{
-		super(TIME_OUT);
-	}
+    public TchatMsgPacket()
 
-	public TimeoutPacket(int id)
-	{
-		super(TIME_OUT);
-		data.put(id);
-		data.flip();
-	}
+    {
+        super(TCHAT_MSG);
+    }
 
-	public TimeoutPacket(TimeoutPacket packet)
-	{
-		super(TIME_OUT);
-		data.put(packet.id);
-		data.flip();
-	}
+    public TchatMsgPacket(String msg)
+    {
+        super(TCHAT_MSG);
+        data.put(msg);
+        data.flip();
+    }
 
-	public void read(DataBuffer data)
-	{
-		id = data.getInt();
-	}
+    public TchatMsgPacket(TchatMsgPacket packet)
+    {
+        super(TCHAT_MSG);
+        data.put(packet.msg);
+        data.flip();
+    }
 
-	public void process(NetworkableServer server, InetAddress address, int port)
-	{
-	}
+    public void read(DataBuffer buffer)
+    {
+        this.msg = buffer.getString();
+    }
 
-	public void process(NetworkableClient client, InetAddress address, int port)
-	{
-		String name = ((ECName) client.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
-		client.getCore().getGame().remove(id);
-		client.log(name + " timed out...");
-		client.console(name + " timed out...");
-	}
+    public void process(NetworkableServer server, InetAddress address, int port)
+    {
+        server.log(msg);
+        server.tcpSendToAll(new TchatMsgPacket(msg));
+    }
+
+    public void process(NetworkableClient client, InetAddress address, int port)
+    {
+        client.log(msg);
+        client.console(msg);
+    }
 }

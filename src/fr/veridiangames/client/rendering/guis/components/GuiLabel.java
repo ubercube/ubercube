@@ -56,7 +56,8 @@ public class GuiLabel extends GuiComponent
 		super(x, y, w, h, new Color4f(0, 0, 0, 0.5f));
 		this.font = new TrueTypeFont(font, true);
 		fontRenderer = new FontRenderer(this.font, text, x, y);
-	
+		dropShadowColor = new Color4f(0, 0, 0, 0.5f);
+
 		this.w = fontRenderer.getWidth();
 		this.h = fontRenderer.getHeight();
 	}
@@ -65,6 +66,7 @@ public class GuiLabel extends GuiComponent
 		super(x, y, w, h, new Color4f(0, 0, 0, 0.5f));
 		font = new TrueTypeFont(StaticFont.HPSimplified_Rg(Font.PLAIN, size), true);
 		fontRenderer = new FontRenderer(font, text, x, y);
+		dropShadowColor = new Color4f(0, 0, 0, 0.5f);
 	
 		this.w = fontRenderer.getWidth();
 		this.h = fontRenderer.getHeight();

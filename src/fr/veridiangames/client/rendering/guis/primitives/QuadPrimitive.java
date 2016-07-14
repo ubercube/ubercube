@@ -75,7 +75,7 @@ public class QuadPrimitive {
 	}
 	
 	public void render(GuiShader shader, float x, float y, float z, float xScale, float yScale, float zScale) {
-		shader.setModelViewMatrix(Mat4.translate(x, y, z).mul(Mat4.scale(xScale, yScale, zScale)));
+		shader.setModelViewMatrix(Mat4.translate((int)x, (int)y, (int)z).mul(Mat4.scale((int)xScale, (int)yScale, (int)zScale)));
 		
 		glBindVertexArray(vao);
 		glEnableVertexAttribArray(0);

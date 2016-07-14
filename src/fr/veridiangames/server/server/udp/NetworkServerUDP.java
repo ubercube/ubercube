@@ -68,7 +68,7 @@ public class NetworkServerUDP implements Runnable
         {
             try
             {
-                byte[] bytes = new byte[2048];
+                byte[] bytes = new byte[Packet.MAX_SIZE];
                 DatagramPacket receive = new DatagramPacket(bytes, bytes.length);
                 socket.receive(receive);
                 DataBuffer data = new DataBuffer(receive.getData());

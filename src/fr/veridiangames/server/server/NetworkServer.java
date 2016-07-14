@@ -118,10 +118,11 @@ public class NetworkServer implements Runnable, NetworkableServer
 						if (player.getTimeOutTests() > 5)
 						{
 							tcpSendToAll(new TimeoutPacket(key));
+							tcp.disconnectClient(player.getNetwork().getAddress(), player.getNetwork().getPort());
 							core.getGame().remove(key);
 							log(player.getName() + " timed out !");
 						}
-						tcpSend(new PingPacket(player.getID(), 0L, player.getPing()), player.getNetwork().getAddress(), player.getNetwork().getPort());
+						tcpSendToAll(new PingPacket(player.getID(), System.currentTimeMillis(), player.getPing()));
 					}
 				}
 			}

@@ -25,6 +25,7 @@ import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.shaders.GuiShader;
 import fr.veridiangames.client.rendering.shaders.Shader;
 import fr.veridiangames.core.maths.Mat4;
+import fr.veridiangames.core.utils.Color4f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,8 @@ public class GuiCanvas
 	public void render(Display display) {
 		shader.bind();
 		shader.setProjectionMatrix(Mat4.orthographic(display.getWidth(), 0, 0, display.getHeight(), -1, 1));
-		
+		shader.setColor(Color4f.WHITE);
+
 		for (GuiComponent gui : components) {
 			if (gui.isUseable())
 				gui.renderSteps(shader);
@@ -73,7 +75,11 @@ public class GuiCanvas
 			if (canvas.isRendered())
 				canvas.render(display);
 		}
+
+		render(shader);
 	}
+
+	public void render(GuiShader shader) {}
 	
 	public void add(GuiComponent gui) {
 		components.add(gui);

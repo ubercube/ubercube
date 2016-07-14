@@ -53,6 +53,7 @@ public class PacketManager
 		packets.put(Packet.BULLET_SHOOT, BulletShootPacket.class);
 		packets.put(Packet.KICK, KickPacket.class);
 		packets.put(Packet.DAMAGE_FORCE, DamageForcePacket.class);
+		packets.put(Packet.TCHAT_MSG, TchatMsgPacket.class);
 	}
 	
 	public static Packet getPacket(int packet)

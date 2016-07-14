@@ -46,14 +46,15 @@ public class KickPacket extends Packet
     public KickPacket(int id)
     {
         super(KICK);
-        this.id = id;
         data.put(id);
+        data.flip();
     }
 
     public KickPacket(KickPacket packet)
     {
         super(KICK);
-        data.put(packet.getId());
+        data.put(packet.id);
+        data.flip();
     }
 
     public void read(DataBuffer buffer)
@@ -78,11 +79,7 @@ public class KickPacket extends Packet
             String name = ((ECName) client.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
             client.getCore().getGame().remove(id);
             client.log(name + " was kicked...");
+            client.console(name + " was kicked...");
         }
-    }
-
-    public int getId()
-    {
-        return id;
     }
 }

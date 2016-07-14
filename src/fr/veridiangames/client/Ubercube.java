@@ -19,6 +19,7 @@
 
 package fr.veridiangames.client;
 
+import fr.veridiangames.client.main.screens.ConsoleScreen;
 import fr.veridiangames.client.main.screens.PlayerHudScreen;
 import fr.veridiangames.client.main.screens.GameLoadingScreen;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
@@ -31,7 +32,6 @@ import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.packets.ConnectPacket;
-import fr.veridiangames.client.main.console.Console;
 import fr.veridiangames.client.main.player.PlayerHandler;
 import fr.veridiangames.client.network.NetworkClient;
 import fr.veridiangames.client.rendering.Display;
@@ -58,7 +58,8 @@ public class Ubercube
 	private boolean 			connected;
 	private boolean 			joinGame;
 	private GameLoadingScreen 	gameLoading;
-	private boolean 			console;
+	private boolean 			inConsole;
+	private ConsoleScreen		console;
 
 	public Ubercube()
 	{
@@ -93,7 +94,8 @@ public class Ubercube
 		this.guiManager.add(gameLoading);
 
 		/* *** PLAYER HUD GUI *** */
-		GuiCanvas playerHudGui = new PlayerHudScreen(display, core);
+		PlayerHudScreen playerHudGui = new PlayerHudScreen(display, core);
+		this.console = playerHudGui.getConsoleScreen();
 		this.guiManager.add(playerHudGui);
 	}
 
@@ -118,7 +120,7 @@ public class Ubercube
 			}
 			if (joinGame)
 			{
-				//console.update();
+				//inConsole.update();
 				core.update();
 				playerHandler.update(display.getInput());
 				mainRenderer.update();
@@ -181,7 +183,7 @@ public class Ubercube
 		guiManager.render(display);
 //		if (net.isConnected())
 //		{
-//			console.render(display);
+//			inConsole.render(display);
 //		}
 	}
 
@@ -192,7 +194,7 @@ public class Ubercube
 		fr.veridiangames.client.main.Timer timer = new fr.veridiangames.client.main.Timer();
 		
 		double tickTime = 1000000000.0 / 60.0;
-		double renderTime = 1000000000.0 / 120.0;
+		double renderTime = 1000000000.0 / 9000.0;
 		double updatedTime = 0.0;
 		double renderedTime = 0.0;
 		
@@ -311,13 +313,18 @@ public class Ubercube
 		guiManager.setCanvas(guiManager.getCanvases().indexOf(canvas));
 	}
 
-	public boolean isConsole()
+	public boolean isInConsole()
 	{
-		return console;
+		return inConsole;
 	}
 
-	public void setConsole(boolean console)
+	public void setInConsole(boolean inConsole)
 	{
-		this.console = console;
+		this.inConsole = inConsole;
+	}
+
+	public ConsoleScreen getConsole()
+	{
+		return console;
 	}
 }

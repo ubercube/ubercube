@@ -34,6 +34,8 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jdk.nashorn.internal.parser.TokenType.IF;
+
 /**
  * Created by Marc on 07/07/2016.
  */
@@ -41,10 +43,8 @@ public class RemoteClient implements Runnable
 {
     private Socket socket;
 
-    private BufferedInputStream bin;
-    private BufferedOutputStream bout;
-    private DataInputStream in;
-    private DataOutputStream out;
+    private InputStream in;
+    private OutputStream out;
 
     private NetworkServer server;
 
@@ -56,17 +56,16 @@ public class RemoteClient implements Runnable
         {
             this.socket = socket;
             this.socket.setTcpNoDelay(true);
-            this.socket.setTrafficClass(0x04);
+            this.socket.setTrafficClass(0x10);
             this.socket.setKeepAlive(true);
             this.socket.setReuseAddress(false);
             this.socket.setSoTimeout(10000);
+            this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
+            this.socket.setSendBufferSize(Packet.MAX_SIZE);
             this.server = server;
             this.packets = new ArrayList<>();
         } catch (SocketException e)
-        {
-            e.printStackTrace();
-            System.exit(1);
-        }
+        {}
     }
 
     public void run()
@@ -74,29 +73,24 @@ public class RemoteClient implements Runnable
         processPackets();
         try
         {
-            bin = new BufferedInputStream(socket.getInputStream());
-            bout = new BufferedOutputStream(socket.getOutputStream());
-            in = new DataInputStream(bin);
-            out = new DataOutputStream(bout);
+            in = socket.getInputStream();
+            out = socket.getOutputStream();
             while (socket != null)
             {
                 try
                 {
-                    if (bin.available() > 0)
-                    {
-                        if (GameCore.isDisplayNetworkDebug())
-                            System.out.println("Receiving something...");
-                        byte[] bytes = DataStream.read(in);
-                        DataBuffer data = new DataBuffer(bytes);
-                        int packetID = data.getInt();
-                        Packet packet = PacketManager.getPacket(packetID);
-                        if (packet == null)
-                            continue;
-                        if (GameCore.isDisplayNetworkDebug())
-                            System.out.println("[IN]-> received: " + packet);
-                        packet.read(data);
-                        packets.add(packet);
-                    }
+                    if (GameCore.isDisplayNetworkDebug())
+                        System.out.println("Receiving something...");
+                    byte[] bytes = DataStream.read(in);
+                    DataBuffer data = new DataBuffer(bytes);
+                    int packetID = data.getInt();
+                    Packet packet = PacketManager.getPacket(packetID);
+                    if (packet == null)
+                        continue;
+                    if (GameCore.isDisplayNetworkDebug())
+                        System.out.println("[IN]-> received: " + packet);
+                    packet.read(data);
+                    packets.add(packet);
                 }
                 catch (IOException e)
                 {
@@ -118,9 +112,14 @@ public class RemoteClient implements Runnable
             {
                 while (true)
                 {
-                    Sleep.sleep(100);
+                    Sleep.sleep(1);
                     for (int i = 0; i < packets.size(); i++)
                     {
+                        if (packets.get(i) == null)
+                        {
+                            packets.remove(i);
+                            continue;
+                        }
                         packets.get(i).process(server, socket.getInetAddress(), socket.getPort());
                         packets.remove(i);
                     }
@@ -144,9 +143,7 @@ public class RemoteClient implements Runnable
                     DataStream.write(out, bytes);
                 }
                 catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
+                {}
             }
         }.start();
     }

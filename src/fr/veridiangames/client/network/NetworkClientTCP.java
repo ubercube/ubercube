@@ -46,10 +46,8 @@ public class NetworkClientTCP implements Runnable
     private InetAddress address;
     private Socket socket;
 
-    private DataInputStream in;
-    private DataOutputStream out;
-    private BufferedInputStream bin;
-    private BufferedOutputStream bout;
+    private InputStream in;
+    private OutputStream out;
 
     private List<Packet> packets;
 
@@ -63,10 +61,12 @@ public class NetworkClientTCP implements Runnable
             this.port = port;
             this.socket = new Socket(address, port);
             this.socket.setTcpNoDelay(true);
-            this.socket.setTrafficClass(0x04);
+            this.socket.setTrafficClass(0x10);
             this.socket.setKeepAlive(false);
             this.socket.setReuseAddress(false);
             this.socket.setSoTimeout(10000);
+            this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
+            this.socket.setSendBufferSize(Packet.MAX_SIZE);
             this.packets = new ArrayList<>();
             log("Connected to the TCP protocol !");
             new Thread(this, "tcp-thread").start();
@@ -84,16 +84,12 @@ public class NetworkClientTCP implements Runnable
         processPackets();
         try
         {
-            bin = new BufferedInputStream(socket.getInputStream());
-            bout = new BufferedOutputStream(socket.getOutputStream());
-            in = new DataInputStream(bin);
-            out = new DataOutputStream(bout);
+            in = socket.getInputStream();
+            out = socket.getOutputStream();
             while (socket != null)
             {
                 try
                 {
-                    if (bin.available() > 0)
-                    {
                         byte[] bytes = DataStream.read(in);
                         DataBuffer data = new DataBuffer(bytes);
                         Packet packet = PacketManager.getPacket(data.getInt());
@@ -105,7 +101,6 @@ public class NetworkClientTCP implements Runnable
                             log("[IN]-> received size: " + data.size());
                         packet.read(data);
                         packets.add(packet);
-                    }
                 } catch (IOException e)
                 {
                     socket = null;

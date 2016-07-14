@@ -22,6 +22,7 @@ package fr.veridiangames.client.rendering.renderers.game.entities;
 import fr.veridiangames.client.rendering.buffers.Buffers;
 import fr.veridiangames.client.rendering.renderers.Renderer;
 import fr.veridiangames.client.rendering.shaders.Shader;
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.Model;
 import fr.veridiangames.core.game.entities.components.ECModel;
@@ -70,6 +71,11 @@ public class ModeledEntityRenderer
         for (int i = 0; i < indices.size(); i++)
         {
             Entity e = entities.get(indices.get(i));
+            if (e == null)
+            {
+                GameCore.getInstance().getGame().remove(indices.get(i));
+                continue;
+            }
             if (!(e.contains(EComponent.RENDER) && e.contains(EComponent.MODEL)))
                 continue;
 
