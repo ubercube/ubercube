@@ -47,7 +47,7 @@ public class NetworkServerTCP implements Runnable
             this.clients = new ArrayList<>();
             this.socket = new ServerSocket(port);
             this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
-            new Thread(this, "tcp-thread").start();
+            new Thread(this, "tcp-clients").start();
         }
         catch (IOException e)
         {
@@ -78,11 +78,11 @@ public class NetworkServerTCP implements Runnable
 
     }
 
-    public void send(byte[] bytes, InetAddress address, int port)
+    public void send(Packet packet, InetAddress address, int port)
     {
         RemoteClient client = getClient(address, port);
         if (client != null)
-            client.send(bytes);
+            client.send(packet);
     }
 
     public RemoteClient getClient(InetAddress address, int port)

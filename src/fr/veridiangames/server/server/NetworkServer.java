@@ -21,6 +21,8 @@ package fr.veridiangames.server.server;
 
 import java.io.*;
 import java.net.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -129,37 +131,23 @@ public class NetworkServer implements Runnable, NetworkableServer
 		}.start();
 	}
 
-	public void tcpSend(DataBuffer data, InetAddress address, int port)
-	{
-		tcp.send(data.getData(), address, port);
-	}
-
 	public void tcpSend(Packet packet, InetAddress address, int port)
 	{
-		if (GameCore.isDisplayNetworkDebug())
-			log("[OUT] Sending: " + packet);
-		tcpSend(packet.getData(), address, port);
+		tcp.send(packet, address, port);
 	}
 
-	public void tcpSendToAll(DataBuffer data)
+	public void tcpSendToAll(Packet packet)
 	{
 		for (int ii = 0; ii < core.getGame().getEntityManager().getNetworkableEntites().size(); ii++)
 		{
 			int i = core.getGame().getEntityManager().getNetworkableEntites().get(ii);
 			Entity e = core.getGame().getEntityManager().getEntities().get(i);
 			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);
-			tcpSend(data, net.getAddress(), net.getPort());
+			tcpSend(packet, net.getAddress(), net.getPort());
 		}
 	}
 
-	public void tcpSendToAll(Packet packet)
-	{
-		if (GameCore.isDisplayNetworkDebug())
-			log("[OUT] Sending to all: " + packet);
-		tcpSendToAll(packet.getData());
-	}
-
-	public void tcpSendToAny(DataBuffer data, int... ignoreID)
+	public void tcpSendToAny(Packet packet, int... ignoreID)
 	{
 		for (int ii = 0; ii < core.getGame().getEntityManager().getNetworkableEntites().size(); ii++)
 		{
@@ -178,13 +166,8 @@ public class NetworkServer implements Runnable, NetworkableServer
 
 			Entity e = core.getGame().getEntityManager().getEntities().get(i);
 			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);
-			tcpSend(data, net.getAddress(), net.getPort());
+			tcpSend(packet, net.getAddress(), net.getPort());
 		}
-	}
-
-	public void tcpSendToAny(Packet packet, int... ignoreID)
-	{
-		tcpSendToAny(packet.getData(), ignoreID);
 	}
 
 	public void udpSend(DataBuffer data, InetAddress address, int port)
@@ -282,7 +265,10 @@ public class NetworkServer implements Runnable, NetworkableServer
 
 	public void log(String msg)
 	{
-		System.out.println(msg);
+		if (msg.toLowerCase().contains("error"))
+			System.err.println(msg);
+		else
+			System.out.println(msg);
 	}
 
 	public Map<String, Command> getCommands()

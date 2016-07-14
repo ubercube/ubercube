@@ -105,6 +105,7 @@ public class Ubercube
 
 		guiManager.update();
 		gameLoading.update(this);
+		//net.getTcp().update();
 
 		if (net.isConnected() && core.getGame().getWorld().isGenerated())
 		{

@@ -19,27 +19,25 @@
 
 package fr.veridiangames.server.server.tcp;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.utils.DataStream;
-import fr.veridiangames.core.utils.Sleep;
 import fr.veridiangames.server.server.NetworkServer;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-
-import static jdk.nashorn.internal.parser.TokenType.IF;
 
 /**
  * Created by Marc on 07/07/2016.
  */
-public class RemoteClient implements Runnable
+public class RemoteClient
 {
     private Socket socket;
 
@@ -48,7 +46,92 @@ public class RemoteClient implements Runnable
 
     private NetworkServer server;
 
-    private List<Packet> packets;
+    private List<Packet> sendQueue;
+
+    private Thread senderThread = new Thread("tcp-sender") {
+        public void run()
+        {
+            server.log("TCP: Starting tcp-sender");
+            while (socket != null) {
+                if (out == null)
+                    continue;
+
+                ArrayList<Packet> sendingQueue = new ArrayList<>(sendQueue);
+
+                for (Packet packet : sendingQueue)
+                {
+                    try
+                    {
+                        if (packet == null)
+                        {
+                            server.log ("TCP: " + getTime() + " [ERROR]-> Tried to send a null packet");
+                            continue;
+                        }
+
+                        if (packet.getData() == null)
+                        {
+                            server.log ("TCP: " + getTime() + " [ERROR]-> Tried to send an empty packet");
+                            server.log ("TCP: " + getTime() + " [ERROR]-> " + packet);
+                            continue;
+                        }
+
+                        byte[] bytes = packet.getData().getData();
+
+                        if (bytes.length == 0)
+                        {
+                            server.log ("TCP: " + getTime() + " [ERROR]-> Tried to send an empty packet");
+                            continue;
+                        }
+
+                        if (GameCore.isDisplayNetworkDebug())
+                            server.log("TCP: " + getTime() + " [OUT]-> sending: " + packet);
+
+                        DataStream.writePacket(out, bytes);
+                    } catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+                sendQueue.removeAll(sendingQueue);
+            }
+            server.log("TCP: Stopping tcp-sender Thread");
+        }
+    };
+
+    private Thread receiverThread = new Thread("tcp-receiver") {
+        public void run() {
+            server.log("TCP: Starting tcp-receiver");
+
+            while (socket != null)
+            {
+                try
+                {
+                    byte[] bytes = DataStream.readPacket(in);
+                    DataBuffer data = new DataBuffer(bytes);
+                    Packet packet = PacketManager.getPacket(data.getInt());
+
+                    if (packet == null)
+                    {
+                        server.log("TCP: " + getTime() + " [ERROR]-> Received empty packet");
+                        continue;
+                    }
+
+                    if (GameCore.isDisplayNetworkDebug())
+                        server.log("TCP: " + getTime() + " [IN]-> received: " + packet);
+
+                    packet.read(data);
+                    server.log("TCP: " + getTime() + " processing " + packet);
+                    packet.process(server, socket.getInetAddress(), socket.getPort());
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                    socket = null;
+                }
+            }
+            server.log("TCP: Stopping tcp-receiver Thread");
+        }
+    };
 
     public RemoteClient(Socket socket, NetworkServer server)
     {
@@ -63,89 +146,21 @@ public class RemoteClient implements Runnable
             this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
             this.socket.setSendBufferSize(Packet.MAX_SIZE);
             this.server = server;
-            this.packets = new ArrayList<>();
+            this.sendQueue = new ArrayList<>();
+            this.in = socket.getInputStream();
+            this.out = socket.getOutputStream();
         } catch (SocketException e)
-        {}
-    }
-
-    public void run()
-    {
-        processPackets();
-        try
         {
-            in = socket.getInputStream();
-            out = socket.getOutputStream();
-            while (socket != null)
-            {
-                try
-                {
-                    if (GameCore.isDisplayNetworkDebug())
-                        System.out.println("Receiving something...");
-                    byte[] bytes = DataStream.read(in);
-                    DataBuffer data = new DataBuffer(bytes);
-                    int packetID = data.getInt();
-                    Packet packet = PacketManager.getPacket(packetID);
-                    if (packet == null)
-                        continue;
-                    if (GameCore.isDisplayNetworkDebug())
-                        System.out.println("[IN]-> received: " + packet);
-                    packet.read(data);
-                    packets.add(packet);
-                }
-                catch (IOException e)
-                {
-                    socket = null;
-                }
-            }
-        }
-        catch (IOException e)
+            e.printStackTrace();
+        } catch (IOException e)
         {
             e.printStackTrace();
         }
     }
 
-    private void processPackets()
+    public void send(Packet packet)
     {
-        new Thread("tcp-process-thread")
-        {
-            public void run()
-            {
-                while (true)
-                {
-                    Sleep.sleep(1);
-                    for (int i = 0; i < packets.size(); i++)
-                    {
-                        if (packets.get(i) == null)
-                        {
-                            packets.remove(i);
-                            continue;
-                        }
-                        packets.get(i).process(server, socket.getInetAddress(), socket.getPort());
-                        packets.remove(i);
-                    }
-                }
-            }
-        }.start();
-    }
-
-    public void send(byte[] bytes)
-    {
-        new Thread("tcp-send-thread")
-        {
-            public void run()
-            {
-                try
-                {
-                    if (bytes.length == 0)
-                        return;
-                    if (GameCore.isDisplayNetworkDebug())
-                        System.out.println("[OUT] -> Sending size: " + bytes.length);
-                    DataStream.write(out, bytes);
-                }
-                catch (IOException e)
-                {}
-            }
-        }.start();
+        sendQueue.add(packet);
     }
 
     public void stop()
@@ -159,6 +174,13 @@ public class RemoteClient implements Runnable
         }
     }
 
+    private String getTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");//dd/MM/yyyy
+        Calendar calendar = Calendar.getInstance();
+        String time = dateFormat.format(calendar.getTime());
+        return time;
+    }
+
     public Socket getSocket()
     {
         return socket;
@@ -166,6 +188,7 @@ public class RemoteClient implements Runnable
 
     public void start()
     {
-        new Thread(this).start();
+        senderThread.start();
+        receiverThread.start();
     }
 }

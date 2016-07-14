@@ -31,9 +31,9 @@ public class MainComponent
 {
 	public static void main(String[] args)
 	{
-		Ubercube main = new Ubercube();
-		main.setDisplay(new Display("Ubercube", 1280, 720));
-		main.setGameCore(new GameCore());
+		Ubercube ubercube = new Ubercube();
+		ubercube.setDisplay(new Display("Ubercube " + GameCore.GAME_VERSION_NAME, 1280, 720));
+		ubercube.setGameCore(new GameCore());
 
 		SecureRandom rand = new SecureRandom();
 		rand.setSeed(System.nanoTime());
@@ -42,7 +42,7 @@ public class MainComponent
 		int 	port = 		Integer.parseInt(args[0].split(":")[1]);
 		String name = args[1];
 
-		main.openConnection(clientID, name, address, port);
-		main.start();
+		ubercube.openConnection(clientID, name, address, port);
+		ubercube.start();
 	}
 }

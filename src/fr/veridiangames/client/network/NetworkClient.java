@@ -60,27 +60,16 @@ public class NetworkClient implements NetworkableClient
 			e.printStackTrace();
 		}
 	}
-	
-	public void tcpSend(DataBuffer data)
-	{
-		tcp.send(data.getData());
-	}
+
 	
 	public void tcpSend(Packet packet)
 	{
-		if (GameCore.isDisplayNetworkDebug())
-			log("[OUT] packet: " + packet);
-		tcpSend(packet.getData());
-	}
-
-	public void udpSend(DataBuffer data)
-	{
-		udp.send(data.getData());
+		tcp.send(packet);
 	}
 
 	public void udpSend(Packet packet)
 	{
-		udpSend(packet.getData());
+		udp.send(packet.getData().getData());
 	}
 	
 	public void stop()
@@ -96,7 +85,10 @@ public class NetworkClient implements NetworkableClient
 	
 	public void log(String msg)
 	{
-		System.out.println(msg);
+		if (msg.toLowerCase().contains("error"))
+			System.err.println(msg);
+		else
+			System.out.println(msg);
 	}
 
 	public void console(String msg)

@@ -41,17 +41,12 @@ public interface NetworkableServer
 
 	public void log(String msg);
 
-	//UDP stuff
-	public void tcpSend(DataBuffer data, InetAddress address, int port);
-	public void tcpSend(Packet packet, InetAddress address, int port);
-	
-	public void tcpSendToAll(DataBuffer data);
-	public void tcpSendToAll(Packet data);
-	
-	public void tcpSendToAny(DataBuffer data, int... ignoreID);
-	public void tcpSendToAny(Packet data, int... ignoreID);
-
 	//TCP stuff
+	public void tcpSend(Packet packet, InetAddress address, int port);
+	public void tcpSendToAll(Packet packet);
+	public void tcpSendToAny(Packet packet, int... ignoreID);
+
+	//UDP stuff
 	public void udpSend(DataBuffer data, InetAddress address, int port);
 	public void udpSend(Packet packet, InetAddress address, int port);
 

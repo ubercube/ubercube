@@ -32,12 +32,10 @@ public interface NetworkableClient
 	public void log(String msg);
 	public void console(String msg);
 
-	//UDP stuff
-	public void tcpSend(DataBuffer data);
+	//TCP stuff
 	public void tcpSend(Packet packet);
 
-	//TCP stuff
-	public void udpSend(DataBuffer data);
+	//UDP stuff
 	public void udpSend(Packet packet);
 
 	public void setConnected(boolean connected);
