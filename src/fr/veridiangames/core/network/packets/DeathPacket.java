@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.network.packets;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Vec3;
@@ -62,16 +63,16 @@ public class DeathPacket extends Packet
     public void process(NetworkableClient client, InetAddress address, int port)
     {
         client.console(this.playerId + " just died !");
-        if(client.getCore().getGame().getPlayer().getID() != this.playerId)
+        if(GameCore.getInstance().getGame().getPlayer().getID() != this.playerId)
             client.log(this.playerId + " just died !");
         else
         {
             client.log("You died !");
-            client.getCore().getGame().getPlayer().setDead(true);
-            client.getCore().getGame().getPlayer().setLife(Player.MAX_LIFE);
-            client.tcpSend(new RespawnPacket(client.getCore().getGame().getPlayer().getID()));
+            GameCore.getInstance().getGame().getPlayer().setDead(true);
+            GameCore.getInstance().getGame().getPlayer().setLife(Player.MAX_LIFE);
+            client.tcpSend(new RespawnPacket(GameCore.getInstance().getGame().getPlayer().getID()));
         }
-        client.getCore().getGame().spawn(new ParticleSystem(Indexer.getUniqueID(), "Death", ((Player)client.getCore().getGame().getEntityManager().getEntities().get(playerId)).getPosition())
+        GameCore.getInstance().getGame().spawn(new ParticleSystem(Indexer.getUniqueID(), "Death", ((Player)GameCore.getInstance().getGame().getEntityManager().getEntities().get(playerId)).getPosition())
             .setParticleVelocity(new Vec3(0, 0.2f, 0))
             .setParticleVelocityRandomness(0.05f)
             .setParticleColor(new Color4f(0.7f, 0f, 0f))

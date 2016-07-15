@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.network.packets;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesManager;
 import fr.veridiangames.core.maths.Vec3;
@@ -100,7 +101,7 @@ public class ParticlesSpawnPacket extends Packet
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        client.getCore().getGame().spawn(new ParticleSystem(id,
+        GameCore.getInstance().getGame().spawn(new ParticleSystem(id,
                 ParticlesManager.getParticleSystem(particleName))
                 .setPosition(position)
                 .setParticleVelocity(velocity)

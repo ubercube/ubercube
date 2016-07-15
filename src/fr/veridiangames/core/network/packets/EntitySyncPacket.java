@@ -21,6 +21,7 @@ package fr.veridiangames.core.network.packets;
 
 import java.net.InetAddress;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Quat;
@@ -94,7 +95,7 @@ public class EntitySyncPacket extends Packet
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		if (client.getCore().getGame().getPlayer().getID() != id)
-			client.getCore().getGame().spawn(new NetworkedPlayer(id, name, position, rotation, address.getHostName(), port));		
+		if (GameCore.getInstance().getGame().getPlayer().getID() != id)
+			GameCore.getInstance().getGame().spawn(new NetworkedPlayer(id, name, position, rotation, address.getHostName(), port));
 	}
 }

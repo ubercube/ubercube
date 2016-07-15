@@ -32,17 +32,15 @@ import java.net.*;
 public class NetworkClientUDP implements Runnable
 {
     private NetworkClient   client;
-    private int 			id;
     private int				port;
     private InetAddress		address;
     private DatagramSocket	socket;
 
-    public NetworkClientUDP(NetworkClient client, int id, String address, int port)
+    public NetworkClientUDP(NetworkClient client, String address, int port)
     {
         try
         {
             this.client = client;
-            this.id = id;
             this.address = InetAddress.getByName(address);
             this.port = port;
             this.socket = new DatagramSocket(client.getTcp().getSocket().getLocalPort());

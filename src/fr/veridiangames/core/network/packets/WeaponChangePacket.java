@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.network.packets;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
@@ -72,9 +73,9 @@ public class WeaponChangePacket extends Packet
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        if(playerID != client.getCore().getGame().getPlayer().getID())
+        if(playerID != GameCore.getInstance().getGame().getPlayer().getID())
         {
-            Player p = (Player)client.getCore().getGame().getEntityManager().getEntities().get(playerID);
+            Player p = (Player)GameCore.getInstance().getGame().getEntityManager().getEntities().get(playerID);
             if(p != null)
             {
                 p.getWeaponManager().setWeapon(weaponID);

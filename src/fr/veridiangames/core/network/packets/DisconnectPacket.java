@@ -21,6 +21,7 @@ package fr.veridiangames.core.network.packets;
 
 import java.net.InetAddress;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.ECNetwork;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.components.ECName;
@@ -34,16 +35,17 @@ import fr.veridiangames.core.utils.DataBuffer;
 public class DisconnectPacket extends Packet
 {
 	private int id;
-	
-	public DisconnectPacket()
-	{
+	private String reason;
+
+	public DisconnectPacket() {
 		super(DISCONNECT);
 	}
-	
-	public DisconnectPacket(int id)
+
+	public DisconnectPacket(int id, String reason)
 	{
 		super(DISCONNECT);
 		data.put(id);
+		data.put(reason);
 		data.flip();
 	}
 	
@@ -51,33 +53,35 @@ public class DisconnectPacket extends Packet
 	{
 		super(DISCONNECT);
 		data.put(packet.id);
+		data.put(packet.reason);
 		data.flip();
 	}
 
 	public void read(DataBuffer data)
 	{
 		id = data.getInt();
+		reason = data.getString();
 	}
 
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
-		if (!server.getCore().getGame().getEntityManager().getEntities().containsKey(id))
+		if (!GameCore.getInstance().getGame().getEntityManager().getEntities().containsKey(id))
 			return;
-		String name = ((ECName) server.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
-		ECNetwork net = ((ECNetwork) server.getCore().getGame().getEntityManager().get(id).get(EComponent.NETWORK));
-		server.getCore().getGame().remove(id);
+		String name = ((ECName) GameCore.getInstance().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
+		ECNetwork net = ((ECNetwork) GameCore.getInstance().getGame().getEntityManager().get(id).get(EComponent.NETWORK));
+		GameCore.getInstance().getGame().remove(id);
 		server.tcpSendToAll(new DisconnectPacket(this));
 		server.getTcp().disconnectClient(net.getAddress(), net.getPort());
-		server.log(name + " disconnected...");
+		server.log(name + " disconnected... " + reason);
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		if (!client.getCore().getGame().getEntityManager().getEntities().containsKey(id))
+		if (!GameCore.getInstance().getGame().getEntityManager().getEntities().containsKey(id))
 			return;
-		String name = ((ECName) client.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
-		client.getCore().getGame().remove(id);
-		client.log(name + " disconnected...");
-		client.console(name + " disconnected...");
+		String name = ((ECName) GameCore.getInstance().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
+		GameCore.getInstance().getGame().remove(id);
+		client.log(name + " disconnected... " + reason);
+		client.console(name + " disconnected... " + reason);
 	}
 }

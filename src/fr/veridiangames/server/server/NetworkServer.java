@@ -54,8 +54,8 @@ public class NetworkServer implements Runnable, NetworkableServer
 {
 	private int						port;
 
-	private NetworkServerTCP tcp;
-	private NetworkServerUDP udp;
+	private NetworkServerTCP 		tcp;
+	private NetworkServerUDP 		udp;
 
 	private GameCore				core;
 	private Scanner					scanner;
@@ -90,6 +90,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 		ping();
 		while (true)
 		{
+			Sleep.sleep(500);
 			String cmd = scanner.nextLine();
 			String[] params = cmd.split(" ");
 			String cmdName = params[0];
@@ -108,7 +109,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 			{
 				while (true)
 				{
-					Sleep.sleep(5000);
+					Sleep.sleep(2000);
 
 					for (int i = 0; i < core.getGame().getEntityManager().getPlayerEntites().size(); i++)
 					{
@@ -146,81 +147,20 @@ public class NetworkServer implements Runnable, NetworkableServer
 		}
 	}
 
-	public void tcpSendToAny(Packet packet, int... ignoreID)
-	{
-		for (int ii = 0; ii < core.getGame().getEntityManager().getNetworkableEntites().size(); ii++)
-		{
-			int i = core.getGame().getEntityManager().getNetworkableEntites().get(ii);
-			boolean passeIteration = false;
-			for (int j = 0; j < ignoreID.length; j++)
-			{
-				if (i == ignoreID[j])
-				{
-					passeIteration = true;
-					continue;
-				}
-			}
-			if (passeIteration)
-				continue;
-
-			Entity e = core.getGame().getEntityManager().getEntities().get(i);
-			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);
-			tcpSend(packet, net.getAddress(), net.getPort());
-		}
-	}
-
-	public void udpSend(DataBuffer data, InetAddress address, int port)
-	{
-		udp.send(data.getData(), address, port);
-	}
-
 	public void udpSend(Packet packet, InetAddress address, int port)
 	{
-		udpSend(packet.getData(), address, port);
-	}
-
-	public void udpSendToAll(DataBuffer data)
-	{
-		for (int ii = 0; ii < core.getGame().getEntityManager().getNetworkableEntites().size(); ii++)
-		{
-			int i = core.getGame().getEntityManager().getNetworkableEntites().get(ii);
-			Entity e = core.getGame().getEntityManager().getEntities().get(i);
-			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);
-			udpSend(data, net.getAddress(), net.getPort());
-		}
+		udp.send(packet.getData().getData(), address, port);
 	}
 
 	public void udpSendToAll(Packet packet)
 	{
-		udpSendToAll(packet.getData());
-	}
-
-	public void udpSendToAny(DataBuffer data, int... ignoreID)
-	{
 		for (int ii = 0; ii < core.getGame().getEntityManager().getNetworkableEntites().size(); ii++)
 		{
 			int i = core.getGame().getEntityManager().getNetworkableEntites().get(ii);
-			boolean passeIteration = false;
-			for (int j = 0; j < ignoreID.length; j++)
-			{
-				if (i == ignoreID[j])
-				{
-					passeIteration = true;
-					continue;
-				}
-			}
-			if (passeIteration)
-				continue;
-
 			Entity e = core.getGame().getEntityManager().getEntities().get(i);
 			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);
-			udpSend(data, net.getAddress(), net.getPort());
+			udpSend(packet, net.getAddress(), net.getPort());
 		}
-	}
-
-	public void udpSendToAny(Packet packet, int... ignoreID)
-	{
-		udpSendToAny(packet.getData(), ignoreID);
 	}
 
 	public void stop()
@@ -245,11 +185,6 @@ public class NetworkServer implements Runnable, NetworkableServer
 	public void setGameCore(GameCore core)
 	{
 		this.core = core;
-	}
-
-	public GameCore getCore()
-	{
-		return core;
 	}
 
 	public NetworkServerTCP getTcp()

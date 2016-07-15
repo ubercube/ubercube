@@ -21,6 +21,7 @@ package fr.veridiangames.core.network.packets;
 
 import java.net.InetAddress;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.ECWeapon;
 import fr.veridiangames.core.game.entities.components.EComponent;
@@ -65,14 +66,18 @@ public class WeaponPositionPacket extends Packet
 
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
-		server.udpSendToAny(new WeaponPositionPacket(clientID, weaponPosition), clientID);
+		server.udpSendToAll(new WeaponPositionPacket(clientID, weaponPosition));
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		Entity e = client.getCore().getGame().getEntityManager().get(clientID);
+		Entity e = GameCore.getInstance().getGame().getEntityManager().get(clientID);
 		if (e == null)
 			return;
+
+		if (client.getID() == clientID)
+			return;
+
 		ECWeapon weapon = (ECWeapon) e.get(EComponent.WEAPON);
 		weapon.getWeapon().setPosition(weaponPosition);
 	}

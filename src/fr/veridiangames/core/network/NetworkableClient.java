@@ -28,16 +28,14 @@ import fr.veridiangames.core.utils.DataBuffer;
  */
 public interface NetworkableClient
 {
-	public GameCore getCore();
 	public void log(String msg);
 	public void console(String msg);
 
-	//TCP stuff
 	public void tcpSend(Packet packet);
-
-	//UDP stuff
 	public void udpSend(Packet packet);
 
 	public void setConnected(boolean connected);
 	public boolean isConnected();
+
+	public int getID();
 }

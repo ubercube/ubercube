@@ -39,7 +39,6 @@ import java.util.List;
 public class NetworkClientTCP
 {
     private NetworkClient client;
-    private int id;
     private int port;
     private InetAddress address;
     private Socket socket;
@@ -79,10 +78,9 @@ public class NetworkClientTCP
         }
     };
 
-    public NetworkClientTCP(NetworkClient client, int id, String address, int port)
+    public NetworkClientTCP(NetworkClient client, String address, int port)
     {
         this.client = client;
-        this.id = id;
         try
         {
             this.address = InetAddress.getByName(address);
@@ -168,4 +166,5 @@ public class NetworkClientTCP
     {
         return socket;
     }
+
 }

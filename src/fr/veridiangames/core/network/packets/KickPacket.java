@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.network.packets;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.utils.DataBuffer;
 
@@ -68,16 +69,16 @@ public class KickPacket extends Packet
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        if (client.getCore().getGame().getPlayer().getID() == id)
+        if (GameCore.getInstance().getGame().getPlayer().getID() == id)
         {
-            ClientPlayer player = client.getCore().getGame().getPlayer();
+            ClientPlayer player = GameCore.getInstance().getGame().getPlayer();
             player.setKicked(true);
             client.log("You were kicked !");
         }
         else
         {
-            String name = ((ECName) client.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
-            client.getCore().getGame().remove(id);
+            String name = ((ECName) GameCore.getInstance().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
+            GameCore.getInstance().getGame().remove(id);
             client.log(name + " was kicked...");
             client.console(name + " was kicked...");
         }

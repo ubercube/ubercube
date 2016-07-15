@@ -35,14 +35,12 @@ import java.util.List;
  */
 public class RemoteClient
 {
-    private Socket socket;
-
-    private InputStream in;
-    private OutputStream out;
-
-    private NetworkServer server;
-
-    private List<Packet> sendQueue;
+    private Socket          socket;
+    private InputStream     in;
+    private OutputStream    out;
+    private NetworkServer   server;
+    private List<Packet>    sendQueue;
+    private int             id;
 
     public RemoteClient(Socket socket, NetworkServer server)
     {
@@ -110,7 +108,6 @@ public class RemoteClient
                } catch (IOException e)
                {
                    server.getTcp().disconnectClient(socket.getInetAddress(), socket.getPort());
-                   e.printStackTrace();
                }
            }
        }.start();
@@ -145,5 +142,13 @@ public class RemoteClient
     public InputStream getInputStream()
     {
         return in;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setID(int id) {
+        this.id = id;
     }
 }

@@ -21,6 +21,7 @@ package fr.veridiangames.core.network.packets;
 
 import java.net.InetAddress;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
@@ -79,18 +80,18 @@ public class BulletHitBlockPacket extends Packet
 
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
-		this.block = server.getCore().getGame().getWorld().applyBlockDamage(position.x, position.y, position.z, damage);
+		this.block = GameCore.getInstance().getGame().getWorld().applyBlockDamage(position.x, position.y, position.z, damage);
 		if(Color4f.getColorFromARGB(block).getAlpha() <= 0)
 			this.block = 0;
-		server.getCore().getGame().getWorld().addModifiedBlock(position.x, position.y, position.z, block);
+		GameCore.getInstance().getGame().getWorld().addModifiedBlock(position.x, position.y, position.z, block);
 		server.tcpSendToAll(new BulletHitBlockPacket(this));
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		client.getCore().getGame().getWorld().addBlock(position.x, position.y, position.z, block);
-		client.getCore().getGame().getWorld().updateRequest(position.x, position.y, position.z);
-		client.getCore().getGame().getWorld().addModifiedBlock(position.x, position.y, position.z, block);
+		GameCore.getInstance().getGame().getWorld().addBlock(position.x, position.y, position.z, block);
+		GameCore.getInstance().getGame().getWorld().updateRequest(position.x, position.y, position.z);
+		GameCore.getInstance().getGame().getWorld().addModifiedBlock(position.x, position.y, position.z, block);
 	}
 
 

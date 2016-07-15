@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.network.packets;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.bullets.Bullet;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
@@ -106,13 +107,15 @@ public class BulletShootPacket extends Packet
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
 		id = Indexer.getUniqueID();
-		server.udpSendToAny(new BulletShootPacket(this), clientID);
+		server.udpSendToAll(new BulletShootPacket(this));
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
 		Bullet bullet = new Bullet(id, clientID, name, position, rotation, shootForce);
 		bullet.setNetwork(client);
-		client.getCore().getGame().spawn(bullet);
+
+		if (client.getID() != clientID)
+			GameCore.getInstance().getGame().spawn(bullet);
 	}
 }

@@ -19,8 +19,14 @@
 
 package fr.veridiangames.server.server.tcp;
 
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.Game;
+import fr.veridiangames.core.game.entities.EntityManager;
+import fr.veridiangames.core.game.entities.components.ECNetwork;
+import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.network.PacketManager;
+import fr.veridiangames.core.network.packets.DisconnectPacket;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.utils.DataStream;
@@ -40,75 +46,77 @@ import java.util.List;
  */
 public class NetworkServerTCP implements Runnable
 {
+    private GameCore core;
     private NetworkServer server;
     private ServerSocket socket;
     private List<RemoteClient> clients;
 
-    public List<RemoteClient> clientsToAdd = new ArrayList<>();
+    private List<RemoteClient> clientsToAdd = new ArrayList<>();
     private Thread receiverThread = new Thread("tcp-receiver") {
-        private List<RemoteClient> receiverThreadClients = new ArrayList<>();
+    private List<RemoteClient> receiverThreadClients = new ArrayList<>();
 
-        public void run() {
-            log("TCP: Starting tcp-receiver");
+    public void run()
+    {
+        while (socket != null)
+        {
+            clientsToAdd.removeAll(receiverThreadClients);
+            receiverThreadClients.addAll(clientsToAdd);
 
-            while (socket != null)
+            ArrayList<RemoteClient> toRemove = new ArrayList<>();
+            for (RemoteClient client : receiverThreadClients) {
+                if (!clients.contains(client))
+                    toRemove.add(client);
+            }
+
+            receiverThreadClients.removeAll(toRemove);
+
+            for (RemoteClient client : receiverThreadClients)
             {
-                clientsToAdd.removeAll(receiverThreadClients);
-                receiverThreadClients.addAll(clientsToAdd);
-
-                ArrayList<RemoteClient> toRemove = new ArrayList<>();
-                for (RemoteClient client : receiverThreadClients) {
-                    if (!clients.contains(client))
-                        toRemove.add(client);
-                }
-
-                receiverThreadClients.removeAll(toRemove);
-
-                for (RemoteClient client : receiverThreadClients)
+                try
                 {
-                    try
-                    {
-                        if (client.getInputStream() == null)
-                        {
-                            disconnectClient(client.getSocket().getInetAddress(), client.getSocket().getPort());
-                            continue;
-                        }
-
-                        if (client.getInputStream().available() < Packet.MAX_SIZE) {
-                            continue;
-                        }
-
-                        byte[] bytes = DataStream.readPacket(client.getInputStream());
-                        DataBuffer data = new DataBuffer(bytes);
-                        Packet packet = PacketManager.getPacket(data.getInt());
-
-                        if (packet == null)
-                        {
-                            log("TCP: " + getTime() + " [ERROR]-> Received empty packet");
-                            continue;
-                        }
-
-                        if (GameCore.isDisplayNetworkDebug())
-                            log("TCP: " + getTime() + " [IN]-> received: " + packet);
-
-                        packet.read(data);
-                        packet.process(server, client.getSocket().getInetAddress(), client.getSocket().getPort());
-                    } catch (IOException e)
+                    if (client.getInputStream() == null)
                     {
                         disconnectClient(client.getSocket().getInetAddress(), client.getSocket().getPort());
+                        server.tcpSendToAll(new DisconnectPacket(client.getId(), "Client disconnected by the server"));
+                        continue;
                     }
+
+                    if (client.getInputStream().available() < Packet.MAX_SIZE) {
+                        continue;
+                    }
+
+                    byte[] bytes = DataStream.readPacket(client.getInputStream());
+                    DataBuffer data = new DataBuffer(bytes);
+                    Packet packet = PacketManager.getPacket(data.getInt());
+
+                    if (packet == null)
+                    {
+                        log("TCP: " + getTime() + " [ERROR]-> Received empty packet");
+                        continue;
+                    }
+
+                    if (GameCore.isDisplayNetworkDebug())
+                        log("TCP: " + getTime() + " [IN]-> received: " + packet);
+
+                    packet.read(data);
+                    packet.process(server, client.getSocket().getInetAddress(), client.getSocket().getPort());
+                } catch (IOException e)
+                {
+                    disconnectClient(client.getSocket().getInetAddress(), client.getSocket().getPort());
+                    server.tcpSendToAll(new DisconnectPacket(client.getId(), "Client disconnected by the server"));
                 }
             }
-            log("TCP: Stopping tcp-receiver Thread");
         }
+        log("TCP: Stopping tcp-receiver Thread");
+    }
     };
 
     public NetworkServerTCP(NetworkServer server, int port)
     {
         try
         {
+            this.core = GameCore.getInstance();
             this.server = server;
-            log("TCP: Starting");
             this.clients = new ArrayList<>();
             this.socket = new ServerSocket(port);
             //this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
@@ -192,6 +200,7 @@ public class NetworkServerTCP implements Runnable
             return;
         }
         client.stop();
+        clientsToAdd.remove(client);
         clients.remove(client);
     }
 

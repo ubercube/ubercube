@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.network.packets;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
@@ -66,6 +67,6 @@ public class ParticlesRemovePacket extends Packet
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        client.getCore().getGame().getEntityManager().remove(id);
+        GameCore.getInstance().getGame().getEntityManager().remove(id);
     }
 }

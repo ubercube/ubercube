@@ -105,7 +105,6 @@ public class Ubercube
 
 		guiManager.update();
 		gameLoading.update(this);
-		//net.getTcp().update();
 
 		if (net.isConnected() && core.getGame().getWorld().isGenerated())
 		{
@@ -249,7 +248,7 @@ public class Ubercube
 				ticks = 0;
 			}
 		}
-		net.tcpSend(new DisconnectPacket(core.getGame().getPlayer().getID()));
+		net.tcpSend(new DisconnectPacket(core.getGame().getPlayer().getID(), "Client closed the game"));
 		display.setDestroyed(true);
 //		AudioManager.destroy();
 		System.exit(0);

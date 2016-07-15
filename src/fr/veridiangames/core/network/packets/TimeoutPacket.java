@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.network.packets;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.ECName;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.network.NetworkableClient;
@@ -64,8 +65,8 @@ public class TimeoutPacket extends Packet
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		String name = ((ECName) client.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
-		client.getCore().getGame().remove(id);
+		String name = ((ECName) GameCore.getInstance().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
+		GameCore.getInstance().getGame().remove(id);
 		client.log(name + " timed out...");
 		client.console(name + " timed out...");
 	}

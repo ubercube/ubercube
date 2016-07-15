@@ -21,6 +21,7 @@ package fr.veridiangames.core.network.packets;
 
 import java.net.InetAddress;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.ECName;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.player.Player;
@@ -73,15 +74,15 @@ public class BulletHitPlayerPacket extends Packet
 
     public void process(NetworkableServer server, InetAddress address, int port)
     {
-        ServerPlayer p = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId);
+        ServerPlayer p = (ServerPlayer) GameCore.getInstance().getGame().getEntityManager().getEntities().get(playerId);
         if (p == null)
             return;
         p.setLife(p.getLife() - 20);    // TODO : Modify damage
         if(p.getLife() <= 0)
         {
             server.tcpSendToAll(new DeathPacket(playerId));
-            ((ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId)).setDead(true);
-            String name = ((ECName) server.getCore().getGame().getEntityManager().get(playerId).get(EComponent.NAME)).getName();
+            ((ServerPlayer) GameCore.getInstance().getGame().getEntityManager().getEntities().get(playerId)).setDead(true);
+            String name = ((ECName) GameCore.getInstance().getGame().getEntityManager().get(playerId).get(EComponent.NAME)).getName();
             server.log(name + " was killed !");
         }
         else
@@ -90,6 +91,6 @@ public class BulletHitPlayerPacket extends Packet
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        client.getCore().getGame().getPlayer().setLife(life);
+        GameCore.getInstance().getGame().getPlayer().setLife(life);
     }
 }

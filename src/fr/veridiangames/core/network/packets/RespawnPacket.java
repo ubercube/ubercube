@@ -76,7 +76,7 @@ public class RespawnPacket extends Packet
     @Override
     public void process(NetworkableServer server, InetAddress address, int port)
     {
-        ServerPlayer p = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId);
+        ServerPlayer p = (ServerPlayer) GameCore.getInstance().getGame().getEntityManager().getEntities().get(playerId);
         p.setLife(100);
         p.setDead(false);
 
@@ -91,7 +91,7 @@ public class RespawnPacket extends Packet
     @Override
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        ClientPlayer p = client.getCore().getGame().getPlayer();
+        ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
         p.getRigidBody().getBody().killForces();
         p.setPosition(this.position);
         p.setLife(100);

@@ -19,6 +19,7 @@
 
 package fr.veridiangames.server.server.commands;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.ECName;
 import fr.veridiangames.core.game.entities.components.EComponent;
@@ -42,9 +43,9 @@ public class CmdKick extends Command
             {
                 int id = -1;
                 String name = "";
-                for (Map.Entry<Integer, Entity> e : server.getCore().getGame().getEntityManager().getEntities().entrySet())
+                for (Map.Entry<Integer, Entity> e : GameCore.getInstance().getGame().getEntityManager().getEntities().entrySet())
                 {
-                    name = ((ECName) server.getCore().getGame().getEntityManager().get(e.getKey()).get(EComponent.NAME)).getName();
+                    name = ((ECName) GameCore.getInstance().getGame().getEntityManager().get(e.getKey()).get(EComponent.NAME)).getName();
                     if (params[1].equals(name))
                     {
                         id = e.getKey();
@@ -57,7 +58,7 @@ public class CmdKick extends Command
                 }
                 server.tcpSendToAll(new KickPacket(id));
                 server.log(name + " has been kicked !");
-                server.getCore().getGame().remove(id);
+                GameCore.getInstance().getGame().remove(id);
             } catch (Exception e)
             {
                 server.log("Player ID not found !");

@@ -48,7 +48,6 @@ public class NetworkServerUDP implements Runnable
         try
         {
             this.server = server;
-            log("Starting UDP connection");
             this.packets = new ArrayList<>();
             this.socket = new DatagramSocket(port);
             new Thread(this, "udp-thread").start();

@@ -34,26 +34,25 @@ import fr.veridiangames.client.Ubercube;
  */
 public class NetworkClient implements NetworkableClient
 {
-	private boolean running = false;
-
 	private int 			port;
 	private InetAddress 	address;
-	private Ubercube 		ubercube;
 	private boolean 		connected;
 
 	private NetworkClientTCP tcp;
 	private NetworkClientUDP udp;
+
+	private int id;
 
 	public NetworkClient(int id, String address, int port, Ubercube ubercube)
 	{
 		try
 		{
 			this.address = InetAddress.getByName(address);
-			this.ubercube = ubercube;
 			this.port = port;
 
-			tcp = new NetworkClientTCP(this, id, address, port);
-			udp = new NetworkClientUDP(this, id, address, port);
+			this.id = id;
+			this.tcp = new NetworkClientTCP(this, address, port);
+			this.udp = new NetworkClientUDP(this, address, port);
 		}
 		catch (UnknownHostException e)
 		{
@@ -78,11 +77,6 @@ public class NetworkClient implements NetworkableClient
 		System.exit(0);
 	}
 
-	public GameCore getCore()
-	{
-		return ubercube.getGameCore();
-	}
-	
 	public void log(String msg)
 	{
 		if (msg.toLowerCase().contains("error"))
@@ -93,7 +87,7 @@ public class NetworkClient implements NetworkableClient
 
 	public void console(String msg)
 	{
-		ConsoleScreen console = ubercube.getConsole();
+		ConsoleScreen console = Ubercube.getInstance().getConsole();
 		if (console != null)
 			console.log(msg);
 	}
@@ -126,5 +120,9 @@ public class NetworkClient implements NetworkableClient
 	public NetworkClientUDP getUdp()
 	{
 		return udp;
+	}
+
+	public int getID() {
+		return id;
 	}
 }

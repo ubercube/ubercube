@@ -23,6 +23,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.maths.Vec4i;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
@@ -90,15 +91,15 @@ public class SyncBlocksPacket extends Packet
 		{
 			if (block.w == 0)
 			{
-				client.getCore().getGame().getWorld().removeBlock(block.x, block.y, block.z);
-				client.getCore().getGame().getWorld().updateRequest(block.x, block.y, block.z);
-				client.getCore().getGame().getWorld().addModifiedBlock(block.x, block.y, block.z, block.w);
+				GameCore.getInstance().getGame().getWorld().removeBlock(block.x, block.y, block.z);
+				GameCore.getInstance().getGame().getWorld().updateRequest(block.x, block.y, block.z);
+				GameCore.getInstance().getGame().getWorld().addModifiedBlock(block.x, block.y, block.z, block.w);
 			}
 			else
 			{
-				client.getCore().getGame().getWorld().addBlock(block.x, block.y, block.z, block.w);
-				client.getCore().getGame().getWorld().updateRequest(block.x, block.y, block.z);
-				client.getCore().getGame().getWorld().addModifiedBlock(block.x, block.y, block.z, block.w);
+				GameCore.getInstance().getGame().getWorld().addBlock(block.x, block.y, block.z, block.w);
+				GameCore.getInstance().getGame().getWorld().updateRequest(block.x, block.y, block.z);
+				GameCore.getInstance().getGame().getWorld().addModifiedBlock(block.x, block.y, block.z, block.w);
 			}
 		}
 	}
