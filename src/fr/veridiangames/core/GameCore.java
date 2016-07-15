@@ -30,7 +30,7 @@ public class GameCore
 	public static final String GAME_VERSION_NAME = "Pre-Alpha 1";
 	public static final String GAME_SUB_VERSION = "002";
 
-	private static boolean displayNetworkDebug = true;
+	private static boolean displayNetworkDebug = false;
 
 	private static GameCore instance;
 

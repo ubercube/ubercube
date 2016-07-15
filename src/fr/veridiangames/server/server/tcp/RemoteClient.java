@@ -48,91 +48,6 @@ public class RemoteClient
 
     private List<Packet> sendQueue;
 
-    private Thread senderThread = new Thread("tcp-sender") {
-        public void run()
-        {
-            server.log("TCP: Starting tcp-sender");
-            while (socket != null) {
-                if (out == null)
-                    continue;
-
-                ArrayList<Packet> sendingQueue = new ArrayList<>(sendQueue);
-
-                for (Packet packet : sendingQueue)
-                {
-                    try
-                    {
-                        if (packet == null)
-                        {
-                            server.log ("TCP: " + getTime() + " [ERROR]-> Tried to send a null packet");
-                            continue;
-                        }
-
-                        if (packet.getData() == null)
-                        {
-                            server.log ("TCP: " + getTime() + " [ERROR]-> Tried to send an empty packet");
-                            server.log ("TCP: " + getTime() + " [ERROR]-> " + packet);
-                            continue;
-                        }
-
-                        byte[] bytes = packet.getData().getData();
-
-                        if (bytes.length == 0)
-                        {
-                            server.log ("TCP: " + getTime() + " [ERROR]-> Tried to send an empty packet");
-                            continue;
-                        }
-
-                        if (GameCore.isDisplayNetworkDebug())
-                            server.log("TCP: " + getTime() + " [OUT]-> sending: " + packet);
-
-                        DataStream.writePacket(out, bytes);
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-
-                sendQueue.removeAll(sendingQueue);
-            }
-            server.log("TCP: Stopping tcp-sender Thread");
-        }
-    };
-
-    private Thread receiverThread = new Thread("tcp-receiver") {
-        public void run() {
-            server.log("TCP: Starting tcp-receiver");
-
-            while (socket != null)
-            {
-                try
-                {
-                    byte[] bytes = DataStream.readPacket(in);
-                    DataBuffer data = new DataBuffer(bytes);
-                    Packet packet = PacketManager.getPacket(data.getInt());
-
-                    if (packet == null)
-                    {
-                        server.log("TCP: " + getTime() + " [ERROR]-> Received empty packet");
-                        continue;
-                    }
-
-                    if (GameCore.isDisplayNetworkDebug())
-                        server.log("TCP: " + getTime() + " [IN]-> received: " + packet);
-
-                    packet.read(data);
-                    server.log("TCP: " + getTime() + " processing " + packet);
-                    packet.process(server, socket.getInetAddress(), socket.getPort());
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                    socket = null;
-                }
-            }
-            server.log("TCP: Stopping tcp-receiver Thread");
-        }
-    };
-
     public RemoteClient(Socket socket, NetworkServer server)
     {
         try
@@ -174,21 +89,23 @@ public class RemoteClient
         }
     }
 
-    private String getTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");//dd/MM/yyyy
-        Calendar calendar = Calendar.getInstance();
-        String time = dateFormat.format(calendar.getTime());
-        return time;
-    }
-
     public Socket getSocket()
     {
         return socket;
     }
 
-    public void start()
+    public OutputStream getOutputStream()
     {
-        senderThread.start();
-        receiverThread.start();
+        return out;
+    }
+
+    public List<Packet> getSendQueue()
+    {
+        return sendQueue;
+    }
+
+    public InputStream getInputStream()
+    {
+        return in;
     }
 }

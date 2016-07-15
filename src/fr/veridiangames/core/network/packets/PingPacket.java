@@ -80,11 +80,11 @@ public class PingPacket extends Packet
     public void process(NetworkableClient client, InetAddress address, int port)
     {
         if (client.getCore().getGame().getPlayer().getID() == userID)
-        {
             client.getCore().getGame().getPlayer().setTimeoutTime(0);
-        }
+
         if (client.getCore().getGame().getEntityManager().getEntities().containsKey(userID))
             ((Player) client.getCore().getGame().getEntityManager().get(userID)).setPing((int) ping);
+
         client.tcpSend(new PingPacket(client.getCore().getGame().getPlayer().getID(), pingTime, ping));
     }
 }
