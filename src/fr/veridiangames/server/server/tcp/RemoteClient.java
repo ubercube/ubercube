@@ -52,8 +52,8 @@ public class RemoteClient
             this.socket.setKeepAlive(true);
             this.socket.setReuseAddress(false);
             this.socket.setSoTimeout(10000);
-            //this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
-            //this.socket.setSendBufferSize(Packet.MAX_SIZE);
+            this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
+            this.socket.setSendBufferSize(Packet.MAX_SIZE);
             this.server = server;
             this.sendQueue = new ArrayList<>();
             this.in = socket.getInputStream();
