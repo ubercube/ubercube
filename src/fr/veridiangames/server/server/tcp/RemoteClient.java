@@ -20,18 +20,14 @@
 package fr.veridiangames.server.server.tcp;
 
 import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
-import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.utils.DataStream;
 import fr.veridiangames.server.server.NetworkServer;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -58,8 +54,8 @@ public class RemoteClient
             this.socket.setKeepAlive(true);
             this.socket.setReuseAddress(false);
             this.socket.setSoTimeout(10000);
-            this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
-            this.socket.setSendBufferSize(Packet.MAX_SIZE);
+            //this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
+            //this.socket.setSendBufferSize(Packet.MAX_SIZE);
             this.server = server;
             this.sendQueue = new ArrayList<>();
             this.in = socket.getInputStream();
@@ -75,7 +71,49 @@ public class RemoteClient
 
     public void send(Packet packet)
     {
-        sendQueue.add(packet);
+       new Thread() {
+
+           public void run()
+           {
+               if (socket == null || out == null)
+               {
+                   server.getTcp().disconnectClient(socket.getInetAddress(), socket.getPort());
+               }
+
+               try
+               {
+                   if (packet == null)
+                   {
+                       server.getTcp().log ("TCP: " + server.getTcp().getTime() + " [ERROR]-> Tried to send a null packet");
+                       return;
+                   }
+
+                   if (packet.getData() == null)
+                   {
+                       server.getTcp().log("TCP: " + server.getTcp().getTime() + " [ERROR]-> Tried to send an empty packet");
+                       server.getTcp().log("TCP: " + server.getTcp().getTime() + " [ERROR]-> " + packet);
+                       return;
+                   }
+
+                   byte[] bytes = packet.getData().getData();
+
+                   if (bytes.length == 0)
+                   {
+                       server.getTcp().log("TCP: " + server.getTcp().getTime() + " [ERROR]-> Tried to send an empty packet");
+                       return;
+                   }
+
+                   if (GameCore.isDisplayNetworkDebug())
+                       server.getTcp().log("TCP: " + server.getTcp().getTime() + " [OUT]-> sending: " + packet);
+
+                   DataStream.writePacket(out, bytes);
+               } catch (IOException e)
+               {
+                   server.getTcp().disconnectClient(socket.getInetAddress(), socket.getPort());
+                   e.printStackTrace();
+               }
+           }
+       }.start();
     }
 
     public void stop()

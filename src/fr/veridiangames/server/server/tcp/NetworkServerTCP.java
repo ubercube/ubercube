@@ -19,7 +19,6 @@
 
 package fr.veridiangames.server.server.tcp;
 
-import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
@@ -45,73 +44,7 @@ public class NetworkServerTCP implements Runnable
     private ServerSocket socket;
     private List<RemoteClient> clients;
 
-
-    public List<RemoteClient> clientsToAddSender = new ArrayList<>();
-    private Thread senderThread = new Thread("tcp-sender") {
-        private List<RemoteClient> senderThreadClients = new ArrayList<>();
-
-        public void run()
-        {
-            log("TCP: Starting tcp-sender");
-
-            while (socket != null) {
-                clientsToAddSender.removeAll(senderThreadClients);
-                senderThreadClients.addAll(clientsToAddSender);
-
-                for (RemoteClient client : senderThreadClients)
-                {
-                    if (client.getSocket() == null || client.getOutputStream() == null)
-                    {
-                        disconnectClient(client.getSocket().getInetAddress(), client.getSocket().getPort());
-                        continue;
-                    }
-
-                    ArrayList<Packet> sendingQueue = new ArrayList<>(client.getSendQueue());
-
-                    for (Packet packet : sendingQueue)
-                    {
-                        try
-                        {
-                            if (packet == null)
-                            {
-                                log("TCP: " + getTime() + " [ERROR]-> Tried to send a null packet");
-                                continue;
-                            }
-
-                            if (packet.getData() == null)
-                            {
-                                log("TCP: " + getTime() + " [ERROR]-> Tried to send an empty packet");
-                                log("TCP: " + getTime() + " [ERROR]-> " + packet);
-                                continue;
-                            }
-
-                            byte[] bytes = packet.getData().getData();
-
-                            if (bytes.length == 0)
-                            {
-                                log("TCP: " + getTime() + " [ERROR]-> Tried to send an empty packet");
-                                continue;
-                            }
-
-                            if (GameCore.isDisplayNetworkDebug())
-                                log("TCP: " + getTime() + " [OUT]-> sending: " + packet);
-
-                            DataStream.writePacket(client.getOutputStream(), bytes);
-                        } catch (IOException e)
-                        {
-                            disconnectClient(client.getSocket().getInetAddress(), client.getSocket().getPort());
-                            e.printStackTrace();
-                        }
-                    }
-
-                    client.getSendQueue().removeAll(sendingQueue);
-                }
-            }
-            log("TCP: Stopping tcp-sender Thread");
-        }
-    };
-
-    public List<RemoteClient> clientsToAddReceiver = new ArrayList<>();
+    public List<RemoteClient> clientsToAdd = new ArrayList<>();
     private Thread receiverThread = new Thread("tcp-receiver") {
         private List<RemoteClient> receiverThreadClients = new ArrayList<>();
 
@@ -120,8 +53,16 @@ public class NetworkServerTCP implements Runnable
 
             while (socket != null)
             {
-                clientsToAddReceiver.removeAll(receiverThreadClients);
-                receiverThreadClients.addAll(clientsToAddReceiver);
+                clientsToAdd.removeAll(receiverThreadClients);
+                receiverThreadClients.addAll(clientsToAdd);
+
+                ArrayList<RemoteClient> toRemove = new ArrayList<>();
+                for (RemoteClient client : receiverThreadClients) {
+                    if (!clients.contains(client))
+                        toRemove.add(client);
+                }
+
+                receiverThreadClients.removeAll(toRemove);
 
                 for (RemoteClient client : receiverThreadClients)
                 {
@@ -133,8 +74,9 @@ public class NetworkServerTCP implements Runnable
                             continue;
                         }
 
-                        if (client.getInputStream().available() < Packet.MAX_SIZE)
+                        if (client.getInputStream().available() < Packet.MAX_SIZE) {
                             continue;
+                        }
 
                         byte[] bytes = DataStream.readPacket(client.getInputStream());
                         DataBuffer data = new DataBuffer(bytes);
@@ -150,12 +92,10 @@ public class NetworkServerTCP implements Runnable
                             log("TCP: " + getTime() + " [IN]-> received: " + packet);
 
                         packet.read(data);
-//                        log("TCP: " + getTime() + " processing " + packet);
                         packet.process(server, client.getSocket().getInetAddress(), client.getSocket().getPort());
                     } catch (IOException e)
                     {
                         disconnectClient(client.getSocket().getInetAddress(), client.getSocket().getPort());
-                        e.printStackTrace();
                     }
                 }
             }
@@ -173,7 +113,6 @@ public class NetworkServerTCP implements Runnable
             this.socket = new ServerSocket(port);
             //this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
             new Thread(this, "tcp-clients").start();
-            senderThread.start();
             receiverThread.start();
         }
         catch (IOException e)
@@ -194,8 +133,7 @@ public class NetworkServerTCP implements Runnable
                 Socket acceptedClient = this.socket.accept();
                 RemoteClient client = new RemoteClient(acceptedClient, server);
                 clients.add(client);
-                clientsToAddReceiver.add(client);
-                clientsToAddSender.add(client);
+                clientsToAdd.add(client);
             }
             catch (IOException e)
             {
@@ -257,7 +195,7 @@ public class NetworkServerTCP implements Runnable
         clients.remove(client);
     }
 
-    private String getTime() {
+    public String getTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");//dd/MM/yyyy
         Calendar calendar = Calendar.getInstance();
         String time = dateFormat.format(calendar.getTime());

@@ -47,59 +47,6 @@ public class NetworkClientTCP
     private InputStream  in;
     private OutputStream out;
 
-    private List<Packet> sendQueue;
-
-    private Thread senderThread = new Thread("tcp-sender") {
-        public void run()
-        {
-            log("TCP: Starting tcp-sender");
-            while (socket != null) {
-                if (out == null)
-                    continue;
-
-                ArrayList<Packet> sendingQueue = new ArrayList<>(sendQueue);
-
-                for (Packet packet : sendingQueue)
-                {
-                    try
-                    {
-                        if (packet == null)
-                        {
-                            log ("TCP: " + getTime() + " [ERROR]-> Tried to send a null packet");
-                            continue;
-                        }
-
-                        if (packet.getData() == null)
-                        {
-                            log ("TCP: " + getTime() + " [ERROR]-> Tried to send an empty packet");
-                            log ("TCP: " + getTime() + " [ERROR]-> " + packet);
-                            continue;
-                        }
-
-                        byte[] bytes = packet.getData().getData();
-
-                        if (bytes.length == 0)
-                        {
-                            log ("TCP: " + getTime() + " [ERROR]-> Tried to send an empty packet");
-                            continue;
-                        }
-
-                        if (GameCore.isDisplayNetworkDebug())
-                            log("TCP: " + getTime() + " [OUT]-> sending: " + packet);
-
-                        DataStream.writePacket(out, bytes);
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-
-                sendQueue.removeAll(sendingQueue);
-            }
-            log("TCP: Stopping tcp-sender Thread");
-        }
-    };
-
     private Thread receiverThread = new Thread("tcp-receiver") {
         public void run() {
             log("TCP: Starting tcp-receiver");
@@ -121,7 +68,6 @@ public class NetworkClientTCP
                         log("TCP: " + getTime() + " [IN]-> received: " + packet);
 
                     packet.read(data);
-//                    log("TCP: " + getTime() + " processing " + packet);
                     packet.process(client, address, port);
                 } catch (IOException e)
                 {
@@ -148,12 +94,10 @@ public class NetworkClientTCP
             this.socket.setReuseAddress(false);
             this.socket.setSoTimeout(10000);
             //this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
-            //this.socket.setSendBufferSize(Packet.MAX_SIZE);
+            // this.socket.setSendBufferSize(Packet.MAX_SIZE);
             this.in = socket.getInputStream();
             this.out = socket.getOutputStream();
-            this.sendQueue = new ArrayList<>();
             log("TCP: Connected !");
-            senderThread.start();
             receiverThread.start();
         } catch (UnknownHostException e)
         {
@@ -166,7 +110,35 @@ public class NetworkClientTCP
 
     public void send(Packet packet)
     {
-        sendQueue.add(packet);
+        new Thread() {
+            public void run() {
+                try
+                {
+                    if (packet.getData() == null)
+                    {
+                        log ("TCP: " + getTime() + " [ERROR]-> Tried to send an empty packet");
+                        log ("TCP: " + getTime() + " [ERROR]-> " + packet);
+                        return;
+                    }
+
+                    byte[] bytes = packet.getData().getData();
+
+                    if (bytes.length == 0)
+                    {
+                        log ("TCP: " + getTime() + " [ERROR]-> Tried to send an empty packet");
+                        return;
+                    }
+
+                    if (GameCore.isDisplayNetworkDebug())
+                        log("TCP: " + getTime() + " [OUT]-> sending: " + packet);
+
+                    DataStream.writePacket(out, bytes);
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     public void log(String msg)
