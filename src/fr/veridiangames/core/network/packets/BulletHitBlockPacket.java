@@ -32,6 +32,7 @@ import fr.veridiangames.core.utils.DataBuffer;
  */
 public class BulletHitBlockPacket extends Packet
 {
+	private int honerID;
 	private Vec3i position;
 	private float damage;
 	private int block;
@@ -42,10 +43,12 @@ public class BulletHitBlockPacket extends Packet
 		super(BULLET_HIT_BLOCK);
 	}
 	
-	public BulletHitBlockPacket(Vec3i pos, float damage, int block)
+	public BulletHitBlockPacket(int honerID, Vec3i pos, float damage, int block)
 	{
 		super(BULLET_HIT_BLOCK);
-		
+
+		data.put(honerID);
+
 		data.put(pos.x);
 		data.put(pos.y);
 		data.put(pos.z);
@@ -60,6 +63,8 @@ public class BulletHitBlockPacket extends Packet
 	{
 		super(BULLET_HIT_BLOCK);
 		
+		data.put(packet.honerID);
+
 		data.put(packet.position.x);
 		data.put(packet.position.y);
 		data.put(packet.position.z);
@@ -72,6 +77,7 @@ public class BulletHitBlockPacket extends Packet
 
 	public void read(DataBuffer data)
 	{
+		honerID = data.getInt();
 		position = new Vec3i(data.getInt(), data.getInt(), data.getInt());
 		damage = data.getFloat();
 		block = data.getInt();
@@ -92,6 +98,4 @@ public class BulletHitBlockPacket extends Packet
 		client.getCore().getGame().getWorld().updateRequest(position.x, position.y, position.z);
 		client.getCore().getGame().getWorld().addModifiedBlock(position.x, position.y, position.z, block);
 	}
-
-
 }

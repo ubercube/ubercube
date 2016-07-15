@@ -98,14 +98,14 @@ public class PlayerListScreen extends GuiCanvas
                 }
                 else
                 {
-                    if (!entityManager.getEntities().containsKey(player.getID()))
-                    {
-                        players.remove(player.getID());
-                        continue;
-                    }
-
                     players.get(player.getID()).update(bg.getX(), bg.getY() + i * 25, ping, bg);
                 }
+            }
+            for (Map.Entry<Integer, PLine> entry : new HashMap<>(players).entrySet())
+            {
+                int id = entry.getKey();
+                if (!entityManager.getEntities().containsKey(id))
+                    players.remove(id);
             }
             time = 0;
         }
