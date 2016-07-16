@@ -91,8 +91,8 @@ public class NetworkClientTCP
             this.socket.setKeepAlive(false);
             this.socket.setReuseAddress(false);
             this.socket.setSoTimeout(10000);
-            this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
-            this.socket.setSendBufferSize(Packet.MAX_SIZE);
+            //this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
+            //this.socket.setSendBufferSize(Packet.MAX_SIZE);
             this.in = socket.getInputStream();
             this.out = socket.getOutputStream();
             log("TCP: Connected !");

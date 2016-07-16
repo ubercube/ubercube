@@ -78,7 +78,7 @@ public class BulletHitPlayerPacket extends Packet
         if (p == null)
             return;
         p.setLife(p.getLife() - 20);    // TODO : Modify damage
-        if(p.getLife() <= 0)
+        if(p.getLife() <= 0 && !((ServerPlayer) GameCore.getInstance().getGame().getEntityManager().getEntities().get(playerId)).isDead())
         {
             server.tcpSendToAll(new DeathPacket(playerId));
             ((ServerPlayer) GameCore.getInstance().getGame().getEntityManager().getEntities().get(playerId)).setDead(true);
