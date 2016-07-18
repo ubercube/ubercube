@@ -58,7 +58,7 @@ public class Bullet extends Entity
 		ECAudioSource audioSource = new ECAudioSource();
 //		audioSource.setPosition(spawnPoint);
 //		audioSource.setVelocity(new Vec3(0, 0, 0));
-//		audioSource.setSound(Audio.AK47_BULLET_SHOT);
+//		audioSource.setSound(Sound.AK47_SHOOT);
 //		audioSource.setLoop(false);
 //		audioSource.play();
 
@@ -106,7 +106,7 @@ public class Bullet extends Entity
 			Vec3i impactPosition = new Vec3i(position);
 			Vec3 normal = new Vec3(impactPosition).gtNorm(position);
 
-			this.net.tcpSend(new BulletHitBlockPacket(new Vec3i(blockPosition), 0.1f, block));
+			this.net.tcpSend(new BulletHitBlockPacket(holderID, new Vec3i(blockPosition), 0.1f, block));
 
 			ParticleSystem hitParticles = new ParticlesBulletHit(Indexer.getUniqueID(), getPosition().copy(), new Color4f(block));
 			hitParticles.setNetwork(net);

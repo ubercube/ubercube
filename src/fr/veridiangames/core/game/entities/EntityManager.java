@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.game.entities.bullets.Bullet;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
@@ -43,20 +44,20 @@ public class EntityManager
 	private List<Integer>			keys;
 	private Map<Integer, Entity>	entities;
 	private List<Integer>			renderableEntities;
-	private List<Integer>			audioSourcedEntities;
 	private List<Integer>			networkableEntities;
 	private List<Integer>			playerEntities;
 	private List<Integer>			particleEntities;
+	private List<Integer>			audioEntities;
 
 	public EntityManager()
 	{
-		keys = new ArrayList<Integer>();
-		entities = new HashMap<Integer, Entity>();
-		renderableEntities = new ArrayList<Integer>();
-		audioSourcedEntities = new ArrayList<Integer>();
-		networkableEntities = new ArrayList<Integer>();
-		playerEntities = new ArrayList<Integer>();
-		particleEntities = new ArrayList<Integer>();
+		keys = new ArrayList<>();
+		entities = new HashMap<>();
+		renderableEntities = new ArrayList<>();
+		networkableEntities = new ArrayList<>();
+		playerEntities = new ArrayList<>();
+		particleEntities = new ArrayList<>();
+		audioEntities = new ArrayList<>();
 	}
 
 	public void update(GameCore core)
@@ -84,14 +85,14 @@ public class EntityManager
 		if (e.contains(EComponent.NETWORK))
 			networkableEntities.add(e.getID());
 
-		if (e.contains(EComponent.AUDIO_SOURCE))
-			audioSourcedEntities.add(e.getID());
-
 		if (e instanceof Player)
 			playerEntities.add(e.getID());
 
 		if (e instanceof ParticleSystem)
 			particleEntities.add(e.getID());
+
+		if (e instanceof AudioSource)
+			audioEntities.add(e.getID());
 
 		keys.add(e.getID());
 		entities.put(e.getID(), e);
@@ -105,14 +106,14 @@ public class EntityManager
 		if (networkableEntities.contains(id))
 			networkableEntities.remove((Integer) id);
 
-		if (audioSourcedEntities.contains(id))
-			audioSourcedEntities.remove((Integer) id);
-
 		if (playerEntities.contains(id))
 			playerEntities.remove((Integer) id);
 
 		if (particleEntities.contains(id))
 			particleEntities.remove((Integer) id);
+
+		if (audioEntities.contains(id))
+			audioEntities.remove((Integer) id);
 
 		entities.remove(id);
 		keys.remove((Integer) id);
@@ -173,6 +174,7 @@ public class EntityManager
 		return result;
 	}
 
+	// TODO: remove completely this fucked up function
 	public Entity getEntityAt(Vec3 point, String... targetTags)
 	{
 		Entity result = null;
@@ -233,11 +235,6 @@ public class EntityManager
 		return networkableEntities;
 	}
 
-	public List<Integer> getAudioSourcedEntites()
-	{
-		return audioSourcedEntities;
-	}
-
 	public List<Integer> getPlayerEntites()
 	{
 		return playerEntities;
@@ -246,5 +243,10 @@ public class EntityManager
 	public List<Integer> getParticleEntities()
 	{
 		return particleEntities;
+	}
+
+	public List<Integer> getAudioEntities()
+	{
+		return audioEntities;
 	}
 }

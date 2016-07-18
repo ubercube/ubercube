@@ -49,6 +49,7 @@ public class Rigidbody
 
 	private Collider	collider;
 	private boolean 	grounded;
+	private boolean 	hitGrounded;
 	private Entity		parent;
 	private boolean 	useGravity;
 	private float 		bounceFactor;
@@ -127,7 +128,6 @@ public class Rigidbody
 
 		velocity.add(mainForce);
 		mainForce.set(0, 0, 0);
-		grounded = false;
 	}
 
 	public void applyForce(Vec3 direction, float force)
@@ -168,7 +168,6 @@ public class Rigidbody
 		collidingY = false;
 		collidingZ = false;
 
-		grounded = false;
 		Vec3 axis = new Vec3();
 		List<AABoxCollider> blocks = world.getAABoxInRange(position, 3);
 		for (int i = 0; i < blocks.size(); i++)
@@ -193,7 +192,18 @@ public class Rigidbody
 				else if (data.isCollisionY() && axis.y == 0 && data.getMtdY() == collisionMTD)
 				{
 					if (velocity.y < 0)
+					{
+						if (!hitGrounded && !grounded)
+							hitGrounded = true;
+						else
+							hitGrounded = false;
 						grounded = true;
+					}
+					else
+					{
+						hitGrounded = false;
+						grounded = false;
+					}
 					gravity.y = 0;
 					mainForce.y = 0;
 					velocity.y = 0;
@@ -218,6 +228,12 @@ public class Rigidbody
 			if (axis.equals(1, 1, 1))
 				break;
 		}
+		if (!collidingY)
+		{
+			grounded = false;
+			hitGrounded = false;
+		}
+
 	}
 
 	public void updatePosition()
@@ -351,5 +367,10 @@ public class Rigidbody
 	public void setIgnoreOthers(boolean ignoreOthers)
 	{
 		this.ignoreOthers = ignoreOthers;
+	}
+
+	public boolean isHitGrounded()
+	{
+		return hitGrounded;
 	}
 }

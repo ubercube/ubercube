@@ -104,7 +104,7 @@ public class AudioData
         }
         if (stream == null)
         {
-            System.err.println("Audio file not found: " + file);
+            System.err.println("Sound file not found: " + file);
             return null;
         }
         InputStream bufferedInput = new BufferedInputStream(stream);
@@ -114,9 +114,11 @@ public class AudioData
             audioStream = getAudioInputStream(bufferedInput);
         } catch (UnsupportedAudioFileException e)
         {
+            System.err.println("UnsupportedAudioFileException");
             e.printStackTrace();
         } catch (IOException e)
         {
+            System.err.println("IOException");
             e.printStackTrace();
         }
         AudioData wavStream = new AudioData(audioStream);
