@@ -19,6 +19,8 @@
 
 package fr.veridiangames.client;
 
+import fr.veridiangames.client.audio.AudioListener;
+import fr.veridiangames.client.audio.AudioSystem;
 import fr.veridiangames.client.main.screens.ConsoleScreen;
 import fr.veridiangames.client.main.screens.PlayerHudScreen;
 import fr.veridiangames.client.main.screens.GameLoadingScreen;
@@ -64,7 +66,8 @@ public class Ubercube
 	public Ubercube()
 	{
 		/* *** AUDIO INITIALISATION *** */
-//		AudioManager.init();
+		AudioSystem.init();
+		AudioListener.init();
 	}
 
 	public void init()
@@ -101,7 +104,7 @@ public class Ubercube
 
 	public void update()
 	{
-//		AudioManager.update(core);
+		AudioSystem.update(core);
 
 		guiManager.update();
 		gameLoading.update(this);
@@ -124,6 +127,7 @@ public class Ubercube
 				core.update();
 				playerHandler.update(display.getInput());
 				mainRenderer.update();
+				AudioListener.setTransform(core.getGame().getPlayer().getEyeTransform());
 			}
 		}
 
@@ -250,7 +254,7 @@ public class Ubercube
 		}
 		net.tcpSend(new DisconnectPacket(core.getGame().getPlayer().getID(), "Client closed the game"));
 		display.setDestroyed(true);
-//		AudioManager.destroy();
+		AudioSystem.destroy();
 		System.exit(0);
 	}
 

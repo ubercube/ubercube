@@ -52,6 +52,7 @@ public abstract class Packet
 	public static final int KICK				= 17;
 	public static final int DAMAGE_FORCE		= 18;
 	public static final int TCHAT_MSG			= 19;
+	public static final int AUDIO				= 20;
 
 	protected DataBuffer data;
 

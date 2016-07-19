@@ -20,14 +20,18 @@
 package fr.veridiangames.core.game.entities.player;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.audio.Sound;
+import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.particles.ParticleSnow;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
+import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.packets.EntityMovementPacket;
+import fr.veridiangames.core.network.packets.SoundPacket;
 import fr.veridiangames.core.network.packets.WeaponPositionPacket;
 import fr.veridiangames.core.physics.Rigidbody;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
@@ -97,6 +101,9 @@ public class ClientPlayer extends Player
 				timedOut = true;
 		}
 
+		playSounds(core);
+
+
 		if (this.life < 0) this.life = 0;
 		if (this.life > 100) this.life = 100;
 
@@ -133,10 +140,29 @@ public class ClientPlayer extends Player
 		{
             Rigidbody body = getRigidBody().getBody();
             if(body.isGrounded())
-                body.applyForce(Vec3.UP, 0.175f);
+                body.applyForce(Vec3.UP, 0.1725f);
+		}
+		snow.setPosition(getPosition().copy().add(0, 15, 0).add(getTransform().getForward().copy().mul(20, 0, 20)));
+	}
+
+	float walkTimer = 0;
+	float walkSide = 1;
+	private void playSounds(GameCore core)
+	{
+		if (getKeyComponent().getForwardDirection().magnitude() * getRigidBody().getBody().getVelocity().magnitude() >= getKeyComponent().getSpeed() && getRigidBody().getBody().getVelocity().y > -0.05f)
+		{
+			if (Mathf.sin(walkTimer * getKeyComponent().getSpeed() * 10) * walkSide >= 0)
+			{
+				walkSide = -walkSide;
+
+				core.getGame().spawn(new AudioSource(Sound.FOOTSTEP[(int) Mathf.random(0, 3)]));
+				net.udpSend(new SoundPacket(this.getID(), new AudioSource(Sound.FOOTSTEP[(int) Mathf.random(0, 3)], getPosition())));
+			}
+			walkTimer++;
 		}
 
-		snow.setPosition(getPosition().copy().add(0, 15, 0).add(getTransform().getForward().copy().mul(20, 0, 20)));
+		if (getRigidBody().getBody().isHitGrounded())
+			core.getGame().spawn(new AudioSource(Sound.LAND));
 	}
 
 	public ECRaycast getRaycast()

@@ -22,6 +22,8 @@ package fr.veridiangames.core.network.packets;
 import java.net.InetAddress;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.audio.Sound;
+import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.game.entities.components.ECName;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.player.Player;
@@ -29,6 +31,8 @@ import fr.veridiangames.core.game.entities.player.ServerPlayer;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
+
+import static javax.swing.text.html.HTML.Tag.HEAD;
 
 /**
  * Created by Marccspro on 26 f�vr. 2016.
@@ -86,11 +90,19 @@ public class BulletHitPlayerPacket extends Packet
             server.log(name + " was killed !");
         }
         else
-            server.tcpSend(new BulletHitPlayerPacket(this, p.isHitable(), p.getLife()), p.getNetwork().getAddress(), p.getNetwork().getPort());
+            server.tcpSendToAll(new BulletHitPlayerPacket(this, p.isHitable(), p.getLife()));
     }
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        GameCore.getInstance().getGame().getPlayer().setLife(life);
+        if (client.getCore().getGame().getPlayer().getID() == playerId)
+        {
+            client.getCore().getGame().getPlayer().setLife(life);
+            client.playSound(new AudioSource(Sound.PLAYER_HIT));
+        }
+        else if (client.getCore().getGame().getEntityManager().getEntities().containsKey(playerId))
+        {
+            client.playSound(new AudioSource(Sound.PLAYER_HIT, ((Player) client.getCore().getGame().getEntityManager().get(playerId)).getPosition().copy()));
+        }
     }
 }

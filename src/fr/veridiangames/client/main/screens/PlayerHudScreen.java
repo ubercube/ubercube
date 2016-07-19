@@ -20,12 +20,15 @@
 package fr.veridiangames.client.main.screens;
 
 import fr.veridiangames.client.Ubercube;
+import fr.veridiangames.client.audio.AudioPlayer;
+import fr.veridiangames.client.inputs.Input;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.components.GuiLabel;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.fireWeapons.FireWeapon;
@@ -43,6 +46,7 @@ public class PlayerHudScreen extends GuiCanvas
     private GuiLabel weaponStats;
     private GuiLabel gameFpsLabel;
     private GuiLabel playerPosition;
+    private GuiLabel audioStatus;
     private GuiPanel damageEffect;
     private ConsoleScreen consoleScreen;
 
@@ -117,6 +121,15 @@ public class PlayerHudScreen extends GuiCanvas
         gameFpsLabel.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
         super.add(gameFpsLabel);
 
+        audioStatus = new GuiLabel("Audio muted !", 10, 50, 20f);
+        audioStatus.setOrigin(GuiComponent.GuiOrigin.A);
+        audioStatus.setScreenParent(GuiComponent.GuiCorner.TL);
+        audioStatus.setColor(Color4f.RED);
+        audioStatus.setDropShadow(2);
+        audioStatus.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
+        audioStatus.setUseable(AudioPlayer.muteAudio);
+        super.add(audioStatus);
+
         playerPosition = new GuiLabel("0 - 0 - 0", display.getWidth() / 2, 10, 20f);
         playerPosition.setOrigin(GuiComponent.GuiOrigin.TC);
         playerPosition.setScreenParent(GuiComponent.GuiCorner.TC);
@@ -163,6 +176,12 @@ public class PlayerHudScreen extends GuiCanvas
         {
             damageEffect.getColor().setAlpha(damageEffect.getColor().getAlpha() - 0.005f);
         }
+
+        if (Display.getInstance().getInput().getKeyDown(Input.KEY_F1))
+            AudioPlayer.muteAudio = !AudioPlayer.muteAudio;
+
+        audioStatus.setUseable(AudioPlayer.muteAudio);
+
         health = player.getLife();
 
         int px = (int) player.getPosition().x;

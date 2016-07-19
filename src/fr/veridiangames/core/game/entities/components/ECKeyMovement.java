@@ -20,10 +20,15 @@
 package fr.veridiangames.core.game.entities.components;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.audio.Sound;
+import fr.veridiangames.core.game.entities.audio.AudioSource;
+import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec4;
 import fr.veridiangames.core.physics.Rigidbody;
+
+import javax.jws.soap.SOAPBinding;
 
 /**
  * Created by Marccspro on 31 janv. 2016.
@@ -50,6 +55,7 @@ public class ECKeyMovement extends EComponent
 	private boolean fly;
 
 	private Vec3 velocity;
+	private Vec3 forwardDirection;
 
 	public ECKeyMovement(float walkSpeed, float runSpeed, float jumpForce)
 	{
@@ -61,13 +67,15 @@ public class ECKeyMovement extends EComponent
 		this.runSpeed = runSpeed;
 		this.jumpForce = jumpForce;
 		this.fly = true;
+		this.forwardDirection = new Vec3();
 	}
+
 
 	public void update(GameCore core)
 	{
 		Quat rotation = ((ECRender) parent.get(EComponent.RENDER)).getTransform().getRotation();
 
-		Vec3 forwardDirection = rotation.getForward().copy().mul(1, 0, 1).normalize();
+		forwardDirection = rotation.getForward().copy().mul(1, 0, 1).normalize();
 		Vec3 leftDirection = rotation.getLeft().copy().mul(1, 0, 1).normalize();
 
 		Rigidbody body = ((ECRigidbody) parent.get(RIGIDBODY)).getBody();
@@ -107,7 +115,10 @@ public class ECKeyMovement extends EComponent
 		if (fly)
 		{
 			if (jump)
+			{
 				body.applyForce(Vec3.UP, speed);
+
+			}
 			if (ctrl)
 				body.applyForce(Vec3.UP.copy().negate(), speed);
 		}
@@ -115,10 +126,18 @@ public class ECKeyMovement extends EComponent
 		{
 			if (jump)
 				if (body.isGrounded() && body.getVelocity().y <= 0)
+				{
+					core.getGame().spawn(new AudioSource(Sound.JUMP));
 					body.applyForce(Vec3.UP, jumpForce);
+				}
 		}
 
 		velocity.add(0, body.getVelocity().y, 0);
+	}
+
+	public Vec3 getForwardDirection()
+	{
+		return forwardDirection;
 	}
 
 	public boolean isUp()

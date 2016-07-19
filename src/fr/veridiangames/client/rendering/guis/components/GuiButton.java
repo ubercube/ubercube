@@ -21,6 +21,7 @@ package fr.veridiangames.client.rendering.guis.components;
 
 import java.awt.Font;
 
+import fr.veridiangames.client.audio.AudioSystem;
 import fr.veridiangames.client.guis.TrueTypeFont;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.StaticFont;
@@ -28,6 +29,7 @@ import fr.veridiangames.client.rendering.guis.listeners.GuiActionListener;
 import fr.veridiangames.client.rendering.guis.primitives.StaticPrimitive;
 import fr.veridiangames.client.rendering.renderers.guis.FontRenderer;
 import fr.veridiangames.client.rendering.shaders.GuiShader;
+import fr.veridiangames.core.audio.Sound;
 import fr.veridiangames.core.utils.Color4f;
 
 public class GuiButton extends GuiComponent
@@ -89,7 +91,10 @@ public class GuiButton extends GuiComponent
 		if (mouseInUse) return;
 
 		fontRenderer.setPosition(x + xTextOffs, y + yTextOffs);
-		
+
+		if (mouseEnter)
+			AudioSystem.play(Sound.BEEP);
+
 		if (clickable) {
 			if (mouseIn) {
 				color = hoverColor;

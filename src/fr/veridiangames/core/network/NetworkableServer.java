@@ -34,6 +34,8 @@ import fr.veridiangames.server.server.udp.NetworkServerUDP;
  */
 public interface NetworkableServer
 {
+	public GameCore getCore();
+
 	public NetworkServerTCP getTcp();
 	public NetworkServerUDP getUdp();
 
@@ -41,7 +43,9 @@ public interface NetworkableServer
 
 	public void tcpSend(Packet packet, InetAddress address, int port);
 	public void tcpSendToAll(Packet packet);
+	public void tcpSendToAny(Packet packet, int... ignores);
 
 	public void udpSend(Packet packet, InetAddress address, int port);
 	public void udpSendToAll(Packet data);
+	public void udpSendToAny(Packet data, int... ignores);
 }

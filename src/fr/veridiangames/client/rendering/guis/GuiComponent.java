@@ -213,7 +213,10 @@ public abstract class GuiComponent
 			processCornerParent();
 		}
 
-		if (display.getInput().getMouse().getX() >= x && display.getInput().getMouse().getY() >= y && display.getInput().getMouse().getX() <= x + w && display.getInput().getMouse().getY() <= y + h)
+		if (display.getInput().getMouse().getX() >= x
+				&& display.getInput().getMouse().getY() >= y
+				&& display.getInput().getMouse().getX() <= x + w 
+				&& display.getInput().getMouse().getY() <= y + h)
 		{
 			if (!mouseIn)
 			{

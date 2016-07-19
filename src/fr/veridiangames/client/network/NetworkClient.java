@@ -22,8 +22,10 @@ package fr.veridiangames.client.network;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import fr.veridiangames.client.audio.AudioSystem;
 import fr.veridiangames.client.main.screens.ConsoleScreen;
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
@@ -92,6 +94,11 @@ public class NetworkClient implements NetworkableClient
 			console.log(msg);
 	}
 
+	public void playSound(AudioSource audioSource)
+	{
+		AudioSystem.play(audioSource);
+	}
+
 	public void setConnected(boolean connected)
 	{
 		this.connected = connected;
@@ -105,6 +112,11 @@ public class NetworkClient implements NetworkableClient
 	public int getPort()
 	{
 		return port;
+	}
+
+	public GameCore getCore()
+	{
+		return GameCore.getInstance();
 	}
 
 	public InetAddress getAddress()
