@@ -196,7 +196,7 @@ public class Rigidbody
 				{
 					if (velocity.y < 0)
 					{
-						if (!hitGrounded && !grounded)
+						if (!hitGrounded && !grounded && velocity.y < -0.05f)
 							hitGrounded = true;
 						else
 							hitGrounded = false;

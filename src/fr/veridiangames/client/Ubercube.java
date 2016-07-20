@@ -80,19 +80,6 @@ public class Ubercube
 		this.guiManager = new GuiManager();
 
 		/* *** LOADING GUI *** */
-		GuiCanvas startGui = new GuiCanvas();
-
-		GuiPanel bg = new GuiPanel(0, 0, display.getWidth(), display.getHeight());
-		bg.setColor(Color4f.DARK_GRAY);
-		bg.setOrigin(GuiComponent.GuiOrigin.A);
-		bg.setScreenParent(GuiComponent.GuiCorner.SCALED);
-		startGui.add(bg);
-
-		GuiLabel loadingInfo = new GuiLabel("Loading game...", display.getWidth() / 2, display.getHeight() / 2, 42f);
-		loadingInfo.setOrigin(GuiComponent.GuiOrigin.CENTER);
-		loadingInfo.setScreenParent(GuiComponent.GuiCorner.CENTER);
-		startGui.add(loadingInfo);
-
 		gameLoading = new GameLoadingScreen(display);
 		this.guiManager.add(gameLoading);
 
@@ -171,6 +158,24 @@ public class Ubercube
 				System.exit(0);
 			}
 		}
+	}
+
+	public static boolean warning(String msg)
+	{
+		Object[] options = {"OK"};
+		int n = JOptionPane.showOptionDialog(null,
+				msg,"Warning",
+				JOptionPane.PLAIN_MESSAGE,
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				options,
+				options[0]);
+
+		if (n == JOptionPane.YES_OPTION)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	public void updatePhysics()

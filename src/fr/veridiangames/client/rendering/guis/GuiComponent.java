@@ -342,7 +342,7 @@ public abstract class GuiComponent
 
 	public void setColor(Color4f color)
 	{
-		this.color = color;
+		this.color = new Color4f(color);
 	}
 
 	public int getxOrigin()

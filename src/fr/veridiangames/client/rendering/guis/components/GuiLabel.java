@@ -88,12 +88,15 @@ public class GuiLabel extends GuiComponent
 	}
 
 	public void render(GuiShader shader) {
-		if (dropShadow > 0) {
+		shader.setColor(Color4f.WHITE);
+		if (dropShadow > 0)
+		{
 			fontRenderer.setPosition(x + dropShadow - 1, y + dropShadow);
 			fontRenderer.render(shader, dropShadowColor, 0);
 		}
 		fontRenderer.setPosition(x, y);
 		fontRenderer.render(shader, color, 0);
+
 	}
 	
 	public int getTextWidth() {

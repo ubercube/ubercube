@@ -31,6 +31,7 @@ import fr.veridiangames.core.maths.Vec3;
 public class ECMouseLook extends EComponent
 {
 	private float	dx, dy;
+	private float 	rotAmnt;
 	private float	speed;
 
 	public ECMouseLook(float speed)
@@ -38,14 +39,31 @@ public class ECMouseLook extends EComponent
 		super(MOUSE_LOOK);
 
 		this.speed = speed;
+		this.rotAmnt = 0;
 	}
 
 	public void update(GameCore core)
 	{
 		Transform transform = ((ECRender) parent.get(EComponent.RENDER)).getTransform();
-		
+
+		float DY = dy * speed;
+
+		if (rotAmnt + DY > 89)
+		{
+			DY = 89 - rotAmnt;
+			rotAmnt = 89;
+
+		}
+		else if (rotAmnt + DY < -89)
+		{
+			DY = -89 - rotAmnt;
+			rotAmnt = -89;
+		}
+		else
+			rotAmnt += DY;
+
 		transform.rotate(Vec3.UP, dx * speed);
-		transform.rotate(transform.getRight(), dy * speed);
+		transform.rotate(transform.getRight(), DY);
 	}
 
 	public void setDX(float dx)

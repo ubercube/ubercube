@@ -181,6 +181,7 @@ public class PlayerHudScreen extends GuiCanvas
             AudioPlayer.muteAudio = !AudioPlayer.muteAudio;
 
         audioStatus.setUseable(AudioPlayer.muteAudio);
+        audioStatus.setColor(Color4f.RED);
 
         health = player.getLife();
 
