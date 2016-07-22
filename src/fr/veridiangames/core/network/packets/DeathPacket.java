@@ -63,20 +63,20 @@ public class DeathPacket extends Packet
     public void process(NetworkableClient client, InetAddress address, int port)
     {
         client.console(this.playerId + " just died !");
-        if(GameCore.getInstance().getGame().getPlayer().getID() != this.playerId)
+        if(client.getCore().getGame().getPlayer().getID() != this.playerId)
             client.log(this.playerId + " just died !");
         else
         {
             client.log("You died !");
-            GameCore.getInstance().getGame().getPlayer().setDead(true);
-            GameCore.getInstance().getGame().getPlayer().setLife(Player.MAX_LIFE);
+            client.getCore().getGame().getPlayer().setDead(true);
+            client.getCore().getGame().getPlayer().setLife(Player.MAX_LIFE);
             client.tcpSend(new RespawnPacket(GameCore.getInstance().getGame().getPlayer().getID()));
         }
 
-        if (GameCore.getInstance().getGame().getEntityManager().getEntities().get(playerId) == null)
+        if (client.getCore().getGame().getEntityManager().getEntities().get(playerId) == null)
             return;
 
-            GameCore.getInstance().getGame().spawn(new ParticleSystem(Indexer.getUniqueID(), "Death", ((Player) GameCore.getInstance().getGame().getEntityManager().getEntities().get(playerId)).getPosition())
+            client.getCore().getGame().spawn(new ParticleSystem(Indexer.getUniqueID(), "Death", ((Player) client.getCore().getGame().getEntityManager().getEntities().get(playerId)).getPosition())
             .setParticleVelocity(new Vec3(0, 0.2f, 0))
             .setParticleVelocityRandomness(0.05f)
             .setParticleColor(new Color4f(0.7f, 0f, 0f))

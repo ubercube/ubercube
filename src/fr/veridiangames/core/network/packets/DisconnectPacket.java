@@ -65,10 +65,10 @@ public class DisconnectPacket extends Packet
 
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
-		if (!GameCore.getInstance().getGame().getEntityManager().getEntities().containsKey(id))
+		if (!server.getCore().getGame().getEntityManager().getEntities().containsKey(id))
 			return;
-		String name = ((ECName) GameCore.getInstance().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
-		ECNetwork net = ((ECNetwork) GameCore.getInstance().getGame().getEntityManager().get(id).get(EComponent.NETWORK));
+		String name = ((ECName) server.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
+		ECNetwork net = ((ECNetwork) server.getCore().getGame().getEntityManager().get(id).get(EComponent.NETWORK));
 		GameCore.getInstance().getGame().remove(id);
 		server.tcpSendToAll(new DisconnectPacket(this));
 		server.getTcp().disconnectClient(net.getAddress(), net.getPort());
@@ -77,10 +77,10 @@ public class DisconnectPacket extends Packet
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		if (!GameCore.getInstance().getGame().getEntityManager().getEntities().containsKey(id))
+		if (!client.getCore().getGame().getEntityManager().getEntities().containsKey(id))
 			return;
-		String name = ((ECName) GameCore.getInstance().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
-		GameCore.getInstance().getGame().remove(id);
+		String name = ((ECName) client.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
+		client.getCore().getGame().remove(id);
 		client.log(name + " disconnected... " + reason);
 		client.console(name + " disconnected... " + reason);
 	}

@@ -70,7 +70,7 @@ public class PingPacket extends Packet
 
     public void process(NetworkableServer server, InetAddress address, int port)
     {
-        ServerPlayer player = (ServerPlayer) GameCore.getInstance().getGame().getEntityManager().getEntities().get(userID);
+        ServerPlayer player = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(userID);
         if (player == null)
             return;
         player.setPing((int) (System.currentTimeMillis() - pingTime));
@@ -80,12 +80,12 @@ public class PingPacket extends Packet
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        if (GameCore.getInstance().getGame().getPlayer().getID() == userID)
-            GameCore.getInstance().getGame().getPlayer().setTimeoutTime(0);
+        if (client.getCore().getGame().getPlayer().getID() == userID)
+            client.getCore().getGame().getPlayer().setTimeoutTime(0);
 
-        if (GameCore.getInstance().getGame().getEntityManager().getEntities().containsKey(userID))
-            ((Player) GameCore.getInstance().getGame().getEntityManager().get(userID)).setPing((int) ping);
+        if (client.getCore().getGame().getEntityManager().getEntities().containsKey(userID))
+            ((Player) client.getCore().getGame().getEntityManager().get(userID)).setPing((int) ping);
 
-        client.tcpSend(new PingPacket(GameCore.getInstance().getGame().getPlayer().getID(), pingTime, ping));
+        client.tcpSend(new PingPacket(client.getCore().getGame().getPlayer().getID(), pingTime, ping));
     }
 }

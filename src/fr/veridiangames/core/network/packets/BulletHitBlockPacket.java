@@ -39,7 +39,6 @@ public class BulletHitBlockPacket extends Packet
 	private int block;
 	
 	public BulletHitBlockPacket()
-	
 	{
 		super(BULLET_HIT_BLOCK);
 	}
@@ -89,14 +88,14 @@ public class BulletHitBlockPacket extends Packet
 		this.block = GameCore.getInstance().getGame().getWorld().applyBlockDamage(position.x, position.y, position.z, damage);
 		if(Color4f.getColorFromARGB(block).getAlpha() <= 0)
 			this.block = 0;
-		GameCore.getInstance().getGame().getWorld().addModifiedBlock(position.x, position.y, position.z, block);
+		server.getCore().getGame().getWorld().addModifiedBlock(position.x, position.y, position.z, block);
 		server.tcpSendToAll(new BulletHitBlockPacket(this));
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		GameCore.getInstance().getGame().getWorld().addBlock(position.x, position.y, position.z, block);
-		GameCore.getInstance().getGame().getWorld().updateRequest(position.x, position.y, position.z);
-		GameCore.getInstance().getGame().getWorld().addModifiedBlock(position.x, position.y, position.z, block);
+		client.getCore().getGame().getWorld().addBlock(position.x, position.y, position.z, block);
+		client.getCore().getGame().getWorld().updateRequest(position.x, position.y, position.z);
+		client.getCore().getGame().getWorld().addModifiedBlock(position.x, position.y, position.z, block);
 	}
 }

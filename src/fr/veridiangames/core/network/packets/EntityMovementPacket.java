@@ -86,7 +86,7 @@ public class EntityMovementPacket extends Packet
 
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
-		Player player = (Player) GameCore.getInstance().getGame().getEntityManager().getEntities().get(id);
+		Player player = (Player) server.getCore().getGame().getEntityManager().getEntities().get(id);
 		if (player == null) 
 			return;
 
@@ -102,10 +102,10 @@ public class EntityMovementPacket extends Packet
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		if (GameCore.getInstance().getGame().getPlayer().getID() == id)
+		if (client.getCore().getGame().getPlayer().getID() == id)
 			return;
 		
-		Player player = (Player) GameCore.getInstance().getGame().getEntityManager().getEntities().get(id);
+		Player player = (Player) client.getCore().getGame().getEntityManager().getEntities().get(id);
 		if (player == null) 
 			return;
 		player.setPositionSmoothly(position);

@@ -116,6 +116,6 @@ public class BulletShootPacket extends Packet
 		bullet.setNetwork(client);
 
 		if (client.getID() != clientID)
-			GameCore.getInstance().getGame().spawn(bullet);
+			client.getCore().getGame().spawn(bullet);
 	}
 }

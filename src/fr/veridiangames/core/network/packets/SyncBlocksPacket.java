@@ -91,15 +91,15 @@ public class SyncBlocksPacket extends Packet
 		{
 			if (block.w == 0)
 			{
-				GameCore.getInstance().getGame().getWorld().removeBlock(block.x, block.y, block.z);
-				GameCore.getInstance().getGame().getWorld().updateRequest(block.x, block.y, block.z);
-				GameCore.getInstance().getGame().getWorld().addModifiedBlock(block.x, block.y, block.z, block.w);
+				client.getCore().getGame().getWorld().removeBlock(block.x, block.y, block.z);
+				client.getCore().getGame().getWorld().updateRequest(block.x, block.y, block.z);
+				client.getCore().getGame().getWorld().addModifiedBlock(block.x, block.y, block.z, block.w);
 			}
 			else
 			{
-				GameCore.getInstance().getGame().getWorld().addBlock(block.x, block.y, block.z, block.w);
-				GameCore.getInstance().getGame().getWorld().updateRequest(block.x, block.y, block.z);
-				GameCore.getInstance().getGame().getWorld().addModifiedBlock(block.x, block.y, block.z, block.w);
+				client.getCore().getGame().getWorld().addBlock(block.x, block.y, block.z, block.w);
+				client.getCore().getGame().getWorld().updateRequest(block.x, block.y, block.z);
+				client.getCore().getGame().getWorld().addModifiedBlock(block.x, block.y, block.z, block.w);
 			}
 		}
 	}

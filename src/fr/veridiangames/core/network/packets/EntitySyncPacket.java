@@ -95,7 +95,7 @@ public class EntitySyncPacket extends Packet
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		if (GameCore.getInstance().getGame().getPlayer().getID() != id)
-			GameCore.getInstance().getGame().spawn(new NetworkedPlayer(id, name, position, rotation, address.getHostName(), port));
+		if (client.getCore().getGame().getPlayer().getID() != id)
+			client.getCore().getGame().spawn(new NetworkedPlayer(id, name, position, rotation, address.getHostName(), port));
 	}
 }

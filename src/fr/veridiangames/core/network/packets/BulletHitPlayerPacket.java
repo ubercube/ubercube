@@ -78,14 +78,14 @@ public class BulletHitPlayerPacket extends Packet
 
     public void process(NetworkableServer server, InetAddress address, int port)
     {
-        ServerPlayer p = (ServerPlayer) GameCore.getInstance().getGame().getEntityManager().getEntities().get(playerId);
+        ServerPlayer p = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId);
         if (p == null)
             return;
         p.setLife(p.getLife() - 20);    // TODO : Modify damage
         if(p.getLife() <= 0 && !((ServerPlayer) GameCore.getInstance().getGame().getEntityManager().getEntities().get(playerId)).isDead())
         {
             server.tcpSendToAll(new DeathPacket(playerId));
-            ((ServerPlayer) GameCore.getInstance().getGame().getEntityManager().getEntities().get(playerId)).setDead(true);
+            ((ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId)).setDead(true);
             String name = ((ECName) GameCore.getInstance().getGame().getEntityManager().get(playerId).get(EComponent.NAME)).getName();
             server.log(name + " was killed !");
         }

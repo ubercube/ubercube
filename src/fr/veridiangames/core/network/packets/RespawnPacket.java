@@ -76,13 +76,13 @@ public class RespawnPacket extends Packet
     @Override
     public void process(NetworkableServer server, InetAddress address, int port)
     {
-        ServerPlayer p = (ServerPlayer) GameCore.getInstance().getGame().getEntityManager().getEntities().get(playerId);
+        ServerPlayer p = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId);
         p.setLife(100);
         p.setDead(false);
 
-        int x = GameCore.getInstance().getGame().getData().getWorldSize() * 8;
-        int y = GameCore.getInstance().getGame().getData().getWorldSize() * 8;
-        int height = (int) GameCore.getInstance().getGame().getData().getWorldGen().getNoise(x, y) + 15;
+        int x = server.getCore().getGame().getData().getWorldSize() * 8;
+        int y = server.getCore().getGame().getData().getWorldSize() * 8;
+        int height = (int) server.getCore().getGame().getData().getWorldGen().getNoise(x, y) + 15;
         this.position = new Vec3(x, height, y);      // TODO : Modify position
 
         server.tcpSend(new RespawnPacket(this), p.getNetwork().getAddress(), p.getNetwork().getPort());

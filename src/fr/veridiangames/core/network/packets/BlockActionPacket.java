@@ -68,12 +68,12 @@ public class BlockActionPacket extends Packet
 	{
 		if (action == 0)
 		{
-			GameCore.getInstance().getGame().getWorld().addModifiedBlock(x, y, z, 0);
+			server.getCore().getGame().getWorld().addModifiedBlock(x, y, z, 0);
 			server.tcpSendToAll(new BlockActionPacket(clientID, action, x, y, z, block));
 		}
 		else if (action == 1)
 		{
-			GameCore.getInstance().getGame().getWorld().addModifiedBlock(x, y, z, block);
+			server.getCore().getGame().getWorld().addModifiedBlock(x, y, z, block);
 			server.tcpSendToAll(new BlockActionPacket(clientID, action, x, y, z, block));
 		}
 	}
@@ -82,15 +82,15 @@ public class BlockActionPacket extends Packet
 	{
 		if (action == 0)
 		{
-			GameCore.getInstance().getGame().getWorld().removeBlock(x, y, z);
-			GameCore.getInstance().getGame().getWorld().updateRequest(x, y, z);
-			GameCore.getInstance().getGame().getWorld().addModifiedBlock(x, y, z, 0);
+			client.getCore().getGame().getWorld().removeBlock(x, y, z);
+			client.getCore().getGame().getWorld().updateRequest(x, y, z);
+			client.getCore().getGame().getWorld().addModifiedBlock(x, y, z, 0);
 		}
 		else if (action == 1)
 		{
-			GameCore.getInstance().getGame().getWorld().addBlock(x, y, z, block);
-			GameCore.getInstance().getGame().getWorld().updateRequest(x, y, z);
-			GameCore.getInstance().getGame().getWorld().addModifiedBlock(x, y, z, block);
+			client.getCore().getGame().getWorld().addBlock(x, y, z, block);
+			client.getCore().getGame().getWorld().updateRequest(x, y, z);
+			client.getCore().getGame().getWorld().addModifiedBlock(x, y, z, block);
 		}
 	}
 }

@@ -65,11 +65,11 @@ public class TimeoutPacket extends Packet
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		if (!GameCore.getInstance().getGame().getEntityManager().getEntities().containsKey(id))
+		if (!client.getCore().getGame().getEntityManager().getEntities().containsKey(id))
 			return;
 
 		String name = ((ECName) GameCore.getInstance().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
-		GameCore.getInstance().getGame().remove(id);
+		client.getCore().getGame().remove(id);
 		client.log(name + " timed out...");
 		client.console(name + " timed out...");
 	}

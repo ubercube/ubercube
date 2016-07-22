@@ -101,7 +101,7 @@ public class ParticlesSpawnPacket extends Packet
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        GameCore.getInstance().getGame().spawn(new ParticleSystem(id,
+        client.getCore().getGame().spawn(new ParticleSystem(id,
                 ParticlesManager.getParticleSystem(particleName))
                 .setPosition(position)
                 .setParticleVelocity(velocity)
