@@ -239,7 +239,7 @@ public class ProfilerScreen extends GuiCanvas {
             shader.setColor(profiler.getColor().sub(new Color4f(0, 0, 0, 0.2f)));
 
             if (curve != null)
-                curve.render(shader);
+                curve.render();
         }
 
         public void dispose() {
