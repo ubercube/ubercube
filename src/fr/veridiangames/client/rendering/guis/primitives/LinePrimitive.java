@@ -82,4 +82,11 @@ public class LinePrimitive {
 		glDisableVertexAttribArray(0);
 		glBindVertexArray(0);		
 	}
+
+	public void delete()
+	{
+		glDeleteBuffers(vao);
+		glDeleteBuffers(vbo);
+		glDeleteBuffers(ibo);
+	}
 }
