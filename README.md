@@ -9,12 +9,12 @@ The game is in development, for more information on it we have french updates an
 
 Ubercube is fully open source and licensed under the [GNU 3.0 License](http://www.gnu.org/licenses/) and available in source code form at [GitHub](https://github.com/TeamUbercube/ubercube)
 
-![Ubercube](https://pbs.twimg.com/media/CnGa6_rXgAAiIiD.jpg "Ubercube")
+![Ubercube](http://veridiangames.fr/ubercube/UbercubeWesteros.png "Ubercube")
 
 ## The Team
 | Programmers | Art/Design
 | --- | ---
-| [Marcspro](https://twitter.com/marccspro) | [Nik'](https://twitter.com/NikGraph)
+| [Marccspro](https://twitter.com/marccspro) | [Nik'](https://twitter.com/NikGraph)
 | [Jimi Vacarians](https://twitter.com/JimiVacarians) |
 | [Tybau](https://twitter.com/tybau75)
 | [Aiko](https://twitter.com/YanisAtl) |
