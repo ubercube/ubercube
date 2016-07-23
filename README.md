@@ -49,7 +49,7 @@ And run **both server and client**.
 ## Credits
 | Thanks to them  | |
 | --- | --- |
-| [MimusAngle](https://twitter.com/Mimus_Angel) | for helping in the beginning with the game and for his awesome BufferData class !|
+| [MimusAngel](https://twitter.com/Mimus_Angel) | for helping in the beginning with the game and for his awesome BufferData class !|
 | [Arthur/Neko](https://twitter.com/ArthurBaurens) | for helping with the game management and for his awesome help with the physics !
 | [Freezee](https://twitter.com/Freezee_Freeze) | for helping with gameplay ideas and with game management !
 
