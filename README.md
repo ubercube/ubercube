@@ -27,7 +27,7 @@ For the moment the only way to play Ubercube is to compile the game yourself.
 We de not want to have an unfinished version to be downloadable, so we will provide the launcher once pre-alpha 1.1 is out.
 
 
-## How to compiling ?
+## How to compile ?
 
 Clone master's branch (to compile the official ubercue release) on your computer:
 > git clone --depth=1 https://github.com/TeamUbercube/ubercube.git
