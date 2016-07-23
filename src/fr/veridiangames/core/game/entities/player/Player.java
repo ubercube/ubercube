@@ -141,6 +141,11 @@ public class Player extends Entity
 		return getPosition().copy().add(0, 2.5f * 0.5f, 0);
 	}
 
+	public Transform getEyeTransform()
+	{
+		return ((ECRender) this.get(EComponent.RENDER)).getEyeTransform();
+	}
+
 	public boolean isDead()
 	{
 		return dead;

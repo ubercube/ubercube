@@ -19,14 +19,13 @@
 
 package fr.veridiangames.client;
 
+import fr.veridiangames.client.audio.AudioListener;
+import fr.veridiangames.client.audio.AudioSystem;
 import fr.veridiangames.client.main.screens.ConsoleScreen;
 import fr.veridiangames.client.main.screens.PlayerHudScreen;
-import fr.veridiangames.client.main.screens.GameLoadingScreen;
+import fr.veridiangames.client.main.screens.LoadingScreen;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
-import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.GuiManager;
-import fr.veridiangames.client.rendering.guis.components.GuiLabel;
-import fr.veridiangames.client.rendering.guis.components.GuiPanel;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.maths.Quat;
@@ -58,7 +57,7 @@ public class Ubercube
 	private GuiManager 			guiManager;
 	private boolean 			connected;
 	private boolean 			joinGame;
-	private GameLoadingScreen 	gameLoading;
+	private LoadingScreen       gameLoading;
 	private boolean 			inConsole;
 	private ConsoleScreen		console;
 
@@ -70,7 +69,8 @@ public class Ubercube
 	public Ubercube()
 	{
 		/* *** AUDIO INITIALISATION *** */
-//		AudioManager.init();
+		AudioSystem.init();
+		AudioListener.init();
 	}
 
 	public void init()
@@ -83,7 +83,7 @@ public class Ubercube
 		this.guiManager = new GuiManager();
 
 		/* *** LOADING GUI *** */
-		gameLoading = new GameLoadingScreen(null, display);
+		gameLoading = new LoadingScreen(null, display);
 		this.guiManager.add(gameLoading);
 
 		/* *** PLAYER HUD GUI *** */
@@ -101,9 +101,8 @@ public class Ubercube
 
 	public void update()
 	{
-		updateProfiler.start();
-
-//		AudioManager.update(core);
+        updateProfiler.start();
+        AudioSystem.update(core);
 
 		guiManager.update();
 		gameLoading.update(this);
@@ -126,6 +125,7 @@ public class Ubercube
 				core.update();
 				playerHandler.update(display.getInput());
 				mainRenderer.update();
+				AudioListener.setTransform(core.getGame().getPlayer().getEyeTransform());
 			}
 		}
 
@@ -171,6 +171,24 @@ public class Ubercube
 		}
 
 		updateProfiler.end();
+	}
+
+	public static boolean warning(String msg)
+	{
+		Object[] options = {"OK"};
+		int n = JOptionPane.showOptionDialog(null,
+				msg,"Warning",
+				JOptionPane.PLAIN_MESSAGE,
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				options,
+				options[0]);
+
+		if (n == JOptionPane.YES_OPTION)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	public void updatePhysics()
@@ -261,7 +279,7 @@ public class Ubercube
 		}
 		net.tcpSend(new DisconnectPacket(core.getGame().getPlayer().getID(), "Client closed the game"));
 		display.setDestroyed(true);
-//		AudioManager.destroy();
+		AudioSystem.destroy();
 		System.exit(0);
 	}
 

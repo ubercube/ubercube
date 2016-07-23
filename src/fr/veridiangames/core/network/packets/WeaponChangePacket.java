@@ -73,9 +73,9 @@ public class WeaponChangePacket extends Packet
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        if(playerID != GameCore.getInstance().getGame().getPlayer().getID())
+        if(playerID != client.getCore().getGame().getPlayer().getID())
         {
-            Player p = (Player)GameCore.getInstance().getGame().getEntityManager().getEntities().get(playerID);
+            Player p = (Player)client.getCore().getGame().getEntityManager().getEntities().get(playerID);
             if(p != null)
             {
                 p.getWeaponManager().setWeapon(weaponID);

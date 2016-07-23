@@ -82,7 +82,8 @@ public class ConsoleScreen extends GuiCanvas
     {
         super.update();
 
-        if (Display.getInstance().getInput().getKeyDown(Input.KEY_T))
+        if (Display.getInstance().getInput().getKeyDown(Input.KEY_T) ||
+                Display.getInstance().getInput().getKeyDown(Input.KEY_ENTER))
         {
             console = true;
             Display.getInstance().getInput().getMouse().setGrabbed(false);
@@ -99,7 +100,7 @@ public class ConsoleScreen extends GuiCanvas
         bg.setUseable(console);
         write.setUseable(console);
 
-        if (Display.getInstance().getInput().getKeyDown(Input.KEY_ENTER) && console)
+        if (Display.getInstance().getInput().getKeyDown(Input.KEY_ENTER) && console && write.getText().length() > 0)
         {
             Ubercube.getInstance().getNet().tcpSend(new TchatMsgPacket(core.getGame().getPlayer().getName() + ": " + write.getText()));
             console = false;
@@ -118,7 +119,7 @@ public class ConsoleScreen extends GuiCanvas
         for (int i = 0; i < messageList.size(); i++)
         {
             CLine msg = messageList.get(i);
-            msg.update(x + 5, y - 60 - (messageList.size() - 1) * 20 + i * 20 + (int) yScroll - 5, console);
+            msg.update(x + 5, bg.getY() + bg.getH() - (messageList.size() - 1) * 20 + i * 20 + (int) yScroll - 5, console);
         }
     }
 

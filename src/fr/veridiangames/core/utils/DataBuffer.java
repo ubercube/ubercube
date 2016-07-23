@@ -84,6 +84,28 @@ public class DataBuffer
 //		}
 	}
 
+	public void flipped()
+	{
+		if (writeID != 0)
+		{
+			byte[] nData = new byte[writeID];
+			for (int i = 0; i < writeID; i++)
+			{
+				nData[i] = data[i];
+			}
+			data = nData;
+		}
+		else if (readID != 0)
+		{
+			byte[] nData = new byte[readID];
+			for (int i = 0; i < readID; i++)
+			{
+				nData[i] = data[i];
+			}
+			data = nData;
+		}
+	}
+
 	public void clear()
 	{
 		if (data != null)

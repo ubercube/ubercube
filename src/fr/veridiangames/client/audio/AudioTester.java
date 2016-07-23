@@ -19,7 +19,7 @@
 
 package fr.veridiangames.client.audio;
 
-import fr.veridiangames.core.audio.Audio;
+import fr.veridiangames.core.audio.Sound;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 
@@ -32,40 +32,40 @@ public class AudioTester
 {
     public static void main(String[] args) throws InterruptedException
     {
-        AudioSystem.init();
-        AudioListener.init();
+//        AudioSystem.init();
+//        AudioListener.init();
+//
+//        Transform playerTransform = new Transform();
+//        playerTransform.lookAt(new Vec3(0), new Vec3(0, 0, 1));
+//
+//        AudioListener.setTransform(playerTransform);
 
-        Transform playerTransform = new Transform();
-        playerTransform.lookAt(new Vec3(0), new Vec3(0, 0, 1));
-
-        AudioListener.setTransform(playerTransform);
-
-        AudioSource source = new AudioSource();
-        source.setVolume(1f);
-        source.setLooping(true);
-        source.setSound(Audio.AK47_BULLET_SHOT);
-
-        source.setPlaying(true);
-
-        source.update();
-
-        Scanner sc = new Scanner(System.in);
-        String next = "";
-        source.setPosition(new Vec3(0, 0, 2));
-
-        int i = 0;
-        while (next == "")
-        {
-            i++;
-
-            playerTransform.rotate(Vec3.UP, 1);
-
-            AudioListener.setTransform(playerTransform);
-
-            Thread.sleep(16);
-        }
-
-        AudioSystem.destroy();
-        System.exit(0);
+//        AudioSourceOld source = new AudioSourceOld();
+//        source.setVolume(1f);
+//        source.setLooping(true);
+//        source.setSound(Sound.AK47_SHOOT);
+//
+//        source.setPlaying(true);
+//
+//        source.update();
+//
+//        Scanner sc = new Scanner(System.in);
+//        String next = "";
+//        source.setPosition(new Vec3(0, 0, 2));
+//
+//        int i = 0;
+//        while (next == "")
+//        {
+//            i++;
+//
+//            playerTransform.rotate(Vec3.UP, 1);
+//
+//            AudioListener.setTransform(playerTransform);
+//
+//            Thread.sleep(16);
+//        }
+//
+//        AudioSystem.destroy();
+//        System.exit(0);
     }
 }

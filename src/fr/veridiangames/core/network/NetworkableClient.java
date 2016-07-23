@@ -20,6 +20,7 @@
 package fr.veridiangames.core.network;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
 
@@ -28,8 +29,10 @@ import fr.veridiangames.core.utils.DataBuffer;
  */
 public interface NetworkableClient
 {
+	public GameCore getCore();
 	public void log(String msg);
 	public void console(String msg);
+	public void playSound(AudioSource audioSource);
 
 	public void tcpSend(Packet packet);
 	public void udpSend(Packet packet);

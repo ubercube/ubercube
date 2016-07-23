@@ -98,7 +98,7 @@ public class ConnectPacket extends Packet
 
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
-		GameCore.getInstance().getGame().spawn(new ServerPlayer(id, name, position, rotation, address.getHostName(), port));
+		server.getCore().getGame().spawn(new ServerPlayer(id, name, position, rotation, address.getHostName(), port));
 
 		server.getTcp().getClient(address, port).setID(id);
 
@@ -106,7 +106,7 @@ public class ConnectPacket extends Packet
 		server.tcpSendToAll(new ConnectPacket(this));
 
 		/* SENDING MULTIPLE PACKETS TO AVOID READ OVERFLOW OF 2048 */
-		int modifiedBlocksSize = GameCore.getInstance().getGame().getWorld().getModifiedBlocks().size();
+		int modifiedBlocksSize = server.getCore().getGame().getWorld().getModifiedBlocks().size();
 		int packetCount = (int) ((float) (modifiedBlocksSize * 16) / (Packet.MAX_SIZE)) + 1;
 		List<Vec4i> currentData = GameCore.getInstance().getGame().getWorld().getModifiedBlocks();
 		int count = (int) ((float) modifiedBlocksSize / (float) packetCount);
@@ -134,12 +134,12 @@ public class ConnectPacket extends Packet
 				break;
 		}
 
-		for (int i = 0; i < GameCore.getInstance().getGame().getEntityManager().getNetworkableEntites().size(); i++)
+		for (int i = 0; i < server.getCore().getGame().getEntityManager().getNetworkableEntites().size(); i++)
 		{
-			int id = GameCore.getInstance().getGame().getEntityManager().getNetworkableEntites().get(i);
+			int id = server.getCore().getGame().getEntityManager().getNetworkableEntites().get(i);
 			if (id == this.id) 
 				continue;
-			Entity e = GameCore.getInstance().getGame().getEntityManager().getEntities().get(id);
+			Entity e = server.getCore().getGame().getEntityManager().getEntities().get(id);
 			if (e instanceof Player)
 				server.tcpSend(new EntitySyncPacket((Player) e), address, port);
 		}
@@ -147,9 +147,9 @@ public class ConnectPacket extends Packet
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		if (GameCore.getInstance().getGame().getPlayer().getID() != id)
+		if (client.getCore().getGame().getPlayer().getID() != id)
 		{
-			GameCore.getInstance().getGame().spawn(new NetworkedPlayer(id, name, position, rotation, address.getHostName(), port));
+			client.getCore().getGame().spawn(new NetworkedPlayer(id, name, position, rotation, address.getHostName(), port));
 			client.log(name + " just connected !");
 		}
 		else

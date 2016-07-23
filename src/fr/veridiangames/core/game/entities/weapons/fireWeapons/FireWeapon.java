@@ -20,21 +20,17 @@
 package fr.veridiangames.core.game.entities.weapons.fireWeapons;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.audio.Sound;
+import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.game.entities.bullets.Bullet;
 import fr.veridiangames.core.game.entities.components.ECKeyMovement;
-import fr.veridiangames.core.game.entities.components.ECRigidbody;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
-import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.maths.Mathf;
-import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.packets.BulletShootPacket;
-import fr.veridiangames.core.physics.Rigidbody;
 import fr.veridiangames.core.utils.Indexer;
-
-import static sun.audio.AudioPlayer.player;
 
 public class FireWeapon extends Weapon
 {
@@ -102,7 +98,6 @@ public class FireWeapon extends Weapon
 		{
 			shootTimer++;
 		}
-		
 		shooting = false;
 	}
 	
@@ -124,12 +119,10 @@ public class FireWeapon extends Weapon
 
 	public void onActionUp()
 	{
-
 	}
 
 	public void onActionDown()
 	{
-
 	}
 
 	public void shoot()
@@ -141,7 +134,7 @@ public class FireWeapon extends Weapon
 		Vec3 shootVector = new Vec3(transform.getLocalPosition()).sub(transform.getLocalRotation().getForward().copy().mul(0, 0, 0.2f));
 		this.transform.setLocalPosition(shootVector);
 		this.removeBullet();
-
+		this.holder.getCore().getGame().spawn(new AudioSource(Sound.AK47_SHOOT));
 		if (!zoomed)
 		{
 			this.rotationFactor.add(Mathf.random(-shootPecision, shootPecision), Mathf.random(-shootPecision, shootPecision), 0);

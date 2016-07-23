@@ -32,27 +32,36 @@ import static org.lwjgl.openal.AL10.*;
  */
 public class AudioListener
 {
-//    private static FloatBuffer orientationBuffer;
+    private static FloatBuffer orientationBuffer;
+    private static Transform transform;
 
     public static void init()
     {
-//        orientationBuffer = BufferUtils.createFloatBuffer(6);
-//        orientationBuffer.put(new float[]{0, 0, 0, 0, 0, 0});
-//        orientationBuffer.flip();
+        transform = new Transform();
+        orientationBuffer = BufferUtils.createFloatBuffer(6);
+        orientationBuffer.put(new float[]{0, 0, 0, 0, 0, 0});
+        orientationBuffer.flip();
     }
 
     public static void setTransform(Transform transform)
     {
-//        alListener3f(AL_POSITION, transform.getPosition().x, transform.getPosition().y, transform.getPosition().z);
-//        alListener3f(AL_VELOCITY, 0, 0, 0);
-//
-//        orientationBuffer.put(0, transform.getPosition().x + transform.getForward().x);
-//        orientationBuffer.put(1, transform.getPosition().y + transform.getForward().y);
-//        orientationBuffer.put(2, transform.getPosition().z + transform.getForward().z);
-//        orientationBuffer.put(3, transform.getUp().x);
-//        orientationBuffer.put(4, transform.getUp().y);
-//        orientationBuffer.put(5, transform.getUp().z);
-//
-//        alListenerfv(AL_ORIENTATION, orientationBuffer);
+        AudioListener.transform = new Transform(transform);
+
+        alListener3f(AL_POSITION, transform.getPosition().x, transform.getPosition().y, transform.getPosition().z);
+        alListener3f(AL_VELOCITY, 1, 1, 1);
+
+        orientationBuffer.put(0, -transform.getForward().x);
+        orientationBuffer.put(1, -transform.getForward().y);
+        orientationBuffer.put(2, -transform.getForward().z);
+        orientationBuffer.put(3, transform.getUp().x);
+        orientationBuffer.put(4, transform.getUp().y);
+        orientationBuffer.put(5, transform.getUp().z);
+
+        alListenerfv(AL_ORIENTATION, orientationBuffer);
+    }
+
+    public static Transform getTransform()
+    {
+        return transform;
     }
 }

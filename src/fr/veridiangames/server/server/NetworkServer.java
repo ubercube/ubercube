@@ -147,6 +147,28 @@ public class NetworkServer implements Runnable, NetworkableServer
 		}
 	}
 
+	public void tcpSendToAny(Packet packet, int... ignores)
+	{
+		for (int ii = 0; ii < core.getGame().getEntityManager().getNetworkableEntites().size(); ii++)
+		{
+			int i = core.getGame().getEntityManager().getNetworkableEntites().get(ii);
+			boolean ignore = false;
+			for (int j = 0; j < ignores.length; j++)
+			{
+				if (i == ignores[j])
+				{
+					ignore = true;
+					break;
+				}
+			}
+			if (ignore)
+				continue;
+			Entity e = core.getGame().getEntityManager().getEntities().get(i);
+			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);
+			tcpSend(packet, net.getAddress(), net.getPort());
+		}
+	}
+
 	public void udpSend(Packet packet, InetAddress address, int port)
 	{
 		udp.send(packet.getData().getData(), address, port);
@@ -157,6 +179,28 @@ public class NetworkServer implements Runnable, NetworkableServer
 		for (int ii = 0; ii < core.getGame().getEntityManager().getNetworkableEntites().size(); ii++)
 		{
 			int i = core.getGame().getEntityManager().getNetworkableEntites().get(ii);
+			Entity e = core.getGame().getEntityManager().getEntities().get(i);
+			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);
+			udpSend(packet, net.getAddress(), net.getPort());
+		}
+	}
+
+	public void udpSendToAny(Packet packet, int... ignores)
+	{
+		for (int ii = 0; ii < core.getGame().getEntityManager().getNetworkableEntites().size(); ii++)
+		{
+			int i = core.getGame().getEntityManager().getNetworkableEntites().get(ii);
+			boolean ignore = false;
+			for (int j = 0; j < ignores.length; j++)
+			{
+				if (i == ignores[j])
+				{
+					ignore = true;
+					break;
+				}
+			}
+			if (ignore)
+				continue;
 			Entity e = core.getGame().getEntityManager().getEntities().get(i);
 			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);
 			udpSend(packet, net.getAddress(), net.getPort());
@@ -180,6 +224,11 @@ public class NetworkServer implements Runnable, NetworkableServer
 	public int getPort()
 	{
 		return port;
+	}
+
+	public GameCore getCore()
+	{
+		return core;
 	}
 
 	public void setGameCore(GameCore core)

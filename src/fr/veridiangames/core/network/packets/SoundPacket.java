@@ -19,8 +19,8 @@
 
 package fr.veridiangames.core.network.packets;
 
-import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.game.entities.player.ClientPlayer;
+import fr.veridiangames.core.game.entities.audio.AudioSource;
+import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
@@ -30,71 +30,56 @@ import fr.veridiangames.core.utils.DataBuffer;
 import java.net.InetAddress;
 
 /**
- * Created by Tybau on 13/06/2016.
+ * Created by Marc on 19/06/2016.
  */
-public class RespawnPacket extends Packet
+public class SoundPacket extends Packet
 {
-    private int playerId;
-    private Vec3 position;
+    private int     clientID;
+    private int     sound;
+    private Vec3    position;
 
-    public RespawnPacket()
+    public SoundPacket()
     {
-        super(RESPAWN);
+        super(AUDIO);
     }
 
-    public RespawnPacket(int playerId)
+    public SoundPacket(int client, AudioSource source)
     {
-        super(RESPAWN);
+        super(AUDIO);
 
-        data.put(playerId);
-        data.put(0.0f);
-        data.put(0.0f);
-        data.put(0.0f);
-
-        data.flip();
+        data.put(client);
+        data.put(source.getSound());
+        data.put(source.getPosition().x);
+        data.put(source.getPosition().y);
+        data.put(source.getPosition().z);
+        data.flipped();
     }
 
-    public RespawnPacket(RespawnPacket packet)
+    public SoundPacket(SoundPacket packet)
     {
-        super(RESPAWN);
-
-        data.put(packet.playerId);
+        super(AUDIO);
+        data.put(packet.clientID);
+        data.put(packet.sound);
         data.put(packet.position.x);
         data.put(packet.position.y);
         data.put(packet.position.z);
-
-        data.flip();
+        data.flipped();
     }
 
-    @Override
     public void read(DataBuffer buffer)
     {
-        this.playerId = buffer.getInt();
+        this.clientID = buffer.getInt();
+        this.sound = buffer.getInt();
         this.position = new Vec3(buffer.getFloat(), buffer.getFloat(), buffer.getFloat());
     }
 
-    @Override
     public void process(NetworkableServer server, InetAddress address, int port)
     {
-        ServerPlayer p = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId);
-        p.setLife(100);
-        p.setDead(false);
-
-        int x = server.getCore().getGame().getData().getWorldSize() * 8;
-        int y = server.getCore().getGame().getData().getWorldSize() * 8;
-        int height = (int) server.getCore().getGame().getData().getWorldGen().getNoise(x, y) + 15;
-        this.position = new Vec3(x, height, y);      // TODO : Modify position
-
-        server.tcpSend(new RespawnPacket(this), p.getNetwork().getAddress(), p.getNetwork().getPort());
+        server.udpSendToAny(new SoundPacket(clientID, new AudioSource(sound, position)), clientID);
     }
 
-    @Override
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
-        p.getRigidBody().getBody().killForces();
-        p.setPosition(this.position);
-        p.setLife(100);
-        p.setDead(false);
+        client.playSound(new AudioSource(sound, position));
     }
 }

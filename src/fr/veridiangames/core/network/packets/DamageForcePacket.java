@@ -77,13 +77,13 @@ public class DamageForcePacket extends Packet
 
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
-		GameCore.getInstance().getGame().getWorld().applyDamageForce(position, force, false);
+		server.getCore().getGame().getWorld().applyDamageForce(position, force, false);
 		server.tcpSendToAll(new DamageForcePacket(this));
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		GameCore.getInstance().getGame().getWorld().applyDamageForce(position, force, true);
+		client.getCore().getGame().getWorld().applyDamageForce(position, force, true);
 //		client.getCore().getGame().getWorld().updateRequest((int) position.x, (int) position.y, (int) position.z, (int) force);
 	}
 }

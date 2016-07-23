@@ -54,6 +54,7 @@ public class PacketManager
 		packets.put(Packet.KICK, KickPacket.class);
 		packets.put(Packet.DAMAGE_FORCE, DamageForcePacket.class);
 		packets.put(Packet.TCHAT_MSG, TchatMsgPacket.class);
+		packets.put(Packet.AUDIO, SoundPacket.class);
 	}
 	
 	public static Packet getPacket(int packet)

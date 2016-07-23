@@ -98,12 +98,15 @@ public abstract class Weapon
 	}
 
 	int bobbingTime = 0;
+	int bobbingSide = 1;
 	public void updateBobbing(float velocity, float factor, float speed)
 	{
 		bobbingTime++;
-		float bobbing = Mathf.sin(bobbingTime * speed) * factor * velocity;
+		float bobbing = Mathf.sin(bobbingTime * speed * 0.5f) * factor * velocity;
 		float bobbingX = (Mathf.sin(bobbingTime * speed * 0.5f) * factor * velocity);
-		rotationFactor.add(bobbing, bobbingX, 0);
+		if (bobbing * bobbingSide > 0)
+			bobbingSide = -bobbingSide;
+		rotationFactor.add(bobbing * bobbingSide, bobbingX, 0);
 	}
 	
 	public Transform getTransform()

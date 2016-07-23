@@ -213,7 +213,10 @@ public abstract class GuiComponent
 			processCornerParent();
 		}
 
-		if (display.getInput().getMouse().getX() >= x && display.getInput().getMouse().getY() >= y && display.getInput().getMouse().getX() <= x + w && display.getInput().getMouse().getY() <= y + h)
+		if (display.getInput().getMouse().getX() >= x
+				&& display.getInput().getMouse().getY() >= y
+				&& display.getInput().getMouse().getX() <= x + w 
+				&& display.getInput().getMouse().getY() <= y + h)
 		{
 			if (!mouseIn)
 			{
@@ -339,7 +342,7 @@ public abstract class GuiComponent
 
 	public void setColor(Color4f color)
 	{
-		this.color = color;
+		this.color = new Color4f(color);
 	}
 
 	public int getxOrigin()

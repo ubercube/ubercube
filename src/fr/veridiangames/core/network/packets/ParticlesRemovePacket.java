@@ -67,6 +67,6 @@ public class ParticlesRemovePacket extends Packet
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        GameCore.getInstance().getGame().getEntityManager().remove(id);
+        client.getCore().getGame().getEntityManager().remove(id);
     }
 }

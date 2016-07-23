@@ -19,16 +19,26 @@
 
 package fr.veridiangames.core.audio;
 
+import fr.veridiangames.core.maths.Vec3;
+
 import static org.lwjgl.openal.AL10.alBufferData;
 import static org.lwjgl.openal.AL10.alGenBuffers;
 
 /**
  * Created by Marc on 24/06/2016.
  */
-public class Audio
+public class Sound
 {
-    public static final int AK47_BULLET_SHOT = loadWav("res/audio/Ak47Shoot.wav");
+    public static final int AK47_SHOOT = loadWav("res/audio/Ak47Shoot.wav");
     public static final int IMPACT = loadWav("res/audio/impact.wav");
+    public static final int BEEP = loadWav("res/audio/beep.wav");
+    public static final int JUMP = loadWav("res/audio/jump.wav");
+    public static final int LAND = loadWav("res/audio/land.wav");
+    public static final int PLAYER_HIT = loadWav("res/audio/playerhit.wav");
+    public static final int[] FOOTSTEP = new int[]{loadWav("res/audio/footstep1.wav"),
+                                                    loadWav("res/audio/footstep2.wav"),
+                                                    loadWav("res/audio/footstep3.wav"),
+                                                    loadWav("res/audio/footstep4.wav")};
 
     public static int loadWav(String file)
     {
