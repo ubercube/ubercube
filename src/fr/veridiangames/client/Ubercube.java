@@ -37,6 +37,7 @@ import fr.veridiangames.client.network.NetworkClient;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.renderers.MainRenderer;
 import fr.veridiangames.core.network.packets.DisconnectPacket;
+import fr.veridiangames.core.profiler.Profiler;
 import fr.veridiangames.core.utils.Color4f;
 
 import javax.swing.*;
@@ -61,6 +62,11 @@ public class Ubercube
 	private boolean 			inConsole;
 	private ConsoleScreen		console;
 
+	private Profiler renderProfiler;
+	private Profiler updateProfiler;
+	private Profiler physicsProfiler;
+	private Profiler sleepProfiler;
+
 	public Ubercube()
 	{
 		/* *** AUDIO INITIALISATION *** */
@@ -77,30 +83,26 @@ public class Ubercube
 		this.guiManager = new GuiManager();
 
 		/* *** LOADING GUI *** */
-		GuiCanvas startGui = new GuiCanvas();
-
-		GuiPanel bg = new GuiPanel(0, 0, display.getWidth(), display.getHeight());
-		bg.setColor(Color4f.DARK_GRAY);
-		bg.setOrigin(GuiComponent.GuiOrigin.A);
-		bg.setScreenParent(GuiComponent.GuiCorner.SCALED);
-		startGui.add(bg);
-
-		GuiLabel loadingInfo = new GuiLabel("Loading game...", display.getWidth() / 2, display.getHeight() / 2, 42f);
-		loadingInfo.setOrigin(GuiComponent.GuiOrigin.CENTER);
-		loadingInfo.setScreenParent(GuiComponent.GuiCorner.CENTER);
-		startGui.add(loadingInfo);
-
-		gameLoading = new GameLoadingScreen(display);
+		gameLoading = new GameLoadingScreen(null, display);
 		this.guiManager.add(gameLoading);
 
 		/* *** PLAYER HUD GUI *** */
-		PlayerHudScreen playerHudGui = new PlayerHudScreen(display, core);
+		PlayerHudScreen playerHudGui = new PlayerHudScreen(null, display, core);
 		this.console = playerHudGui.getConsoleScreen();
 		this.guiManager.add(playerHudGui);
+
+		/* *** PROFILER *** */
+		this.renderProfiler = new Profiler("render", new Color4f(0.57f, 0.75f, 0.91f, 1f));
+		this.updateProfiler = new Profiler("update", new Color4f(0.75f, 0.57f, 0.91f, 1f));
+		this.physicsProfiler = new Profiler("physics", new Color4f(0.73f, 0.77f, 0.55f, 1f));
+		//this.sleepProfiler = new Profiler("sleep");
+		Profiler.setResolution(5);
 	}
 
 	public void update()
 	{
+		updateProfiler.start();
+
 //		AudioManager.update(core);
 
 		guiManager.update();
@@ -167,6 +169,8 @@ public class Ubercube
 				System.exit(0);
 			}
 		}
+
+		updateProfiler.end();
 	}
 
 	public void updatePhysics()
@@ -174,13 +178,17 @@ public class Ubercube
 		if (!net.isConnected())
 			return;
 
+		physicsProfiler.start();
 		core.updatePhysics();
+		physicsProfiler.end();
 	}
 	
 	public void render()
 	{
+		renderProfiler.start();
 		mainRenderer.renderAll(display);
 		guiManager.render(display);
+		renderProfiler.end();
 //		if (net.isConnected())
 //		{
 //			inConsole.render(display);
@@ -194,7 +202,7 @@ public class Ubercube
 		fr.veridiangames.client.main.Timer timer = new fr.veridiangames.client.main.Timer();
 		
 		double tickTime = 1000000000.0 / 60.0;
-		double renderTime = 1000000000.0 / 9000.0;
+		double renderTime = 1000000000.0 / 60.0;
 		double updatedTime = 0.0;
 		double renderedTime = 0.0;
 		
@@ -226,10 +234,12 @@ public class Ubercube
 				render();
 				frames++;
 				display.update();
+				Profiler.updateAll();
 				renderedTime += renderTime;
 			}
 			else
 			{
+				//sleepProfiler.start();
 				try
 				{
 					Thread.sleep(1);
@@ -238,6 +248,7 @@ public class Ubercube
 				{
 					e.printStackTrace();
 				}
+				//sleepProfiler.end();
 			}
 			if (second)
 			{
@@ -290,7 +301,6 @@ public class Ubercube
 	{
 		return playerHandler;
 	}
-	
 
 	public static Ubercube getInstance()
 	{
