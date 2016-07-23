@@ -35,14 +35,14 @@ import java.awt.*;
 /**
  * Created by Marc on 02/07/2016.
  */
-public class GameLoadingScreen extends GuiCanvas
+public class LoadingScreen extends GuiCanvas
 {
     GuiLabel loadingInfo;
     GuiButton joinGameButton;
 
     private boolean joinGame;
 
-    public GameLoadingScreen(Display display)
+    public LoadingScreen(Display display)
     {
         this.joinGame = false;
 

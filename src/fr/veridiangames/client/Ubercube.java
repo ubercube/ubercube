@@ -23,12 +23,9 @@ import fr.veridiangames.client.audio.AudioListener;
 import fr.veridiangames.client.audio.AudioSystem;
 import fr.veridiangames.client.main.screens.ConsoleScreen;
 import fr.veridiangames.client.main.screens.PlayerHudScreen;
-import fr.veridiangames.client.main.screens.GameLoadingScreen;
+import fr.veridiangames.client.main.screens.LoadingScreen;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
-import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.GuiManager;
-import fr.veridiangames.client.rendering.guis.components.GuiLabel;
-import fr.veridiangames.client.rendering.guis.components.GuiPanel;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.maths.Quat;
@@ -39,7 +36,6 @@ import fr.veridiangames.client.network.NetworkClient;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.renderers.MainRenderer;
 import fr.veridiangames.core.network.packets.DisconnectPacket;
-import fr.veridiangames.core.utils.Color4f;
 
 import javax.swing.*;
 
@@ -59,7 +55,7 @@ public class Ubercube
 	private GuiManager 			guiManager;
 	private boolean 			connected;
 	private boolean 			joinGame;
-	private GameLoadingScreen 	gameLoading;
+	private LoadingScreen gameLoading;
 	private boolean 			inConsole;
 	private ConsoleScreen		console;
 
@@ -80,7 +76,7 @@ public class Ubercube
 		this.guiManager = new GuiManager();
 
 		/* *** LOADING GUI *** */
-		gameLoading = new GameLoadingScreen(display);
+		gameLoading = new LoadingScreen(display);
 		this.guiManager.add(gameLoading);
 
 		/* *** PLAYER HUD GUI *** */
