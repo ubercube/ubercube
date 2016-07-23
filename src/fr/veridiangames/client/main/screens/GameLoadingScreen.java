@@ -42,8 +42,9 @@ public class GameLoadingScreen extends GuiCanvas
 
     private boolean joinGame;
 
-    public GameLoadingScreen(Display display)
+    public GameLoadingScreen(GuiCanvas parent, Display display)
     {
+        super(parent);
         this.joinGame = false;
 
         GuiPanel bg = new GuiPanel(0, 0, display.getWidth(), display.getHeight());

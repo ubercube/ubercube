@@ -32,6 +32,8 @@ import java.util.List;
 
 public class GuiCanvas
 {
+	private GuiCanvas parent;
+
 	private boolean rendered;
 	private boolean updated;
 
@@ -40,7 +42,9 @@ public class GuiCanvas
 
 	private GuiShader shader;
 
-	public GuiCanvas() {
+	public GuiCanvas(GuiCanvas parent)
+	{
+		this.parent = parent;
 		shader = new GuiShader();
 		components = new ArrayList<>();
 		canvasOverlays = new ArrayList<>();
@@ -48,11 +52,14 @@ public class GuiCanvas
 		updated = true;
 	}
 	
-	public void update() {
-		for (int i = 0; i < components.size(); i++) {
+	public void update()
+	{
+		for (int i = 0; i < components.size(); i++)
+		{
 			if (components.get(i).isUseable())
 				components.get(i).update();
 		}
+
 		for (int i = 0; i < canvasOverlays.size(); i++)
 		{
 			if (canvasOverlays.get(i).isUpdated())
@@ -60,21 +67,20 @@ public class GuiCanvas
 		}
 	}
 
-	public void render(Display display) {
+	public void render(Display display)
+	{
 		shader.bind();
 		shader.setProjectionMatrix(Mat4.orthographic(display.getWidth(), 0, 0, display.getHeight(), -1, 1));
 		shader.setColor(Color4f.WHITE);
 
-		for (GuiComponent gui : components) {
-			if (gui.isUseable())
-				gui.renderSteps(shader);
-		}
+		if (isRendered())
+			for (GuiComponent gui : components)
+				if (gui.isUseable())
+					gui.renderSteps(shader);
 
 		for (GuiCanvas canvas : canvasOverlays)
-		{
 			if (canvas.isRendered())
 				canvas.render(display);
-		}
 
 		render(shader);
 	}
@@ -124,4 +130,6 @@ public class GuiCanvas
 	{
 		this.updated = updated;
 	}
+
+	public GuiCanvas getParent() { return parent; }
 }

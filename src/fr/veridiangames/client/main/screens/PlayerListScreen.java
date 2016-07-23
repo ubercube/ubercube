@@ -53,9 +53,9 @@ public class PlayerListScreen extends GuiCanvas
     private GuiPanel bg;
     private boolean rendered;
 
-    public PlayerListScreen(Display display, GameCore core, int x, int y)
+    public PlayerListScreen(GuiCanvas parent, Display display, GameCore core, int x, int y)
     {
-        super();
+        super(parent);
         this.core = core;
         this.players = new ConcurrentHashMap<>();
 

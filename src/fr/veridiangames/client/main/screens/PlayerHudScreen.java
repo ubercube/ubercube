@@ -48,9 +48,9 @@ public class PlayerHudScreen extends GuiCanvas
 
     private int health;
 
-    public PlayerHudScreen(Display display, GameCore core)
+    public PlayerHudScreen(GuiCanvas parent, Display display, GameCore core)
     {
-        super();
+        super(parent);
         this.core = core;
 
         damageEffect = new GuiPanel(0, 0, Display.getInstance().getWidth(), Display.getInstance().getHeight());
@@ -125,11 +125,14 @@ public class PlayerHudScreen extends GuiCanvas
         playerPosition.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
         super.add(playerPosition);
 
-        consoleScreen = new ConsoleScreen(display, core, 10, Display.getInstance().getHeight() - 130, 600, 450);
+        consoleScreen = new ConsoleScreen(this, display, core, 10, Display.getInstance().getHeight() - 130, 600, 450);
         super.addCanvas(consoleScreen);
 
-       PlayerListScreen playerListScreen = new PlayerListScreen(display, core, Display.getInstance().getWidth() / 2, Display.getInstance().getHeight() / 2);
+        PlayerListScreen playerListScreen = new PlayerListScreen(this, display, core, Display.getInstance().getWidth() / 2, Display.getInstance().getHeight() / 2);
         super.addCanvas(playerListScreen);
+
+        ProfilerScreen profilerScreen = new ProfilerScreen(this, display, core);
+        super.addCanvas(profilerScreen);
     }
 
     public void update()

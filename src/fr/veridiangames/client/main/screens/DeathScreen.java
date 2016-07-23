@@ -40,8 +40,9 @@ public class DeathScreen extends GuiCanvas
 
     private boolean respawn;
 
-    public DeathScreen(Display display)
+    public DeathScreen(GuiCanvas parent, Display display)
     {
+        super(parent);
         this.respawn = false;
 
         GuiPanel bg = new GuiPanel(0, 0, display.getWidth(), display.getHeight());

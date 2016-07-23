@@ -56,9 +56,9 @@ public class ConsoleScreen extends GuiCanvas
     private int w, h;
     private float yScroll;
 
-    public ConsoleScreen(Display display, GameCore core, int x, int y, int w, int h)
+    public ConsoleScreen(GuiCanvas parent, Display display, GameCore core, int x, int y, int w, int h)
     {
-        super();
+        super(parent);
         this.core = core;
         this.messageList = new ArrayList<>();
         this.x = x;
