@@ -25,6 +25,8 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.ECNetwork;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.components.ECName;
+import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.game.modes.GameMode;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
@@ -67,12 +69,19 @@ public class DisconnectPacket extends Packet
 	{
 		if (!server.getCore().getGame().getEntityManager().getEntities().containsKey(id))
 			return;
+
+		/* Game Mode managment */
+		GameMode mode = server.getCore().getGame().getGameMode();
+		mode.onPlayerDisconnect((Player) server.getCore().getGame().getEntityManager().get(id), server);
+
 		String name = ((ECName) server.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
 		ECNetwork net = ((ECNetwork) server.getCore().getGame().getEntityManager().get(id).get(EComponent.NETWORK));
 		GameCore.getInstance().getGame().remove(id);
 		server.tcpSendToAll(new DisconnectPacket(this));
 		server.getTcp().disconnectClient(net.getAddress(), net.getPort());
 		server.log(name + " disconnected... " + reason);
+
+
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)
