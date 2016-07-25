@@ -69,7 +69,8 @@ public class PlayerNameRenderer
             Font3DRenderer renderer = new Font3DRenderer(font, name, position.copy().add(0, 2.3f, 0));
             playerFontRenderers.add(renderer);
             Team t = Ubercube.getInstance().getGameCore().getGame().getGameMode().getPlayerTeam((Player) e);
-            colors.add(t.getColor());
+            if(t != null)
+                colors.add(t.getColor());
         }
     }
 
