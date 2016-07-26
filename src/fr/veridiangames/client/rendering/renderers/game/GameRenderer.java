@@ -194,20 +194,6 @@ public class GameRenderer
 				core.getGame().getEntityManager().getRenderableEntites()
 		);
 
-		/* ***** RENDERING PARTICLES ***** */
-		entityShader.bind();
-		entityShader.setShaderBase(
-				camera.getProjection(),
-				camera.getTransform().getPosition(),
-				core.getGame().getData().getViewDistance()
-		);
-		entityShader.setModelViewMatrix(Mat4.identity());
-		particleRenderer.render(
-				entityShader,
-				core.getGame().getEntityManager().getEntities(),
-				core.getGame().getEntityManager().getParticleEntities()
-		);
-
 		/* ***** RENDERING WEAPONS AND MODELS ***** */
 		modelShader.bind();
 		modelShader.setShaderBase(
@@ -246,6 +232,20 @@ public class GameRenderer
 		playerNameRenderer.render(
 				gui3DShader,
 				camera
+		);
+
+				/* ***** RENDERING PARTICLES ***** */
+		entityShader.bind();
+		entityShader.setShaderBase(
+				camera.getProjection(),
+				camera.getTransform().getPosition(),
+				core.getGame().getData().getViewDistance()
+		);
+		entityShader.setModelViewMatrix(Mat4.identity());
+		particleRenderer.render(
+				entityShader,
+				core.getGame().getEntityManager().getEntities(),
+				core.getGame().getEntityManager().getParticleEntities()
 		);
 	}
 	

@@ -19,15 +19,14 @@
 
 package fr.veridiangames.core.game.entities.bullets;
 
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.ECAudioSource;
 import fr.veridiangames.core.game.entities.components.ECName;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
-import fr.veridiangames.core.game.entities.particles.ParticleSystem;
-import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
-import fr.veridiangames.core.game.entities.particles.ParticlesBulletHit;
+import fr.veridiangames.core.game.entities.particles.*;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.world.Chunk;
 import fr.veridiangames.core.maths.Quat;
@@ -36,26 +35,73 @@ import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.packets.BulletHitBlockPacket;
 import fr.veridiangames.core.network.packets.BulletHitPlayerPacket;
+import fr.veridiangames.core.network.packets.DamageForcePacket;
 import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Indexer;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Marccspro on 18 mai 2016.
  */
 public class Bullet extends Entity
 {
-	private int holderID;
-	private float				force;
-	private NetworkableClient	net;
-	private Vec3 startPosition = new Vec3();
+	public enum BulletType
+	{
+		NORMAL(0), EXPlOSIVE(1), INCENDIARY(2);
 
-	public Bullet(int id, int holderID, String name, Vec3 spawnPoint, Quat orientation, float force)
+		private static Map map = new HashMap<>();
+		private final int i;
+
+		static {
+			for (BulletType bulletType : BulletType.values()) {
+				map.put(bulletType.getValue(), bulletType);
+			}
+		}
+
+		BulletType(int i)
+		{
+			this.i = i;
+		}
+
+		public static BulletType valueOf(int bulletType) {
+			return (BulletType) map.get(bulletType);
+		}
+
+		public int getValue()
+		{
+			return i;
+		}
+	}
+
+	private int 				holderID;
+	private float				force;
+	private BulletType 			bulletType;
+	private NetworkableClient	net;
+	private Vec3 				startPosition;
+	private ParticleSystem 		smokeParticles;
+
+	public Bullet(int id, int holderID, String name, Vec3 spawnPoint, Quat orientation, float force, BulletType bulletType)
 	{
 		super(id);
 		super.add(new ECName(name));
 		super.add(new ECRender(spawnPoint, orientation, new Vec3(0.04f, 0.04f, 0.4f)));
+		super.addTag("Bullet");
+
 		this.holderID = holderID;
+		this.force = force;
+		this.bulletType = bulletType;
+		this.startPosition = new Vec3(this.getPosition());
+
 		ECAudioSource audioSource = new ECAudioSource();
+
+		if (bulletType == BulletType.EXPlOSIVE)
+		{
+			smokeParticles = new ParticlesSmoke(Indexer.getUniqueID(), getPosition().copy(), getRotation().getForward());
+			Ubercube.getInstance().getGameCore().getGame().spawn(smokeParticles);
+		}
+
 //		audioSource.setPosition(spawnPoint);
 //		audioSource.setVelocity(new Vec3(0, 0, 0));
 //		audioSource.setSound(Sound.AK47_SHOOT);
@@ -63,11 +109,6 @@ public class Bullet extends Entity
 //		audioSource.play();
 
 		super.add(audioSource);
-		super.addTag("Bullet");
-
-		startPosition.set(this.getPosition());
-
-		this.force = force;
 	}
 
 	public void update(GameCore core)
@@ -85,18 +126,21 @@ public class Bullet extends Entity
 		int step = (int) (force * 30.0f);
 		for (int i = 0; i < step; i++)
 		{
-			Vec3 stepedPosition = new Vec3(position).add(direction.copy().mul(force / step));
-			block = core.getGame().getWorld().getBlockAt(stepedPosition);
-			blockPosition = stepedPosition.copy();
-			e = core.getGame().getEntityManager().getEntityAt(stepedPosition, "NetPlayer");
+			Vec3 steppedPosition = new Vec3(position).add(direction.copy().mul(force / step));
+			block = core.getGame().getWorld().getBlockAt(steppedPosition);
+			blockPosition = steppedPosition.copy();
+			e = core.getGame().getEntityManager().getEntityAt(steppedPosition, "NetPlayer");
 			if (e != null)
 				if (e.getID() == holderID)
 					e = null;
 			if (block == 0 && e == null)
 			{
-				position.set(stepedPosition);
+				position.set(steppedPosition);
 			}
 		}
+
+		if (smokeParticles != null)
+			smokeParticles.setPosition(position.copy());
 
 		if(isBulletOutOfMap(core))
 			this.destroy();
@@ -106,10 +150,19 @@ public class Bullet extends Entity
 			Vec3i impactPosition = new Vec3i(position);
 			Vec3 normal = new Vec3(impactPosition).gtNorm(position);
 
-			this.net.tcpSend(new BulletHitBlockPacket(holderID, new Vec3i(blockPosition), 0.1f, block));
+			if (holderID == core.getGame().getPlayer().getID())
+				this.net.tcpSend(new BulletHitBlockPacket(holderID, new Vec3i(blockPosition), 0.1f, block));
+
+			if (bulletType == BulletType.EXPlOSIVE)
+			{
+				getCore().getGame().spawn(new ParticlesExplosion(Indexer.getUniqueID(), getPosition().copy()));
+
+				if (holderID == core.getGame().getPlayer().getID())
+					net.tcpSend(new DamageForcePacket(getPosition().copy(), 2));
+			}
 
 			ParticleSystem hitParticles = new ParticlesBulletHit(Indexer.getUniqueID(), getPosition().copy(), new Color4f(block));
-			hitParticles.setNetwork(net);
+			core.getGame().spawn(hitParticles);
 
 			this.destroy();
 		}
@@ -117,9 +170,12 @@ public class Bullet extends Entity
 		{
 			ParticleSystem blood = new ParticlesBlood(Indexer.getUniqueID(), getPosition().copy());
 			blood.setParticleVelocity(getRotation().getBack().copy().mul(0.02f));
-			blood.setNetwork(net);
+			core.getGame().spawn(blood);
 			Player player = (Player) e;
-			this.net.tcpSend(new BulletHitPlayerPacket(player));
+
+			if (holderID == core.getGame().getPlayer().getID())
+				this.net.tcpSend(new BulletHitPlayerPacket(player));
+
 			this.destroy();
 		}
 	}
@@ -166,5 +222,16 @@ public class Bullet extends Entity
 	public float getForce()
 	{
 		return force;
+	}
+
+	public BulletType getBulletType() {
+		return bulletType;
+	}
+
+	public void destroy() {
+		super.destroy();
+
+		if (smokeParticles != null)
+			smokeParticles.setActivate(false);
 	}
 }

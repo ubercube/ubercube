@@ -85,6 +85,9 @@ public class BulletHitBlockPacket extends Packet
 
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
+		if (position.y == 0)
+			return;
+
 		this.block = GameCore.getInstance().getGame().getWorld().applyBlockDamage(position.x, position.y, position.z, damage);
 		if(Color4f.getColorFromARGB(block).getAlpha() <= 0)
 			this.block = 0;

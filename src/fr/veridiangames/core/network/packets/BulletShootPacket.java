@@ -19,7 +19,7 @@
 
 package fr.veridiangames.core.network.packets;
 
-import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.bullets.Bullet.BulletType;
 import fr.veridiangames.core.game.entities.bullets.Bullet;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
@@ -41,9 +41,9 @@ public class BulletShootPacket extends Packet
 	private Vec3 position;
 	private Quat rotation;
 	private float shootForce;
+	private BulletType bulletType;
 
 	public BulletShootPacket()
-
 	{
 		super(BULLET_SHOOT);
 	}
@@ -68,6 +68,8 @@ public class BulletShootPacket extends Packet
 
 		data.put(bullet.getForce());
 
+		data.put(bullet.getBulletType().getValue());
+
 		data.flip();
 	}
 
@@ -91,6 +93,8 @@ public class BulletShootPacket extends Packet
 
 		data.put(packet.shootForce);
 
+		data.put(packet.bulletType.getValue());
+
 		data.flip();
 	}
 
@@ -102,6 +106,7 @@ public class BulletShootPacket extends Packet
 		position = new Vec3(data.getFloat(), data.getFloat(), data.getFloat());
 		rotation = new Quat(data.getFloat(), data.getFloat(), data.getFloat(), data.getFloat());
 		shootForce = data.getFloat();
+		bulletType = Bullet.BulletType.valueOf(data.getInt());
 	}
 
 	public void process(NetworkableServer server, InetAddress address, int port)
@@ -112,10 +117,11 @@ public class BulletShootPacket extends Packet
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		Bullet bullet = new Bullet(id, clientID, name, position, rotation, shootForce);
-		bullet.setNetwork(client);
+		if (client.getID() == clientID)
+			return;
 
-		if (client.getID() != clientID)
-			client.getCore().getGame().spawn(bullet);
+		Bullet bullet = new Bullet(id, clientID, name, position, rotation, shootForce, bulletType);
+		bullet.setNetwork(client);
+		client.getCore().getGame().spawn(bullet);
 	}
 }

@@ -154,8 +154,8 @@ public class ParticleSystem extends Entity
 
 			if(!collision || !p.isCollision())
 			{
-				p.setVelocity(p.getVelocity().mul(drag));
-				p.getTransform().getLocalPosition().add(p.getVelocity()).add(gravity);
+				p.setVelocity(p.getVelocity().copy().add(gravity).copy().mul(drag));
+				p.getTransform().getLocalPosition().add(p.getVelocity());
 			}
 
 			if(p.getLifeTime() < 0)
@@ -347,11 +347,13 @@ public class ParticleSystem extends Entity
 		return this;
 	}
 
-    public ParticleSystem setNetwork(NetworkableClient net) {
-        this.net = net;
-        this.net.udpSend(new ParticlesSpawnPacket(this));
-        return this;
-    }
+// Particles should not be networked in most cases
+//
+//    public ParticleSystem setNetwork(NetworkableClient net) {
+//        this.net = net;
+//        this.net.udpSend(new ParticlesSpawnPacket(this));
+//        return this;
+//    }
 
     public String getName(){
         return ((ECName) this.get(EComponent.NAME)).getName();

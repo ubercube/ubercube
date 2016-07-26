@@ -23,6 +23,7 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.audio.Sound;
 import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.game.entities.bullets.Bullet;
+import fr.veridiangames.core.game.entities.bullets.Bullet.BulletType;
 import fr.veridiangames.core.game.entities.components.ECKeyMovement;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
@@ -46,10 +47,13 @@ public class FireWeapon extends Weapon
 
 	private int maxBullets;
 	private int bulletsLeft;
-	
+
+	private BulletType bulletType;
+
 	public FireWeapon(int model)
 	{
 		super(model);
+		this.bulletType = Bullet.BulletType.NORMAL;
 		this.shootPoint = new Transform();
 		this.setShootForce(2);
 		this.maxBullets = 30;
@@ -57,7 +61,7 @@ public class FireWeapon extends Weapon
 		this.runRotation = new Vec3(10f, -20f, 0);
 		this.shootPecision = 0.02f;
 	}
-	
+
 	public void update(GameCore core)
 	{
 		super.update(core);
@@ -103,8 +107,7 @@ public class FireWeapon extends Weapon
 	
 	private void shootBullet(GameCore core)
 	{
-		Vec3 shootPosition = this.holder.getEyePosition().copy().add(holder.getTransform().getForward());
-		Bullet bullet = new Bullet(Indexer.getUniqueID(), holder.getID(), "", this.shootPoint.getPosition(), this.transform.getRotation(), shootForce);
+		Bullet bullet = new Bullet(Indexer.getUniqueID(), holder.getID(), "", this.shootPoint.getPosition(), this.transform.getRotation(), shootForce, bulletType);
 		net.udpSend(new BulletShootPacket(holder.getID(), bullet));
 		bullet.setNetwork(net);
 		core.getGame().spawn(bullet);
@@ -206,5 +209,13 @@ public class FireWeapon extends Weapon
 	public void setBulletsLeft(int bulletsLeft)
 	{
 		this.bulletsLeft = bulletsLeft;
+	}
+
+	public BulletType getBulletType() {
+		return bulletType;
+	}
+
+	public void setBulletType(BulletType bulletType) {
+		this.bulletType = bulletType;
 	}
 }

@@ -23,6 +23,7 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.explosiveWeapons.WeaponGrenade;
+import fr.veridiangames.core.game.entities.weapons.fireWeapons.WeaponRPG;
 import fr.veridiangames.core.game.entities.weapons.meleeWeapon.WeaponShovel;
 import fr.veridiangames.core.game.entities.weapons.fireWeapons.WeaponAK47;
 import fr.veridiangames.core.maths.Transform;
@@ -47,6 +48,7 @@ public class ECWeapon extends EComponent
 
 		this.weapons = new ArrayList<>();
 		this.weapons.add(new WeaponAK47());
+		this.weapons.add(new WeaponRPG());
 		this.weapons.add(new WeaponShovel());
 		this.weapons.add(new WeaponGrenade(3));
 	}

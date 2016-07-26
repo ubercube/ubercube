@@ -41,7 +41,6 @@ public class ECRender extends EComponent
 
 	public void update(GameCore core)
 	{
-
 		this.eyePoint.setLocalPosition(transform.getPosition().copy().add(0, 2.5f / 2.0f, 0));
 		this.eyePoint.setLocalRotation(transform.getRotation());
 	}
