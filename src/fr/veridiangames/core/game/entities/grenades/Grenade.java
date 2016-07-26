@@ -23,23 +23,13 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.Model;
 import fr.veridiangames.core.game.entities.components.*;
-import fr.veridiangames.core.game.entities.particles.ParticleSystem;
-import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
-import fr.veridiangames.core.game.entities.particles.ParticlesBulletHit;
 import fr.veridiangames.core.game.entities.particles.ParticlesExplosion;
-import fr.veridiangames.core.game.entities.player.Player;
-import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.maths.Quat;
-import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
-import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.NetworkableClient;
-import fr.veridiangames.core.network.packets.BulletHitBlockPacket;
-import fr.veridiangames.core.network.packets.BulletHitPlayerPacket;
 import fr.veridiangames.core.network.packets.DamageForcePacket;
 import fr.veridiangames.core.physics.Rigidbody;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
-import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Indexer;
 
 /**
@@ -85,11 +75,11 @@ public class Grenade extends Entity
 
         if (timer > 60 * 2)
         {
-            explose();
+            explode();
         }
     }
 
-    private void explose()
+    private void explode()
     {
         getCore().getGame().spawn(new ParticlesExplosion(Indexer.getUniqueID(), getPosition().copy()));
         net.tcpSend(new DamageForcePacket(getPosition().copy(), 4));
