@@ -73,6 +73,10 @@ public class Particle
         return color;
     }
 
+    public void setVelocity(Vec3 velocity) {
+        this.velocity.set(velocity);
+    }
+
     public Vec3 getVelocity()
     {
         return velocity;

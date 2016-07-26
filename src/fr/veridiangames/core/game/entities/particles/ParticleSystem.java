@@ -57,6 +57,8 @@ public class ParticleSystem extends Entity
 	private Vec3 			    particleVelocity;
 	private float 			    particleVelocityRandomness;
 
+	private float 				drag;
+
 	private boolean 		    collision;
 	private Vec3			    gravity;
 	private boolean			    activate;
@@ -85,6 +87,7 @@ public class ParticleSystem extends Entity
 		this.particleLifeTime = 50;
 		this.particleColor = new Color4f(1.0f, 0.0f, 1.0f);
 		this.particleVelocity = new Vec3();
+		this.drag = 1f;
 
 		this.particleLifeTimeRandomness = 10;
 		this.particleColorRandomness = 0.1f;
@@ -151,6 +154,7 @@ public class ParticleSystem extends Entity
 
 			if(!collision || !p.isCollision())
 			{
+				p.setVelocity(p.getVelocity().mul(drag));
 				p.getVelocity().add(p.getGravity());
 				p.getTransform().getLocalPosition().add(p.getVelocity());
 			}
@@ -374,5 +378,13 @@ public class ParticleSystem extends Entity
 	{
 		this.duration = duration;
 		return this;
+	}
+
+	public void setDrag(float drag) {
+		this.drag = drag;
+	}
+
+	public float getDrag() {
+		return drag;
 	}
 }
