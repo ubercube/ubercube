@@ -155,8 +155,7 @@ public class ParticleSystem extends Entity
 			if(!collision || !p.isCollision())
 			{
 				p.setVelocity(p.getVelocity().mul(drag));
-				p.getVelocity().add(p.getGravity());
-				p.getTransform().getLocalPosition().add(p.getVelocity());
+				p.getTransform().getLocalPosition().add(p.getVelocity()).add(gravity);
 			}
 
 			if(p.getLifeTime() < 0)
