@@ -53,6 +53,7 @@ public abstract class Packet
 	public static final int DAMAGE_FORCE		= 18;
 	public static final int TCHAT_MSG			= 19;
 	public static final int AUDIO				= 20;
+	public static final int GRENADE_SHOOT       = 21;
 
 	protected DataBuffer data;
 

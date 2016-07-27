@@ -84,6 +84,5 @@ public class DamageForcePacket extends Packet
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
 		client.getCore().getGame().getWorld().applyDamageForce(position, force, true);
-//		client.getCore().getGame().getWorld().updateRequest((int) position.x, (int) position.y, (int) position.z, (int) force);
 	}
 }

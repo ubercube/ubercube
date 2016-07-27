@@ -55,6 +55,7 @@ public class PacketManager
 		packets.put(Packet.DAMAGE_FORCE, DamageForcePacket.class);
 		packets.put(Packet.TCHAT_MSG, TchatMsgPacket.class);
 		packets.put(Packet.AUDIO, SoundPacket.class);
+		packets.put(Packet.GRENADE_SHOOT, GrenadeShootPacket.class);
 	}
 	
 	public static Packet getPacket(int packet)
