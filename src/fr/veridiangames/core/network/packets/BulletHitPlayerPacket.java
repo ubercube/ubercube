@@ -85,6 +85,10 @@ public class BulletHitPlayerPacket extends Packet
         if(p.getLife() <= 0 && !((ServerPlayer) GameCore.getInstance().getGame().getEntityManager().getEntities().get(playerId)).isDead())
         {
             server.tcpSendToAll(new DeathPacket(playerId));
+
+            /* GAME MODE */
+            server.getCore().getGame().getGameMode().onPlayerDeath((Player) server.getCore().getGame().getEntityManager().get(playerId), server);
+
             ((ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId)).setDead(true);
             String name = ((ECName) GameCore.getInstance().getGame().getEntityManager().get(playerId).get(EComponent.NAME)).getName();
             server.log(name + " was killed !");

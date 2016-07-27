@@ -19,6 +19,7 @@
 
 package fr.veridiangames.client.rendering.renderers.game.entities.players;
 
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.guis.TrueTypeFont;
 import fr.veridiangames.client.rendering.Camera;
 import fr.veridiangames.client.rendering.guis.StaticFont;
@@ -28,6 +29,7 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.game.modes.Team;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.utils.Color4f;
 
@@ -44,6 +46,7 @@ public class PlayerNameRenderer
 {
     private TrueTypeFont font;
     private List<Font3DRenderer> playerFontRenderers;
+    private List<Color4f> colors = new ArrayList<>();
 
     public PlayerNameRenderer()
     {
@@ -54,6 +57,7 @@ public class PlayerNameRenderer
     public void update(Map<Integer, Entity> entities, java.util.List<Integer> indices)
     {
         playerFontRenderers.clear();
+        colors.clear();
         for (int i = 0; i < indices.size(); i++)
         {
             int key = indices.get(i);
@@ -64,6 +68,12 @@ public class PlayerNameRenderer
             Vec3 position = ((Player) e).getPosition();
             Font3DRenderer renderer = new Font3DRenderer(font, name, position.copy().add(0, 2.3f, 0));
             playerFontRenderers.add(renderer);
+            Team t = Ubercube.getInstance().getGameCore().getGame().getGameMode().getPlayerTeam((Player) e);
+            if(t != null) {
+                colors.add(t.getColor());
+            }else{
+                colors.add(Color4f.WHITE);
+            }
         }
     }
 
@@ -71,7 +81,7 @@ public class PlayerNameRenderer
     {
         for (int i = 0; i < playerFontRenderers.size(); i++)
         {
-            playerFontRenderers.get(i).render(shader, camera, Color4f.WHITE, 4);
+            playerFontRenderers.get(i).render(shader, camera, colors.get(i), 4);
         }
     }
 }

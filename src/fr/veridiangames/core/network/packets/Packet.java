@@ -55,6 +55,11 @@ public abstract class Packet
 	public static final int AUDIO				= 20;
 	public static final int GRENADE_SHOOT       = 21;
 
+	/* GAME MODES */
+	public static final int GAMEMODE_TDM_SYNC	= 21;
+	public static final int GAMEMODE_TDM_SCORE	= 22;
+	public static final int GAMEMODE_TDM_TEAM= 23;
+
 	protected DataBuffer data;
 
 	public Packet(int packetID)

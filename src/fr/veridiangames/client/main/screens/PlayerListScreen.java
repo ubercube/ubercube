@@ -32,6 +32,7 @@ import fr.veridiangames.client.rendering.shaders.GuiShader;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.EntityManager;
 import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.game.modes.Team;
 import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.utils.Color4f;
 
@@ -118,9 +119,18 @@ public class PlayerListScreen extends GuiCanvas
         if (!rendered)
             return;
 
+        Team t;
+        Color4f c;
         for (Map.Entry<Integer, PLine> entry : players.entrySet())
         {
-            entry.getValue().render(shader);
+            t = core.getGame().getGameMode().getPlayerTeam((Player) core.getGame().getEntityManager().get(entry.getKey()));
+            if(t == null){
+                c = Color4f.WHITE;
+                System.out.println("Player sans team");
+            }else{
+                c = t.getColor();
+            }
+            entry.getValue().render(shader, c);
         }
     }
 
@@ -166,9 +176,9 @@ public class PlayerListScreen extends GuiCanvas
             this.pingColor.setGreen(g);
         }
 
-        void render(GuiShader shader)
+        void render(GuiShader shader, Color4f c)
         {
-            this.nameLabel.render(shader, Color4f.WHITE, 1);
+            this.nameLabel.render(shader, c, 1);
             this.pingLabel.render(shader, pingColor, 1);
         }
     }
