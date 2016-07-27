@@ -31,7 +31,6 @@ public class Chunk
 {
 	public static final int SIZE = 16;
 
-	private Thread	generationThread;
 	private boolean	generated;
 	private boolean structureGeneration;
 	private boolean	shouldBeRendered;
@@ -70,20 +69,7 @@ public class Chunk
 	public void generateChunk()
 	{
 		this.blocks = new int[SIZE][SIZE][SIZE];
-//		this.generationThread = new Thread("chunk-" + position.x + "-" + position.y + "-" + position.z + "-generation")
-//		{
-//			public void run()
-//			{
-//				generateTerrainData();
-//				generateVegetation();
-//				generated = true;
-//			}
-//		};
-//		generationThread.start();
-	}
 
-	public void generateTerrainData()
-	{
 		for (int x = 0; x < SIZE; x++)
 		{
 			for (int z = 0; z < SIZE; z++)
@@ -93,6 +79,7 @@ public class Chunk
 					int xx = position.x * SIZE + x;
 					int yy = position.y * SIZE + y;
 					int zz = position.z * SIZE + z;
+
 					Vec4i modifiedBlock = world.getModifiedBlock(xx, yy, zz);
 					if (modifiedBlock != null)
 					{

@@ -42,6 +42,7 @@ public class World
 	private Map<Integer, Chunk> chunks;
 	private List<Integer> 		chunkGarbage;
 	private List<Vec4i>			modifiedBlocks;
+	private Vec4i[][][] 		modifiedBlocksArray;
 
 	private WorldGen	worldGen;
 	private GameData	gameData;
@@ -69,38 +70,40 @@ public class World
 		worldGen = gameData.getWorldGen();
 		World world = this;
 
-				worldGen.addNoisePasses();
-				worldGen.calcFinalNoise();
-				for (int x = 0; x < worldSize; x++)
-				{
-					for (int y = 0; y < 5; y++)
-					{
-						for (int z = 0; z < worldSize; z++)
-						{
-							int index = Indexer.index3i(x, y, z);
-							float[][] 	noise = worldGen.getNoiseChunk(x, z);
-							Chunk c = new Chunk(x, y, z, noise, world);
-							c.generateChunk();
-							c.generateTerrainData();
-							chunks.put(index, c);
-						}
-					}
-				}
-				for (int x = 0; x < worldSize; x++)
-				{
-					for (int y = 0; y < 5; y++)
-					{
-						for (int z = 0; z < worldSize; z++)
-						{
-							int index = Indexer.index3i(x, y, z);
-							Chunk c = chunks.get(index);
-							c.generateVegetation();
-						}
-					}
-				}
+		worldGen.addNoisePasses();
+		worldGen.calcFinalNoise();
 
-				generated = true;
+		modifiedBlocksArray = new Vec4i[worldSize*16][worldSize*16][worldSize*16];
 
+		for (int x = 0; x < worldSize; x++)
+		{
+			for (int y = 0; y < 5; y++)
+			{
+				for (int z = 0; z < worldSize; z++)
+				{
+					int index = Indexer.index3i(x, y, z);
+					float[][] noise = worldGen.getNoiseChunk(x, z);
+					Chunk c = new Chunk(x, y, z, noise, world);
+					c.generateChunk();
+					c.generateChunk();
+					chunks.put(index, c);
+				}
+			}
+		}
+		for (int x = 0; x < worldSize; x++)
+		{
+			for (int y = 0; y < 5; y++)
+			{
+				for (int z = 0; z < worldSize; z++)
+				{
+					int index = Indexer.index3i(x, y, z);
+					Chunk c = chunks.get(index);
+					c.generateVegetation();
+				}
+			}
+		}
+
+		generated = true;
 	}
 	
 	public void update()
@@ -319,97 +322,6 @@ public class World
 			updateRequests.add(index);
 	}
 	
-	public int getBlock(int x, int y, int z)
-	{
-		int xc = x / Chunk.SIZE;
-		int yc = y / Chunk.SIZE;
-		int zc = z / Chunk.SIZE;
-		
-		Chunk c = getChunk(xc, yc, zc);
-		if (c == null)
-			return 0;
-		
-		int xx = x % Chunk.SIZE;
-		int yy = y % Chunk.SIZE;
-		int zz = z % Chunk.SIZE;
-		
-		return c.getBlock(xx, yy, zz);
-	}
-	
-	public void addBlock(int x, int y, int z, int block)
-	{
-		//addModifiedBlock(x, y, z, block);
-		int xc = x / Chunk.SIZE;
-		int yc = y / Chunk.SIZE;
-		int zc = z / Chunk.SIZE;
-		
-		Chunk c = getChunk(xc, yc, zc);
-		if (c == null)
-			return;
-
-		int xx = x % Chunk.SIZE;
-		int yy = y % Chunk.SIZE;
-		int zz = z % Chunk.SIZE;
-
-		c.addBlock(xx, yy, zz, block);
-	}
-	
-	public void removeBlock(int x, int y, int z)
-	{
-		if (y == 0)
-			return;
-
-		addModifiedBlock(x, y, z, 0);
-		int xc = x / Chunk.SIZE;
-		int yc = y / Chunk.SIZE;
-		int zc = z / Chunk.SIZE;
-		
-		Chunk c = getChunk(xc, yc, zc);
-		if (c == null)
-			return;
-		
-		int xx = x % Chunk.SIZE;
-		int yy = y % Chunk.SIZE;
-		int zz = z % Chunk.SIZE;
-		
-		c.removeBlock(xx, yy, zz);
-	}
-	
-	public int getBlockAt(Vec3 point)
-	{
-		Vec3i ip = point.getInts();
-		return getBlock(ip.x, ip.y, ip.z);
-	}
-
-	public List<Integer> getBlockInRange(Vec3 pos, int range)
-	{
-		List<Integer> result = new ArrayList<Integer>();
-
-		int x0 = (int) pos.x - range;
-		int x1 = (int) pos.x + range;
-		int y0 = (int) pos.y - range;
-		int y1 = (int) pos.y + range;
-		int z0 = (int) pos.z - range;
-		int z1 = (int) pos.z + range;
-		
-		for (int x = x0; x < x1; x++)
-		{
-			for (int y = y0; y < y1; y++)
-			{
-				for (int z = z0; z < z1; z++)
-				{
-					int block = getBlock(x, y, z);
-					if (block != 0)
-					{
-						result.add(block);			
-					}
-				}	
-			}	
-		}
-		
-		return result;
-	}
-	
 	public List<AABoxCollider> getAABoxInRange(Vec3 pos, int range)
 	{
 		List<AABoxCollider> result = new ArrayList<AABoxCollider>();
@@ -459,17 +371,112 @@ public class World
 	{
 		return updateRequests;
 	}
-	
+
+	public int getBlock(int x, int y, int z)
+	{
+		int xc = x / Chunk.SIZE;
+		int yc = y / Chunk.SIZE;
+		int zc = z / Chunk.SIZE;
+
+		Chunk c = getChunk(xc, yc, zc);
+		if (c == null)
+			return 0;
+
+		int xx = x % Chunk.SIZE;
+		int yy = y % Chunk.SIZE;
+		int zz = z % Chunk.SIZE;
+
+		return c.getBlock(xx, yy, zz);
+	}
+
+	public void addBlock(int x, int y, int z, int block)
+	{
+		//addModifiedBlock(x, y, z, block);
+		int xc = x / Chunk.SIZE;
+		int yc = y / Chunk.SIZE;
+		int zc = z / Chunk.SIZE;
+
+		Chunk c = getChunk(xc, yc, zc);
+		if (c == null)
+			return;
+
+		int xx = x % Chunk.SIZE;
+		int yy = y % Chunk.SIZE;
+		int zz = z % Chunk.SIZE;
+
+		c.addBlock(xx, yy, zz, block);
+	}
+
+	public void removeBlock(int x, int y, int z)
+	{
+		if (y == 0)
+			return;
+
+		addModifiedBlock(x, y, z, 0);
+		int xc = x / Chunk.SIZE;
+		int yc = y / Chunk.SIZE;
+		int zc = z / Chunk.SIZE;
+
+		Chunk c = getChunk(xc, yc, zc);
+		if (c == null)
+			return;
+
+		int xx = x % Chunk.SIZE;
+		int yy = y % Chunk.SIZE;
+		int zz = z % Chunk.SIZE;
+
+		c.removeBlock(xx, yy, zz);
+	}
+
+	public int getBlockAt(Vec3 point)
+	{
+		Vec3i ip = point.getInts();
+		return getBlock(ip.x, ip.y, ip.z);
+	}
+
+	public List<Integer> getBlockInRange(Vec3 pos, int range)
+	{
+		List<Integer> result = new ArrayList<Integer>();
+
+		int x0 = (int) pos.x - range;
+		int x1 = (int) pos.x + range;
+		int y0 = (int) pos.y - range;
+		int y1 = (int) pos.y + range;
+		int z0 = (int) pos.z - range;
+		int z1 = (int) pos.z + range;
+
+		for (int x = x0; x < x1; x++)
+		{
+			for (int y = y0; y < y1; y++)
+			{
+				for (int z = z0; z < z1; z++)
+				{
+					int block = getBlock(x, y, z);
+					if (block != 0)
+					{
+						result.add(block);
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
 	public void addModifiedBlock(int x, int y, int z, int block)
 	{
 		Vec4i v = getModifiedBlock(x, y, z);
+
 		if (v != null)
 		{
-			int index = modifiedBlocks.indexOf(v);
-			modifiedBlocks.get(index).w = block;
+			v.w = block;
 			return;
 		}
-		modifiedBlocks.add(new Vec4i(x, y, z, block));
+
+		v = new Vec4i(x, y, z, block);
+
+		modifiedBlocks.add(v);
+		modifiedBlocksArray[x][y][z] = v;
 	}
 	
 	public List<Vec4i> getModifiedBlocks()
@@ -479,13 +486,7 @@ public class World
 	
 	public Vec4i getModifiedBlock(int x, int y, int z)
 	{
-		for (int i = 0; i < modifiedBlocks.size(); i++)
-		{
-			Vec4i b = modifiedBlocks.get(i);
-			if (b.x == x && b.y == y && b.z == z)
-				return b;
-		}
-		return null;
+		return modifiedBlocksArray[x][y][z];
 	}
 
 	public int getBlockDamage(int x, int y, int z, float damage)
@@ -496,7 +497,6 @@ public class World
 	public int applyBlockDamage(int x, int y, int z, float damage)
 	{
 		int blockID = 0;
-
 
 		Vec4i modBlock = getModifiedBlock(x, y, z);
 		if (modBlock != null)
@@ -553,6 +553,7 @@ public class World
 								removeBlock(xp, yp, zp);
 							else
 								addBlock(xp, yp, zp, block);
+
 							updateRequest(xp, yp, zp);
 						}
 						addModifiedBlock(xp, yp, zp, block);
@@ -576,20 +577,3 @@ public class World
 		return worldSize;
 	}
 }
-/*
-[ERR] java.lang.NullPointerException
-[ERR]     at org.lwjgl.system.APIUtil.apiGetManifestValue(APIUtil.java:97)
-[ERR]     at org.lwjgl.system.Library.chec
-[OUT] 	  glfwInit... kHash(Library.java:260)
-[OUT] ====== Loading Display... ======
-[ERR]     at org.lwjgl.system.Library.<clinit>(Library.java:44)
-[ERR]     at org.lwjgl.system.MemoryAccess.<clinit>(MemoryAccess.java:17)
-[ERR]     at org.lwjgl.system.ThreadLocalUtil$UnsafeState.<clinit>(ThreadL
-[ERR]     at org.lwjgl.system.ThreadLocalUtil.getInstance(ThreadLocalUtil.java:43) ocalUtil.java:86)
-[ERR]     at org.lwjgl.system.ThreadLocalUtil.<clinit>(ThreadLocalUtil.java:20)
-[ERR]     at org.lwjgl.system.MemoryStack.stackPush(MemoryStack.java:577)
-[ERR]     at org.lwjgl.system.Callback.<clinit>(Callback.java:35)
-[ERR]     at fr.veridiangames.client.inputs.Input.<init>(Input.java:199)
-[ERR]     at fr.veridiangames.client.rendering.Display.<init>(Display.java:67)
-[ERR]     at fr.veridiangames.client.MainComponent.main(MainComponent.java:36)
-*/
