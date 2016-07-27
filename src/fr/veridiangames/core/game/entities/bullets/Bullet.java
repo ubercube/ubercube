@@ -41,6 +41,7 @@ import fr.veridiangames.core.utils.Indexer;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by Marccspro on 18 mai 2016.
@@ -150,15 +151,14 @@ public class Bullet extends Entity
 			Vec3i impactPosition = new Vec3i(position);
 			Vec3 normal = new Vec3(impactPosition).gtNorm(position);
 
-			if (holderID == core.getGame().getPlayer().getID())
-				this.net.tcpSend(new BulletHitBlockPacket(holderID, new Vec3i(blockPosition), 0.1f, block));
-
 			if (bulletType == BulletType.EXPlOSIVE)
 			{
 				getCore().getGame().spawn(new ParticlesExplosion(Indexer.getUniqueID(), getPosition().copy()));
 
 				if (holderID == core.getGame().getPlayer().getID())
-					net.tcpSend(new DamageForcePacket(getPosition().copy(), 2));
+					net.tcpSend(new DamageForcePacket(getPosition().copy(), 2 + (float) Math.random() * 1.5f));
+			} else if (holderID == core.getGame().getPlayer().getID()) {
+				this.net.tcpSend(new BulletHitBlockPacket(holderID, new Vec3i(blockPosition), 0.1f, block));
 			}
 
 			ParticleSystem hitParticles = new ParticlesBulletHit(Indexer.getUniqueID(), getPosition().copy(), new Color4f(block));
