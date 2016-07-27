@@ -24,11 +24,8 @@ import fr.veridiangames.core.game.entities.bullets.Bullet;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 
-/**
- * Created by Aiko on 26/07/2016.
- */
-public class WeaponRPG extends FireWeapon{
-    public WeaponRPG() {
+public class WeaponFlameThrower extends FireWeapon {
+    public WeaponFlameThrower() {
         super(Model.AK47);
         this.transform.setLocalScale(new Vec3(1, 1, -1));
         this.setIdlePosition(new Transform(new Vec3(0.3f, -0.05f, 0)));
@@ -38,7 +35,7 @@ public class WeaponRPG extends FireWeapon{
         this.setPosition(0);
         this.setShootForce(0.5f);
         this.setFireFrequency(1);
-        this.setBulletType(Bullet.BulletType.EXPlOSIVE);
-
+        this.setShootPrecision(1f);
+        this.setBulletType(Bullet.BulletType.INCENDIARY);
     }
 }

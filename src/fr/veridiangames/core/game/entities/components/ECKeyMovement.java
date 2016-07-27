@@ -70,8 +70,7 @@ public class ECKeyMovement extends EComponent
 		this.forwardDirection = new Vec3();
 	}
 
-
-	public void update(GameCore core)
+	public void update()
 	{
 		Quat rotation = ((ECRender) parent.get(EComponent.RENDER)).getTransform().getRotation();
 

@@ -55,7 +55,7 @@ public class ECRaycast extends EComponent
 		}
 	}
 
-	public void update(GameCore core)
+	public void update()
 	{
 		hit = null;
 		hitPoint = null;

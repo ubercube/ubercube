@@ -41,7 +41,7 @@ public class FireWeapon extends Weapon
 	private boolean shooting;
 	private boolean shot;
 	private float shootForce;
-	private float shootPecision;
+	private float shootPrecision;
 	
 	private int shootTimer = 0;
 
@@ -59,7 +59,7 @@ public class FireWeapon extends Weapon
 		this.maxBullets = 30;
 		this.bulletsLeft = maxBullets;
 		this.runRotation = new Vec3(10f, -20f, 0);
-		this.shootPecision = 0.02f;
+		this.setShootPrecision(0.02f);
 	}
 
 	public void update(GameCore core)
@@ -140,7 +140,7 @@ public class FireWeapon extends Weapon
 		this.holder.getCore().getGame().spawn(new AudioSource(Sound.AK47_SHOOT));
 		if (!zoomed)
 		{
-			this.rotationFactor.add(Mathf.random(-shootPecision, shootPecision), Mathf.random(-shootPecision, shootPecision), 0);
+			this.rotationFactor.add(Mathf.random(-shootPrecision, shootPrecision), Mathf.random(-shootPrecision, shootPrecision), 0);
 		}
 	}
 
@@ -217,5 +217,13 @@ public class FireWeapon extends Weapon
 
 	public void setBulletType(BulletType bulletType) {
 		this.bulletType = bulletType;
+	}
+
+	public void setShootPrecision(float shootPrecision) {
+		this.shootPrecision = shootPrecision;
+	}
+
+	public float getShootPrecision() {
+		return shootPrecision;
 	}
 }

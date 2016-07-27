@@ -70,7 +70,7 @@ public class Entity
 		for (int i = 0; i < keys.size(); i++)
 		{
 			EComponent e = get(keys.get(i));
-			e.update(core);
+			e.update();
 		}
 	}
 
@@ -140,6 +140,7 @@ public class Entity
 	
 	public void destroy()
 	{
+		getComponents().values().forEach(EComponent::destroy);
 		this.destroyed = true;
 	}
 	

@@ -50,7 +50,8 @@ public abstract class EComponent
 	protected Entity			parent;
 	protected List<Integer>		dependencies;
 	protected boolean 			enabled;
-	
+	protected GameCore 			core;
+
 	public EComponent(int id)
 	{
 		this.id = id;
@@ -60,10 +61,16 @@ public abstract class EComponent
 	
 	public void init(GameCore core)
 	{
+		this.core = core;
 	}
 	
-	public void update(GameCore core)
+	public void update()
 	{
+	}
+
+	public void destroy()
+	{
+
 	}
 
 	public int getID()

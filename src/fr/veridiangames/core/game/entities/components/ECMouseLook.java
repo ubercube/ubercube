@@ -42,7 +42,7 @@ public class ECMouseLook extends EComponent
 		this.rotAmnt = 0;
 	}
 
-	public void update(GameCore core)
+	public void update()
 	{
 		Transform transform = ((ECRender) parent.get(EComponent.RENDER)).getTransform();
 

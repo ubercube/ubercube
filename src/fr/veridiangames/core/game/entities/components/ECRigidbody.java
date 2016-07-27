@@ -43,12 +43,18 @@ public class ECRigidbody extends EComponent
 
 	public void init(GameCore core)
 	{
+		super.init(core);
 		core.getGame().getPhysics().addBody(body);
 	}
 
-	public void update(GameCore core)
+	public void update()
 	{
 
+	}
+
+	public void destroy()
+	{
+		core.getGame().getPhysics().removeBody(body);
 	}
 
 	public Rigidbody getBody()

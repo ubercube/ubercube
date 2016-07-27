@@ -55,6 +55,7 @@ public class ECWeapon extends EComponent
 	
 	public void init(GameCore core)
 	{
+		super.init(core);
 		this.weapon = weapons.get(weaponID);
 		this.weapon.setHolder((Player) parent);
 		this.weapon.onChange();
@@ -62,7 +63,7 @@ public class ECWeapon extends EComponent
 		this.weapon.getTransform().setParent(parentTransform);
 	}
 	
-	public void update(GameCore core)
+	public void update()
 	{
 		weapon.update(core);
 	}
