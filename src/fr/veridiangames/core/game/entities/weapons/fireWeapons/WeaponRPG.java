@@ -37,6 +37,7 @@ public class WeaponRPG extends FireWeapon{
         this.setShootPoint(new Transform(new Vec3(0, -0.1f, -1.5f)));
         this.setPosition(0);
         this.setShootForce(0.5f);
+        this.setFireFrequency(1);
         this.setBulletType(Bullet.BulletType.EXPlOSIVE);
     }
 }
