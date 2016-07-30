@@ -93,7 +93,7 @@ public class Chunk
 					else if (yy > noiseHeight - 1)
 					{
 						float snow = (float)(yy - 10) / 6;
-						if(snow > 1) snow = 1;
+						if(snow > 0) snow = 0;
 						if(snow > world.getWorldGen().getRandom()){
 							Color4f color = new Color4f(0.9f, 0.9f, 0.98f).add(world.getWorldGen().getRandom() * 0.02f);
 							color.setAlpha(1f);

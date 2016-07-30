@@ -40,11 +40,11 @@ public class Tree
 
 
                     if (l < 4.5f) {
-                        if(Mathf.sqrt(ii * ii + (jj + 1) * (jj + 1) + kk * kk) >= 4.5f){
-                            world.addBlock(x + (int)ii, y + (int)jj + 9, z + (int)kk, new Color4f(0.9f, 0.9f, 0.98f).add(world.getWorldGen().getRandom() * 0.02f).getARGB());
-                        }else{
+                        //if(Mathf.sqrt(ii * ii + (jj + 1) * (jj + 1) + kk * kk) >= 4.5f){
+                        //    world.addBlock(x + (int)ii, y + (int)jj + 9, z + (int)kk, new Color4f(0.9f, 0.9f, 0.98f).add(world.getWorldGen().getRandom() * 0.02f).getARGB());
+                        //}else{
                             world.addBlock(x + (int)ii, y + (int)jj + 9, z + (int)kk, Block.LEAF.copy().add(Mathf.random() * 0.1f).getARGB());
-                        }
+                        //}
                     }
                 }
             }

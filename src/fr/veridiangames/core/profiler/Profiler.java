@@ -27,6 +27,8 @@ import java.util.ArrayList;
  * Created by Aiko on 16/07/2016.
  */
 public class Profiler {
+    private static boolean enabled;
+
     private static ArrayList<Profiler> profilers = new ArrayList<>();
 
     private static int count;
@@ -72,6 +74,10 @@ public class Profiler {
 
             updated = true;
         }
+    }
+
+    public static void enable(boolean enabled) {
+        Profiler.enabled = enabled;
     }
 
     public void update()

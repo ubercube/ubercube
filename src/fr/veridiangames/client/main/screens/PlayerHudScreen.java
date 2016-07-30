@@ -22,7 +22,6 @@ package fr.veridiangames.client.main.screens;
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.audio.AudioPlayer;
 import fr.veridiangames.client.inputs.Input;
-import fr.veridiangames.client.main.screens.gamemode.TDMGameModeScreen;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
@@ -33,7 +32,6 @@ import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.fireWeapons.FireWeapon;
-import fr.veridiangames.core.game.modes.TDMGameMode;
 import fr.veridiangames.core.utils.Color4f;
 
 /**
@@ -148,12 +146,6 @@ public class PlayerHudScreen extends GuiCanvas
 
         ProfilerScreen profilerScreen = new ProfilerScreen(this, display, core);
         super.addCanvas(profilerScreen);
-
-        /* *** GAME MODE GUI *** */
-        if(core.getGame().getGameMode() instanceof TDMGameMode) {
-            TDMGameModeScreen gameModeScreen = new TDMGameModeScreen(null, display, core);
-            super.addCanvas(gameModeScreen);
-        }
     }
 
     public void update()

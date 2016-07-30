@@ -78,6 +78,7 @@ public class ProfilerScreen extends GuiCanvas {
         {
             setRendered(!isRendered());
             getParent().setRendered(!isRendered());
+            Profiler.enable(isRendered());
         }
 
         if (!isRendered())

@@ -28,7 +28,7 @@ import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
-import fr.veridiangames.core.game.modes.GameMode;
+import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec4i;
@@ -143,10 +143,6 @@ public class ConnectPacket extends Packet
 			if (e instanceof Player)
 				server.tcpSend(new EntitySyncPacket((Player) e), address, port);
 		}
-
-		/* Game Mode managment */
-		GameMode mode = server.getCore().getGame().getGameMode();
-		mode.onPlayerConnect((Player) server.getCore().getGame().getEntityManager().get(id), server);
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)
