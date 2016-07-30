@@ -23,30 +23,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.maths.Vec3;
 
 /**
  * Created by Marccspro on 22 janv. 2016.
  */
 public class PhysicsEngine
 {
-	private List<Rigidbody> bodys;
+	private List<Rigidbody> bodies;
 
 	public PhysicsEngine()
 	{
-		bodys = new ArrayList<>();
+		bodies = new ArrayList<>();
 	}
 
 	public void update(GameCore core)
 	{
-		for (int i = 0; i < bodys.size(); i++)
+		for (int i = 0; i < bodies.size(); i++)
 		{
-			Rigidbody a = bodys.get(i);
+			Rigidbody a = bodies.get(i);
 			a.applyGravity();
 			a.applyForces();
 			a.updateVelocity();
-			for (int j = 0; j < bodys.size(); j++)
+			for (int j = 0; j < bodies.size(); j++)
 			{
-				Rigidbody b = bodys.get(j);
+				Rigidbody b = bodies.get(j);
 				if (a == b)
 					continue;
 
@@ -67,11 +68,24 @@ public class PhysicsEngine
 
 	public void addBody(Rigidbody body)
 	{
-		bodys.add(body);
+		bodies.add(body);
 	}
 
 	public void removeBody(Rigidbody body)
 	{
-		bodys.remove(body);
+		bodies.remove(body);
+	}
+
+	public void explosion(Vec3 pos, float force)
+	{
+		for (Rigidbody b : bodies)
+		{
+			float dist = (b.getPosition().x - pos.x) * (b.getPosition().x - pos.x)
+					   + (b.getPosition().y - pos.y) * (b.getPosition().y - pos.y)
+					   + (b.getPosition().z - pos.z) * (b.getPosition().z - pos.z);
+
+			Vec3 dir = new Vec3(b.getPosition().x - pos.x, b.getPosition().y - pos.y, b.getPosition().z - pos.z).normalize();
+			b.applyForce(dir, force/dist);
+		}
 	}
 }

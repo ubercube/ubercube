@@ -31,6 +31,7 @@ import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.maths.Vec4i;
+import fr.veridiangames.core.physics.PhysicsEngine;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
 import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Indexer;
@@ -73,7 +74,7 @@ public class World
 		worldGen.addNoisePasses();
 		worldGen.calcFinalNoise();
 
-		modifiedBlocksArray = new Vec4i[worldSize*16][worldSize*16][worldSize*16];
+		modifiedBlocksArray = new Vec4i[worldSize*16][5*16][worldSize*16];
 
 		for (int x = 0; x < worldSize; x++)
 		{
@@ -112,6 +113,10 @@ public class World
 		{
 			c.update();
 		}
+	}
+
+	public void explosion(Vec3 pos, float force) {
+		core.getGame().getPhysics().explosion(pos, force);
 	}
 
 	/**** Used for huge maps. If ever needed again. ****/
@@ -322,7 +327,7 @@ public class World
 			updateRequests.add(index);
 	}
 	
-	public List<AABoxCollider> getAABoxInRange(Vec3 pos, int range)
+	public List<AABoxCollider> getBlocksColliderInRange(Vec3 pos, int range)
 	{
 		List<AABoxCollider> result = new ArrayList<AABoxCollider>();
 

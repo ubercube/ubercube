@@ -24,7 +24,6 @@ import java.util.List;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
-import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.world.Chunk;
 import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Mathf;
@@ -32,8 +31,6 @@ import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
 import fr.veridiangames.core.physics.colliders.Collider;
-
-import static javax.swing.text.html.HTML.Tag.HEAD;
 
 /**
  * Created by Marccspro on 22 janv. 2016.
@@ -172,7 +169,7 @@ public class Rigidbody
 		collidingZ = false;
 
 		Vec3 axis = new Vec3();
-		List<AABoxCollider> blocks = world.getAABoxInRange(position, 3);
+		List<AABoxCollider> blocks = world.getBlocksColliderInRange(position, 3);
 		for (int i = 0; i < blocks.size(); i++)
 		{
 			AABoxCollider b = blocks.get(i);

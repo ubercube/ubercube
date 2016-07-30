@@ -157,6 +157,8 @@ public class Bullet extends Entity
 
 				if (holderID == core.getGame().getPlayer().getID())
 					net.tcpSend(new DamageForcePacket(getPosition().copy(), 2 + (float) Math.random() * 1.5f));
+
+				core.getGame().getWorld().explosion(getPosition(), 1f);
 			} else if (holderID == core.getGame().getPlayer().getID()) {
 				this.net.tcpSend(new BulletHitBlockPacket(holderID, new Vec3i(blockPosition), 0.1f, block));
 			}

@@ -86,6 +86,8 @@ public class Grenade extends Entity
         if (holderID == getCore().getGame().getPlayer().getID())
             net.tcpSend(new DamageForcePacket(getPosition().copy(), 4));
 
+        getCore().getGame().getWorld().explosion(getPosition(), 2f);
+
         this.destroy();
     }
 
