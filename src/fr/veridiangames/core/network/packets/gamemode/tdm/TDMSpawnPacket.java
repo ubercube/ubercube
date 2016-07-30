@@ -20,6 +20,7 @@
 package fr.veridiangames.core.network.packets.gamemode.tdm;
 
 import fr.veridiangames.core.game.modes.TDMGameMode;
+import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.network.packets.Packet;
@@ -30,20 +31,33 @@ import java.net.InetAddress;
 /**
  * Created by Jimi Vacarians on 25/07/2016.
  */
-public class TDMSyncPacket extends Packet {
+public class TDMSpawnPacket extends Packet {
 
+    private Vec3 redSpawn = new Vec3();
+    private Vec3 blueSpawn = new Vec3();
 
-    public TDMSyncPacket() {
-        super(Packet.GAMEMODE_TDM_SYNC);
+    public TDMSpawnPacket() {
+        super(Packet.GAMEMODE_TDM_SPAWN);
     }
 
-    public TDMSyncPacket(TDMGameMode mode) {
-        super(Packet.GAMEMODE_TDM_SYNC);
+    public TDMSpawnPacket(Vec3 red, Vec3 blue) {
+        super(Packet.GAMEMODE_TDM_SPAWN);
+        data.put(red.x);
+        data.put(red.y);
+        data.put(red.z);
+        data.put(blue.x);
+        data.put(blue.y);
+        data.put(blue.z);
     }
 
     @Override
     public void read(DataBuffer buffer) {
-
+        redSpawn.x = data.getFloat();
+        redSpawn.y = data.getFloat();
+        redSpawn.z = data.getFloat();
+        blueSpawn.x = data.getFloat();
+        blueSpawn.y = data.getFloat();
+        blueSpawn.z = data.getFloat();
     }
 
     @Override
@@ -53,6 +67,8 @@ public class TDMSyncPacket extends Packet {
 
     @Override
     public void process(NetworkableClient client, InetAddress address, int port) {
-
+        TDMGameMode mode = (TDMGameMode) client.getCore().getGame().getGameMode();
+        mode.getRedTeam().setSpawn(redSpawn);
+        mode.getBlueTeam().setSpawn(blueSpawn);
     }
 }

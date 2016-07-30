@@ -55,7 +55,7 @@ public abstract class Packet
 	public static final int AUDIO				= 20;
 
 	/* GAME MODES */
-	public static final int GAMEMODE_TDM_SYNC	= 21;
+	public static final int GAMEMODE_TDM_SPAWN = 21;
 	public static final int GAMEMODE_TDM_SCORE	= 22;
 	public static final int GAMEMODE_TDM_TEAM= 23;
 

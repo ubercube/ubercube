@@ -24,7 +24,7 @@ import java.util.Map;
 
 import fr.veridiangames.core.network.packets.*;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMScorePacket;
-import fr.veridiangames.core.network.packets.gamemode.tdm.TDMSyncPacket;
+import fr.veridiangames.core.network.packets.gamemode.tdm.TDMSpawnPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMTeamPacket;
 
 /**
@@ -60,7 +60,7 @@ public class PacketManager
 		packets.put(Packet.AUDIO, SoundPacket.class);
 
 		/* GAME MODES */
-		packets.put(Packet.GAMEMODE_TDM_SYNC, TDMSyncPacket.class);
+		packets.put(Packet.GAMEMODE_TDM_SPAWN, TDMSpawnPacket.class);
 		packets.put(Packet.GAMEMODE_TDM_SCORE, TDMScorePacket.class);
 		packets.put(Packet.GAMEMODE_TDM_TEAM, TDMTeamPacket.class);
 	}

@@ -56,6 +56,9 @@ public class Team {
     public Vec3 getSpawn(){
         return spawn;
     }
+    public void setSpawn(Vec3 pos){
+        spawn.set(pos);
+    }
 
     public Team(){
 

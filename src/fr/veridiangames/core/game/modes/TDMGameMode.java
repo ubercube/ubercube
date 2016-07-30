@@ -19,11 +19,16 @@
 
 package fr.veridiangames.core.game.modes;
 
+import fr.veridiangames.client.Ubercube;
+import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.data.GameData;
+import fr.veridiangames.core.game.data.world.WorldGen;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec4;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMScorePacket;
+import fr.veridiangames.core.network.packets.gamemode.tdm.TDMSpawnPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMTeamPacket;
 import fr.veridiangames.core.utils.Color4f;
 
@@ -36,6 +41,8 @@ public class TDMGameMode implements GameMode
     {
         redTeam.setColor(Color4f.RED);
         blueTeam.setColor(Color4f.BLUE);
+        redTeam.setSpawn(new Vec3(0, 25, 0));
+        blueTeam.setSpawn(new Vec3(20, 25, 20));
     }
 
     private Team redTeam = new Team();
@@ -72,7 +79,7 @@ public class TDMGameMode implements GameMode
     }
 
     @Override
-    public Vec3 getSpawn(Player p) {
+    public Vec3 getPlayerSpawn(Player p) {
         if(redTeam.getPlayers().contains(p))
             return redTeam.getSpawn();
 
@@ -102,6 +109,7 @@ public class TDMGameMode implements GameMode
         }
         server.tcpSendToAll(new TDMScorePacket(redScore, blueScore)); // All to player
         server.tcpSendToAll(new TDMTeamPacket(redTeam, blueTeam));
+        server.tcpSendToAll(new TDMSpawnPacket(redTeam.getSpawn(), blueTeam.getSpawn()));
     }
 
     @Override
@@ -124,7 +132,7 @@ public class TDMGameMode implements GameMode
     }
 
     @Override
-    public void onPlayerSpawn(Player p) {
+    public void onPlayerSpawn(Player p, NetworkableServer server) {
 
     }
 }
