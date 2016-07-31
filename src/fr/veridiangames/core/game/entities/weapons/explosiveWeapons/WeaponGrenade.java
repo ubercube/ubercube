@@ -68,17 +68,13 @@ public class WeaponGrenade extends ExplosiveWeapon
     public void onActionUp()
     {
         Grenade grenade = new Grenade(Indexer.getUniqueID(),
-                this.holder.getID(),
+                GameCore.getInstance().getGame().getPlayer().getID(),
                 transform.getPosition().copy().add(this.holder.getTransform().getForward().copy().mul(0.0f)),
                 transform.getRotation(), force);
 
         grenade.setNetwork(net);
 
-        GameCore.getInstance().getGame().spawn(grenade);
-
-        net.udpSend(new GrenadeShootPacket(holder.getID(), grenade));
-        grenade.setNetwork(net);
-
+        net.tcpSend(new GrenadeShootPacket(GameCore.getInstance().getGame().getPlayer().getID(), grenade));
 
         force = 0;
     }

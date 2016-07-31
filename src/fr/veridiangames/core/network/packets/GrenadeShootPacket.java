@@ -106,15 +106,11 @@ public class GrenadeShootPacket extends Packet {
 
     public void process(NetworkableServer server, InetAddress address, int port)
     {
-        id = Indexer.getUniqueID();
-        server.udpSendToAll(new GrenadeShootPacket(this));
+        server.tcpSendToAll(new GrenadeShootPacket(this));
     }
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        if (client.getID() == clientID)
-            return;
-
         Grenade grenade = new Grenade(id, clientID, position, rotation, shootForce);
         grenade.setNetwork(client);
         client.getCore().getGame().spawn(grenade);

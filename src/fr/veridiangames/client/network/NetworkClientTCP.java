@@ -63,8 +63,8 @@ public class NetworkClientTCP
                         continue;
                     }
 
-                    if (GameCore.isDisplayNetworkDebug())
-                        log("TCP: " + getTime() + " [IN]-> received: " + packet);
+                    if (GameCore.isDisplayNetworkDebug() && !packet.getClass().getSimpleName().equals("PingPacket"))
+                        log("TCP: " + getTime() + " [IN] -> " + packet.getClass().getSimpleName());
 
                     packet.read(data);
                     packet.process(client, address, port);
@@ -125,8 +125,8 @@ public class NetworkClientTCP
                         return;
                     }
 
-                    if (GameCore.isDisplayNetworkDebug())
-                        log("TCP: " + getTime() + " [OUT]-> sending: " + packet);
+                    if (GameCore.isDisplayNetworkDebug() && !packet.getClass().getSimpleName().equals("PingPacket"))
+                        log("TCP: " + getTime() + " [OUT]-> " + packet.getClass().getSimpleName());
 
                     DataStream.writePacket(out, bytes);
                 } catch (IOException e)

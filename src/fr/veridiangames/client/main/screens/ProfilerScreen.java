@@ -102,7 +102,7 @@ public class ProfilerScreen extends GuiCanvas {
         private ArrayList<LinePrimitive> borderLines;
         private ArrayList<Curve> curves = new ArrayList<>();
 
-        protected float xScale = 1000;
+        protected float xScale = 500;
 
         public CurvePanel(GuiCanvas canvas, int x, int y, int w, int h) {
             super(x, y, w, h);

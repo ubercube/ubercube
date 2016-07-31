@@ -78,6 +78,9 @@ public class PhysicsEngine
 
 	public void explosion(Vec3 pos, float force)
 	{
+		if (pos.toString().contains("NaN"))
+			return;
+
 		for (Rigidbody b : bodies)
 		{
 			float dist = (b.getPosition().x - pos.x) * (b.getPosition().x - pos.x)
@@ -85,7 +88,10 @@ public class PhysicsEngine
 					   + (b.getPosition().z - pos.z) * (b.getPosition().z - pos.z);
 
 			Vec3 dir = new Vec3(b.getPosition().x - pos.x, b.getPosition().y - pos.y, b.getPosition().z - pos.z).normalize();
-			b.applyForce(dir, force/dist);
+
+			System.out.println("exp " + pos.toString() + "\nrb " + b.getPosition().toString() + " \nforce: " + force/(dist+force));
+
+			b.applyForce(dir, force/(dist+force));
 		}
 	}
 }
