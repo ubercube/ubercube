@@ -491,6 +491,8 @@ public class World
 	
 	public Vec4i getModifiedBlock(int x, int y, int z)
 	{
+		if (x < 0 || y < 0 || z < 0 || x >= worldSize * 16 || y >= worldSize * 16 || z >= worldSize * 16)
+			return null;
 		return modifiedBlocksArray[x][y][z];
 	}
 

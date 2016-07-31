@@ -31,6 +31,7 @@ import fr.veridiangames.core.maths.Vec3;
 public class PhysicsEngine
 {
 	private List<Rigidbody> bodies;
+	private List<Rigidbody> garbage;
 
 	public PhysicsEngine()
 	{
@@ -64,6 +65,11 @@ public class PhysicsEngine
 			a.updatePosition();
 			a.updateDragFactor();
 		}
+		for (int i = 0; i < garbage.size(); i++)
+		{
+			bodies.remove(garbage.get(i));
+		}
+		garbage.clear();
 	}
 
 	public void addBody(Rigidbody body)
@@ -73,7 +79,7 @@ public class PhysicsEngine
 
 	public void removeBody(Rigidbody body)
 	{
-		bodies.remove(body);
+		garbage.add(body);
 	}
 
 	public void explosion(Vec3 pos, float force)
