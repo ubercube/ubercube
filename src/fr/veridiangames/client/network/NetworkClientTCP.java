@@ -55,12 +55,13 @@ public class NetworkClientTCP
                 {
                     byte[] bytes = DataStream.readPacket(in);
                     DataBuffer data = new DataBuffer(bytes);
-                    Packet packet = PacketManager.getPacket(data.getInt());
+                    int id = data.getInt();
+                    Packet packet = PacketManager.getPacket(id);
 
                     if (packet == null)
                     {
-                        log("TCP: " + getTime() + " [ERROR]-> Received empty packet");
-                        continue;
+                        log("TCP: " + getTime() + " [ERROR]-> Received wrong packet id " + id);
+                        System.exit(1);
                     }
 
                     if (GameCore.isDisplayNetworkDebug() && !packet.getClass().getSimpleName().equals("PingPacket"))
