@@ -87,16 +87,17 @@ public class NetworkServerTCP implements Runnable
 
                     byte[] bytes = DataStream.readPacket(client.getInputStream());
                     DataBuffer data = new DataBuffer(bytes);
-                    Packet packet = PacketManager.getPacket(data.getInt());
+                    int id = data.getInt();
+                    Packet packet = PacketManager.getPacket(id);
 
                     if (packet == null)
                     {
-                        log("TCP: " + getTime() + " [ERROR]-> Received empty packet");
+                        log("TCP: " + getTime() + " [ERROR]-> Received wrong packet id " + id);
                         continue;
                     }
 
-                    if (GameCore.isDisplayNetworkDebug())
-                        log("TCP: " + getTime() + " [IN]-> received: " + packet);
+                    if (GameCore.isDisplayNetworkDebug() && !packet.getClass().getSimpleName().equals("PingPacket"))
+                        log("TCP: " + getTime() + " [IN] -> " + packet.getClass().getSimpleName());
 
                     packet.read(data);
                     packet.process(server, client.getSocket().getInetAddress(), client.getSocket().getPort());
@@ -119,7 +120,6 @@ public class NetworkServerTCP implements Runnable
             this.server = server;
             this.clients = new ArrayList<>();
             this.socket = new ServerSocket(port);
-            //this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
             new Thread(this, "tcp-clients").start();
             receiverThread.start();
         }

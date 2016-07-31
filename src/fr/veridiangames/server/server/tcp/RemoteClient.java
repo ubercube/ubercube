@@ -89,7 +89,7 @@ public class RemoteClient
                    if (packet.getData() == null)
                    {
                        server.getTcp().log("TCP: " + server.getTcp().getTime() + " [ERROR]-> Tried to send an empty packet");
-                       server.getTcp().log("TCP: " + server.getTcp().getTime() + " [ERROR]-> " + packet);
+                       server.getTcp().log("TCP: " + server.getTcp().getTime() + " [ERROR]-> " + packet.getClass().getSimpleName());
                        return;
                    }
 
@@ -101,8 +101,8 @@ public class RemoteClient
                        return;
                    }
 
-                   if (GameCore.isDisplayNetworkDebug())
-                       server.getTcp().log("TCP: " + server.getTcp().getTime() + " [OUT]-> sending: " + packet);
+                   if (GameCore.isDisplayNetworkDebug() && !packet.getClass().getSimpleName().equals("PingPacket"))
+                       server.getTcp().log("TCP: " + server.getTcp().getTime() + " [OUT]-> " + packet.getClass().getSimpleName());
 
                    DataStream.writePacket(out, bytes);
                } catch (IOException e)

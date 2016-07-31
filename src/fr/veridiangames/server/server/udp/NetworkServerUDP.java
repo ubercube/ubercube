@@ -97,7 +97,7 @@ public class NetworkServerUDP implements Runnable
                 }
                 catch (IOException e)
                 {
-                    e.printStackTrace();
+
                 }
             }
         }.start();
