@@ -54,20 +54,6 @@ public class SyncBlocksPacket extends Packet
 		}
 		data.flip();
 	}
-	
-	public SyncBlocksPacket(SyncBlocksPacket packet)
-	{
-		super(BLOCK_SYNC);
-		data.put(blocks.size());
-		for (Vec4i b : blocks)
-		{
-			data.put(b.x);
-			data.put(b.y);
-			data.put(b.z);
-			data.put(b.w);
-		}
-		data.flip();
-	}
 
 	public void read(DataBuffer data)
 	{

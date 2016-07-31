@@ -36,6 +36,8 @@ import fr.veridiangames.core.physics.colliders.AABoxCollider;
 import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Indexer;
 
+import static javax.swing.text.html.HTML.Tag.HEAD;
+
 public class World
 {
 	private Map<Integer, Chunk> generatingChunks;
