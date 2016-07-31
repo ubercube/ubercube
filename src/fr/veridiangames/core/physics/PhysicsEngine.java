@@ -89,8 +89,6 @@ public class PhysicsEngine
 
 			Vec3 dir = new Vec3(b.getPosition().x - pos.x, b.getPosition().y - pos.y, b.getPosition().z - pos.z).normalize();
 
-			System.out.println("exp " + pos.toString() + "\nrb " + b.getPosition().toString() + " \nforce: " + force/(dist+force));
-
 			b.applyForce(dir, force/(dist+force));
 		}
 	}
