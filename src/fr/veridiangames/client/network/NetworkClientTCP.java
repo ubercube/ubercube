@@ -113,7 +113,7 @@ public class NetworkClientTCP
                     if (packet.getData() == null)
                     {
                         log ("TCP: " + getTime() + " [ERROR]-> Tried to send an empty packet");
-                        log ("TCP: " + getTime() + " [ERROR]-> " + packet);
+                        log ("TCP: " + getTime() + " [ERROR]-> " + packet.getClass().getSimpleName());
                         return;
                     }
 
@@ -122,6 +122,7 @@ public class NetworkClientTCP
                     if (bytes.length == 0)
                     {
                         log ("TCP: " + getTime() + " [ERROR]-> Tried to send an empty packet");
+                        log ("TCP: " + getTime() + " [ERROR]-> " + packet.getClass().getSimpleName());
                         return;
                     }
 
