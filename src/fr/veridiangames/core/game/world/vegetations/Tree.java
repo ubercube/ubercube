@@ -68,7 +68,16 @@ public class Tree
                     size -= (float)j / 13.0f;
 
                     if (l < 4.5f * size) {
-                        world.addBlock(x + (int)ii, y + (int)jj + 7, z + (int)kk, Block.LEAF.copy().add(Mathf.random() * 0.1f).getARGB());
+                        //world.addBlock(x + (int)ii, y + (int)jj + 7, z + (int)kk, Block.LEAF.copy().add(Mathf.random() * 0.1f).getARGB());
+                        if(Mathf.sqrt(ii * ii + (jj + 1) * (jj + 1) + kk * kk) >= 4.5f){
+                            world.addBlock(x + (int)ii, y + (int)jj + 9, z + (int)kk, new Color4f(0.9f, 0.9f, 0.98f).add(world.getWorldGen().getRandom() * 0.02f).getARGB());
+                        }else{
+                            if(world.getWorldGen().getRandom() > 0.05f){
+                                world.addBlock(x + (int)ii, y + (int)jj + 9, z + (int)kk, new Color4f(0.9f, 0.9f, 0.98f).add(world.getWorldGen().getRandom() * 0.02f).getARGB());
+                            }else{
+                                world.addBlock(x + (int)ii, y + (int)jj + 9, z + (int)kk, Block.LEAF.copy().add(Mathf.random() * 0.1f).getARGB());
+                            }
+                        }
                     }
                 }
             }

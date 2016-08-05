@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.game.world;
 
+import fr.veridiangames.core.game.world.vegetations.Bush;
 import fr.veridiangames.core.game.world.vegetations.Rock;
 import fr.veridiangames.core.game.world.vegetations.Tree;
 import fr.veridiangames.core.maths.Mathf;
@@ -143,16 +144,31 @@ public class Chunk
 
 				float noiseHeight = noise[x][z];
 
-				if (noiseHeight < 11)
+				if (noiseHeight < 13)
 				{
-					if (world.getWorldGen().getRandom() > 0.995f)
+					float rand = world.getWorldGen().getRandom();
+					if (rand > 0.5f && rand < 0.502)
 					{
 						Tree.oakTree(world, xx, (int) noiseHeight, zz);
+					}else if(rand > 0.998f && rand < 0.999f)
+					{
+						Bush.bush(world, xx, (int) noiseHeight, zz);
+					}else if(rand > 0.9977f && rand < 0.998f){
+						Rock.rock(world, xx, (int) noiseHeight, zz);
+					}
+				}
+				else if(noiseHeight >= 17){
+					float rand = world.getWorldGen().getRandom();
+					if (rand > 0.9995f)
+					{
+						Tree.firTree(world, xx, (int) noiseHeight, zz);
+					}else if(rand > 0.9967f && rand < 0.997f){
+						Rock.rock(world, xx, (int) noiseHeight, zz);
 					}
 				}
 				else
 				{
-					if (world.getWorldGen().getRandom() > 0.9999f)
+					if (world.getWorldGen().getRandom() > 0.9985f)
 					{
 						Rock.rock(world, xx, (int) noiseHeight, zz);
 					}
