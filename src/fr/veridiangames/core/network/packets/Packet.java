@@ -54,10 +54,10 @@ public abstract class Packet
 	public static final int TCHAT_MSG			= 19;
 	public static final int AUDIO				= 20;
 
-	/* GAME MODES */
-	public static final int GAMEMODE_TDM_SPAWN = 21;
-	public static final int GAMEMODE_TDM_SCORE	= 22;
-	public static final int GAMEMODE_TDM_TEAM= 23;
+	/* GAME MODES  [500-600[ */
+	public static final int GAMEMODE_TDM_SPAWN = 501;
+	public static final int GAMEMODE_TDM_SCORE	= 502;
+	public static final int GAMEMODE_TDM_TEAM = 503;
 
 	protected DataBuffer data;
 

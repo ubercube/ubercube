@@ -20,6 +20,8 @@
 package fr.veridiangames.core.game.modes;
 
 import fr.veridiangames.client.Ubercube;
+import fr.veridiangames.client.main.screens.gamemode.TDMGameModeScreen;
+import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.data.GameData;
 import fr.veridiangames.core.game.data.world.WorldGen;

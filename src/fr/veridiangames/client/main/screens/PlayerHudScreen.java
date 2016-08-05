@@ -50,6 +50,7 @@ public class PlayerHudScreen extends GuiCanvas
     private GuiLabel playerPosition;
     private GuiLabel audioStatus;
     private GuiPanel damageEffect;
+    private GuiCanvas gameMode;
     private ConsoleScreen consoleScreen;
 
     private int health;
@@ -149,11 +150,8 @@ public class PlayerHudScreen extends GuiCanvas
         ProfilerScreen profilerScreen = new ProfilerScreen(this, display, core);
         super.addCanvas(profilerScreen);
 
-        /* *** GAME MODE GUI *** */
-        if(core.getGame().getGameMode() instanceof TDMGameMode) {
-            TDMGameModeScreen gameModeScreen = new TDMGameModeScreen(null, display, core);
-            super.addCanvas(gameModeScreen);
-        }
+        TDMGameModeScreen gameMode = new TDMGameModeScreen(this);
+        super.addCanvas(gameMode);
     }
 
     public void update()

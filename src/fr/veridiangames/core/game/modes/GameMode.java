@@ -19,14 +19,10 @@
 
 package fr.veridiangames.core.game.modes;
 
+import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Vec3;
-import fr.veridiangames.core.maths.Vec4;
 import fr.veridiangames.core.network.NetworkableServer;
-import fr.veridiangames.core.utils.Color4f;
-import fr.veridiangames.core.utils.DataBuffer;
-
-import java.util.List;
 
 /**
  * Created by Jimi Vacarians on 24/07/2016.
