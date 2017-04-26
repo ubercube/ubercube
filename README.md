@@ -9,7 +9,7 @@ The game is in development, for more information on it we have french updates an
 
 Ubercube is fully open source and licensed under the [GNU 3.0 License](http://www.gnu.org/licenses/) and available in source code form at [GitHub](https://github.com/TeamUbercube/ubercube)
 
-![Ubercube](http://veridiangames.fr/ubercube/UbercubeWesteros.png "Ubercube")
+![Ubercube](http://i.imgur.com/D7qmGQP.png "Ubercube")
 
 ## The Team
 | Programmers | Art/Design
@@ -30,8 +30,9 @@ We de not want to have an unfinished version to be downloadable, so we will prov
 ## How to compile ?
 
 Clone master's branch (to compile the official ubercue release) on your computer:
-> git clone --depth=1 https://github.com/TeamUbercube/ubercube.git
-
+```sh
+$ git clone --depth=1 https://github.com/TeamUbercube/ubercube.git
+```
 Or download the archive on [here](https://github.com/TeamUbercube/ubercube/archive/master.zip).
 
 Compile or run sources with your own IDE (**don't forget** to setup dependencies and natives).
@@ -40,12 +41,14 @@ And run **both server and client**.
 
 #### Client :
 
-> java -jar ubercube_client.jar *< ip >:< port > < username >*
+```sh
+$ java -jar ubercube_client.jar [ip]:[port] [username]
+```
 
 #### Server :
-
-> java -jar ubercube_server.jar *< port >*
-
+```sh
+$ java -jar ubercube_server.jar [port]
+```
 ## Credits
 | Thanks to them  | |
 | --- | --- |
