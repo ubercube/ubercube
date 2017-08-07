@@ -36,6 +36,7 @@ public class PhysicsEngine
 	public PhysicsEngine()
 	{
 		bodies = new ArrayList<>();
+		garbage = new ArrayList<>();
 	}
 
 	public void update(GameCore core)
