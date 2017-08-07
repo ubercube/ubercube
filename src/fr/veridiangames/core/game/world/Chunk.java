@@ -93,9 +93,9 @@ public class Chunk
 						continue;
 					else if (yy > noiseHeight - 1)
 					{
-						float snow = (float)(yy - 10) / 6;
+						float snow = (float)(yy - 20) / 10;
 						if(snow > 0) snow = 0;
-						if(snow > world.getWorldGen().getRandom()){
+						if(snow > world.getWorldGen().getRandom() - 1){
 							Color4f color = new Color4f(0.9f, 0.9f, 0.98f).add(world.getWorldGen().getRandom() * 0.02f);
 							color.setAlpha(1f);
 							addBlock(x, y, z, color.getARGB());
