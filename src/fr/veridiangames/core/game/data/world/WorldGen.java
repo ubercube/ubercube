@@ -71,9 +71,9 @@ public class WorldGen
 
 	public void addNoisePasses()
 	{
-		add(new NoisePass(seed, 60, 3, 0, 1));
-		add(new NoisePass(seed, 20, 10, 0.4f, -1));
-		add(new NoisePass(seed, 20, 20, 0, -1));
+		add(new NoisePass(seed, 60, 5, 0, 1));
+		add(new NoisePass(seed, 40, 10, 0.4f, -1));
+		add(new NoisePass(seed, 40, 15, 0.45f, -1));
 	}
 
 	private void add(NoisePass pass)

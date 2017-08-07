@@ -22,6 +22,7 @@ package fr.veridiangames.client.main.screens;
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.audio.AudioPlayer;
 import fr.veridiangames.client.inputs.Input;
+import fr.veridiangames.client.main.screens.gamemode.TDMGameModeScreen;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
@@ -48,6 +49,7 @@ public class PlayerHudScreen extends GuiCanvas
     private GuiLabel playerPosition;
     private GuiLabel audioStatus;
     private GuiPanel damageEffect;
+    private GuiCanvas gameMode;
     private ConsoleScreen consoleScreen;
 
     private int health;
@@ -146,6 +148,9 @@ public class PlayerHudScreen extends GuiCanvas
 
         ProfilerScreen profilerScreen = new ProfilerScreen(this, display, core);
         super.addCanvas(profilerScreen);
+
+        TDMGameModeScreen gameMode = new TDMGameModeScreen(this);
+        super.addCanvas(gameMode);
     }
 
     public void update()

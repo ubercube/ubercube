@@ -17,19 +17,29 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.core.game.world;
+package fr.veridiangames.core.game.modes;
 
-import fr.veridiangames.core.utils.Color4f;
-
-import static javafx.scene.AccessibleAttribute.LEAF;
+import fr.veridiangames.client.rendering.guis.GuiCanvas;
+import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.network.NetworkableServer;
 
 /**
- * Created by Marc on 21/06/2016.
+ * Created by Jimi Vacarians on 24/07/2016.
  */
-public class Block
+public interface GameMode
 {
-    public static final Color4f LEAF = new Color4f(0.1f, 0.4f, 0.1f, 1f);
-    public static final Color4f WOOD = new Color4f(0.42f * 0.6f, 0.32f * 0.6f, 0.14f * 0.6f, 1);
-    public static final Color4f ROCK = new Color4f(0.5f, 0.5f, 0.5f, 1);
-    public static final Color4f BUSH = new Color4f(0.1f, 0.4f, 0.1f, 1f);
+    void update();
+
+    Vec3 getPlayerSpawn(Player p);
+    Team getPlayerTeam(Player p);
+
+    /**
+     *  All event need a NetworkableServer param
+     */
+
+    void onPlayerConnect(Player p, NetworkableServer server);
+    void onPlayerDisconnect(Player p, NetworkableServer server);
+    void onPlayerDeath(Player p, NetworkableServer server);
+    void onPlayerSpawn(Player p, NetworkableServer server);
 }

@@ -19,9 +19,13 @@
 
 package fr.veridiangames.core.network.packets;
 
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
+import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
+import fr.veridiangames.core.game.modes.TDMGameMode;
+import fr.veridiangames.core.game.modes.Team;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
@@ -47,9 +51,12 @@ public class RespawnPacket extends Packet
         super(RESPAWN);
 
         data.put(playerId);
-        data.put(0.0f);
-        data.put(0.0f);
-        data.put(0.0f);
+
+        Vec3 spawn = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(playerId));
+
+        data.put(spawn.x);
+        data.put(spawn.y);
+        data.put(spawn.z);
 
         data.flip();
     }
@@ -62,6 +69,18 @@ public class RespawnPacket extends Packet
         data.put(packet.position.x);
         data.put(packet.position.y);
         data.put(packet.position.z);
+
+        data.flip();
+    }
+
+    public RespawnPacket(int id, Vec3 v)
+    {
+        super(RESPAWN);
+
+        data.put(id);
+        data.put(v.x);
+        data.put(v.y);
+        data.put(v.z);
 
         data.flip();
     }
@@ -80,10 +99,14 @@ public class RespawnPacket extends Packet
         p.setLife(100);
         p.setDead(false);
 
-        int x = server.getCore().getGame().getData().getWorldSize() * 8;
+        // GAME MODE
+        GameCore.getInstance().getGame().getGameMode().onPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(playerId), server);
+        this.position = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(playerId));
+
+        /*int x = server.getCore().getGame().getData().getWorldSize() * 8;
         int y = server.getCore().getGame().getData().getWorldSize() * 8;
         int height = (int) server.getCore().getGame().getData().getWorldGen().getNoise(x, y) + 15;
-        this.position = new Vec3(x, height, y);      // TODO : Modify position
+        this.position = new Vec3(x, height, y);      // TODO : Modify position*/
 
         server.tcpSend(new RespawnPacket(this), p.getNetwork().getAddress(), p.getNetwork().getPort());
     }

@@ -341,6 +341,10 @@ public class Ubercube
 		guiManager.setCanvas(guiManager.getCanvases().indexOf(canvas));
 	}
 
+	public GuiCanvas getScreen(int i){
+		return guiManager.getCanvases().get(i);
+	}
+
 	public boolean isInConsole()
 	{
 		return inConsole;
