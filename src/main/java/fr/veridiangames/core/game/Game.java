@@ -33,8 +33,8 @@ import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.physics.PhysicsEngine;
 import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Indexer;
-
-import static javax.swing.text.html.HTML.Tag.HEAD;
+import fr.veridiangames.core.game.modes.GameMode;
+import fr.veridiangames.core.game.modes.TDMGameMode;
 
 /**
  * Created by Marccspro on 28 janv. 2016.
@@ -48,6 +48,7 @@ public class Game
 	private World			    world;
 	private PhysicsEngine	    physics;
 	private ClientPlayer	    clientPlayer;
+	private GameMode			gameMode;
 
 	public Game(GameCore core)
 	{
@@ -55,6 +56,7 @@ public class Game
 		this.data = new GameData();
 		this.physics = new PhysicsEngine();
 		this.entityManager = new EntityManager();
+		this.gameMode = new TDMGameMode();
 	}
 
 	public void init()
@@ -121,4 +123,8 @@ public class Game
 	{
 		return physics;
 	}
+
+	public GameMode getGameMode(){ return gameMode; }
+
+	public void setGameMode(GameMode mode){ gameMode = mode; }
 }

@@ -34,6 +34,7 @@ import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.NetworkableClient;
+import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.BulletHitBlockPacket;
 import fr.veridiangames.core.network.packets.BulletHitPlayerPacket;
 import fr.veridiangames.core.utils.Color4f;
@@ -106,7 +107,7 @@ public class Bullet extends Entity
 			Vec3i impactPosition = new Vec3i(position);
 			Vec3 normal = new Vec3(impactPosition).gtNorm(position);
 
-			this.net.tcpSend(new BulletHitBlockPacket(holderID, new Vec3i(blockPosition), 0.1f, block));
+			this.net.send(new BulletHitBlockPacket(holderID, new Vec3i(blockPosition), 0.1f, block), Protocol.TCP);
 
 			ParticleSystem hitParticles = new ParticlesBulletHit(Indexer.getUniqueID(), getPosition().copy(), new Color4f(block));
 			hitParticles.setNetwork(net);
@@ -119,7 +120,7 @@ public class Bullet extends Entity
 			blood.setParticleVelocity(getRotation().getBack().copy().mul(0.02f));
 			blood.setNetwork(net);
 			Player player = (Player) e;
-			this.net.tcpSend(new BulletHitPlayerPacket(player));
+			this.net.send(new BulletHitPlayerPacket(player), Protocol.TCP);
 			this.destroy();
 		}
 	}

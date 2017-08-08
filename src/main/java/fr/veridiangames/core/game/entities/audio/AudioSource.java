@@ -41,6 +41,13 @@ public class AudioSource extends Entity
         this.surround = false;
     }
 
+    public AudioSource(int source, float gain)
+    {
+        this(source, null, null, false);
+        this.surround = false;
+        this.gain = gain;
+    }
+
     public AudioSource(int source, boolean loop)
     {
         this(source, null, null, loop);

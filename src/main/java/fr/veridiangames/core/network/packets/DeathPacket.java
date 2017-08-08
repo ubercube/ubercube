@@ -25,6 +25,7 @@ import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
+import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.utils.Indexer;
@@ -70,7 +71,7 @@ public class DeathPacket extends Packet
             client.log("You died !");
             client.getCore().getGame().getPlayer().setDead(true);
             client.getCore().getGame().getPlayer().setLife(Player.MAX_LIFE);
-            client.tcpSend(new RespawnPacket(GameCore.getInstance().getGame().getPlayer().getID()));
+            client.send(new RespawnPacket(GameCore.getInstance().getGame().getPlayer().getID()), Protocol.TCP);
         }
 
         if (client.getCore().getGame().getEntityManager().getEntities().get(playerId) == null)

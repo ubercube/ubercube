@@ -31,6 +31,7 @@ import fr.veridiangames.client.rendering.guis.components.GuiTextBox;
 import fr.veridiangames.client.rendering.renderers.guis.FontRenderer;
 import fr.veridiangames.client.rendering.shaders.GuiShader;
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.TchatMsgPacket;
 import fr.veridiangames.core.utils.Color4f;
 
@@ -102,7 +103,7 @@ public class ConsoleScreen extends GuiCanvas
 
         if (Display.getInstance().getInput().getKeyDown(Input.KEY_ENTER) && console && write.getText().length() > 0)
         {
-            Ubercube.getInstance().getNet().tcpSend(new TchatMsgPacket(core.getGame().getPlayer().getName() + ": " + write.getText()));
+            Ubercube.getInstance().getNet().send(new TchatMsgPacket(core.getGame().getPlayer().getName() + ": " + write.getText()), Protocol.TCP);
             console = false;
             Display.getInstance().getInput().getMouse().setGrabbed(true);
             write.clear();

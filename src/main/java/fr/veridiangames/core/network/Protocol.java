@@ -17,17 +17,9 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.client;
+package fr.veridiangames.core.network;
 
-import static fr.veridiangames.core.utils.FileUtils.fileExist;
-
-public class FileManager
+public enum Protocol
 {
-    public static String getResource(String path)
-    {
-        String fullPath = "res/" + path;
-        if (!fileExist(fullPath))
-            throw new RuntimeException("Unknown resource: " + path);
-        return (fullPath);
-    }
+    UDP, TCP
 }

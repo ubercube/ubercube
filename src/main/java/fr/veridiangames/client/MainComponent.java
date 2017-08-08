@@ -35,7 +35,7 @@ public class MainComponent
 	public static void main(String[] args)
 	{
 		if (args.length != 2)
-			System.out.println("Usage: ./ubercube_server ip:port username");
+			System.out.println("Usage: ./ubercube ip:port username");
 		else {
 			Ubercube ubercube = new Ubercube();
 			ubercube.setDisplay(new Display("Ubercube " + GameCore.GAME_VERSION_NAME, 1280, 720));

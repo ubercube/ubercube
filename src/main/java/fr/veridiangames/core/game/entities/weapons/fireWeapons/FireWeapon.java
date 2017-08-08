@@ -29,6 +29,7 @@ import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.BulletShootPacket;
 import fr.veridiangames.core.utils.Indexer;
 
@@ -46,6 +47,8 @@ public class FireWeapon extends Weapon
 
 	private int maxBullets;
 	private int bulletsLeft;
+
+	private float audioGain;
 	
 	public FireWeapon(int model)
 	{
@@ -56,6 +59,7 @@ public class FireWeapon extends Weapon
 		this.bulletsLeft = maxBullets;
 		this.runRotation = new Vec3(10f, -20f, 0);
 		this.shootPecision = 0.02f;
+		this.audioGain = 1.0f;
 	}
 	
 	public void update(GameCore core)
@@ -105,7 +109,7 @@ public class FireWeapon extends Weapon
 	{
 		Vec3 shootPosition = this.holder.getEyePosition().copy().add(holder.getTransform().getForward());
 		Bullet bullet = new Bullet(Indexer.getUniqueID(), holder.getID(), "", this.shootPoint.getPosition(), this.transform.getRotation(), shootForce);
-		net.udpSend(new BulletShootPacket(holder.getID(), bullet));
+		net.send(new BulletShootPacket(holder.getID(), bullet), Protocol.UDP);
 		bullet.setNetwork(net);
 		core.getGame().spawn(bullet);
 
@@ -134,7 +138,7 @@ public class FireWeapon extends Weapon
 		Vec3 shootVector = new Vec3(transform.getLocalPosition()).sub(transform.getLocalRotation().getForward().copy().mul(0, 0, 0.2f));
 		this.transform.setLocalPosition(shootVector);
 		this.removeBullet();
-		this.holder.getCore().getGame().spawn(new AudioSource(Sound.AK47_SHOOT));
+		this.holder.getCore().getGame().spawn(new AudioSource(Sound.AK47_SHOOT, audioGain));
 		if (!zoomed)
 		{
 			this.rotationFactor.add(Mathf.random(-shootPecision, shootPecision), Mathf.random(-shootPecision, shootPecision), 0);
@@ -177,6 +181,8 @@ public class FireWeapon extends Weapon
 		return shootForce;
 	}
 
+	public float getAudioGain() { return audioGain; }
+
 	public void setShootForce(float shootForce)
 	{
 		this.shootForce = shootForce;
@@ -207,4 +213,6 @@ public class FireWeapon extends Weapon
 	{
 		this.bulletsLeft = bulletsLeft;
 	}
+
+	public void setAudioGain(float audioGain) { this.audioGain = audioGain; }
 }

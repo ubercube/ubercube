@@ -44,12 +44,15 @@ import static org.lwjgl.openal.ALC10.alcOpenDevice;
  */
 public class AudioSystem
 {
+    private static float mainGain;
     private static long device;
     private static long context;
     private static List<AudioPlayer> audioPlayers;
 
     public static void init()
     {
+        mainGain = 0.05f;
+
         device = alcOpenDevice((ByteBuffer)null);
         ALCCapabilities deviceCaps = ALC.createCapabilities(device);
 
@@ -65,14 +68,14 @@ public class AudioSystem
     public static void play(int sound)
     {
         AudioPlayer player = new AudioPlayer(new AudioSource(sound));
-        player.play();
+        player.play(mainGain);
         audioPlayers.add(player);
     }
 
     public static void play(AudioSource audioSource)
     {
         AudioPlayer player = new AudioPlayer(audioSource);
-        player.play();
+        player.play(mainGain);
         audioPlayers.add(player);
     }
 
