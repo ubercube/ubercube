@@ -25,14 +25,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.game.entities.bullets.Bullet;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
+import fr.veridiangames.core.game.entities.player.ClientPlayer;
+import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Vec3;
+import sun.nio.ch.Net;
 
 import static javax.swing.text.html.HTML.Tag.HEAD;
 
@@ -107,7 +111,15 @@ public class EntityManager
 			networkableEntities.remove((Integer) id);
 
 		if (playerEntities.contains(id))
+		{
+			Entity e = entities.get(id);
+			if (e instanceof NetworkedPlayer)
+			{
+				NetworkedPlayer p = (NetworkedPlayer) e;
+				GameCore.getInstance().getGame().getPhysics().removeBody(p.getBody());
+			}
 			playerEntities.remove((Integer) id);
+		}
 
 		if (particleEntities.contains(id))
 			particleEntities.remove((Integer) id);

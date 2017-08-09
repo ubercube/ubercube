@@ -20,8 +20,10 @@
 package fr.veridiangames.core.game.entities.player;
 
 import fr.veridiangames.core.game.entities.components.ECRigidbody;
+import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.physics.Rigidbody;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
 
 /**
@@ -34,5 +36,10 @@ public class NetworkedPlayer extends Player
 		super(id, name, position, rotation, address, port);
 		super.add(new ECRigidbody(this, position, rotation, new AABoxCollider(new Vec3(0.5f, 2.5f * 0.5f, 0.5f)), true));
 		super.addTag("NetPlayer");
+	}
+
+	public Rigidbody getBody()
+	{
+		return ((ECRigidbody) this.get(EComponent.RIGIDBODY)).getBody();
 	}
 }

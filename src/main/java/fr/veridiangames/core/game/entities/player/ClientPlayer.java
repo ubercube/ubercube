@@ -155,13 +155,11 @@ public class ClientPlayer extends Player
 			if (Mathf.sin(walkTimer * getKeyComponent().getSpeed() * 10) * walkSide >= 0)
 			{
 				walkSide = -walkSide;
-
 				core.getGame().spawn(new AudioSource(Sound.FOOTSTEP[(int) Mathf.random(0, 3)]));
 				net.send(new SoundPacket(this.getID(), new AudioSource(Sound.FOOTSTEP[(int) Mathf.random(0, 3)], getPosition())), Protocol.UDP);
 			}
 			walkTimer++;
 		}
-
 		if (getRigidBody().getBody().isHitGrounded())
 			core.getGame().spawn(new AudioSource(Sound.LAND));
 	}
