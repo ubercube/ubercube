@@ -22,6 +22,7 @@ package fr.veridiangames.client.main.screens;
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.audio.AudioPlayer;
 import fr.veridiangames.client.inputs.Input;
+import fr.veridiangames.client.main.screens.gamemenu.DeathScreen;
 import fr.veridiangames.client.main.screens.gamemenu.GameMenuScreen;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
@@ -154,6 +155,9 @@ public class PlayerHudScreen extends GuiCanvas
 
         GameMenuScreen gameMenuGui = new GameMenuScreen(this, display, core);
         this.addCanvas(gameMenuGui);
+
+        DeathScreen deathScreen = new DeathScreen(this, display, core);
+        this.addCanvas(deathScreen);
     }
 
     public void update()
