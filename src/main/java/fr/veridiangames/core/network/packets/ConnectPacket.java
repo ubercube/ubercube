@@ -154,7 +154,7 @@ public class ConnectPacket extends Packet
 		GameCore.getInstance().getGame().getGameMode().onPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(id), server);
 		this.position = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(id));
 
-		server.tcpSend(new RespawnPacket(id, this.position), address, port);
+		server.tcpSend(new RespawnPacket((Player) GameCore.getInstance().getGame().getEntityManager().get(id), this.position), address, port);
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)
