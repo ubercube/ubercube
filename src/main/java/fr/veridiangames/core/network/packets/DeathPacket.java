@@ -20,6 +20,9 @@
 package fr.veridiangames.core.network.packets;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.Entity;
+import fr.veridiangames.core.game.entities.components.ECName;
+import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Vec3;
@@ -63,9 +66,11 @@ public class DeathPacket extends Packet
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        client.console(this.playerId + " just died !");
-        if(client.getCore().getGame().getPlayer().getID() != this.playerId)
-            client.log(this.playerId + " just died !");
+        Entity e = client.getCore().getGame().getEntityManager().get(this.playerId);
+        if (e != null)
+            client.console(((ECName)e.get(EComponent.NAME)).getName() + " just died !");
+        if(client.getCore().getGame().getPlayer().getID() != this.playerId && e != null)
+            client.log(((ECName)e.get(EComponent.NAME)).getName() + " just died !");
         else
         {
             client.log("You died !");
