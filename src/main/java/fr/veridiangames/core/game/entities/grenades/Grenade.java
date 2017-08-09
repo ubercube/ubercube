@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.game.entities.grenades;
 
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.Model;
@@ -38,6 +39,7 @@ import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.BulletHitBlockPacket;
 import fr.veridiangames.core.network.packets.BulletHitPlayerPacket;
 import fr.veridiangames.core.network.packets.DamageForcePacket;
+import fr.veridiangames.core.physics.PhysicsEngine;
 import fr.veridiangames.core.physics.Rigidbody;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
 import fr.veridiangames.core.utils.Color4f;
@@ -96,6 +98,7 @@ public class Grenade extends Entity
         if(this.holderID == GameCore.getInstance().getGame().getPlayer().getID())
             net.send(new DamageForcePacket(getPosition().copy(), 4), Protocol.TCP);
         this.destroy();
+        this.getCore().getGame().getPhysics().removeBody(this.getBody());
     }
 
     public Rigidbody getBody() {return ((ECRigidbody) this.get(EComponent.RIGIDBODY)).getBody(); }

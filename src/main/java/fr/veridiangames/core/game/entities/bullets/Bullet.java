@@ -111,7 +111,6 @@ public class Bullet extends Entity
 				this.net.send(new BulletHitBlockPacket(holderID, new Vec3i(blockPosition), 0.1f, block), Protocol.TCP);
 
 			ParticleSystem hitParticles = new ParticlesBulletHit(Indexer.getUniqueID(), getPosition().copy(), new Color4f(block));
-			//hitParticles.setNetwork(net);
 			GameCore.getInstance().getGame().spawn(hitParticles);
 
 			this.destroy();

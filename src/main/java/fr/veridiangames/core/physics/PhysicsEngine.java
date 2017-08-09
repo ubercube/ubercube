@@ -38,6 +38,7 @@ public class PhysicsEngine
 
 	public void update(GameCore core)
 	{
+		System.out.println("Physics: " + bodys.size());
 		for (int i = 0; i < bodys.size(); i++)
 		{
 			Rigidbody a = bodys.get(i);
