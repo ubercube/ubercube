@@ -34,8 +34,9 @@ public interface NetworkableClient
 	public void console(String msg);
 	public void playSound(AudioSource audioSource);
 
-	public void tcpSend(Packet packet);
-	public void udpSend(Packet packet);
+	public void send(Packet packet, Protocol protocol);
+	// public void tcpSend(Packet packet);
+	// public void udpSend(Packet packet);
 
 	public void setConnected(boolean connected);
 	public boolean isConnected();

@@ -30,6 +30,7 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.ConnectPacket;
 import fr.veridiangames.client.main.player.PlayerHandler;
 import fr.veridiangames.client.network.NetworkClient;
@@ -277,7 +278,7 @@ public class Ubercube
 				ticks = 0;
 			}
 		}
-		net.tcpSend(new DisconnectPacket(core.getGame().getPlayer().getID(), "Client closed the game"));
+		net.send(new DisconnectPacket(core.getGame().getPlayer().getID(), "Client closed the game"), Protocol.TCP);
 		display.setDestroyed(true);
 		AudioSystem.destroy();
 		System.exit(0);
@@ -312,7 +313,7 @@ public class Ubercube
 		player.setNetwork(net);
 		
 		core.getGame().setPlayer(player);
-		net.tcpSend(new ConnectPacket(player));
+		net.send(new ConnectPacket(player), Protocol.TCP);
 	}
 
 	public PlayerHandler getPlayerHandler()
@@ -339,6 +340,11 @@ public class Ubercube
 	{
 		guiManager.add(canvas);
 		guiManager.setCanvas(guiManager.getCanvases().indexOf(canvas));
+	}
+
+	public GuiCanvas getScreen(int i)
+	{
+		return guiManager.getCanvases().get(i);
 	}
 
 	public boolean isInConsole()

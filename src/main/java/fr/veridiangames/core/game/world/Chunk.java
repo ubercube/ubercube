@@ -26,6 +26,7 @@ import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.maths.Vec4i;
 import fr.veridiangames.core.utils.Color4f;
+import fr.veridiangames.core.game.world.vegetations.Bush;
 
 public class Chunk
 {
@@ -143,7 +144,7 @@ public class Chunk
 
 				float noiseHeight = noise[x][z];
 
-				if (noiseHeight < 11)
+				if (noiseHeight < 13)
 				{
 					if (world.getWorldGen().getRandom() > 0.995f)
 					{

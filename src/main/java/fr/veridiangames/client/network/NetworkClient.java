@@ -27,8 +27,8 @@ import fr.veridiangames.client.main.screens.ConsoleScreen;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.network.NetworkableClient;
+import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.Packet;
-import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.client.Ubercube;
 
 /**
@@ -61,16 +61,26 @@ public class NetworkClient implements NetworkableClient
 			e.printStackTrace();
 		}
 	}
-	
-	public void tcpSend(Packet packet)
+
+	public void send(Packet packet, Protocol protocol)
 	{
-		tcp.send(packet);
+		if (protocol == Protocol.TCP)
+			tcp.send(packet);
+		else if (protocol == Protocol.UDP)
+			udp.send(packet.getData().getData());
+		else
+			throw new RuntimeException("Invalide protocole !");
 	}
 
-	public void udpSend(Packet packet)
+	/*public void tcpSend(Packet packet)
+	{
+		tcp.send(packet);
+	}*/
+
+	/*public void udpSend(Packet packet)
 	{
 		udp.send(packet.getData().getData());
-	}
+	}*/
 	
 	public void stop()
 	{

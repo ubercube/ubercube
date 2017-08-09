@@ -29,4 +29,5 @@ public class Block
     public static final Color4f LEAF = new Color4f(0.1f, 0.4f, 0.1f, 1f);
     public static final Color4f WOOD = new Color4f(0.42f * 0.6f, 0.32f * 0.6f, 0.14f * 0.6f, 1);
     public static final Color4f ROCK = new Color4f(0.5f, 0.5f, 0.5f, 1);
+    public static final Color4f BUSH = new Color4f(0.1f, 0.4f, 0.1f, 1f);
 }

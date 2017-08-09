@@ -90,15 +90,14 @@ public class AudioPlayer
             alSource3f(source, AL_POSITION, 0.0f, 0.0f, 0.0f);
             alSource3f(source, AL_VELOCITY, 0.0f, 0.0f, 0.0f);
         }
-
-        alSourcef(source, AL_GAIN, gain);
     }
 
-    public void play()
+    public void play(float mainGain)
     {
         if (muteAudio)
             return;
         alSourcei(source, AL_BUFFER, sound);
+        alSourcef(source, AL_GAIN, gain * mainGain);
         alSourcePlay(source);
     }
 

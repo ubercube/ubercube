@@ -30,6 +30,7 @@ import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
+import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.EntityMovementPacket;
 import fr.veridiangames.core.network.packets.SoundPacket;
 import fr.veridiangames.core.network.packets.WeaponPositionPacket;
@@ -90,7 +91,7 @@ public class ClientPlayer extends Player
 		movementTime++;
 		if (movementTime % 60 == 5)
 		{
-			net.udpSend(new EntityMovementPacket(this));
+			net.send(new EntityMovementPacket(this), Protocol.UDP);
 			movementTime = 0;
 		}
 		timeOutTime++;
@@ -110,7 +111,7 @@ public class ClientPlayer extends Player
 		if (this.getWeaponManager().getWeapon().hasPositionChanged())
 		{
 			this.getWeaponManager().getWeapon().setPositionChanged(false);
-			net.udpSend(new WeaponPositionPacket(this.getID(), this.getWeaponManager().getWeapon().getCurrentPosition()));
+			net.send(new WeaponPositionPacket(this.getID(), this.getWeaponManager().getWeapon().getCurrentPosition()), Protocol.UDP);
 		}
 
 		/** Debug **/
@@ -156,7 +157,7 @@ public class ClientPlayer extends Player
 				walkSide = -walkSide;
 
 				core.getGame().spawn(new AudioSource(Sound.FOOTSTEP[(int) Mathf.random(0, 3)]));
-				net.udpSend(new SoundPacket(this.getID(), new AudioSource(Sound.FOOTSTEP[(int) Mathf.random(0, 3)], getPosition())));
+				net.send(new SoundPacket(this.getID(), new AudioSource(Sound.FOOTSTEP[(int) Mathf.random(0, 3)], getPosition())), Protocol.UDP);
 			}
 			walkTimer++;
 		}

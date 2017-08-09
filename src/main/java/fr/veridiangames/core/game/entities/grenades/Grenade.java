@@ -34,6 +34,7 @@ import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.NetworkableClient;
+import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.BulletHitBlockPacket;
 import fr.veridiangames.core.network.packets.BulletHitPlayerPacket;
 import fr.veridiangames.core.network.packets.DamageForcePacket;
@@ -92,7 +93,7 @@ public class Grenade extends Entity
     private void explose()
     {
         getCore().getGame().spawn(new ParticlesExplosion(Indexer.getUniqueID(), getPosition().copy()));
-        net.tcpSend(new DamageForcePacket(getPosition().copy(), 4));
+        net.send(new DamageForcePacket(getPosition().copy(), 4), Protocol.TCP);
         this.destroy();
     }
 

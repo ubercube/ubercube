@@ -17,9 +17,29 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.core.network;
+package fr.veridiangames.core.game.modes;
 
-public enum Protocole
+import fr.veridiangames.client.rendering.guis.GuiCanvas;
+import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.network.NetworkableServer;
+
+/**
+ * Created by Jimi Vacarians on 24/07/2016.
+ */
+public interface GameMode
 {
-    UDP, TCP
+    void update();
+
+    Vec3 getPlayerSpawn(Player p);
+    Team getPlayerTeam(Player p);
+
+    /**
+     *  All event need a NetworkableServer param
+     */
+
+    void onPlayerConnect(Player p, NetworkableServer server);
+    void onPlayerDisconnect(Player p, NetworkableServer server);
+    void onPlayerDeath(Player p, NetworkableServer server);
+    void onPlayerSpawn(Player p, NetworkableServer server);
 }

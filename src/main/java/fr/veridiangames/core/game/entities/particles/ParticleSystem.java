@@ -26,6 +26,7 @@ import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
+import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.ParticlesRemovePacket;
 import fr.veridiangames.core.network.packets.ParticlesSpawnPacket;
 import fr.veridiangames.core.utils.Color4f;
@@ -171,7 +172,7 @@ public class ParticleSystem extends Entity
 
     public void destroy() {
 		if(net != null)
-        	net.tcpSend(new ParticlesRemovePacket(this));
+        	net.send(new ParticlesRemovePacket(this), Protocol.TCP);
 		else
 			getCore().getGame().getEntityManager().remove(getID());
     }
@@ -346,7 +347,7 @@ public class ParticleSystem extends Entity
 
     public ParticleSystem setNetwork(NetworkableClient net) {
         this.net = net;
-        this.net.udpSend(new ParticlesSpawnPacket(this));
+        this.net.send(new ParticlesSpawnPacket(this), Protocol.UDP);
         return this;
     }
 

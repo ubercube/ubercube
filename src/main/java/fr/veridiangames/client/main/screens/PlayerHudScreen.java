@@ -29,6 +29,7 @@ import fr.veridiangames.client.rendering.guis.components.GuiLabel;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.audio.AudioSource;
+import fr.veridiangames.client.main.screens.gamemode.TDMGameModeScreen;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.fireWeapons.FireWeapon;
@@ -48,6 +49,7 @@ public class PlayerHudScreen extends GuiCanvas
     private GuiLabel playerPosition;
     private GuiLabel audioStatus;
     private GuiPanel damageEffect;
+    private GuiCanvas gameMode;
     private ConsoleScreen consoleScreen;
 
     private int health;
@@ -146,6 +148,9 @@ public class PlayerHudScreen extends GuiCanvas
 
         ProfilerScreen profilerScreen = new ProfilerScreen(this, display, core);
         super.addCanvas(profilerScreen);
+
+        TDMGameModeScreen gameMode = new TDMGameModeScreen(this);
+        super.addCanvas(gameMode);
     }
 
     public void update()

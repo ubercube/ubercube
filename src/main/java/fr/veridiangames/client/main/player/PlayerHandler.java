@@ -27,6 +27,7 @@ import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.weapons.meleeWeapon.WeaponShovel;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
+import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.BlockActionPacket;
 import fr.veridiangames.client.inputs.Input;
 import fr.veridiangames.client.network.NetworkClient;
@@ -120,7 +121,7 @@ public class PlayerHandler
 				weapon.setWeapon(weapon.getWeaponID() + 1);
 			}
 			weapon.getWeapon().setNet(this.net);
-			this.net.udpSend(new WeaponChangePacket(player));
+			this.net.send(new WeaponChangePacket(player), Protocol.UDP);
 		}
 		if(input.getMouse().getDWheel() < 0)
 		{
@@ -133,7 +134,7 @@ public class PlayerHandler
 				weapon.setWeapon(weapon.getWeaponID() - 1);
 			}
 			weapon.getWeapon().setNet(this.net);
-			this.net.udpSend(new WeaponChangePacket(player));
+			this.net.send(new WeaponChangePacket(player), Protocol.UDP);
 		}
 
 		selection.setShow(false);
@@ -167,7 +168,7 @@ public class PlayerHandler
 	
 	private void removeBlock(Vec3i block)
 	{
-		net.tcpSend(new BlockActionPacket(core.getGame().getPlayer().getID(), 0, block.x, block.y, block.z, 0));
+		net.send(new BlockActionPacket(core.getGame().getPlayer().getID(), 0, block.x, block.y, block.z, 0), Protocol.TCP);
 	}
 	
 	private void placeBlock(Vec3 point)
@@ -189,7 +190,7 @@ public class PlayerHandler
 		int yp = (int) check.y;
 		int zp = (int) check.z;
 
-		net.tcpSend(new BlockActionPacket(core.getGame().getPlayer().getID(), 1, x + xp, y + yp, z + zp, 0x7f555555));
+		net.send(new BlockActionPacket(core.getGame().getPlayer().getID(), 1, x + xp, y + yp, z + zp, 0x7f555555), Protocol.TCP);
 	}
 	
 	public PlayerSelection getSelection()
