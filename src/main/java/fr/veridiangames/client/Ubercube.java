@@ -61,6 +61,7 @@ public class Ubercube
 	private LoadingScreen       gameLoading;
 	private boolean 			inConsole;
 	private ConsoleScreen		console;
+	private boolean				inMenu;
 
 	private Profiler renderProfiler;
 	private Profiler updateProfiler;
@@ -77,6 +78,7 @@ public class Ubercube
 	public void init()
 	{
 		instance = this;
+		inMenu = false;
 
 		/* *** INIT STUFF *** */
 		this.playerHandler = new PlayerHandler(core, net);
@@ -278,6 +280,11 @@ public class Ubercube
 				ticks = 0;
 			}
 		}
+		disconnectAndExit();
+	}
+
+	public void disconnectAndExit()
+	{
 		net.send(new DisconnectPacket(core.getGame().getPlayer().getID(), "Client closed the game"), Protocol.TCP);
 		display.setDestroyed(true);
 		AudioSystem.destroy();
@@ -336,7 +343,12 @@ public class Ubercube
 		return net;
 	}
 
-	public void setScreen(GuiCanvas canvas)
+	public GuiManager getGuiManager() { return guiManager; }
+
+	public boolean isInMenu() { return inMenu; }
+	public void setInMenu(boolean inMenu) { this.inMenu = inMenu; }
+
+	public void setScreen(GuiCanvas canvas) // This is wrong
 	{
 		guiManager.add(canvas);
 		guiManager.setCanvas(guiManager.getCanvases().indexOf(canvas));

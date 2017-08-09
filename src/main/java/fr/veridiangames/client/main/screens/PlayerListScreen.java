@@ -52,12 +52,14 @@ public class PlayerListScreen extends GuiCanvas
 
     private GuiPanel bg;
     private boolean rendered;
+    private GuiCanvas parent;
 
     public PlayerListScreen(GuiCanvas parent, Display display, GameCore core, int x, int y)
     {
         super(parent);
         this.core = core;
         this.players = new ConcurrentHashMap<>();
+        this.parent = parent;
 
         this.bg = new GuiPanel(x, y, 200, 300);
         this.bg.setOrigin(GuiComponent.GuiOrigin.CENTER);
@@ -69,6 +71,9 @@ public class PlayerListScreen extends GuiCanvas
     int time = 0;
     public void update()
     {
+        if (!parent.isRendered())
+            return;
+
         super.update();
 
         rendered = false;

@@ -96,6 +96,8 @@ public class GuiButton extends GuiComponent
 			AudioSystem.play(Sound.BEEP);
 
 		if (clickable) {
+			color = idleColor;
+
 			if (mouseIn) {
 				color = hoverColor;
 			}

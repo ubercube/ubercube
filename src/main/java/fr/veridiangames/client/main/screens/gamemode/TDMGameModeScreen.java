@@ -33,11 +33,14 @@ import fr.veridiangames.core.utils.Color4f;
  */
 public class TDMGameModeScreen extends GuiCanvas {
 
-    GuiLabel redLabel;
-    GuiLabel blueLabel;
+    private GuiLabel redLabel;
+    private GuiLabel blueLabel;
+    private GuiCanvas parent;
 
-    public TDMGameModeScreen(GuiCanvas parent) {
+    public TDMGameModeScreen(GuiCanvas parent)
+    {
         super(parent);
+        this.parent = parent;
 
         Display display = Ubercube.getInstance().getDisplay();
 
@@ -58,7 +61,11 @@ public class TDMGameModeScreen extends GuiCanvas {
         super.add(blueLabel);
     }
 
-    public void update(){
+    public void update()
+    {
+        if (!parent.isRendered())
+            return;
+
         super.update();
         TDMGameMode mode = (TDMGameMode) Ubercube.getInstance().getGameCore().getGame().getGameMode();
         redLabel.setText("Red : " + mode.getRedScore());

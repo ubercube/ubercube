@@ -85,4 +85,8 @@ public class ECMouseLook extends EComponent
 	{
 		return dy;
 	}
+
+	public void setSpeed(float speed) { this.speed = speed; }
+
+	public float getSpeed() { return this.speed; }
 }

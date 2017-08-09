@@ -71,9 +71,10 @@ public class PlayerHandler
 		if (Ubercube.getInstance().isInConsole())
 			return;
 
-		if (input.getMouse().getButton(0))
+		if (input.getMouse().getButton(0) && !Ubercube.getInstance().isInMenu())
 			input.getMouse().setGrabbed(true);
-		if (input.getKey(Input.KEY_ESCAPE) && !Ubercube.getInstance().isInConsole())
+		if (input.getKey(Input.KEY_ESCAPE) &&
+				!Ubercube.getInstance().isInConsole())
 			input.getMouse().setGrabbed(false);
 		if (!input.getMouse().isGrabbed())
 			return;

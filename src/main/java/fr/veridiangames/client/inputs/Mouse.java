@@ -152,6 +152,8 @@ public class Mouse
 		glfwSetCursorPos(display.getWindow(), position.x, position.y);
 	}
 
+	public void center() { glfwSetCursorPos(display.getWindow(), display.getWidth() / 2, display.getHeight() / 2); }
+
 	public boolean getButton(int button)
 	{
 		return buttons.buttons[button];
