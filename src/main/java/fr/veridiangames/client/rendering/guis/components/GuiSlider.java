@@ -19,11 +19,13 @@
 
 package fr.veridiangames.client.rendering.guis.components;
 
+import fr.veridiangames.client.audio.AudioSystem;
 import fr.veridiangames.client.inputs.Mouse;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.primitives.StaticPrimitive;
 import fr.veridiangames.client.rendering.shaders.GuiShader;
+import fr.veridiangames.core.audio.Sound;
 import fr.veridiangames.core.utils.Color4f;
 
 public class GuiSlider extends GuiComponent
@@ -46,7 +48,7 @@ public class GuiSlider extends GuiComponent
 		super(x, y, w, h, Color4f.WHITE);
 		
 		bgColor = new Color4f(0, 0, 0, 0.5f);
-		bgColorIdle = new Color4f(0, 0, 0, 0.6f);
+		bgColorIdle = new Color4f(1, 1, 1, 0.6f);
 		bgColorHover = Color4f.WHITE;
 		
 		label = new GuiLabel(text, 0, 0);
@@ -63,7 +65,11 @@ public class GuiSlider extends GuiComponent
 		}
 		
 		if (centerText) textWidth = label.getTextWidth() / 2;
-		
+
+
+		if (mouseEnter)
+			AudioSystem.play(Sound.BEEP);
+
 		super.update();
 		label.update();
 		label.setPosition(x + w/2 - textWidth, y + h/2 - label.getTextHeight() / 2);
