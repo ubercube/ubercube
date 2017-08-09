@@ -54,7 +54,8 @@ public class ClientPlayer extends Player
 	private boolean kicked;
 	private List<ParticleSystem> particleSystems;
 
-	private ParticleSnow snow;
+	private ParticleSnow	snow;
+	private boolean			renderSnow;
 	
 	public ClientPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
@@ -73,8 +74,9 @@ public class ClientPlayer extends Player
 
 		this.particleSystems = new ArrayList<>();
 
-//		snow = new ParticleSnow(Indexer.getUniqueID(), position.copy().add(0, 10, 0));
-//		GameCore.getInstance().getGame().spawn(snow);
+		renderSnow = true;
+		snow = new ParticleSnow(Indexer.getUniqueID(), position.copy().add(0, 10, 0));
+		GameCore.getInstance().getGame().spawn(snow);
 	}
 	
 	public void init(GameCore core)
@@ -143,7 +145,24 @@ public class ClientPlayer extends Player
             if(body.isGrounded())
                 body.applyForce(Vec3.UP, 0.1725f);
 		}
-		//snow.setPosition(getPosition().copy().add(0, 15, 0).add(getTransform().getForward().copy().mul(20, 0, 20)));
+		if (renderSnow)
+		{
+			if (snow == null)
+			{
+				snow = new ParticleSnow(Indexer.getUniqueID(), getPosition().copy().add(0, 10, 0));
+				GameCore.getInstance().getGame().spawn(snow);
+			}
+			snow.setPosition(getPosition().copy().add(0, 15, 0).add(getTransform().getForward().copy().mul(20, 0, 20)));
+		}
+		else
+		{
+			if (snow != null)
+			{
+				GameCore.getInstance().getGame().remove(snow.getID());
+				snow = null;
+			}
+		}
+
 	}
 
 	float walkTimer = 0;
@@ -235,4 +254,7 @@ public class ClientPlayer extends Player
 	{
 		this.kicked = kicked;
 	}
+
+	public boolean isRenderSnow() { return renderSnow; }
+	public void setRenderSnow(boolean renderSnow) { this.renderSnow = renderSnow; }
 }

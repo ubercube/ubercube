@@ -5,6 +5,7 @@ import fr.veridiangames.client.audio.AudioSystem;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
+import fr.veridiangames.client.rendering.guis.components.GuiCheckBox;
 import fr.veridiangames.client.rendering.guis.components.GuiLabel;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
 import fr.veridiangames.client.rendering.guis.components.GuiSlider;
@@ -16,6 +17,7 @@ public class OptionsMenuScreen extends GuiCanvas
 
     private GuiSlider mouseSpeed;
     private GuiSlider audioGain;
+    private GuiCheckBox renderSnow;
 
     public OptionsMenuScreen(GuiCanvas parent, Display display)
     {
@@ -65,6 +67,13 @@ public class OptionsMenuScreen extends GuiCanvas
         audioGain.setValue(AudioSystem.getMainVolume());
         super.add(audioGain);
 
+        renderSnow = new GuiCheckBox("Render snow", display.getWidth() / 2, 290, true);
+        renderSnow.setOrigin(GuiComponent.GuiOrigin.TC);
+        renderSnow.setScreenParent(GuiComponent.GuiCorner.TC);
+        renderSnow.getLabel().setColor(Color4f.WHITE);
+        renderSnow.getLabel().setDropShadow(2);
+        super.add(renderSnow);
+
         setRendered(false);
     }
 
@@ -79,5 +88,6 @@ public class OptionsMenuScreen extends GuiCanvas
         Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().setSpeed(mouseSpeed.getValue());
         audioGain.getLabel().setText((int)(AudioSystem.getMainVolume() * 100) + "");
         AudioSystem.setMainVolume(audioGain.getValue());
+        Ubercube.getInstance().getGameCore().getGame().getPlayer().setRenderSnow(renderSnow.triggered);
     }
 }
