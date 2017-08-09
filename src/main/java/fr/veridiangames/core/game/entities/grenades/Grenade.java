@@ -92,7 +92,7 @@ public class Grenade extends Entity
 
     private void explose()
     {
-        getCore().getGame().spawn(new ParticlesExplosion(Indexer.getUniqueID(), getPosition().copy()));
+        new ParticlesExplosion(Indexer.getUniqueID(), getPosition().copy()).setNetwork(net);
         net.send(new DamageForcePacket(getPosition().copy(), 4), Protocol.TCP);
         this.destroy();
     }

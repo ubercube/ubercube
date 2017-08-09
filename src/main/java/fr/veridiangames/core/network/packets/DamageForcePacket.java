@@ -20,6 +20,10 @@
 package fr.veridiangames.core.network.packets;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.Entity;
+import fr.veridiangames.core.game.entities.player.ClientPlayer;
+import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.game.entities.player.ServerPlayer;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.NetworkableClient;
@@ -79,11 +83,41 @@ public class DamageForcePacket extends Packet
 	{
 		server.getCore().getGame().getWorld().applyDamageForce(position, force, false);
 		server.tcpSendToAll(new DamageForcePacket(this));
+
+		for (int id : server.getCore().getGame().getEntityManager().getPlayerEntites())
+		{
+			Entity e = server.getCore().getGame().getEntityManager().getEntities().get(id);
+
+			if(e instanceof ServerPlayer)
+			{
+				ServerPlayer p = (ServerPlayer) e;
+
+				float len = this.position.copy().sub(p.getPosition()).magnitude();
+				if(len <= 10.0f)
+					p.applyDamage((int)((10 - len) * 10), server);
+			}
+		}
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
 		client.getCore().getGame().getWorld().applyDamageForce(position, force, true);
+
+		ClientPlayer p = client.getCore().getGame().getPlayer();
+
+		float len = this.position.copy().sub(p.getPosition()).magnitude();
+
+		if(len <= 10.0f)
+		{
+			p.setLife((int) (p.getLife() - (10 - len) * 10));
+
+			Vec3 vel = p.getPosition().copy().sub(this.position);
+			vel = vel.copy().normalize().mul(10).sub(vel).div(10);
+			vel.y = 0.1f;
+
+			p.getRigidBody().getBody().applyForce(vel, 1);
+		}
+
 //		client.getCore().getGame().getWorld().updateRequest((int) position.x, (int) position.y, (int) position.z, (int) force);
 	}
 }
