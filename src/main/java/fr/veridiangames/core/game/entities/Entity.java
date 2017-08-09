@@ -66,7 +66,6 @@ public class Entity
 	{
 		if (destroyed)
 			return;
-			
 		for (int i = 0; i < keys.size(); i++)
 		{
 			EComponent e = get(keys.get(i));

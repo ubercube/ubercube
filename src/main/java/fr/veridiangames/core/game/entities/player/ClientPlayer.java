@@ -73,8 +73,8 @@ public class ClientPlayer extends Player
 
 		this.particleSystems = new ArrayList<>();
 
-		snow = new ParticleSnow(Indexer.getUniqueID(), position.copy().add(0, 10, 0));
-		GameCore.getInstance().getGame().spawn(snow);
+//		snow = new ParticleSnow(Indexer.getUniqueID(), position.copy().add(0, 10, 0));
+//		GameCore.getInstance().getGame().spawn(snow);
 	}
 	
 	public void init(GameCore core)
@@ -143,7 +143,7 @@ public class ClientPlayer extends Player
             if(body.isGrounded())
                 body.applyForce(Vec3.UP, 0.1725f);
 		}
-		snow.setPosition(getPosition().copy().add(0, 15, 0).add(getTransform().getForward().copy().mul(20, 0, 20)));
+		//snow.setPosition(getPosition().copy().add(0, 15, 0).add(getTransform().getForward().copy().mul(20, 0, 20)));
 	}
 
 	float walkTimer = 0;

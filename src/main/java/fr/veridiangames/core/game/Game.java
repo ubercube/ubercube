@@ -74,7 +74,7 @@ public class Game
 			return;
 
 		entityManager.update(core);
-		world.update();
+//		world.update();
 	}
 
 	public void updatePhysics()

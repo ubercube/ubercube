@@ -65,6 +65,11 @@ public class Ubercube
 
 	private Profiler renderProfiler;
 	private Profiler updateProfiler;
+	private Profiler audioProfiler;
+	private Profiler guiProfiler;
+	private Profiler coreProfiler;
+	private Profiler playerProfiler;
+	private Profiler renderUpdateProfiler;
 	private Profiler physicsProfiler;
 	private Profiler sleepProfiler;
 
@@ -98,6 +103,11 @@ public class Ubercube
 		this.renderProfiler = new Profiler("render", new Color4f(0.57f, 0.75f, 0.91f, 1f));
 		this.updateProfiler = new Profiler("update", new Color4f(0.75f, 0.57f, 0.91f, 1f));
 		this.physicsProfiler = new Profiler("physics", new Color4f(0.73f, 0.77f, 0.55f, 1f));
+		this.audioProfiler = new Profiler("audio", true);
+		this.guiProfiler = new Profiler("gui", true);
+		this.coreProfiler = new Profiler("core", true);
+		this.playerProfiler = new Profiler("player", true);
+		this.renderUpdateProfiler = new Profiler("render_update", true);
 		//this.sleepProfiler = new Profiler("sleep");
 		Profiler.setResolution(5);
 	}
@@ -105,9 +115,15 @@ public class Ubercube
 	public void update()
 	{
         updateProfiler.start();
-        AudioSystem.update(core);
 
-		guiManager.update();
+        audioProfiler.start();
+			AudioSystem.update(core);
+		audioProfiler.end();
+
+		guiProfiler.start();
+			guiManager.update();
+		guiProfiler.end();
+
 		gameLoading.update(this);
 
 		if (net.isConnected() && core.getGame().getWorld().isGenerated())
@@ -125,9 +141,19 @@ public class Ubercube
 			if (joinGame)
 			{
 				//inConsole.update();
-				core.update();
-				playerHandler.update(display.getInput());
-				mainRenderer.update();
+
+				coreProfiler.start();
+					core.update();
+				coreProfiler.end();
+
+				playerProfiler.start();
+					playerHandler.update(display.getInput());
+				playerProfiler.end();
+
+				renderUpdateProfiler.start();
+					mainRenderer.update();
+				renderUpdateProfiler.end();
+
 				AudioListener.setTransform(core.getGame().getPlayer().getEyeTransform());
 			}
 		}

@@ -204,7 +204,7 @@ public class ProfilerScreen extends GuiCanvas {
         }
 
         public void update() {
-            label.setText(profiler.getName() + ": " + profiler.getPercentage() + "% (" + profiler.getElapsed() + "ms)");
+            label.setText(profiler.getName() + ": " + String.format("%.2f", profiler.getPercentage()) + "% (" + String.format("%.2f", profiler.getElapsed()) + "ms)");
 
             if (points.size() >= curvePanel.xScale)
                 points.remove(0);

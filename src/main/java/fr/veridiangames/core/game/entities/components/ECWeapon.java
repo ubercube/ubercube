@@ -26,6 +26,7 @@ import fr.veridiangames.core.game.entities.weapons.explosiveWeapons.WeaponGrenad
 import fr.veridiangames.core.game.entities.weapons.meleeWeapon.WeaponShovel;
 import fr.veridiangames.core.game.entities.weapons.fireWeapons.WeaponAK47;
 import fr.veridiangames.core.maths.Transform;
+import fr.veridiangames.core.profiler.Profiler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class ECWeapon extends EComponent
 	private int weaponID;
 	private Weapon weapon;
 	private List<Weapon> weapons;
+	private Profiler profiler;
 
 	public ECWeapon(int weapon)
 	{
@@ -49,6 +51,8 @@ public class ECWeapon extends EComponent
 		this.weapons.add(new WeaponAK47());
 		this.weapons.add(new WeaponShovel());
 		this.weapons.add(new WeaponGrenade(3));
+
+		this.profiler = new Profiler("WEAPON", true);
 	}
 	
 	public void init(GameCore core)
@@ -62,7 +66,9 @@ public class ECWeapon extends EComponent
 	
 	public void update(GameCore core)
 	{
+		profiler.start();
 		weapon.update(core);
+		profiler.end();
 	}
 	
 	public int getWeaponID()
