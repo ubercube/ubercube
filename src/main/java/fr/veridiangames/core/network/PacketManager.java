@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.veridiangames.core.network.packets.*;
+import fr.veridiangames.core.network.packets.gamemode.tdm.GrenadeSpawnPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMScorePacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMSpawnPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMTeamPacket;
@@ -58,6 +59,7 @@ public class PacketManager
 		packets.put(Packet.DAMAGE_FORCE, DamageForcePacket.class);
 		packets.put(Packet.TCHAT_MSG, TchatMsgPacket.class);
 		packets.put(Packet.AUDIO, SoundPacket.class);
+		packets.put(Packet.GRENADE_SPAWN, GrenadeSpawnPacket.class);
 
 		/* GAME MODES */
 		packets.put(Packet.GAMEMODE_TDM_SPAWN, TDMSpawnPacket.class);

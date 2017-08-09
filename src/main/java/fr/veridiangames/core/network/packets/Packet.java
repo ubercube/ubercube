@@ -53,6 +53,7 @@ public abstract class Packet
 	public static final int DAMAGE_FORCE		= 18;
 	public static final int TCHAT_MSG			= 19;
 	public static final int AUDIO				= 20;
+	public static final int GRENADE_SPAWN		= 21;
 
 	/* GAME MODES  [500-600[ */
 	public static final int GAMEMODE_TDM_SPAWN = 501;
