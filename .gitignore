@@ -12,3 +12,10 @@
 hs_err_pid*
 .idea
 .idea/*
+ubercube.iml
+
+out/
+out/*
+
+META-INF\
+META-INF\*
