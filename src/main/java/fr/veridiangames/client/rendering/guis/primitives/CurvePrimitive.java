@@ -32,6 +32,7 @@ import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 /**
@@ -93,7 +94,10 @@ public class CurvePrimitive {
 
     public void delete()
     {
-        glDeleteBuffers(vao);
+        buffer.clear();
+        indices.clear();
+
+        glDeleteVertexArrays(vao);
         glDeleteBuffers(vbo);
         glDeleteBuffers(ibo);
     }

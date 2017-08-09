@@ -228,7 +228,9 @@ public class ProfilerScreen extends GuiCanvas {
             }
 
             if (curve != null)
+            {
                 curve.delete();
+            }
 
             curve = new CurvePrimitive(points);
         }
