@@ -110,7 +110,7 @@ public class EntityMovementPacket extends Packet
 
 		if (position.y < 0)
 			server.tcpSendToAll(new DeathPacket(id));
-		
+
 		server.udpSendToAll(new EntityMovementPacket(this));
 	}
 
