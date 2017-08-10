@@ -137,4 +137,12 @@ public class FrameBuffer
 	{
 		return height;
 	}
+
+	public void destroy()
+	{
+		glDeleteFramebuffers(frameBufferID);
+		glDeleteTextures(colorTextureID);
+		glDeleteTextures(depthTextureID);
+		glDeleteRenderbuffers(depthBufferID);
+	}
 }

@@ -24,6 +24,9 @@ import java.util.Map;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Model;
+import fr.veridiangames.core.game.entities.player.ClientPlayer;
+import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.game.entities.weapons.Weapon;
 import org.lwjgl.opengl.GL11;
 
 import fr.veridiangames.core.game.entities.Entity;
@@ -44,7 +47,7 @@ public class EntityWeaponRenderer
 {
 	public void renderEntityWeapons(ModelShader shader, int cubemap, Map<Integer, Entity> entities, List<Integer> indices)
 	{
-		renderPlayerWeapon(shader, cubemap, entities);
+//		renderPlayerWeapon(shader, cubemap, entities);
 
 		Renderer.bindTextureCube(cubemap);
 		glDisable(GL11.GL_CULL_FACE);

@@ -28,6 +28,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import fr.veridiangames.client.rendering.shaders.GuiShader;
+import fr.veridiangames.client.rendering.shaders.Shader;
 import org.lwjgl.BufferUtils;
 
 import fr.veridiangames.core.maths.Mat4;
@@ -74,7 +75,7 @@ public class QuadPrimitive {
 		glBindVertexArray(0);
 	}
 	
-	public void render(GuiShader shader, float x, float y, float z, float xScale, float yScale, float zScale) {
+	public void render(Shader shader, float x, float y, float z, float xScale, float yScale, float zScale) {
 		shader.setModelViewMatrix(Mat4.translate((int)x, (int)y, (int)z).mul(Mat4.scale((int)xScale, (int)yScale, (int)zScale)));
 		
 		glBindVertexArray(vao);
