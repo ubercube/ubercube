@@ -90,7 +90,6 @@ public class BulletHitPlayerPacket extends Packet
     {
         if (client.getCore().getGame().getPlayer().getID() == playerId)
         {
-            client.getCore().getGame().getPlayer().setLife(life);
             client.playSound(new AudioSource(Sound.PLAYER_HIT));
         }
         else if (client.getCore().getGame().getEntityManager().getEntities().containsKey(playerId))

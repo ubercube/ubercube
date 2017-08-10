@@ -19,14 +19,14 @@
 
 package fr.veridiangames.core.game.entities.player;
 
-import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.ECName;
-import fr.veridiangames.core.game.entities.components.ECNetwork;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.network.packets.ApplyDamagePacket;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.network.packets.DeathPacket;
+import fr.veridiangames.core.network.packets.Packet;
 
 /**
  * Created by Marccspro on 23 f�vr. 2016.
@@ -60,6 +60,8 @@ public class ServerPlayer extends Player
 	{
 		this.life -= damage;
 
+		this.sendTCP(new ApplyDamagePacket(this, damage), server);
+
 		if(this.life <= 0 && !this.isDead())
 		{
 			server.tcpSendToAll(new DeathPacket(this.getID()));
@@ -73,6 +75,11 @@ public class ServerPlayer extends Player
 			return true;
 		}
 		return false;
+	}
+
+	public void sendTCP(Packet packet, NetworkableServer server)
+	{
+		server.tcpSend(packet, this.getNetwork().getAddress(), this.getNetwork().getPort());
 	}
 
 	public int getLife()

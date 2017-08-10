@@ -1,7 +1,9 @@
-package fr.veridiangames.core.network;
+package fr.veridiangames.core.network.packets;
 
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.network.NetworkableClient;
+import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
 

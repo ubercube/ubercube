@@ -109,8 +109,6 @@ public class DamageForcePacket extends Packet
 
 		if(len <= 10.0f)
 		{
-			p.setLife((int) (p.getLife() - (10 - len) * 10));
-
 			Vec3 vel = p.getPosition().copy().sub(this.position);
 			vel = vel.copy().normalize().mul(10).sub(vel).div(10);
 			vel.y = 0.1f;

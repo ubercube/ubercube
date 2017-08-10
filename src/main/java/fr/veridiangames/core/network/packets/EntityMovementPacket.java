@@ -21,16 +21,13 @@ package fr.veridiangames.core.network.packets;
 
 import java.net.InetAddress;
 
-import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
-import fr.veridiangames.core.network.ApplyDamagePacket;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
-import fr.veridiangames.core.utils.Log;
 
 /**
  * Created by Marccspro on 26 f�vr. 2016.
@@ -115,7 +112,6 @@ public class EntityMovementPacket extends Packet
 			{
 				int damage = ((int)fallHight - 5) * 5;
 				player.applyDamage(damage, server);
-				server.tcpSend(new ApplyDamagePacket(player, damage), address, port);
 			}
 		}
 
