@@ -23,11 +23,14 @@ import java.net.InetAddress;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.game.entities.player.ServerPlayer;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.network.ApplyDamagePacket;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
+import fr.veridiangames.core.utils.Log;
 
 /**
  * Created by Marccspro on 26 f�vr. 2016.
@@ -86,13 +89,24 @@ public class EntityMovementPacket extends Packet
 
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
-		Player player = (Player) server.getCore().getGame().getEntityManager().getEntities().get(id);
+		ServerPlayer player = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(id);
 		if (player == null) 
 			return;
 
 		//TODO: Prevent teleporation and speed hack
+
+		//TODO: Better falling system
+		Vec3 vel = player.getPosition().copy().sub(position);
 		player.setPosition(position);
 		player.setRotation(rotation);
+
+		if(player.getOnlineVelocity() != null && vel.y > 1.5)
+		{
+			player.applyDamage(5, server);
+			server.tcpSend(new ApplyDamagePacket(player, 5), address, port);
+		}
+
+		player.setOnlineVelocity(vel);
 
 		if (position.y < 0)
 			server.tcpSendToAll(new DeathPacket(id));

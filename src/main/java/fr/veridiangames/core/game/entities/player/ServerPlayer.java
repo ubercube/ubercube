@@ -39,6 +39,8 @@ public class ServerPlayer extends Player
 	private boolean pinged;
 	private boolean hitable;
 
+	private Vec3 onlineVelocity;
+
 	public ServerPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
 		super(id, name, position, rotation, address, port);
@@ -116,5 +118,15 @@ public class ServerPlayer extends Player
 	public void setHitable(boolean hitable)
 	{
 		this.hitable = hitable;
+	}
+
+	public void setOnlineVelocity(Vec3 onlineVelocity)
+	{
+		this.onlineVelocity = onlineVelocity;
+	}
+
+	public Vec3 getOnlineVelocity()
+	{
+		return onlineVelocity;
 	}
 }

@@ -37,6 +37,7 @@ import fr.veridiangames.core.network.packets.WeaponPositionPacket;
 import fr.veridiangames.core.physics.Rigidbody;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
 import fr.veridiangames.core.utils.Indexer;
+import fr.veridiangames.core.utils.Log;
 
 import java.util.ArrayList;
 import java.util.List;
