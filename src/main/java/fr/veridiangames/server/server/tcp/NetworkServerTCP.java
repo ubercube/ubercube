@@ -59,7 +59,7 @@ public class NetworkServerTCP implements Runnable
     {
         while (socket != null)
         {
-            clientsToAdd.removeAll(receiverThreadClients);
+            clientsToAdd.removeAll(receiverThreadClients); // java.lang.ArrayIndexOutOfBoundsException
             receiverThreadClients.addAll(clientsToAdd);
 
             ArrayList<RemoteClient> toRemove = new ArrayList<>();

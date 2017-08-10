@@ -42,21 +42,25 @@ public class Profiler {
 
     private String name;
     private long start;
-    private int elapsing;
-    private int elapsed;
-    private int percentage;
+    private float elapsing;
+    private float elapsed;
+    private float percentage;
     private Color4f color;
+
+    public Profiler(String name, boolean use)
+    {
+        if (!use)
+            return;
+        this.name = name;
+        profilers.add(this);
+        this.color = Color4f.randomColor();
+    }
 
     public Profiler(String name, Color4f color)
     {
         this.name = name;
         profilers.add(this);
         this.color = color;
-    }
-
-    public Profiler(String name)
-    {
-        this(name, new Color4f((float) Math.random(), (float) Math.random(), (float) Math.random(), 1));
     }
 
     public static void updateAll()
@@ -83,7 +87,7 @@ public class Profiler {
             return;
         }
 
-        percentage = (int) (elapsing * 100.0f / (resolution * (1000.0f / 60.0f))) ;
+        percentage = elapsing * 100.0f / (resolution * (1000.0f / 60.0f));
         elapsed = elapsing;
         elapsing = 0;
     }
@@ -95,7 +99,7 @@ public class Profiler {
 
     public void end()
     {
-        elapsing += (int) (System.currentTimeMillis() - start);
+        elapsing += System.currentTimeMillis() - start;
     }
 
     public String getName()
@@ -103,12 +107,12 @@ public class Profiler {
         return name;
     }
 
-    public int getElapsed()
+    public float getElapsed()
     {
         return elapsed;
     }
 
-    public int getPercentage()
+    public float getPercentage()
     {
         return percentage;
     }

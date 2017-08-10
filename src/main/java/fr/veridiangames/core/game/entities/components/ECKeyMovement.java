@@ -27,6 +27,7 @@ import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec4;
 import fr.veridiangames.core.physics.Rigidbody;
+import fr.veridiangames.core.profiler.Profiler;
 
 import javax.jws.soap.SOAPBinding;
 
@@ -57,6 +58,8 @@ public class ECKeyMovement extends EComponent
 	private Vec3 velocity;
 	private Vec3 forwardDirection;
 
+	private Profiler profiler;
+
 	public ECKeyMovement(float walkSpeed, float runSpeed, float jumpForce)
 	{
 		super(KEY_MOVEMENT);
@@ -68,11 +71,13 @@ public class ECKeyMovement extends EComponent
 		this.jumpForce = jumpForce;
 		this.fly = true;
 		this.forwardDirection = new Vec3();
+		this.profiler = new Profiler("player_movement", true);
 	}
 
 
 	public void update(GameCore core)
 	{
+		this.profiler.start();
 		Quat rotation = ((ECRender) parent.get(EComponent.RENDER)).getTransform().getRotation();
 
 		forwardDirection = rotation.getForward().copy().mul(1, 0, 1).normalize();
@@ -133,6 +138,7 @@ public class ECKeyMovement extends EComponent
 		}
 
 		velocity.add(0, body.getVelocity().y, 0);
+		this.profiler.end();
 	}
 
 	public Vec3 getForwardDirection()

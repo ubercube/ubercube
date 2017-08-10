@@ -47,9 +47,7 @@ public class ECRigidbody extends EComponent
 	}
 
 	public void update(GameCore core)
-	{
-
-	}
+	{}
 
 	public Rigidbody getBody()
 	{

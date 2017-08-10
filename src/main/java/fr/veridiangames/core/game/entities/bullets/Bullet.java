@@ -107,10 +107,11 @@ public class Bullet extends Entity
 			Vec3i impactPosition = new Vec3i(position);
 			Vec3 normal = new Vec3(impactPosition).gtNorm(position);
 
-			this.net.send(new BulletHitBlockPacket(holderID, new Vec3i(blockPosition), 0.1f, block), Protocol.TCP);
+			if(this.holderID == GameCore.getInstance().getGame().getPlayer().getID())
+				this.net.send(new BulletHitBlockPacket(holderID, new Vec3i(blockPosition), 0.1f, block), Protocol.TCP);
 
 			ParticleSystem hitParticles = new ParticlesBulletHit(Indexer.getUniqueID(), getPosition().copy(), new Color4f(block));
-			hitParticles.setNetwork(net);
+			GameCore.getInstance().getGame().spawn(hitParticles);
 
 			this.destroy();
 		}

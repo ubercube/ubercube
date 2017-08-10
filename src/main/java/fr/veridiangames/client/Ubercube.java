@@ -61,9 +61,15 @@ public class Ubercube
 	private LoadingScreen       gameLoading;
 	private boolean 			inConsole;
 	private ConsoleScreen		console;
+	private boolean				inMenu;
 
 	private Profiler renderProfiler;
 	private Profiler updateProfiler;
+	private Profiler audioProfiler;
+	private Profiler guiProfiler;
+	private Profiler coreProfiler;
+	private Profiler playerProfiler;
+	private Profiler renderUpdateProfiler;
 	private Profiler physicsProfiler;
 	private Profiler sleepProfiler;
 
@@ -77,6 +83,7 @@ public class Ubercube
 	public void init()
 	{
 		instance = this;
+		inMenu = false;
 
 		/* *** INIT STUFF *** */
 		this.playerHandler = new PlayerHandler(core, net);
@@ -96,6 +103,11 @@ public class Ubercube
 		this.renderProfiler = new Profiler("render", new Color4f(0.57f, 0.75f, 0.91f, 1f));
 		this.updateProfiler = new Profiler("update", new Color4f(0.75f, 0.57f, 0.91f, 1f));
 		this.physicsProfiler = new Profiler("physics", new Color4f(0.73f, 0.77f, 0.55f, 1f));
+		this.audioProfiler = new Profiler("audio", true);
+		this.guiProfiler = new Profiler("gui", true);
+		this.coreProfiler = new Profiler("core", true);
+		this.playerProfiler = new Profiler("player", true);
+		this.renderUpdateProfiler = new Profiler("render_update", true);
 		//this.sleepProfiler = new Profiler("sleep");
 		Profiler.setResolution(5);
 	}
@@ -103,9 +115,15 @@ public class Ubercube
 	public void update()
 	{
         updateProfiler.start();
-        AudioSystem.update(core);
 
-		guiManager.update();
+        audioProfiler.start();
+			AudioSystem.update(core);
+		audioProfiler.end();
+
+		guiProfiler.start();
+			guiManager.update();
+		guiProfiler.end();
+
 		gameLoading.update(this);
 
 		if (net.isConnected() && core.getGame().getWorld().isGenerated())
@@ -123,9 +141,19 @@ public class Ubercube
 			if (joinGame)
 			{
 				//inConsole.update();
-				core.update();
-				playerHandler.update(display.getInput());
-				mainRenderer.update();
+
+				coreProfiler.start();
+					core.update();
+				coreProfiler.end();
+
+				playerProfiler.start();
+					playerHandler.update(display.getInput());
+				playerProfiler.end();
+
+				renderUpdateProfiler.start();
+					mainRenderer.update();
+				renderUpdateProfiler.end();
+
 				AudioListener.setTransform(core.getGame().getPlayer().getEyeTransform());
 			}
 		}
@@ -278,6 +306,11 @@ public class Ubercube
 				ticks = 0;
 			}
 		}
+		disconnectAndExit();
+	}
+
+	public void disconnectAndExit()
+	{
 		net.send(new DisconnectPacket(core.getGame().getPlayer().getID(), "Client closed the game"), Protocol.TCP);
 		display.setDestroyed(true);
 		AudioSystem.destroy();
@@ -336,7 +369,12 @@ public class Ubercube
 		return net;
 	}
 
-	public void setScreen(GuiCanvas canvas)
+	public GuiManager getGuiManager() { return guiManager; }
+
+	public boolean isInMenu() { return inMenu; }
+	public void setInMenu(boolean inMenu) { this.inMenu = inMenu; }
+
+	public void setScreen(GuiCanvas canvas) // This is wrong
 	{
 		guiManager.add(canvas);
 		guiManager.setCanvas(guiManager.getCanvases().indexOf(canvas));

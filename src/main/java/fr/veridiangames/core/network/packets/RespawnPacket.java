@@ -21,12 +21,15 @@ package fr.veridiangames.core.network.packets;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
+import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
+import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
+import fr.veridiangames.core.utils.Log;
 
 import java.net.InetAddress;
 
@@ -36,23 +39,32 @@ import java.net.InetAddress;
 public class RespawnPacket extends Packet
 {
     private int playerId;
+    private String name;
     private Vec3 position;
+    private Quat rotation;
 
     public RespawnPacket()
     {
         super(RESPAWN);
     }
 
-    public RespawnPacket(int playerId)
+    public RespawnPacket(Player player)
     {
         super(RESPAWN);
 
-        data.put(playerId);
+        data.put(player.getID());
+
+        data.put(player.getName());
 
         Vec3 spawn = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(playerId));
         data.put(spawn.x);
         data.put(spawn.y);
         data.put(spawn.z);
+
+        data.put(player.getRotation().x);
+        data.put(player.getRotation().y);
+        data.put(player.getRotation().z);
+        data.put(player.getRotation().w);
 
         data.flip();
     }
@@ -62,22 +74,38 @@ public class RespawnPacket extends Packet
         super(RESPAWN);
 
         data.put(packet.playerId);
+
+        data.put(packet.name);
+
         data.put(packet.position.x);
         data.put(packet.position.y);
         data.put(packet.position.z);
+
+        data.put(packet.rotation.x);
+        data.put(packet.rotation.y);
+        data.put(packet.rotation.z);
+        data.put(packet.rotation.w);
 
         data.flip();
     }
 
 
-    public RespawnPacket(int id, Vec3 v)
+    public RespawnPacket(Player p, Vec3 v)
     {
         super(RESPAWN);
 
-        data.put(id);
+        data.put(p.getID());
+
+        data.put(p.getName());
+
         data.put(v.x);
         data.put(v.y);
         data.put(v.z);
+
+        data.put(p.getRotation().x);
+        data.put(p.getRotation().y);
+        data.put(p.getRotation().z);
+        data.put(p.getRotation().w);
 
         data.flip();
     }
@@ -85,13 +113,15 @@ public class RespawnPacket extends Packet
     public void read(DataBuffer buffer)
     {
         this.playerId = buffer.getInt();
+        this.name = buffer.getString();
         this.position = new Vec3(buffer.getFloat(), buffer.getFloat(), buffer.getFloat());
+        this.rotation = new Quat(buffer.getFloat(), buffer.getFloat(), buffer.getFloat(), buffer.getFloat());
     }
 
     public void process(NetworkableServer server, InetAddress address, int port)
     {
         ServerPlayer p = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId);
-        p.setLife(100);
+        p.setLife(Player.MAX_LIFE);
         p.setDead(false);
 
         // GAME MODE
@@ -103,15 +133,25 @@ public class RespawnPacket extends Packet
         int height = (int) server.getCore().getGame().getData().getWorldGen().getNoise(x, y) + 15;
         this.position = new Vec3(x, height, y);      // TODO : Modify position*/
 
-        server.tcpSend(new RespawnPacket(this), p.getNetwork().getAddress(), p.getNetwork().getPort());
+        server.tcpSendToAll(new RespawnPacket(this));
     }
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
-        p.getRigidBody().getBody().killForces();
-        p.setPosition(this.position);
-        p.setLife(100);
-        p.setDead(false);
+        if(playerId == client.getID())
+        {
+            ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
+            p.getRigidBody().getBody().killForces();
+            p.setPosition(this.position);
+            p.setLife(Player.MAX_LIFE);
+            p.setDead(false);
+        }
+        else
+        {
+            if(!client.getCore().getGame().getEntityManager().getPlayerEntites().contains(playerId))
+            {
+                client.getCore().getGame().spawn(new NetworkedPlayer(playerId, name, position, rotation, address.getHostName(), port));
+            }
+        }
     }
 }

@@ -37,6 +37,7 @@ import fr.veridiangames.core.network.packets.WeaponPositionPacket;
 import fr.veridiangames.core.physics.Rigidbody;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
 import fr.veridiangames.core.utils.Indexer;
+import fr.veridiangames.core.utils.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,8 @@ public class ClientPlayer extends Player
 	private boolean kicked;
 	private List<ParticleSystem> particleSystems;
 
-	private ParticleSnow snow;
+	private ParticleSnow	snow;
+	private boolean			renderSnow;
 	
 	public ClientPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
@@ -73,6 +75,7 @@ public class ClientPlayer extends Player
 
 		this.particleSystems = new ArrayList<>();
 
+		renderSnow = true;
 		snow = new ParticleSnow(Indexer.getUniqueID(), position.copy().add(0, 10, 0));
 		GameCore.getInstance().getGame().spawn(snow);
 	}
@@ -143,7 +146,24 @@ public class ClientPlayer extends Player
             if(body.isGrounded())
                 body.applyForce(Vec3.UP, 0.1725f);
 		}
-		snow.setPosition(getPosition().copy().add(0, 15, 0).add(getTransform().getForward().copy().mul(20, 0, 20)));
+		if (renderSnow)
+		{
+			if (snow == null)
+			{
+				snow = new ParticleSnow(Indexer.getUniqueID(), getPosition().copy().add(0, 10, 0));
+				GameCore.getInstance().getGame().spawn(snow);
+			}
+			snow.setPosition(getPosition().copy().add(0, 15, 0).add(getTransform().getForward().copy().mul(20, 0, 20)));
+		}
+		else
+		{
+			if (snow != null)
+			{
+				GameCore.getInstance().getGame().remove(snow.getID());
+				snow = null;
+			}
+		}
+
 	}
 
 	float walkTimer = 0;
@@ -155,13 +175,11 @@ public class ClientPlayer extends Player
 			if (Mathf.sin(walkTimer * getKeyComponent().getSpeed() * 10) * walkSide >= 0)
 			{
 				walkSide = -walkSide;
-
 				core.getGame().spawn(new AudioSource(Sound.FOOTSTEP[(int) Mathf.random(0, 3)]));
 				net.send(new SoundPacket(this.getID(), new AudioSource(Sound.FOOTSTEP[(int) Mathf.random(0, 3)], getPosition())), Protocol.UDP);
 			}
 			walkTimer++;
 		}
-
 		if (getRigidBody().getBody().isHitGrounded())
 			core.getGame().spawn(new AudioSource(Sound.LAND));
 	}
@@ -237,4 +255,7 @@ public class ClientPlayer extends Player
 	{
 		this.kicked = kicked;
 	}
+
+	public boolean isRenderSnow() { return renderSnow; }
+	public void setRenderSnow(boolean renderSnow) { this.renderSnow = renderSnow; }
 }

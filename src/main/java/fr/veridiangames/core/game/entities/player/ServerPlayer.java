@@ -19,8 +19,14 @@
 
 package fr.veridiangames.core.game.entities.player;
 
+import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.components.ECName;
+import fr.veridiangames.core.game.entities.components.ECNetwork;
+import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.network.NetworkableServer;
+import fr.veridiangames.core.network.packets.DeathPacket;
 
 /**
  * Created by Marccspro on 23 f�vr. 2016.
@@ -33,6 +39,8 @@ public class ServerPlayer extends Player
 	private boolean pinged;
 	private boolean hitable;
 
+	private Vec3 onlineVelocity;
+
 	public ServerPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
 		super(id, name, position, rotation, address, port);
@@ -40,6 +48,25 @@ public class ServerPlayer extends Player
 		this.timeOutTests = 0;
 		this.pingTime = 0;
 		this.pinged = false;
+	}
+
+	public boolean applyDamage (int damage, NetworkableServer server)
+	{
+		this.life -= damage;
+
+		if(this.life <= 0 && !this.isDead())
+		{
+			server.tcpSendToAll(new DeathPacket(this.getID()));
+
+			/* GAME MODE */
+			server.getCore().getGame().getGameMode().onPlayerDeath(this, server);
+
+			this.setDead(true);
+			String name = ((ECName) this.get(EComponent.NAME)).getName();
+			server.log(name + " was killed !");
+			return true;
+		}
+		return false;
 	}
 
 	public int getLife()
@@ -91,5 +118,15 @@ public class ServerPlayer extends Player
 	public void setHitable(boolean hitable)
 	{
 		this.hitable = hitable;
+	}
+
+	public void setOnlineVelocity(Vec3 onlineVelocity)
+	{
+		this.onlineVelocity = onlineVelocity;
+	}
+
+	public Vec3 getOnlineVelocity()
+	{
+		return onlineVelocity;
 	}
 }

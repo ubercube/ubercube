@@ -114,4 +114,14 @@ public class AudioSystem
         alcCloseDevice(device);
         alcDestroyContext(context);
     }
+
+    public static void setMainVolume(float v)
+    {
+        mainGain = v;
+    }
+
+    public static float getMainVolume()
+    {
+        return mainGain;
+    }
 }

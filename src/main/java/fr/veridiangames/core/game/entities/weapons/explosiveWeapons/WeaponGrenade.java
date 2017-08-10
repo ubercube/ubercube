@@ -24,6 +24,8 @@ import fr.veridiangames.core.game.entities.Model;
 import fr.veridiangames.core.game.entities.grenades.Grenade;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.network.Protocol;
+import fr.veridiangames.core.network.packets.gamemode.tdm.GrenadeSpawnPacket;
 import fr.veridiangames.core.utils.Indexer;
 
 import java.util.ArrayList;
@@ -65,12 +67,12 @@ public class WeaponGrenade extends ExplosiveWeapon
 
     public void onActionUp()
     {
-        GameCore.getInstance().getGame().spawn(
-            new Grenade(Indexer.getUniqueID(),
+        Grenade g = (Grenade) new Grenade(Indexer.getUniqueID(),
                 this.holder.getID(),
                 transform.getPosition().copy().add(this.holder.getTransform().getForward().copy().mul(1.5f)),
-                transform.getRotation(), force).setNetwork(net)
-        );
+                transform.getRotation(), force).setNetwork(net);
+
+        net.send(new GrenadeSpawnPacket(g), Protocol.UDP);
 
         force = 0;
     }

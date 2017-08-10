@@ -22,13 +22,14 @@ package fr.veridiangames.client.main.screens;
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.audio.AudioPlayer;
 import fr.veridiangames.client.inputs.Input;
+import fr.veridiangames.client.main.screens.gamemenu.DeathScreen;
+import fr.veridiangames.client.main.screens.gamemenu.GameMenuScreen;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.components.GuiLabel;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
 import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.client.main.screens.gamemode.TDMGameModeScreen;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
@@ -151,6 +152,12 @@ public class PlayerHudScreen extends GuiCanvas
 
         TDMGameModeScreen gameMode = new TDMGameModeScreen(this);
         super.addCanvas(gameMode);
+
+        GameMenuScreen gameMenuGui = new GameMenuScreen(this, display, core);
+        this.addCanvas(gameMenuGui);
+
+        DeathScreen deathScreen = new DeathScreen(this, display, core);
+        this.addCanvas(deathScreen);
     }
 
     public void update()

@@ -26,6 +26,7 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
+import fr.veridiangames.core.profiler.Profiler;
 
 /**
  * Created by Marccspro on 14 f�vr. 2016.
@@ -40,6 +41,7 @@ public class ECRaycast extends EComponent
 	private Vec3		direction;
 	private RaycastHit	hit;
 	private Vec3 		hitPoint;
+	private Profiler	profiler;
 
 	public ECRaycast(float dist, float precision, String... ignoreTags)
 	{
@@ -53,10 +55,12 @@ public class ECRaycast extends EComponent
 		{
 			ignore.add(s);
 		}
+		profiler = new Profiler("raycast", true);
 	}
 
 	public void update(GameCore core)
 	{
+		profiler.start();
 		hit = null;
 		hitPoint = null;
 		for (float i = 0; i < dist; i += precision)
@@ -88,6 +92,7 @@ public class ECRaycast extends EComponent
 				return;
 			}
 		}
+		profiler.end();
 	}
 
 	public Vec3 getPosition()

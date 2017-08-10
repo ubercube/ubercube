@@ -60,27 +60,17 @@ public class WorldRenderer
 		{
 			cr.updateCulling(camera);
 		}
-		for (Entry<Integer, Chunk> e : chunks.entrySet())
+		if (chunkRenderers.size() != chunks.size())
 		{
-			if (chunkRenderers.containsKey(e.getKey()))
-				continue;
-			Chunk c = e.getValue();
-			ChunkRenderer cr = new ChunkRenderer(c, world);
-			chunkRenderers.put(e.getKey(), cr);
+			for (Entry<Integer, Chunk> e : chunks.entrySet()) {
+				if (chunkRenderers.containsKey(e.getKey()))
+					continue;
+				Chunk c = e.getValue();
+				ChunkRenderer cr = new ChunkRenderer(c, world);
+				chunkRenderers.put(e.getKey(), cr);
+			}
 		}
-//		for (int i = 0; i < garbage.size(); i++)
-//		{
-//			int index = garbage.get(i);
-//			if (chunkRenderers.containsKey(index))
-//			{
-//				chunks.remove(index);
-//				chunkRenderers.get(index).dispose();
-//				chunkRenderers.remove(index);
-//			}
-//			garbage.remove(i);
-//		}
-		chunkDebug.updateInstances(chunks);
-		for (int i = 0;  i < updateRequests.size(); i++)
+		for (int i = 0; i < updateRequests.size(); i++)
 		{
 			int index = updateRequests.get(i);
 			chunkRenderers.get(index).update();

@@ -20,6 +20,9 @@
 package fr.veridiangames.core.network.packets;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.Entity;
+import fr.veridiangames.core.game.entities.components.ECName;
+import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Vec3;
@@ -63,21 +66,21 @@ public class DeathPacket extends Packet
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        client.console(this.playerId + " just died !");
-        if(client.getCore().getGame().getPlayer().getID() != this.playerId)
-            client.log(this.playerId + " just died !");
+        Entity e = client.getCore().getGame().getEntityManager().get(this.playerId);
+        if (e != null)
+            client.console(((ECName)e.get(EComponent.NAME)).getName() + " just died !");
+        if(client.getCore().getGame().getPlayer().getID() != this.playerId && e != null)
+            client.log(((ECName)e.get(EComponent.NAME)).getName() + " just died !");
         else
         {
             client.log("You died !");
             client.getCore().getGame().getPlayer().setDead(true);
-            client.getCore().getGame().getPlayer().setLife(Player.MAX_LIFE);
-            client.send(new RespawnPacket(GameCore.getInstance().getGame().getPlayer().getID()), Protocol.TCP);
+            //client.send(new RespawnPacket(GameCore.getInstance().getGame().getPlayer().getID()), Protocol.TCP);
         }
-
         if (client.getCore().getGame().getEntityManager().getEntities().get(playerId) == null)
             return;
 
-            client.getCore().getGame().spawn(new ParticleSystem(Indexer.getUniqueID(), "Death", ((Player) client.getCore().getGame().getEntityManager().getEntities().get(playerId)).getPosition())
+        client.getCore().getGame().spawn(new ParticleSystem(Indexer.getUniqueID(), "Death", ((Player) client.getCore().getGame().getEntityManager().getEntities().get(playerId)).getPosition())
             .setParticleVelocity(new Vec3(0, 0.2f, 0))
             .setParticleVelocityRandomness(0.05f)
             .setParticleColor(new Color4f(0.7f, 0f, 0f))
@@ -88,5 +91,8 @@ public class DeathPacket extends Packet
             .useCollision(true)
             .setParticleLifeTime(240)
             .setParticleLifeTimeRandomness(120));
+
+        if(playerId != client.getID())
+            e.destroy();
     }
 }

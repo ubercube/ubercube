@@ -56,7 +56,6 @@ public class GuiCheckBox extends GuiComponent
 		StaticPrimitive.quadPrimitive().render(shader, x + 18 / 2, y + h / 2, 0, 9, 9, 0);
 		shader.setColor(Color4f.WHITE);
 		StaticPrimitive.quadPrimitive().render(shader, x + 18 / 2, y + h / 2, 0, 6, 6, 0);
-		
 
 		if (mouseIn) {
 			shader.setColor(Color4f.LIGHT_GRAY);
@@ -85,5 +84,9 @@ public class GuiCheckBox extends GuiComponent
 	
 	public void dispose() {
 		
+	}
+
+	public GuiLabel getLabel() {
+		return label;
 	}
 }

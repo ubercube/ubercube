@@ -73,6 +73,7 @@ public class Renderer
 	
 	public void start()
 	{
+		glClearColor(221f / 255f, 232f / 255f, 255f / 255f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
