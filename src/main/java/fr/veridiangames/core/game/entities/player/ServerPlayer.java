@@ -39,6 +39,9 @@ public class ServerPlayer extends Player
 	private boolean pinged;
 	private boolean hitable;
 
+	private float high;
+	private boolean falling;
+
 	private Vec3 onlineVelocity;
 
 	public ServerPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
@@ -48,6 +51,9 @@ public class ServerPlayer extends Player
 		this.timeOutTests = 0;
 		this.pingTime = 0;
 		this.pinged = false;
+
+		this.falling = false;
+		this.high = 0.0f;
 	}
 
 	public boolean applyDamage (int damage, NetworkableServer server)
@@ -128,5 +134,25 @@ public class ServerPlayer extends Player
 	public Vec3 getOnlineVelocity()
 	{
 		return onlineVelocity;
+	}
+
+	public void setFalling(boolean falling)
+	{
+		this.falling = falling;
+	}
+
+	public boolean isFalling()
+	{
+		return falling;
+	}
+
+	public void setHigh(float high)
+	{
+		this.high = high;
+	}
+
+	public float getHigh()
+	{
+		return high;
 	}
 }

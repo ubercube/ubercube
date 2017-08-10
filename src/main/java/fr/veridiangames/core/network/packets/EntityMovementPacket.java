@@ -93,20 +93,34 @@ public class EntityMovementPacket extends Packet
 		if (player == null) 
 			return;
 
-		//TODO: Prevent teleporation and speed hack
-
-		//TODO: Better falling system
 		Vec3 vel = player.getPosition().copy().sub(position);
-		player.setPosition(position);
-		player.setRotation(rotation);
+		player.setOnlineVelocity(vel);
 
-		if(player.getOnlineVelocity() != null && vel.y > 1.5)
+		//TODO: Prevent teleporation and speed hack (with vel)
+
+		/* Falling system */
+		if(vel.y > 0.0 && !player.isFalling())
 		{
-			player.applyDamage(5, server);
-			server.tcpSend(new ApplyDamagePacket(player, 5), address, port);
+			player.setFalling(true);
+			player.setHigh(position.y);
 		}
 
-		player.setOnlineVelocity(vel);
+		if(player.isFalling() && vel.y == 0.0)
+		{
+			float fallHight = player.getHigh() - position.y;
+			player.setFalling(false);
+			player.setHigh(0.0f);
+
+			if(fallHight > 5)
+			{
+				int damage = ((int)fallHight - 5) * 5;
+				player.applyDamage(damage, server);
+				server.tcpSend(new ApplyDamagePacket(player, damage), address, port);
+			}
+		}
+
+		player.setPosition(position);
+		player.setRotation(rotation);
 
 		if (position.y < 0)
 			server.tcpSendToAll(new DeathPacket(id));
