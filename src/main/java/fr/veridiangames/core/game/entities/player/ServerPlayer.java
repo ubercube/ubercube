@@ -58,6 +58,8 @@ public class ServerPlayer extends Player
 
 	public boolean applyDamage (int damage, NetworkableServer server)
 	{
+	    if(this.isDead()) return true;
+
 		this.life -= damage;
 
 		this.sendTCP(new ApplyDamagePacket(this, damage), server);
@@ -76,6 +78,11 @@ public class ServerPlayer extends Player
 		}
 		return false;
 	}
+
+    public void kill (NetworkableServer server)
+    {
+        this.applyDamage(this.life, server);
+    }
 
 	public void sendTCP(Packet packet, NetworkableServer server)
 	{

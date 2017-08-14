@@ -69,7 +69,10 @@ public class DeathPacket extends Packet
         Entity e = client.getCore().getGame().getEntityManager().get(this.playerId);
         if (e != null)
             client.console(((ECName)e.get(EComponent.NAME)).getName() + " just died !");
-        if(client.getCore().getGame().getPlayer().getID() != this.playerId && e != null)
+        else
+            return;
+
+        if(client.getCore().getGame().getPlayer().getID() != this.playerId)
             client.log(((ECName)e.get(EComponent.NAME)).getName() + " just died !");
         else
         {
