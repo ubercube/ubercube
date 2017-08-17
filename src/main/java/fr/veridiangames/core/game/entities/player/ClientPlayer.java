@@ -75,7 +75,7 @@ public class ClientPlayer extends Player
 
 		this.particleSystems = new ArrayList<>();
 
-		renderSnow = true;
+		renderSnow = false;
 		snow = new ParticleSnow(Indexer.getUniqueID(), position.copy().add(0, 10, 0));
 		GameCore.getInstance().getGame().spawn(snow);
 	}
@@ -106,7 +106,6 @@ public class ClientPlayer extends Player
 		}
 
 		playSounds(core);
-
 
 		if (this.life < 0) this.life = 0;
 		if (this.life > 100) this.life = 100;

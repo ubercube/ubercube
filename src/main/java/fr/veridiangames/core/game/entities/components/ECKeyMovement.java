@@ -122,7 +122,6 @@ public class ECKeyMovement extends EComponent
 			if (jump)
 			{
 				body.applyForce(Vec3.UP, speed);
-
 			}
 			if (ctrl)
 				body.applyForce(Vec3.UP.copy().negate(), speed);
@@ -130,11 +129,13 @@ public class ECKeyMovement extends EComponent
 		else
 		{
 			if (jump)
+			{
 				if (body.isGrounded() && body.getVelocity().y <= 0)
 				{
 					core.getGame().spawn(new AudioSource(Sound.JUMP));
 					body.applyForce(Vec3.UP, jumpForce);
 				}
+			}
 		}
 
 		velocity.add(0, body.getVelocity().y, 0);

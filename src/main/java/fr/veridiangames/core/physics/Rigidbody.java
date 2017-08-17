@@ -85,7 +85,7 @@ public class Rigidbody
 		this.collidingAxis = new Vec3(1, 1, 1);
 	}
 
-	public void updateDragFactor()
+	public void updateDragFactor(float delta)
 	{
 		if (grounded)
 		{
@@ -93,7 +93,7 @@ public class Rigidbody
 			if (restitution > 0)
 			{
 				restitution = velocity.magnitude() * 0.4f;
-				applyForce(Vec3.UP, restitution);
+				applyForce(Vec3.UP, restitution * delta);
 				restitution *= bounceFactor;
 				if (restitution < 0.01f)
 					restitution = 0;
@@ -105,26 +105,37 @@ public class Rigidbody
 		}
 	}
 
-	public void updateVelocity()
+	public void updateVelocity(float delta)
 	{
 		if (networkView)
 			return;
 
-		collider.getPosition().add(velocity);
+		collider.getPosition().add(velocity.copy().mul(delta));
+	}
+
+	public void updateDrag(boolean first)
+	{
+		if (networkView)
+			return;
+		if (!first)
+			return;
+
 		velocity.mul(dragFactor);
 	}
 	
-	public void applyGravity()
+	public void applyGravity(float delta)
 	{
 		if (networkView)
 			return;
 		if (!useGravity)
 			return;
+
 		gravity.add(0, 2.5f, 0);
-		applyForce(gravity.copy().negate(), 1.0f / 60.0f / 60.0f);
+		Vec3 forceVector = gravity.copy().negate().mul(1.0f / 60.0f / 60.0f);
+		mainForce.add(forceVector);
 	}
 	
-	public void applyForces()
+	public void applyForces(float delta)
 	{
 		if (networkView)
 			return;
@@ -137,6 +148,7 @@ public class Rigidbody
 	{
 		Vec3 forceVector = direction.copy().mul(force);
 		mainForce.add(forceVector);
+		System.out.println("Force: " + direction + " * " + force);
 	}
 
 	public void applyMovementForce(Vec3 direction, float force)
@@ -158,7 +170,7 @@ public class Rigidbody
 	{
 		AABoxCollider a = (AABoxCollider) collider;
 		AABoxCollider b = (AABoxCollider) other;
-		Vec3 mtd = CollisionHandler.mtdAABBvsAABB(a, b).copy();
+		Vec3 mtd = CollisionHandler.mtdAABBvsAABB(a, b);
 		this.collider.getPosition().add(mtd);
 	}
 
