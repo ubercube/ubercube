@@ -93,7 +93,7 @@ public class Rigidbody
 			if (restitution > 0)
 			{
 				restitution = velocity.magnitude() * 0.4f;
-				applyForce(Vec3.UP, restitution * delta);
+				applyForce(Vec3.UP, restitution);
 				restitution *= bounceFactor;
 				if (restitution < 0.01f)
 					restitution = 0;
@@ -113,14 +113,12 @@ public class Rigidbody
 		collider.getPosition().add(velocity.copy().mul(delta));
 	}
 
-	public void updateDrag(boolean first)
+	public void updateDrag(float delta)
 	{
 		if (networkView)
 			return;
-		if (!first)
-			return;
 
-		velocity.mul(dragFactor);
+		velocity.mul(0.99f);
 	}
 	
 	public void applyGravity(float delta)
@@ -130,9 +128,9 @@ public class Rigidbody
 		if (!useGravity)
 			return;
 
-		gravity.add(0, 2.5f, 0);
+		gravity.add(0, 2.5f * delta, 0);
 		Vec3 forceVector = gravity.copy().negate().mul(1.0f / 60.0f / 60.0f);
-		mainForce.add(forceVector);
+		mainForce.add(forceVector.mul(delta));
 	}
 	
 	public void applyForces(float delta)
@@ -174,7 +172,7 @@ public class Rigidbody
 		this.collider.getPosition().add(mtd);
 	}
 
-	public void handleWorldCollision(World world)
+	public void handleWorldCollision(World world, float delta)
 	{
 		if (networkView)
 			return;
@@ -192,23 +190,23 @@ public class Rigidbody
 
 			if (data.isCollision())
 			{
-				float collisionMTD = Mathf.nearest(data.getMtdX(), Mathf.nearest(data.getMtdY(), data.getMtdZ(), 0), 0);
-				if (data.isCollisionX() && axis.x == 0 && data.getMtdX() == collisionMTD)
+				float collisionMTD = Mathf.nearest(data.getMtdX(), Mathf.nearest(data.getMtdY(), data.getMtdZ(), 0), 0) * delta;
+				if (data.isCollisionX() && axis.x == 0 && data.getMtdX() * delta == collisionMTD)
 				{
 					gravity.x = 0;
 					mainForce.x = 0;
 					velocity.x = 0;
-					float mtd = data.getMtdX();
+					float mtd = data.getMtdX() * delta;
 					this.collider.getPosition().x += mtd;
 					axis.x = 1;
 					collidingAxis.x = 0;
 					collidingX = true;
 				}
-				else if (data.isCollisionY() && axis.y == 0 && data.getMtdY() == collisionMTD)
+				else if (data.isCollisionY() && axis.y == 0 && data.getMtdY() * delta == collisionMTD)
 				{
 					if (velocity.y < 0)
 					{
-						if (!hitGrounded && !grounded && velocity.y < -0.05f)
+						if (!hitGrounded && !grounded && velocity.y < -0.10f)
 							hitGrounded = true;
 						else
 							hitGrounded = false;
@@ -222,18 +220,18 @@ public class Rigidbody
 					gravity.y = 0;
 					mainForce.y = 0;
 					velocity.y = 0;
-					float mtd = data.getMtdY();
+					float mtd = data.getMtdY() * delta;
 					this.collider.getPosition().y += mtd;
 					axis.y = 1;
 					collidingAxis.y = 0;
 					collidingY = true;
 				}
-				else if (data.isCollisionZ() && axis.z == 0 && data.getMtdZ() == collisionMTD)
+				else if (data.isCollisionZ() && axis.z == 0 && data.getMtdZ() * delta == collisionMTD)
 				{
 					gravity.z = 0;
 					mainForce.z = 0;
 					velocity.z = 0;
-					float mtd = data.getMtdZ();
+					float mtd = data.getMtdZ() * delta;
 					this.collider.getPosition().z += mtd;
 					axis.z = 1;
 					collidingAxis.z = 0;

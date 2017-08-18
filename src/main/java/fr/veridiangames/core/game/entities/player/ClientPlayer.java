@@ -143,7 +143,7 @@ public class ClientPlayer extends Player
 		{
             Rigidbody body = getRigidBody().getBody();
             if(body.isGrounded())
-                body.applyForce(Vec3.UP, 0.1725f);
+                body.applyForce(Vec3.UP, 0.1735f);
 		}
 		if (renderSnow)
 		{

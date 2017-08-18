@@ -39,7 +39,6 @@ public class PhysicsEngine
 	public void update(GameCore core, int precision)
 	{
 		float delta = 1.0f / (float)precision;
-		boolean first = true;
 		for (int p = 1; p <= precision; p++)
 		{
 			for (int i = 0; i < bodys.size(); i++)
@@ -47,28 +46,28 @@ public class PhysicsEngine
 				Rigidbody a = bodys.get(i);
 				a.applyGravity(delta);
 				a.applyForces(delta);
+				a.updateDragFactor(delta);
 				a.updateVelocity(delta);
-				a.updateDrag(first);
-//				for (int j = 0; j < bodys.size(); j++)
-//				{
-//					Rigidbody b = bodys.get(j);
-//					if (a == b)
-//						continue;
-//
-//					if (a.isIgnoreOthers() || b.isIgnoreOthers())
-//						continue;
-//
-//					CollisionData data = a.getCollisionData(b);
-//					if (data.isCollision())
-//					{
-//						a.handleCollision(data, b.getCollider());
-//					}
-//				}
-				a.handleWorldCollision(core.getGame().getWorld());
+				a.updateDrag(delta);
+				if (!a.isIgnoreOthers())
+				{
+					for (int j = 0; j < bodys.size(); j++)
+					{
+						Rigidbody b = bodys.get(j);
+						if (a == b)
+							continue;
+
+						if (b.isIgnoreOthers())
+							continue;
+
+						CollisionData data = a.getCollisionData(b);
+						if (data.isCollision())
+							a.handleCollision(data, b.getCollider());
+					}
+				}
+				a.handleWorldCollision(core.getGame().getWorld(), delta);
 				a.updatePosition();
-				//a.updateDragFactor(delta);
 			}
-			first = false;
 		}
 	}
 
