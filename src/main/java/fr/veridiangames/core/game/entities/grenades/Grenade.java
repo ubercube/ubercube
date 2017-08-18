@@ -21,13 +21,12 @@ package fr.veridiangames.core.game.entities.grenades;
 
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.audio.Sound;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.Model;
+import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.game.entities.components.*;
-import fr.veridiangames.core.game.entities.particles.ParticleSystem;
-import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
-import fr.veridiangames.core.game.entities.particles.ParticlesBulletHit;
-import fr.veridiangames.core.game.entities.particles.ParticlesExplosion;
+import fr.veridiangames.core.game.entities.particles.*;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.maths.Quat;
@@ -94,7 +93,8 @@ public class Grenade extends Entity
 
     private void explose()
     {
-        new ParticlesExplosion(Indexer.getUniqueID(), getPosition().copy()).setNetwork(net);
+        GameCore.getInstance().getGame().spawn(new AudioSource(Sound.EXPLODE));
+        GameCore.getInstance().getGame().spawn(new ParticlesExplosion(Indexer.getUniqueID(), getPosition().copy()));
         if(this.holderID == GameCore.getInstance().getGame().getPlayer().getID())
             net.send(new DamageForcePacket(getPosition().copy(), 4), Protocol.TCP);
         this.destroy();
