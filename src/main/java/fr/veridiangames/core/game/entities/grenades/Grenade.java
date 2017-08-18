@@ -65,7 +65,6 @@ public class Grenade extends Entity
         super.add(new ECModel(Model.GRENADE));
         super.add(new ECRigidbody(this, spawnPoint, direction, new AABoxCollider(new Vec3(0.2f, 0.2f, 0.2f)), false));
         super.addTag("Grenade");
-        this.getRender().getTransform();
 
         this.getBody().useGravity(true);
         this.getBody().setIgnoreOthers(false);

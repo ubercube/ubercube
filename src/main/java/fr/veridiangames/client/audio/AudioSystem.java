@@ -89,8 +89,6 @@ public class AudioSystem
             play(audioSource);
             core.getGame().getEntityManager().remove(audioEntities.get(i));
         }
-//        if (audioPlayers.size() > 0)
-//            System.out.println(audioPlayers.size());
         for (int i = 0; i < audioPlayers.size(); i++)
         {
             AudioPlayer player = audioPlayers.get(i);

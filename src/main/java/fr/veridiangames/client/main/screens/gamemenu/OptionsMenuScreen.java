@@ -72,6 +72,7 @@ public class OptionsMenuScreen extends GuiCanvas
         renderSnow.setScreenParent(GuiComponent.GuiCorner.TC);
         renderSnow.getLabel().setColor(Color4f.WHITE);
         renderSnow.getLabel().setDropShadow(2);
+        renderSnow.triggered = Ubercube.getInstance().getGameCore().getGame().getPlayer().isRenderSnow();
         super.add(renderSnow);
 
         setRendered(false);
