@@ -93,7 +93,7 @@ public class Grenade extends Entity
 
     private void explose()
     {
-        GameCore.getInstance().getGame().spawn(new AudioSource(Sound.EXPLODE));
+        GameCore.getInstance().getGame().spawn(new AudioSource(Sound.EXPLODE, getPosition().copy()));
         GameCore.getInstance().getGame().spawn(new ParticlesExplosion(Indexer.getUniqueID(), getPosition().copy()));
         if(this.holderID == GameCore.getInstance().getGame().getPlayer().getID())
             net.send(new DamageForcePacket(getPosition().copy(), 4), Protocol.TCP);
