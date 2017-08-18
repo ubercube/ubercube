@@ -146,7 +146,6 @@ public class Rigidbody
 	{
 		Vec3 forceVector = direction.copy().mul(force);
 		mainForce.add(forceVector);
-		System.out.println("Force: " + direction + " * " + force);
 	}
 
 	public void applyMovementForce(Vec3 direction, float force)

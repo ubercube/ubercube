@@ -108,9 +108,14 @@ public class ConnectPacket extends Packet
 
 		/* SENDING MULTIPLE PACKETS TO AVOID READ OVERFLOW OF 2048 */
 		int modifiedBlocksSize = server.getCore().getGame().getWorld().getModifiedBlocks().size();
-		int packetCount = (int) ((float) (modifiedBlocksSize * 16) / (Packet.MAX_SIZE)) + 1;
+		int packetCount = (int) ((float) (modifiedBlocksSize * 16) / (Packet.MAX_SIZE)) + 2;
 		List<Vec4i> currentData = GameCore.getInstance().getGame().getWorld().getModifiedBlocks();
 		int count = (int) ((float) modifiedBlocksSize / (float) packetCount);
+
+		System.out.println("Modified block size: " + modifiedBlocksSize);
+		System.out.println("Modified block size(Bytes): " + modifiedBlocksSize * 4 * 4);
+		System.out.println("Packet max size: " + Packet.MAX_SIZE);
+		System.out.println("Num packets: " + packetCount);
 
 		boolean finished = false;
 		for (int i = 0; i < packetCount + 16; i++)

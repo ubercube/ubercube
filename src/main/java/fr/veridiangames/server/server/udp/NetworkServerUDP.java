@@ -67,6 +67,8 @@ public class NetworkServerUDP implements Runnable
         {
             try
             {
+                if (socket.isClosed())
+                    break;
                 byte[] bytes = new byte[Packet.MAX_SIZE];
                 DatagramPacket receive = new DatagramPacket(bytes, bytes.length);
                 socket.receive(receive);
