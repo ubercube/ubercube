@@ -350,6 +350,11 @@ public class Vec3 {
 		return new Vec3(w.x, w.y, w.z);
 	}
 
+	public static Vec3 random()
+	{
+		return new Vec3(Mathf.random() * 2.0f - 1.0f, Mathf.random() * 2.0f - 1.0f, Mathf.random() * 2.0f - 1.0f);
+	}
+
 	public Vec3 copy() {
 		return new Vec3(x, y, z);
 	}

@@ -79,7 +79,7 @@ public class Game
 
 	public void updatePhysics()
 	{
-		physics.update(core);
+		physics.update(core, 10);
 	}
 
 	public void spawn(Entity e)

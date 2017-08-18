@@ -54,6 +54,7 @@ public class Grenade extends Entity
     private boolean             throwed;
     private NetworkableClient   net;
     private Vec3                startPosition = new Vec3();
+    private Vec3                rotationAxis;
     int timer;
 
     public Grenade(int id, int holderID, Vec3 spawnPoint, Quat direction, float force)
@@ -62,12 +63,12 @@ public class Grenade extends Entity
         super.add(new ECName("Grenade"));
         super.add(new ECRender(spawnPoint, direction, new Vec3(1f)));
         super.add(new ECModel(Model.GRENADE));
-        super.add(new ECRigidbody(this, spawnPoint, direction, new AABoxCollider(new Vec3(0.2f, 0.8f, 0.2f)), false));
+        super.add(new ECRigidbody(this, spawnPoint, direction, new AABoxCollider(new Vec3(0.2f, 0.2f, 0.2f)), false));
         super.addTag("Grenade");
         this.getRender().getTransform();
 
         this.getBody().useGravity(true);
-        this.getBody().setIgnoreOthers(true);
+        this.getBody().setIgnoreOthers(false);
         this.getBody().setAirDragFactor(1f);
         this.getBody().setFrictionFactor(0.8f);
         this.getBody().setBounceFactor(0.2f);
@@ -75,6 +76,8 @@ public class Grenade extends Entity
 
         this.holderID = holderID;
         startPosition.set(this.getPosition());
+
+        rotationAxis = Vec3.random();
 
         this.force = force;
     }
@@ -84,6 +87,8 @@ public class Grenade extends Entity
         super.update(core);
 
         timer++;
+
+        this.getTransform().rotate(rotationAxis, 5f / ((float)timer * 0.2f));
 
         if (timer > 60 * 2)
         {
@@ -114,6 +119,8 @@ public class Grenade extends Entity
     {
         return ((ECRender) this.get(EComponent.RENDER)).getTransform().getRotation();
     }
+
+    public Transform getTransform() { return ((ECRender) this.get(EComponent.RENDER)).getTransform(); }
 
     public Entity setNetwork(NetworkableClient net)
     {
