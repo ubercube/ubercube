@@ -36,9 +36,6 @@ import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Vec3;
-import sun.nio.ch.Net;
-
-import static javax.swing.text.html.HTML.Tag.HEAD;
 
 /**
  * Created by Marccspro on 3 f�vr. 2016.

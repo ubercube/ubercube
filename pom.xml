@@ -23,7 +23,7 @@
 
   <groupId>fr.veridiangames</groupId>
   <artifactId>ubercube</artifactId>
-  <version>1.0</version>
+  <version>pre-alpha-1.1</version>
   <packaging>jar</packaging>
 
   <name>ubercube</name>
@@ -35,6 +35,56 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <lwjgl.version>3.1.2</lwjgl.version>
   </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>fr.veridiangames.Nop</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <appendAssemblyId>false</appendAssemblyId>
+          <finalName>ubercube</finalName>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>lwjgl-natives-linux</id>
+      <activation>
+        <os><family>unix</family></os>
+      </activation>
+      <properties>
+        <lwjgl.natives>natives-linux</lwjgl.natives>
+      </properties>
+    </profile>
+    <profile>
+      <id>lwjgl-natives-macos</id>
+      <activation>
+        <os><family>mac</family></os>
+      </activation>
+      <properties>
+        <lwjgl.natives>natives-macos</lwjgl.natives>
+      </properties>
+    </profile>
+    <profile>
+      <id>lwjgl-natives-windows</id>
+      <activation>
+        <os><family>windows</family></os>
+      </activation>
+      <properties>
+        <lwjgl.natives>natives-windows</lwjgl.natives>
+      </properties>
+    </profile>
+  </profiles>
 
   <dependencies>
     <dependency>
@@ -92,34 +142,4 @@
       <scope>runtime</scope>
     </dependency>
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>lwjgl-natives-linux</id>
-      <activation>
-        <os><family>unix</family></os>
-      </activation>
-      <properties>
-        <lwjgl.natives>natives-linux</lwjgl.natives>
-      </properties>
-    </profile>
-    <profile>
-      <id>lwjgl-natives-macos</id>
-      <activation>
-        <os><family>mac</family></os>
-      </activation>
-      <properties>
-        <lwjgl.natives>natives-macos</lwjgl.natives>
-      </properties>
-    </profile>
-    <profile>
-      <id>lwjgl-natives-windows</id>
-      <activation>
-        <os><family>windows</family></os>
-      </activation>
-      <properties>
-        <lwjgl.natives>natives-windows</lwjgl.natives>
-      </properties>
-    </profile>
-  </profiles>
 </project>
