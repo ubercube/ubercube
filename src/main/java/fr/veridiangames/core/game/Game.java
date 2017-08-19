@@ -56,7 +56,7 @@ public class Game
 		this.data = new GameData();
 		this.physics = new PhysicsEngine();
 		this.entityManager = new EntityManager();
-		this.gameMode = new TDMGameMode();
+		this.gameMode = new TDMGameMode(data);
 	}
 
 	public void init()

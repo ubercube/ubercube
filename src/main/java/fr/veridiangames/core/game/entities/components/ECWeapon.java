@@ -30,6 +30,7 @@ import fr.veridiangames.core.profiler.Profiler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Marccspro on 7 f�vr. 2016.
@@ -38,7 +39,7 @@ public class ECWeapon extends EComponent
 {
 	private int weaponID;
 	private Weapon weapon;
-	private List<Weapon> weapons;
+	private ConcurrentHashMap<Integer, Weapon> weapons;
 	private Profiler profiler;
 
 	public ECWeapon(int weapon)
@@ -47,10 +48,10 @@ public class ECWeapon extends EComponent
 		super.addDependencies(RENDER);
 		this.weaponID = weapon;
 
-		this.weapons = new ArrayList<>();
-		this.weapons.add(new WeaponAK47());
-		this.weapons.add(new WeaponShovel());
-		this.weapons.add(new WeaponGrenade(3));
+		this.weapons = new ConcurrentHashMap<>();
+		this.weapons.put(Weapon.AK47, new WeaponAK47());
+		this.weapons.put(Weapon.SHOVEL, new WeaponShovel());
+		this.weapons.put(Weapon.GRENADE, new WeaponGrenade(10));
 
 		this.profiler = new Profiler("WEAPON", true);
 	}
@@ -92,7 +93,7 @@ public class ECWeapon extends EComponent
 		this.weapon.getTransform().setParent(parentTransform);
 	}
 
-	public List<Weapon> getWeapons()
+	public ConcurrentHashMap<Integer, Weapon> getWeapons()
 	{
 		return weapons;
 	}

@@ -54,15 +54,16 @@ public class NetworkServerUDP implements Runnable
         }
         catch (SocketException e)
         {
-            log("Server already listening on port: " + port);
-            log("Server Failed to connect !");
-            log("Terminating udp...");
+            log("UDP: Server already listening on port: " + port);
+            log("UDP: Server Failed to connect !");
+            log("UDP: Terminating udp...");
             System.exit(0);
         }
     }
 
     public void run()
     {
+        log("UDP: Connected !");
         while (socket != null)
         {
             try
@@ -112,7 +113,7 @@ public class NetworkServerUDP implements Runnable
 
     public void stop()
     {
-        log("Closing UDP connection...");
+        log("UDP: Closing connection...");
         socket.close();
     }
 }

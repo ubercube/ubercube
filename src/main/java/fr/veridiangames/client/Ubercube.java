@@ -114,7 +114,8 @@ public class Ubercube
 
 	public void update()
 	{
-        updateProfiler.start();
+        core.setIgnoreAction(false);
+		updateProfiler.start();
 
         audioProfiler.start();
 			AudioSystem.update(core);

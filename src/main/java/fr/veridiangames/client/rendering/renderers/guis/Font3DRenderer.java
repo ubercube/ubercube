@@ -48,6 +48,7 @@ public class Font3DRenderer
 	private int w, h;
 	private String text;
 	private float fontSize;
+	private Color4f color = Color4f.WHITE;
 
 	public Font3DRenderer(TrueTypeFont font, String text, Vec3 position) {
 		this.font = font;
@@ -262,4 +263,8 @@ public class Font3DRenderer
 	{
 		return transform;
 	}
+
+	public void setColor(Color4f color) { this.color = color; }
+
+	public Color4f getColor() { return color; }
 }

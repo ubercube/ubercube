@@ -25,19 +25,16 @@ import fr.veridiangames.core.game.entities.grenades.Grenade;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.Protocol;
-import fr.veridiangames.core.network.packets.gamemode.tdm.GrenadeSpawnPacket;
+import fr.veridiangames.core.network.packets.GrenadeSpawnPacket;
 import fr.veridiangames.core.utils.Indexer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Marc on 11/07/2016.
  */
 public class WeaponGrenade extends ExplosiveWeapon
 {
-    private int grenadetCount;
-    private List<Grenade> grenades;
+    private int maxGrenade;
+    private int grenadeCount;
     private float force;
 
     public WeaponGrenade(int num)
@@ -48,25 +45,34 @@ public class WeaponGrenade extends ExplosiveWeapon
         this.setHidePosition(new Transform(new Vec3(0.3f, -0.05f - 1f, 0)));
         this.setZoomPosition(new Transform(new Vec3(0, 0, 0)));
         this.setPosition(0);
-        this.grenadetCount = num;
-        this.grenades = new ArrayList<>();
+        this.maxGrenade = num;
+        this.grenadeCount = maxGrenade;
     }
 
     public void update(GameCore core)
     {
         super.update(core);
+        if (grenadeCount <= 0)
+            this.undraw();
 
         this.getTransform().getLocalPosition().z = 1 - force * 0.15f;
     }
 
     public void onAction()
     {
+        if (grenadeCount <= 0)
+            return;
+
         force += 0.3f;
         force *= 0.9f;
     }
 
     public void onActionUp()
     {
+        if (grenadeCount <= 0)
+            return;
+        if (GameCore.getInstance().isIgnoreAction())
+            return;
         Grenade g = (Grenade) new Grenade(Indexer.getUniqueID(),
                 this.holder.getID(),
                 transform.getPosition().copy().add(this.holder.getTransform().getForward().copy().mul(1.5f)),
@@ -80,5 +86,26 @@ public class WeaponGrenade extends ExplosiveWeapon
     public void onActionDown()
     {
 
+    }
+
+    public int getMaxGrenades()
+    {
+        return maxGrenade;
+    }
+
+    public int getGrenadesLeft()
+    {
+        return grenadeCount;
+    }
+
+    public void setGrenadeCount(int grenadeCount)
+    {
+        this.grenadeCount = grenadeCount;
+    }
+
+    public void resetGrenades()
+    {
+        this.grenadeCount = maxGrenade;
+        this.draw();
     }
 }

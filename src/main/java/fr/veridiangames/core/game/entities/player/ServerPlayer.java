@@ -42,6 +42,9 @@ public class ServerPlayer extends Player
 	private float high;
 	private boolean falling;
 
+	private int maxGrenades;
+	private int grenadeCount;
+
 	private Vec3 onlineVelocity;
 
 	public ServerPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
@@ -54,6 +57,9 @@ public class ServerPlayer extends Player
 
 		this.falling = false;
 		this.high = 0.0f;
+
+		this.maxGrenades = 10;
+		this.grenadeCount = maxGrenades;
 	}
 
 	public boolean applyDamage (int damage, NetworkableServer server)
@@ -168,5 +174,25 @@ public class ServerPlayer extends Player
 	public float getHigh()
 	{
 		return high;
+	}
+
+	public int getMaxGrenades()
+	{
+		return maxGrenades;
+	}
+
+	public int getGrenadeCount()
+	{
+		return grenadeCount;
+	}
+
+	public void setMaxGrenades(int maxGrenades)
+	{
+		this.maxGrenades = maxGrenades;
+	}
+
+	public void setGrenadeCount(int grenadeCount)
+	{
+		this.grenadeCount = grenadeCount;
 	}
 }

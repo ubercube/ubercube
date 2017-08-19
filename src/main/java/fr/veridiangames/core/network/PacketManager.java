@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.veridiangames.core.network.packets.*;
-import fr.veridiangames.core.network.packets.gamemode.tdm.GrenadeSpawnPacket;
+import fr.veridiangames.core.network.packets.GrenadeSpawnPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMScorePacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMSpawnPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMTeamPacket;

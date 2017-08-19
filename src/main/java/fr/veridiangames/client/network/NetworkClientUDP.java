@@ -44,7 +44,7 @@ public class NetworkClientUDP implements Runnable
             this.address = InetAddress.getByName(address);
             this.port = port;
             this.socket = new DatagramSocket(client.getTcp().getSocket().getLocalPort());
-            log("Connected to the UDP protocol !");
+            log("UDP: Connected !");
             new Thread(this, "udp-thread").start();
         }
         catch (SocketException e)
@@ -59,6 +59,7 @@ public class NetworkClientUDP implements Runnable
 
     public void run()
     {
+        log("UDP: Starting udp-receiver");
         while (true)
         {
             try

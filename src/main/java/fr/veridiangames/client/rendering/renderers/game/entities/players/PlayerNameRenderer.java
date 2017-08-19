@@ -28,6 +28,7 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.game.modes.Team;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.utils.Color4f;
 
@@ -61,8 +62,11 @@ public class PlayerNameRenderer
             if (!(e instanceof NetworkedPlayer))
                 continue;
             String name = ((Player) e).getName();
+            Team team = ((Player) e).getTeam();
             Vec3 position = ((Player) e).getPosition();
             Font3DRenderer renderer = new Font3DRenderer(font, name, position.copy().add(0, 2.3f, 0));
+            if (team != null)
+                renderer.setColor(team.getColor());
             playerFontRenderers.add(renderer);
         }
     }
@@ -71,7 +75,8 @@ public class PlayerNameRenderer
     {
         for (int i = 0; i < playerFontRenderers.size(); i++)
         {
-            playerFontRenderers.get(i).render(shader, camera, Color4f.WHITE, 4);
+            Color4f color = playerFontRenderers.get(i).getColor();
+            playerFontRenderers.get(i).render(shader, camera, color, 4);
         }
     }
 }

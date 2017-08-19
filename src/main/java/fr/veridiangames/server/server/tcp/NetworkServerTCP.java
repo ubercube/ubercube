@@ -134,10 +134,13 @@ public class NetworkServerTCP implements Runnable
 
     public void run()
     {
+        log("TCP: Connected !");
         while (socket != null)
         {
             try
             {
+                if (socket.isClosed())
+                    break;
                 Socket acceptedClient = this.socket.accept();
                 RemoteClient client = new RemoteClient(acceptedClient, server);
                 clients.add(client);

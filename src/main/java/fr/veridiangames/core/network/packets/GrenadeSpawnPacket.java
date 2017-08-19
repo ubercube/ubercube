@@ -17,17 +17,19 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.core.network.packets.gamemode.tdm;
+package fr.veridiangames.core.network.packets;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.grenades.Grenade;
+import fr.veridiangames.core.game.entities.player.ClientPlayer;
+import fr.veridiangames.core.game.entities.player.ServerPlayer;
+import fr.veridiangames.core.game.entities.weapons.Weapon;
+import fr.veridiangames.core.game.entities.weapons.explosiveWeapons.WeaponGrenade;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
-import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
-import fr.veridiangames.core.utils.Log;
 
 import java.net.InetAddress;
 
@@ -100,11 +102,27 @@ public class GrenadeSpawnPacket extends Packet
 
     public void process(NetworkableServer server, InetAddress address, int port)
     {
-        server.tcpSendToAll(new GrenadeSpawnPacket(this));
+        ServerPlayer player = (ServerPlayer) server.getCore().getGame().getEntityManager().get(holderID);
+        if (player == null)
+            return;
+        if (player.isDead())
+            return;
+        if (player.getGrenadeCount() > 0 && player.getGrenadeCount() <= player.getMaxGrenades())
+        {
+            player.setGrenadeCount(player.getGrenadeCount() - 1);
+            server.tcpSendToAll(new GrenadeSpawnPacket(this));
+        }
     }
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
+        ClientPlayer player = client.getCore().getGame().getPlayer();
+        if (player.getID() == holderID)
+        {
+            WeaponGrenade g = (WeaponGrenade) player.getWeaponManager().getWeapons().get(Weapon.GRENADE);
+            g.setGrenadeCount(g.getGrenadesLeft() - 1);
+        }
+
         GameCore.getInstance().getGame().spawn(new Grenade(id, holderID, position, direction, force).setNetwork(client));
     }
 }

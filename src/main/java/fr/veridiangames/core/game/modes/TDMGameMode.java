@@ -23,9 +23,11 @@ import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.main.screens.gamemode.TDMGameModeScreen;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.Game;
 import fr.veridiangames.core.game.data.GameData;
 import fr.veridiangames.core.game.data.world.WorldGen;
 import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.game.world.Chunk;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec4;
 import fr.veridiangames.core.network.NetworkableServer;
@@ -39,12 +41,13 @@ import fr.veridiangames.core.utils.Color4f;
  */
 public class TDMGameMode implements GameMode
 {
-    public TDMGameMode()
+    public TDMGameMode(GameData data)
     {
         redTeam.setColor(Color4f.RED);
         blueTeam.setColor(Color4f.BLUE);
-        redTeam.setSpawn(new Vec3(0, 25, 0));
-        blueTeam.setSpawn(new Vec3(20, 25, 20));
+        int worldSize = data.getWorldSize() * Chunk.SIZE;
+        redTeam.setSpawn(new Vec3(50, 25, 50));
+        blueTeam.setSpawn(new Vec3(worldSize - 50, 25, worldSize - 50));
     }
 
     private Team redTeam = new Team();
@@ -72,7 +75,6 @@ public class TDMGameMode implements GameMode
     public void setBlueScore(int i){
         blueScore = i;
     }
-
 
     @Override
     public void update()

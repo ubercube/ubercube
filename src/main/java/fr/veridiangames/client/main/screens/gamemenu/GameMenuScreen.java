@@ -37,6 +37,7 @@ public class GameMenuScreen extends GuiCanvas
                 setRendered(false);
                 display.getInput().getMouse().setGrabbed(true);
                 centered = false;
+                core.setIgnoreAction(true);
             }
         });
         returnButton.centerText();

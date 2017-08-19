@@ -34,6 +34,8 @@ public class GameCore
 
 	private static GameCore instance;
 
+	private boolean ignoreAction;
+
 	public double deltaTime;
 	
 	private Game mainGame;
@@ -43,6 +45,8 @@ public class GameCore
 		instance = this;
 		mainGame = new Game(this);
 		mainGame.init();
+
+		ignoreAction = false;
 	}
 	
 	public void update()
@@ -78,5 +82,15 @@ public class GameCore
 	public static void setDisplayNetworkDebug(boolean displayNetworkDebug)
 	{
 		GameCore.displayNetworkDebug = displayNetworkDebug;
+	}
+
+	public boolean isIgnoreAction()
+	{
+		return ignoreAction;
+	}
+
+	public void setIgnoreAction(boolean ignoreAction)
+	{
+		this.ignoreAction = ignoreAction;
 	}
 }

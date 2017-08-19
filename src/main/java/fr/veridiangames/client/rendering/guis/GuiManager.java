@@ -28,13 +28,16 @@ import fr.veridiangames.client.rendering.Display;
 public class GuiManager {
 	private List<GuiCanvas> canvases;
 	private int currentCanvas;
+	private boolean clicked;
 
 	public GuiManager() {
 		canvases = new ArrayList<>();
 		currentCanvas = 0;
+		clicked = false;
 	}
 	
 	public void update() {
+		clicked = false;
 		if (currentCanvas != -1)
 			canvases.get(currentCanvas).update();
 	}
@@ -63,5 +66,15 @@ public class GuiManager {
 	public int getCanvas()
 	{
 		return currentCanvas;
+	}
+
+	public boolean isClicked()
+	{
+		return clicked;
+	}
+
+	public void setClicked(boolean clicked)
+	{
+		this.clicked = clicked;
 	}
 }

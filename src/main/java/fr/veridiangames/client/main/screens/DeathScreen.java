@@ -1,4 +1,4 @@
-package fr.veridiangames.client.main.screens.gamemenu;
+package fr.veridiangames.client.main.screens;
 
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.inputs.Input;
@@ -48,6 +48,7 @@ public class DeathScreen extends GuiCanvas
             {
                 ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
                 p.getNet().send(new RespawnPacket(p), Protocol.TCP);
+                display.getInput().getMouse().setGrabbed(true);
             }
         });
         respawnButton.centerText();

@@ -22,6 +22,7 @@ package fr.veridiangames.core.game.entities.player;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.*;
+import fr.veridiangames.core.game.modes.Team;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
@@ -159,6 +160,11 @@ public class Player extends Entity
 			hitable = false;
 		}
 		this.dead = dead;
+	}
+
+	public Team getTeam()
+	{
+		return GameCore.getInstance().getGame().getGameMode().getPlayerTeam(this);
 	}
 
 	public boolean isHitable()

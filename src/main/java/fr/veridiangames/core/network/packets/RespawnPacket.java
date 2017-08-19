@@ -24,6 +24,8 @@ import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
+import fr.veridiangames.core.game.entities.weapons.Weapon;
+import fr.veridiangames.core.game.entities.weapons.explosiveWeapons.WeaponGrenade;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
@@ -123,6 +125,7 @@ public class RespawnPacket extends Packet
         ServerPlayer p = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId);
         p.setLife(Player.MAX_LIFE);
         p.setDead(false);
+        p.setGrenadeCount(p.getMaxGrenades());
 
         // GAME MODE
         GameCore.getInstance().getGame().getGameMode().onPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(playerId), server);
@@ -145,6 +148,7 @@ public class RespawnPacket extends Packet
             p.setPosition(this.position);
             p.setLife(Player.MAX_LIFE);
             p.setDead(false);
+            ((WeaponGrenade) p.getWeaponManager().getWeapons().get(Weapon.GRENADE)).resetGrenades();
         }
         else
         {

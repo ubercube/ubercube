@@ -90,7 +90,6 @@ public class PlayerListScreen extends GuiCanvas
 
         if (time % 60 == 0)
         {
-
             EntityManager entityManager = core.getGame().getEntityManager();
             for (int i = 0; i < entityManager.getPlayerEntites().size(); i++)
             {
@@ -99,7 +98,7 @@ public class PlayerListScreen extends GuiCanvas
                 int ping = player.getPing();
                 if (!players.containsKey(player.getID()))
                 {
-                    players.put(player.getID(), new PLine(name, bg, i));
+                    players.put(player.getID(), new PLine(player, bg, i));
                 }
                 else
                 {
@@ -137,10 +136,11 @@ public class PlayerListScreen extends GuiCanvas
         int ping;
         int x, y;
         Color4f pingColor;
+        Color4f nameColor;
 
-        public PLine(String name, GuiComponent parent, int i)
+        public PLine(Player player, GuiComponent parent, int i)
         {
-            this.name = name;
+            this.name = player.getName();
             this.ping = 0;
             this.x = parent.getX();
             this.y = parent.getY() + i * 25;
@@ -148,6 +148,7 @@ public class PlayerListScreen extends GuiCanvas
             this.pingLabel = new FontRenderer(FONT, ping + " ms", x + parent.getW() - 5, y + 2);
             this.pingLabel.setPosition(x + parent.getW() - 5 - pingLabel.getWidth(), y + 2);
             this.pingColor = new Color4f(0f, 1f, 0f, 1f);
+            this.nameColor = player.getTeam().getColor();
         }
 
         void update(int x, int y, int ping, GuiComponent parent)
@@ -173,7 +174,7 @@ public class PlayerListScreen extends GuiCanvas
 
         void render(GuiShader shader)
         {
-            this.nameLabel.render(shader, Color4f.WHITE, 1);
+            this.nameLabel.render(shader, nameColor, 1);
             this.pingLabel.render(shader, pingColor, 1);
         }
     }

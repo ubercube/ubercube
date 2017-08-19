@@ -26,9 +26,14 @@ import fr.veridiangames.core.network.NetworkableClient;
 
 public abstract class Weapon
 {
+	public static final int AK47 = 0;
+	public static final int SHOVEL = 1;
+	public static final int GRENADE = 2;
+
 	protected NetworkableClient	net;
 
 	private boolean destroyed;
+	private boolean drawed;
 
 	protected Vec2 velocity;
 
@@ -51,6 +56,7 @@ public abstract class Weapon
 	public Weapon(int model)
 	{
 		this.model = model;
+		this.drawed = true;
 		this.rotationFactor = new Vec3(0, 0, 0);
 		this.transform = new Transform();
 		this.positionChanged = false;
@@ -224,4 +230,10 @@ public abstract class Weapon
 	{
 		this.destroyed = true;
 	}
+
+	public void draw() { this.drawed = true; }
+
+	public void undraw() { this.drawed = false; }
+
+	public boolean isDrawed() { return drawed; }
 }

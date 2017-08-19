@@ -22,7 +22,6 @@ package fr.veridiangames.client.main.screens;
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.audio.AudioPlayer;
 import fr.veridiangames.client.inputs.Input;
-import fr.veridiangames.client.main.screens.gamemenu.DeathScreen;
 import fr.veridiangames.client.main.screens.gamemenu.GameMenuScreen;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
@@ -33,6 +32,7 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.client.main.screens.gamemode.TDMGameModeScreen;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
+import fr.veridiangames.core.game.entities.weapons.explosiveWeapons.WeaponGrenade;
 import fr.veridiangames.core.game.entities.weapons.fireWeapons.FireWeapon;
 import fr.veridiangames.core.utils.Color4f;
 
@@ -181,6 +181,12 @@ public class PlayerHudScreen extends GuiCanvas
         {
             weaponStats.setUseable(true);
             weaponStats.setText(((FireWeapon) weapon).getBulletsLeft() + "/" + ((FireWeapon) weapon).getMaxBullets());
+        }
+
+        if (weapon instanceof WeaponGrenade)
+        {
+            weaponStats.setUseable(true);
+            weaponStats.setText(((WeaponGrenade) weapon).getGrenadesLeft() + "/" + ((WeaponGrenade) weapon).getMaxGrenades());
         }
 
         if(life < health && damageEffect.getColor().getAlpha() < 0.75f)
