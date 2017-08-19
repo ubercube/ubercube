@@ -97,6 +97,7 @@ public class Renderer
 	
 	public static boolean isDX11()
 	{
-		return DX11;
+//		return DX11;
+		return false;
 	}
 }

@@ -45,7 +45,8 @@ public abstract class Shader
 	{
 		if (Renderer.isDX11())
 			return getResource("shaders/330");
-		return getResource("shaders/120");
+
+		return getResource("shaders/330");
 	}
 
 	private int	program;
@@ -152,6 +153,22 @@ public abstract class Shader
 		return shader;
 	}
 
+	private String shader120compatible(String ligne)
+	{
+		String result = ligne;
+
+		result = result.replaceAll("^#version 330 core", "#version 120");
+		result = result.replaceAll("^#extension GL_NV_shadow_samplers_cube : enable", "// #extension GL_NV_shadow_samplers_cube : enable");
+		result = result.replaceAll("^in", "varying");
+		result = result.replaceAll("^out", "varying");
+		result = result.replaceAll("^layout \\(location = [0-9]\\) in", "attribute");
+		result = result.replaceAll("^varying vec4 fragColor;", "// varying vec4 fragColor;");
+		result = result.replaceAll("fragColor", "gl_FragColor");
+		result = result.replaceAll("texture\\(", "texture2D(");
+
+		return result;
+	}
+
 	private String loadShader(String path)
 	{
 		final String INCLUDE_FUNC = "#include";
@@ -162,6 +179,7 @@ public abstract class Shader
 			String buffer = "";
 			while ((buffer = reader.readLine()) != null)
 			{
+				buffer = shader120compatible(buffer);
 				if (buffer.startsWith(INCLUDE_FUNC))
 				{
 					String[] fileDir = path.split("/");
@@ -179,6 +197,10 @@ public abstract class Shader
 		{
 			e.printStackTrace();
 		}
+		System.out.println(path);
+		System.out.println("==================================================================");
+		System.out.println(result);
+		System.out.println("\n\n\n");
 		return result;
 	}
 }
