@@ -148,7 +148,9 @@ public class PlayerListScreen extends GuiCanvas
             this.pingLabel = new FontRenderer(FONT, ping + " ms", x + parent.getW() - 5, y + 2);
             this.pingLabel.setPosition(x + parent.getW() - 5 - pingLabel.getWidth(), y + 2);
             this.pingColor = new Color4f(0f, 1f, 0f, 1f);
-            this.nameColor = player.getTeam().getColor();
+            this.nameColor = Color4f.WHITE;
+            if (player.getTeam() != null)
+                this.nameColor = player.getTeam().getColor();
         }
 
         void update(int x, int y, int ping, GuiComponent parent)
