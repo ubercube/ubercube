@@ -161,6 +161,7 @@ public class Ubercube
 
 		if (core.getGame().getPlayer().isKicked())
 		{
+			display.getInput().getMouse().setGrabbed(false);
 			joinGame = false;
 			Object[] options = {"OK"};
 			int n = JOptionPane.showOptionDialog(null,
@@ -181,6 +182,7 @@ public class Ubercube
 		}
 		if (core.getGame().getPlayer().isTimedOut())
 		{
+			display.getInput().getMouse().setGrabbed(false);
 			joinGame = false;
 			Object[] options = {"OK"};
 			int n = JOptionPane.showOptionDialog(null,
