@@ -43,6 +43,12 @@ public class WeaponFboShader extends Shader
 		super(vertexPath, fragmentPath);
 	}
 
+	protected void bindAttributeLocations()
+	{
+		super.bindAttribLocation(0, "in_position");
+		super.bindAttribLocation(1, "in_coords");
+	}
+
 	protected void getUniformLocations()
 	{
 		projectionMatrixLocation = super.getUniformLocation("projectionMatrix");

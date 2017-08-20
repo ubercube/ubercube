@@ -81,8 +81,7 @@ public class Console
 		shader.setOrtho(display.getWidth(), 0, 0, display.getHeight(), -1, 1);
 		shader.setModelViewMatrix(Mat4.identity());
 		shader.setColor(1, 1, 1, 1);
-		shader.enableVColor(false);
-		
+
 		for (CLine c : clines)
 		{
 			c.getLabel().render(shader);

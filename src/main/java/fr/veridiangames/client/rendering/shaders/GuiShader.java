@@ -22,6 +22,8 @@ package fr.veridiangames.client.rendering.shaders;
 import fr.veridiangames.core.maths.Mat4;
 import fr.veridiangames.core.utils.Color4f;
 
+import static org.lwjgl.opengl.GL20.glBindAttribLocation;
+
 /**
  * Created by Marccspro on 8 f�vr. 2016.
  */
@@ -29,7 +31,7 @@ public class GuiShader extends Shader
 {
 	public static final String VERTEX_PATH = "/gui.vert";
 	public static final String FRAGMENT_PATH = "/gui.frag";
-	
+
 	private int projectionMatrixLocation;
 	private int modelViewMatrixLocation;
 	private int colorLocation;
@@ -41,9 +43,12 @@ public class GuiShader extends Shader
 		super(VERTEX_PATH, FRAGMENT_PATH);
 	}
 	
-	public GuiShader(String vertexPath, String fragmentPath)
+	public GuiShader(String vertexPath, String fragmentPath) {super(vertexPath, fragmentPath); }
+
+	protected void bindAttributeLocations()
 	{
-		super(vertexPath, fragmentPath);
+		super.bindAttribLocation(0, "in_position");
+		super.bindAttribLocation(1, "in_coords");
 	}
 
 	protected void getUniformLocations()
@@ -52,9 +57,8 @@ public class GuiShader extends Shader
 		modelViewMatrixLocation = super.getUniformLocation("modelViewMatrix");
 		colorLocation = super.getUniformLocation("in_color");
 		useTextureLocation = super.getUniformLocation("useTexture");
-		useVColorLocation = super.getUniformLocation("useVColor");
 	}
-	
+
 	public void setOrtho(float right, float left, float top, float bottom, float zNear, float zFar)
 	{
 		this.setProjectionMatrix(Mat4.orthographic(right, left, top, bottom, zNear, zFar));		
@@ -83,10 +87,5 @@ public class GuiShader extends Shader
 	public void setUseTexture(boolean useTexture)
 	{
 		super.loadInt(useTextureLocation, useTexture ? 1 : 0);
-	}
-	
-	public void enableVColor(boolean useVColor)
-	{
-		super.loadInt(useVColorLocation, useVColor ? 1 : 0);
 	}
 }

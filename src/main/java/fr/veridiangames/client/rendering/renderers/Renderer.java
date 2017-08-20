@@ -44,7 +44,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class Renderer
 {
-	private static boolean DX11;
+	private static boolean GL33;
 	
 	public Renderer()
 	{
@@ -55,12 +55,13 @@ public class Renderer
 	{
 		String glVersionString = GL11.glGetString(GL11.GL_VERSION).split(" ")[0].trim();
 		float glVersion = Float.parseFloat(glVersionString.substring(0, 3));
-		System.out.println("GL Version " + glVersion); 
-		if (glVersion < 4.0)
+		System.out.println("Available GL Version " + glVersion);
+		if (glVersion < 3.3)
 		{
-			return DX11 = false;
+			System.err.println("Not GL33 compatible !");
+			return GL33 = false;
 		}
-		return DX11 = true;
+		return GL33 = true;
 	}
 	
 	private void init()
@@ -95,9 +96,8 @@ public class Renderer
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap);
 	}
 	
-	public static boolean isDX11()
+	public static boolean isGL33()
 	{
-//		return DX11;
-		return false;
+		return GL33;
 	}
 }

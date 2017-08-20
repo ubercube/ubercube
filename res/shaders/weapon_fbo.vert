@@ -1,21 +1,17 @@
-#version 120
+#version 330 core
 #extension GL_NV_shadow_samplers_cube : enable
 
-attribute vec3 in_position;
-attribute float in_light;
+layout (location = 0) in vec3 in_position;
+layout (location = 1) in vec2 in_coords;
 
 uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
 
-varying float v_light;
-varying vec3 v_position;
-varying vec3 worldPosition;
+out vec2 v_coords;
 
 void main(void)
 {
-	v_position = in_position;
-	v_light = in_light;
+	v_coords = in_coords;
     vec4 modelViewTransform = modelViewMatrix *  vec4(in_position, 1.0);
-	worldPosition = (modelViewTransform).xyz;
 	gl_Position = projectionMatrix * modelViewTransform;
 }

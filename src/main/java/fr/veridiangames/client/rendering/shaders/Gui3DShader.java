@@ -56,6 +56,12 @@ public class Gui3DShader extends Shader
 		useVColorLocation = super.getUniformLocation("useVColor");
 	}
 
+	protected void bindAttributeLocations()
+	{
+		super.bindAttribLocation(0, "in_position");
+		super.bindAttribLocation(1, "in_coords");
+	}
+
 	public void setShaderBase(Mat4 projectionMatrix)
 	{
 		this.setProjectionMatrix(projectionMatrix);

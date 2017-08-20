@@ -43,10 +43,7 @@ public abstract class Shader
 
 	private static String getShaderPath()
 	{
-		if (Renderer.isDX11())
-			return getResource("shaders/330");
-
-		return getResource("shaders/330");
+		return getResource("shaders");
 	}
 
 	private int	program;
@@ -66,6 +63,10 @@ public abstract class Shader
 	{
 		return glGetUniformLocation(program, name);
 	}
+
+	protected abstract void bindAttributeLocations();
+
+	protected void bindAttribLocation(int loc, String name) { glBindAttribLocation(program, loc, name); }
 
 	protected void loadInt(int location, int v)
 	{
@@ -130,6 +131,8 @@ public abstract class Shader
 		createShader(loadShader(vertexShader), GL_VERTEX_SHADER);
 		createShader(loadShader(fragmentShader), GL_FRAGMENT_SHADER);
 
+		bindAttributeLocations();
+
 		glLinkProgram(program);
 		glValidateProgram(program);
 	}
@@ -165,7 +168,6 @@ public abstract class Shader
 		result = result.replaceAll("^varying vec4 fragColor;", "// varying vec4 fragColor;");
 		result = result.replaceAll("fragColor", "gl_FragColor");
 		result = result.replaceAll("texture\\(", "texture2D(");
-
 		return result;
 	}
 
@@ -179,7 +181,8 @@ public abstract class Shader
 			String buffer = "";
 			while ((buffer = reader.readLine()) != null)
 			{
-				buffer = shader120compatible(buffer);
+				if (!Renderer.isGL33())
+					buffer = shader120compatible(buffer);
 				if (buffer.startsWith(INCLUDE_FUNC))
 				{
 					String[] fileDir = path.split("/");
@@ -197,10 +200,6 @@ public abstract class Shader
 		{
 			e.printStackTrace();
 		}
-		System.out.println(path);
-		System.out.println("==================================================================");
-		System.out.println(result);
-		System.out.println("\n\n\n");
 		return result;
 	}
 }

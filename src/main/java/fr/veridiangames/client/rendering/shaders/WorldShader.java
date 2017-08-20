@@ -29,7 +29,7 @@ public class WorldShader extends Shader
 {
 	public static final String VERTEX_PATH = "/world.vert";
 	public static final String FRAGMENT_PATH = "/world.frag";
-	
+
 	private int projectionMatrixLocation;
 	private int modelViewMatrixLocation;
 	private int cameraPositionLocation;
@@ -54,7 +54,14 @@ public class WorldShader extends Shader
 		colorLocation = super.getUniformLocation("in_color");
 		fogDistanceLocation = super.getUniformLocation("fogDistance");
 	}
-	
+
+	protected void bindAttributeLocations()
+	{
+		super.bindAttribLocation(0, "in_position");
+		super.bindAttribLocation(1, "in_color");
+		super.bindAttribLocation(2, "in_normal");
+	}
+
 	public void setShaderBase(Mat4 projectionMatrix, Vec3 cameraPosition, float fogDistance)
 	{
 		this.setProjectionMatrix(projectionMatrix);

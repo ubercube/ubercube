@@ -42,7 +42,7 @@ public class CubeMap
 	
 	public CubeMap(String[] textures)
 	{
-		if (!Renderer.isDX11())
+		if (!Renderer.isGL33())
 			return;
 		
 		textureID = glGenTextures();

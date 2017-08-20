@@ -29,7 +29,7 @@ public class MainShader extends Shader
 {
 	public static final String VERTEX_PATH = "/main.vert";
 	public static final String FRAGMENT_PATH = "/main.frag";
-	
+
 	private int projectionMatrixLocation;
 	private int modelViewMatrixLocation;
 	private int cameraPositionLocation;
@@ -54,7 +54,17 @@ public class MainShader extends Shader
 		colorLocation = super.getUniformLocation("in_color");
 		fogDistanceLocation = super.getUniformLocation("fogDistance");
 	}
-	
+
+	protected void bindAttributeLocations()
+	{
+		super.bindAttribLocation(0, "in_position");
+		super.bindAttribLocation(1, "in_color");
+		super.bindAttribLocation(2, "in_transform0");
+		super.bindAttribLocation(3, "in_transform1");
+		super.bindAttribLocation(4, "in_transform2");
+		super.bindAttribLocation(5, "in_transform3");
+	}
+
 	public void setShaderBase(Mat4 projectionMatrix, Vec3 cameraPosition, float fogDistance)
 	{
 		this.setProjectionMatrix(projectionMatrix);
