@@ -120,7 +120,7 @@ public class ConsoleScreen extends GuiCanvas
         for (int i = 0; i < messageList.size(); i++)
         {
             CLine msg = messageList.get(i);
-            msg.update(x + 5, bg.getY() + bg.getH() - (messageList.size() - 1) * 20 + i * 20 + (int) yScroll - 5, console);
+            msg.update(x + 5, bg.getY() + bg.getH() - 16 - (messageList.size() - 1) * 20 + i * 20 + (int) yScroll - 5, console);
         }
     }
 

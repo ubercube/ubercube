@@ -26,6 +26,7 @@ import fr.veridiangames.client.main.screens.PlayerHudScreen;
 import fr.veridiangames.client.main.screens.LoadingScreen;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiManager;
+import fr.veridiangames.client.rendering.guis.GuiUtils;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.maths.Quat;
@@ -47,7 +48,7 @@ import javax.swing.*;
  */
 public class Ubercube
 {
-	private static Ubercube instance;
+	private static Ubercube		instance;
 
 	private GameCore			core;
 	private Display				display;
@@ -63,15 +64,15 @@ public class Ubercube
 	private ConsoleScreen		console;
 	private boolean				inMenu;
 
-	private Profiler renderProfiler;
-	private Profiler updateProfiler;
-	private Profiler audioProfiler;
-	private Profiler guiProfiler;
-	private Profiler coreProfiler;
-	private Profiler playerProfiler;
-	private Profiler renderUpdateProfiler;
-	private Profiler physicsProfiler;
-	private Profiler sleepProfiler;
+	private Profiler			renderProfiler;
+	private Profiler			updateProfiler;
+	private Profiler			audioProfiler;
+	private Profiler			guiProfiler;
+	private Profiler			coreProfiler;
+	private Profiler			playerProfiler;
+	private Profiler			renderUpdateProfiler;
+	private Profiler			physicsProfiler;
+	private Profiler			sleepProfiler;
 
 	public Ubercube()
 	{
@@ -130,9 +131,7 @@ public class Ubercube
 		if (net.isConnected() && core.getGame().getWorld().isGenerated())
 		{
 			if (!connected && net.isConnected())
-			{
 				connected = true;
-			}
 			if (!joinGame && gameLoading.hasJoinedGame())
 			{
 				display.getInput().getMouse().setGrabbed(true);
@@ -164,42 +163,18 @@ public class Ubercube
 			display.getInput().getMouse().setGrabbed(false);
 			joinGame = false;
 			Object[] options = {"OK"};
-			int n = JOptionPane.showOptionDialog(null,
-					"You got kicked !","Warning",
-					JOptionPane.PLAIN_MESSAGE,
-					JOptionPane.QUESTION_MESSAGE,
-					null,
-					options,
-					options[0]);
-
+			int n = GuiUtils.warning("You got kicked !", options);
 			if (n == JOptionPane.YES_OPTION)
-			{
-				net.setConnected(false);
-				connected = false;
-				net.stop();
-				System.exit(0);
-			}
+				exitGame();
 		}
 		if (core.getGame().getPlayer().isTimedOut())
 		{
 			display.getInput().getMouse().setGrabbed(false);
 			joinGame = false;
 			Object[] options = {"OK"};
-			int n = JOptionPane.showOptionDialog(null,
-					"Time out: connection lost !","Warning",
-					JOptionPane.PLAIN_MESSAGE,
-					JOptionPane.QUESTION_MESSAGE,
-					null,
-					options,
-					options[0]);
-
+			int n = GuiUtils.warning("Time out: connection lost !", options);
 			if (n == JOptionPane.YES_OPTION)
-			{
-				net.setConnected(false);
-				connected = false;
-				net.stop();
-				System.exit(0);
-			}
+				exitGame();
 		}
 
 		updateProfiler.end();
@@ -208,18 +183,9 @@ public class Ubercube
 	public static boolean warning(String msg)
 	{
 		Object[] options = {"OK"};
-		int n = JOptionPane.showOptionDialog(null,
-				msg,"Warning",
-				JOptionPane.PLAIN_MESSAGE,
-				JOptionPane.QUESTION_MESSAGE,
-				null,
-				options,
-				options[0]);
-
+		int n = GuiUtils.warning(msg, options);
 		if (n == JOptionPane.YES_OPTION)
-		{
 			return true;
-		}
 		return false;
 	}
 
@@ -312,12 +278,20 @@ public class Ubercube
 		disconnectAndExit();
 	}
 
-	public void disconnectAndExit()
+	public void exitGame()
 	{
-		net.send(new DisconnectPacket(core.getGame().getPlayer().getID(), "Client closed the game"), Protocol.TCP);
+		net.setConnected(false);
+		connected = false;
+		net.stop();
 		display.setDestroyed(true);
 		AudioSystem.destroy();
 		System.exit(0);
+	}
+
+	public void disconnectAndExit()
+	{
+		net.send(new DisconnectPacket(core.getGame().getPlayer().getID(), "Client closed the game"), Protocol.TCP);
+		exitGame();
 	}
 
 	public GameCore getGameCore()

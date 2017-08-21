@@ -19,13 +19,15 @@
 
 package fr.veridiangames.client;
 
+import fr.veridiangames.core.GameCore;
+
 import static fr.veridiangames.core.utils.FileUtils.fileExist;
 
 public class FileManager
 {
     public static String getResource(String path)
     {
-        String fullPath = "res/" + path;
+        String fullPath = GameCore.RESOURCES_PATH + path;
         if (!fileExist(fullPath))
             throw new RuntimeException("Unknown resource: " + path);
         return (fullPath);

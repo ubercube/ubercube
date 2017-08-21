@@ -68,13 +68,12 @@ public class PlayerHandler
 		mouse.setDX(0);
 		mouse.setDY(0);
 
-		if (Ubercube.getInstance().isInConsole())
+		if (Ubercube.getInstance().isInConsole() || Ubercube.getInstance().isInMenu())
 			return;
 
 		if (input.getMouse().getButton(0) && !Ubercube.getInstance().isInMenu())
 			input.getMouse().setGrabbed(true);
-		if (input.getKey(Input.KEY_ESCAPE) &&
-				!Ubercube.getInstance().isInConsole())
+		if (input.getKey(Input.KEY_ESCAPE) && !Ubercube.getInstance().isInConsole())
 			input.getMouse().setGrabbed(false);
 		if (!input.getMouse().isGrabbed())
 			return;
