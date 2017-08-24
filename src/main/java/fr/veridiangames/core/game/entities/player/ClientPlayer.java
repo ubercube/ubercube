@@ -136,14 +136,14 @@ public class ClientPlayer extends Player
         }
 
 		/* STEP */
-		Vec3 block = new Vec3(getPosition().copy().add(this.getViewDirection().copy().normalize().mul(1.25f).add(0, 0.5f, 0)));
-		if(getKeyComponent().isUp() && !getKeyComponent().isJump() && !getKeyComponent().isRun()
+		Vec3 block = new Vec3(getPosition().copy().add(this.getViewDirection().copy().normalize().mul(1.5f).add(0, 1, 0)));
+		if((getKeyComponent().isUp() || getKeyComponent().isRight() || getKeyComponent().isLeft()) && !getKeyComponent().isJump() && !getKeyComponent().isRun()
 				&& core.getGame().getWorld().getBlock((int)block.x, (int)getPosition().y - 1, (int)block.z) != 0
 				&& core.getGame().getWorld().getBlock((int)block.x, (int)getPosition().y, (int)block.z) == 0)
 		{
             Rigidbody body = getRigidBody().getBody();
             if(body.isGrounded())
-                body.applyForce(Vec3.UP, 0.1735f);
+                body.applyForce(Vec3.UP, 0.18f);
 		}
 		if (renderSnow)
 		{

@@ -70,7 +70,7 @@ public class NetworkServerUDP implements Runnable
             {
                 byte[] bytes = new byte[Packet.MAX_SIZE];
                 DatagramPacket receive = new DatagramPacket(bytes, bytes.length);
-                if (socket.isClosed())
+                if (!socket.isClosed())
                     socket.receive(receive);
                 else
                     break;

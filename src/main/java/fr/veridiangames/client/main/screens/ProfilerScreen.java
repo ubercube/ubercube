@@ -42,6 +42,7 @@ import java.util.ArrayList;
  *
  * TODO: Resize the curve depending on display size
  */
+
 public class ProfilerScreen extends GuiCanvas {
     private GameCore core;
     private Display display;

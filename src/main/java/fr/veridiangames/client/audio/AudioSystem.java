@@ -92,10 +92,10 @@ public class AudioSystem
         for (int i = 0; i < audioPlayers.size(); i++)
         {
             AudioPlayer player = audioPlayers.get(i);
-            player.update();
-            if (!player.isPlaying())
+			audioPlayers.get(i).update();
+            if (!audioPlayers.get(i).isPlaying())
             {
-                player.destroy();
+				audioPlayers.get(i).destroy();
                 audioPlayers.remove(i);
             }
         }
