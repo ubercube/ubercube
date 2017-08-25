@@ -33,6 +33,7 @@ public class AudioPlayer
 {
     public static boolean muteAudio = false;
 
+    private boolean destroyed;
     private int source;
     private int sound;
     private Vec3 position;
@@ -51,6 +52,7 @@ public class AudioPlayer
         this.loop = audioSource.isLoop();
         this.surround = audioSource.isSurround();
         this.gain = audioSource.getGain();
+		this.destroyed = false;
 
         if (position == null)
             position = AudioListener.getTransform().getPosition().copy();
@@ -61,6 +63,14 @@ public class AudioPlayer
         if (error != AL_NO_ERROR)
         {
             System.out.println(getALErrorString(error));
+            System.out.println("source ID: " + source);
+            System.out.println("sound: " + sound);
+            System.out.println("position: " + position);
+            System.out.println("velocity: " + velocity);
+            System.out.println("loop: " + loop);
+            System.out.println("surround: " + surround);
+            System.out.println("gain: " + gain);
+            AudioSystem.destroy();
             System.exit(1);
         }
 
@@ -73,6 +83,7 @@ public class AudioPlayer
     {
         stop();
         alDeleteSources(source);
+        destroyed = true;
     }
 
     public void update()
@@ -149,6 +160,8 @@ public class AudioPlayer
 
     public boolean isPlaying()
     {
-        return alGetSourcei(source, AL_SOURCE_STATE) == AL_PLAYING;
+        if (destroyed)
+        	return false;
+    	return alGetSourcei(source, AL_SOURCE_STATE) == AL_PLAYING;
     }
 }

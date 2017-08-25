@@ -22,6 +22,7 @@ package fr.veridiangames.client.audio;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.audio.AudioSource;
+import org.lwjgl.openal.AL;
 import org.lwjgl.openal.ALC;
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.AL11.AL_LINEAR_DISTANCE;
@@ -111,7 +112,8 @@ public class AudioSystem
 
         alcCloseDevice(device);
         alcDestroyContext(context);
-    }
+		ALC.destroy();
+	}
 
     public static void setMainVolume(float v)
     {

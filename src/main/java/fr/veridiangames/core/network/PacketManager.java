@@ -27,6 +27,7 @@ import fr.veridiangames.core.network.packets.GrenadeSpawnPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMScorePacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMSpawnPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMTeamPacket;
+import fr.veridiangames.core.utils.Log;
 
 /**
  * Created by Marccspro on 26 f�vr. 2016.
@@ -73,15 +74,13 @@ public class PacketManager
 		try
 		{
 			if (!packets.containsKey(packet))
+			{
+				Log.println("Packets does not contain packet ID: " + packet + ", packets size: " + packets.size());
 				return null;
+			}
 			return (Packet) packets.get(packet).newInstance();
 		}
-		catch (InstantiationException e)
-		{
-			e.printStackTrace();
-			return null;
-		}
-		catch (IllegalAccessException e)
+		catch (InstantiationException | IllegalAccessException e)
 		{
 			e.printStackTrace();
 			return null;

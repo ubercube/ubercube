@@ -113,26 +113,18 @@ public class PlayerHandler
 		if(input.getMouse().getDWheel() > 0)
 		{
 			if(weapon.getWeaponID() >= weapon.getWeapons().size() - 1)
-			{
 				weapon.setWeapon(0);
-			}
 			else
-			{
 				weapon.setWeapon(weapon.getWeaponID() + 1);
-			}
 			weapon.getWeapon().setNet(this.net);
 			this.net.send(new WeaponChangePacket(player), Protocol.UDP);
 		}
 		if(input.getMouse().getDWheel() < 0)
 		{
 			if(weapon.getWeaponID() <= 0)
-			{
 				weapon.setWeapon(weapon.getWeapons().size() - 1);
-			}
 			else
-			{
 				weapon.setWeapon(weapon.getWeaponID() - 1);
-			}
 			weapon.getWeapon().setNet(this.net);
 			this.net.send(new WeaponChangePacket(player), Protocol.UDP);
 		}
@@ -155,13 +147,9 @@ public class PlayerHandler
 				Vec3i blockPosition = ray.getHit().getBlockPosition();
 				Vec3  hitPoint = ray.getExactHitPoint();
 				if (input.getMouse().getButtonDown(0))
-				{
 					removeBlock(blockPosition);
-				}
 				else if (input.getMouse().getButtonDown(1))
-				{
 					placeBlock(hitPoint);
-				}
 			}
 		}
 	}

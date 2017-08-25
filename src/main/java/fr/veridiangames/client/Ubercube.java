@@ -40,6 +40,7 @@ import fr.veridiangames.client.rendering.renderers.MainRenderer;
 import fr.veridiangames.core.network.packets.DisconnectPacket;
 import fr.veridiangames.core.profiler.Profiler;
 import fr.veridiangames.core.utils.Color4f;
+import fr.veridiangames.core.utils.Log;
 
 import javax.swing.*;
 
@@ -285,6 +286,7 @@ public class Ubercube
 		net.stop();
 		display.setDestroyed(true);
 		AudioSystem.destroy();
+		Log.println("Bye !");
 		System.exit(0);
 	}
 

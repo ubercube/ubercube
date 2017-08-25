@@ -69,11 +69,10 @@ public class ECKeyMovement extends EComponent
 		this.walkSpeed = walkSpeed;
 		this.runSpeed = runSpeed;
 		this.jumpForce = jumpForce;
-		this.fly = true;
+		this.fly = false;
 		this.forwardDirection = new Vec3();
 		this.profiler = new Profiler("player_movement", true);
 	}
-
 
 	public void update(GameCore core)
 	{

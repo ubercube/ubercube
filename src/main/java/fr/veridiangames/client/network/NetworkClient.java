@@ -30,6 +30,7 @@ import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.client.Ubercube;
+import fr.veridiangames.core.utils.Log;
 
 /**
  * Created by Marccspro on 24 f�vr. 2016.
@@ -72,16 +73,6 @@ public class NetworkClient implements NetworkableClient
 			throw new RuntimeException("Invalide protocole !");
 	}
 
-	/*public void tcpSend(Packet packet)
-	{
-		tcp.send(packet);
-	}*/
-
-	/*public void udpSend(Packet packet)
-	{
-		udp.send(packet.getData().getData());
-	}*/
-	
 	public void stop()
 	{
 		log("Network has terminated !");
@@ -91,9 +82,9 @@ public class NetworkClient implements NetworkableClient
 	public void log(String msg)
 	{
 		if (msg.toLowerCase().contains("error"))
-			System.err.println(msg);
+			Log.println(msg);
 		else
-			System.out.println(msg);
+			Log.println(msg);
 	}
 
 	public void console(String msg)

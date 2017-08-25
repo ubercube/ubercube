@@ -21,6 +21,7 @@ package fr.veridiangames.client;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.client.rendering.Display;
+import fr.veridiangames.core.utils.Log;
 
 import java.io.File;
 import java.security.SecureRandom;
@@ -34,6 +35,7 @@ public class MainComponent
 {
 	public static void main(String[] args)
 	{
+		Log.resetLog();
 		if (args.length != 2)
 			System.out.println("Usage: ./ubercube ip:port username");
 		else {

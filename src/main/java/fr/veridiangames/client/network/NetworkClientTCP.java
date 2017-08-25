@@ -55,14 +55,14 @@ public class NetworkClientTCP
                 {
                     byte[] bytes = DataStream.readPacket(in);
                     DataBuffer data = new DataBuffer(bytes);
-                    Packet packet = PacketManager.getPacket(data.getInt());
+                    int id = data.getInt();
+                    Packet packet = PacketManager.getPacket(id);
 
                     if (packet == null)
                     {
-                        log("TCP: " + getTime() + " [ERROR]-> Received empty packet");
+                        log("TCP: " + getTime() + " [ERROR]-> Received null packet, packet ID: " + id);
                         continue;
                     }
-
                     if (GameCore.isDisplayNetworkDebug())
                         log("TCP: " + getTime() + " [IN]-> received: " + packet);
 
@@ -85,8 +85,9 @@ public class NetworkClientTCP
         {
             this.address = InetAddress.getByName(address);
             this.port = port;
+            log("TCP: Connecting");
             this.socket = new Socket(address, port);
-            this.socket.setTcpNoDelay(true);
+			this.socket.setTcpNoDelay(true);
             this.socket.setTrafficClass(0x10);
             this.socket.setKeepAlive(false);
             this.socket.setReuseAddress(false);
@@ -118,15 +119,12 @@ public class NetworkClientTCP
                         log ("TCP: " + getTime() + " [ERROR]-> " + packet);
                         return;
                     }
-
                     byte[] bytes = packet.getData().getData();
-
                     if (bytes.length == 0)
                     {
                         log ("TCP: " + getTime() + " [ERROR]-> Tried to send an empty packet");
                         return;
                     }
-
                     if (GameCore.isDisplayNetworkDebug())
                         log("TCP: " + getTime() + " [OUT]-> sending: " + packet);
 
@@ -166,5 +164,4 @@ public class NetworkClientTCP
     {
         return socket;
     }
-
 }
