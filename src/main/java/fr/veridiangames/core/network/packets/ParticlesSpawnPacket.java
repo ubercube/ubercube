@@ -101,8 +101,11 @@ public class ParticlesSpawnPacket extends Packet
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
+        ParticleSystem ps = ParticlesManager.getParticleSystem(particleName);
+    	if (ps == null)
+    		return;
         client.getCore().getGame().spawn(new ParticleSystem(id,
-                ParticlesManager.getParticleSystem(particleName))
+                ps)
                 .setPosition(position)
                 .setParticleVelocity(velocity)
                 .setParticleColor(new Color4f(color)));

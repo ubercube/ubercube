@@ -34,10 +34,7 @@ import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.network.packets.PingPacket;
 import fr.veridiangames.core.network.packets.TimeoutPacket;
-import fr.veridiangames.core.utils.DataBuffer;
-import fr.veridiangames.core.utils.DataStream;
-import fr.veridiangames.core.utils.Sleep;
-import fr.veridiangames.core.utils.SystemUtils;
+import fr.veridiangames.core.utils.*;
 import fr.veridiangames.server.FileManager;
 import fr.veridiangames.server.server.commands.CmdHelp;
 import fr.veridiangames.server.server.commands.CmdKick;
@@ -249,9 +246,9 @@ public class NetworkServer implements Runnable, NetworkableServer
 	public void log(String msg)
 	{
 		if (msg.toLowerCase().contains("error"))
-			System.err.println(msg);
+			System.err.println("[" + Time.getTime() + "] " + msg);
 		else
-			System.out.println(msg);
+			System.out.println("[" + Time.getTime() + "] " + msg);
 	}
 
 	public Map<String, Command> getCommands()

@@ -43,7 +43,7 @@ public class Log
 		}
 		catch (IOException ex)
 		{
-			System.err.println(ex.getLocalizedMessage());
+			System.err.println("Error: " + ex.getLocalizedMessage());
 		}
 		finally
 		{

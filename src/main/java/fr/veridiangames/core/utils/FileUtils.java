@@ -40,18 +40,14 @@ public class FileUtils
 	public static final String UBERCUBE_SAVE_DIR = getHomeDir() + S + "Ubercube" + S + "saves" + S;
 	public static final String UBERCUBE_SHADER_DIR = getHomeDir() + S + "Ubercube" + S + "data" + S + "shaders";
 	public static final String UBERCUBE_URL = "http://veridiangames.fr/ubercube/jar/Ubercube.jar";
-	public static final String LOG_PATH = UBERCUBE_ROOT_DIR + "infolog.log";
+	public static final String LOG_PATH = "log.txt";
 
 	public static String getHomeDir()
 	{
 		if (System.getProperty("os.name").indexOf("win") >= 0 || System.getProperty("os.name").indexOf("Win") >= 0)
-		{
 			return System.getenv("APPDATA");
-		}
 		else
-		{
 			return System.getProperty("user.home");
-		}
 	}
 
 	public static BufferedWriter writeFile(String dir, boolean a)

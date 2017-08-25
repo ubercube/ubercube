@@ -22,3 +22,5 @@ META-INF\*
 
 target/
 target/*
+
+log.txt

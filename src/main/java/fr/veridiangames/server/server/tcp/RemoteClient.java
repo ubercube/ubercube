@@ -22,6 +22,7 @@ package fr.veridiangames.server.server.tcp;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataStream;
+import fr.veridiangames.core.utils.Time;
 import fr.veridiangames.server.server.NetworkServer;
 
 import java.io.*;
@@ -82,14 +83,14 @@ public class RemoteClient
                {
                    if (packet == null)
                    {
-                       server.getTcp().log ("TCP: " + server.getTcp().getTime() + " [ERROR]-> Tried to send a null packet");
+                       server.getTcp().log ("TCP: " + Time.getTime() + " [ERROR]-> Tried to send a null packet");
                        return;
                    }
 
                    if (packet.getData() == null)
                    {
-                       server.getTcp().log("TCP: " + server.getTcp().getTime() + " [ERROR]-> Tried to send an empty packet");
-                       server.getTcp().log("TCP: " + server.getTcp().getTime() + " [ERROR]-> " + packet);
+                       server.getTcp().log("TCP: " + Time.getTime() + " [ERROR]-> Tried to send an empty packet");
+                       server.getTcp().log("TCP: " + Time.getTime() + " [ERROR]-> " + packet);
                        return;
                    }
 
@@ -97,12 +98,12 @@ public class RemoteClient
 
                    if (bytes.length == 0)
                    {
-                       server.getTcp().log("TCP: " + server.getTcp().getTime() + " [ERROR]-> Tried to send an empty packet");
+                       server.getTcp().log("TCP: " + Time.getTime() + " [ERROR]-> Tried to send an empty packet");
                        return;
                    }
 
                    if (GameCore.isDisplayNetworkDebug())
-                       server.getTcp().log("TCP: " + server.getTcp().getTime() + " [OUT]-> sending: " + packet);
+                       server.getTcp().log("TCP: " + Time.getTime() + " [OUT]-> sending: " + packet);
 
                    DataStream.writePacket(out, bytes);
                } catch (IOException e)

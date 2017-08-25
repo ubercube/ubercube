@@ -30,6 +30,7 @@ import fr.veridiangames.core.network.packets.DisconnectPacket;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.utils.DataStream;
+import fr.veridiangames.core.utils.Time;
 import fr.veridiangames.server.server.NetworkServer;
 
 import java.io.IOException;
@@ -40,6 +41,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import static fr.veridiangames.core.utils.Time.getTime;
 
 /**
  * Created by Marc on 05/07/2016.
@@ -205,13 +208,6 @@ public class NetworkServerTCP implements Runnable
         client.stop();
         clientsToAdd.remove(client);
         clients.remove(client);
-    }
-
-    public String getTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");//dd/MM/yyyy
-        Calendar calendar = Calendar.getInstance();
-        String time = dateFormat.format(calendar.getTime());
-        return time;
     }
 
     public List<RemoteClient> getClients()

@@ -32,6 +32,8 @@ public class DataStream
         if (data.length > Packet.MAX_SIZE)
             throw new RuntimeException("Packet size overflow: " + data.length + "  MAX SIZE: " + Packet.MAX_SIZE);
 
+        System.out.println("Sending: " + data.length);
+
         out.write(data);
         out.flush();
     }
@@ -39,6 +41,7 @@ public class DataStream
     public static byte[] readPacket(InputStream in) throws IOException
     {
         byte[] data = new byte[Packet.MAX_SIZE];
+        System.out.println("Receiving :" + data.length);
         in.read(data, 0, data.length);
         return data;
     }
