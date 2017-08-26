@@ -21,11 +21,8 @@ package fr.veridiangames.core.network;
 
 import java.net.InetAddress;
 
-import fr.veridiangames.client.network.NetworkClientTCP;
-import fr.veridiangames.client.network.NetworkClientUDP;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.network.packets.Packet;
-import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.server.server.tcp.NetworkServerTCP;
 import fr.veridiangames.server.server.udp.NetworkServerUDP;
 

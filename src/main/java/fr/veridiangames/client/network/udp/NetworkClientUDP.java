@@ -17,8 +17,9 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.client.network;
+package fr.veridiangames.client.network.udp;
 
+import fr.veridiangames.client.network.NetworkClient;
 import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
@@ -31,7 +32,7 @@ import java.net.*;
  */
 public class NetworkClientUDP implements Runnable
 {
-    private NetworkClient   client;
+    private NetworkClient client;
     private int				port;
     private InetAddress		address;
     private DatagramSocket	socket;

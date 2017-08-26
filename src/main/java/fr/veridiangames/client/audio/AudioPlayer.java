@@ -70,8 +70,8 @@ public class AudioPlayer
             System.out.println("loop: " + loop);
             System.out.println("surround: " + surround);
             System.out.println("gain: " + gain);
-            AudioSystem.destroy();
-            System.exit(1);
+            destroyed = true;
+            return;
         }
 
         alSourcef(source, AL_ROLLOFF_FACTOR, 1);

@@ -17,36 +17,42 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.server.server.tcp;
+package fr.veridiangames.server.server.tcp.client;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
+import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.utils.DataStream;
-import fr.veridiangames.core.utils.Time;
 import fr.veridiangames.server.server.NetworkServer;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import static fr.veridiangames.core.utils.Time.getTime;
 
 /**
  * Created by Marc on 07/07/2016.
  */
 public class RemoteClient
 {
-    private Socket          socket;
-    private InputStream     in;
-    private OutputStream    out;
-    private NetworkServer   server;
-    private List<Packet>    sendQueue;
-    private int             id;
+    private Socket          				socket;
+    private InputStream     				in;
+    private OutputStream    				out;
+    private NetworkServer   				server;
+    private ConcurrentLinkedQueue<Packet> 	sendQueue;
+    private int             				id;
+//    private Thread							thread;
+    private RemoteClientReceiver			receiver;
+    private RemoteClientSender				sender;
 
     public RemoteClient(Socket socket, NetworkServer server)
     {
         try
         {
+//        	this.thread = new Thread(this, "receive-thread-" + socket.getInetAddress().getHostName());
             this.socket = socket;
             this.socket.setTcpNoDelay(true);
             this.socket.setTrafficClass(0x10);
@@ -55,10 +61,12 @@ public class RemoteClient
             this.socket.setSoTimeout(10000);
             //this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
             //this.socket.setSendBufferSize(Packet.MAX_SIZE);
-            this.server = server;
-            this.sendQueue = new ArrayList<>();
-            this.in = socket.getInputStream();
-            this.out = socket.getOutputStream();
+			this.server = server;
+			this.receiver = new RemoteClientReceiver(this);
+			this.sender = new RemoteClientSender(this);
+			this.sendQueue = new ConcurrentLinkedQueue<>();
+			this.in = socket.getInputStream();
+			this.out = socket.getOutputStream();
         } catch (SocketException e)
         {
             e.printStackTrace();
@@ -69,7 +77,18 @@ public class RemoteClient
     }
 
     public void send(Packet packet)
-    {
+	{
+		sendQueue.add(packet);
+	}
+
+	public RemoteClient start()
+	{
+//		this.thread.start();
+		this.receiver.start();
+		this.sender.start();
+		return this;
+	}
+	/*
        new Thread() {
 
            public void run()
@@ -112,18 +131,74 @@ public class RemoteClient
                }
            }
        }.start();
-    }
+    }*/
 
     public void stop()
     {
         try
         {
-            socket.close();
-        } catch (IOException e)
+			socket.close();
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
     }
+
+    public void run()
+	{
+		while (true)
+		{
+			try {
+				receivePackets();
+				sendPackets();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void receivePackets() throws IOException
+	{
+		byte[] bytes = DataStream.readPacket(in);
+		if (bytes != null)
+		{
+			DataBuffer data = new DataBuffer(bytes);
+			Packet packet = PacketManager.getPacket(data.getInt());
+
+			if (packet == null)
+			{
+				server.log("TCP: " + getTime() + " [ERROR]-> Received empty packet");
+				return;
+			}
+
+			if (GameCore.isDisplayNetworkDebug())
+				server.log("TCP: " + getTime() + " [IN]-> received: " + packet);
+
+			packet.read(data);
+			packet.process(server, socket.getInetAddress(), socket.getPort());
+		}
+	}
+
+	private void sendPackets() throws IOException
+	{
+		while (!sendQueue.isEmpty())
+		{
+			Packet p = sendQueue.poll();
+			if (p == null)
+			{
+				server.log("TCP: SENDER: null packet for client ID: " + id);
+				break;
+			}
+			byte[] packetData = p.getData().getData();
+			if (packetData.length == 0)
+			{
+				server.log("TCP: SENDER: empty packet for client ID: " + id);
+				break;
+			}
+			DataStream.writePacket(out, packetData);
+		}
+	}
 
     public Socket getSocket()
     {
@@ -133,11 +208,6 @@ public class RemoteClient
     public OutputStream getOutputStream()
     {
         return out;
-    }
-
-    public List<Packet> getSendQueue()
-    {
-        return sendQueue;
     }
 
     public InputStream getInputStream()
@@ -152,4 +222,21 @@ public class RemoteClient
     public void setID(int id) {
         this.id = id;
     }
+
+	public NetworkServer getServer() {
+		return server;
+	}
+
+	public ConcurrentLinkedQueue<Packet> getSendingQueue()
+	{
+		return sendQueue;
+	}
+
+	public InputStream getIn() {
+		return in;
+	}
+
+	public OutputStream getOut() {
+		return out;
+	}
 }

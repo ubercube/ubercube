@@ -43,6 +43,9 @@ public class NetworkServerUDP implements Runnable
 
     private List<NetworkPacket> packets;
 
+    private Thread thread;
+    private boolean running;
+
     public NetworkServerUDP(NetworkServer server, int port)
     {
         try
@@ -50,7 +53,9 @@ public class NetworkServerUDP implements Runnable
             this.server = server;
             this.packets = new ArrayList<>();
             this.socket = new DatagramSocket(port);
-            new Thread(this, "udp-thread").start();
+            this.thread = new Thread(this, "udp-thread");
+            this.running = true;
+            this.thread.start();
         }
         catch (SocketException e)
         {
@@ -64,16 +69,13 @@ public class NetworkServerUDP implements Runnable
     public void run()
     {
         log("UDP: Connected !");
-        while (socket != null)
+        while (running && socket != null)
         {
             try
             {
                 byte[] bytes = new byte[Packet.MAX_SIZE];
                 DatagramPacket receive = new DatagramPacket(bytes, bytes.length);
-                if (!socket.isClosed())
-                    socket.receive(receive);
-                else
-                    break;
+				socket.receive(receive);
                 DataBuffer data = new DataBuffer(receive.getData());
                 int packetID = data.getInt();
                 Packet packet = PacketManager.getPacket(packetID);
@@ -87,6 +89,7 @@ public class NetworkServerUDP implements Runnable
                 e.printStackTrace();
             }
         }
+		socket.close();
     }
 
     public void send(byte[] bytes, InetAddress address, int port)
@@ -115,6 +118,6 @@ public class NetworkServerUDP implements Runnable
     public void stop()
     {
         log("UDP: Closing connection...");
-        socket.close();
-    }
+        running = false;
+	}
 }

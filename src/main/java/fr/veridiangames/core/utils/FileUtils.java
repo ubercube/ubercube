@@ -54,10 +54,9 @@ public class FileUtils
 	{
 		try
 		{
-		FileWriter fileWriter = null;
-		fileWriter = new FileWriter(dir, a);
-		BufferedWriter w =  new BufferedWriter(fileWriter);
-
+			FileWriter fileWriter = null;
+			fileWriter = new FileWriter(dir, a);
+			BufferedWriter w =  new BufferedWriter(fileWriter);
 		return w;
 		}
 		catch (IOException e)

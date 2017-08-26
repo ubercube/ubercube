@@ -24,6 +24,8 @@ import java.net.UnknownHostException;
 
 import fr.veridiangames.client.audio.AudioSystem;
 import fr.veridiangames.client.main.screens.ConsoleScreen;
+import fr.veridiangames.client.network.tcp.NetworkClientTCP;
+import fr.veridiangames.client.network.udp.NetworkClientUDP;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.network.NetworkableClient;
