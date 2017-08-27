@@ -94,20 +94,14 @@ public class NetworkServerUDP implements Runnable
 
     public void send(byte[] bytes, InetAddress address, int port)
     {
-        new Thread("udp-send-thread")
-        {
-            public void run()
-            {
-                try
-                {
-                    socket.send(new DatagramPacket(bytes, bytes.length, address, port));
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
+		try
+		{
+			socket.send(new DatagramPacket(bytes, bytes.length, address, port));
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
     }
 
     public void log(String msg)

@@ -76,7 +76,7 @@ public class WeaponGrenade extends ExplosiveWeapon
         Grenade g = (Grenade) new Grenade(Indexer.getUniqueID(),
                 this.holder.getID(),
                 transform.getPosition().copy().add(this.holder.getTransform().getForward().copy().mul(1.5f)),
-                transform.getRotation(), force).setNetwork(net);
+                transform.getRotation(), force * 0.9f).setNetwork(net);
 
         net.send(new GrenadeSpawnPacket(g), Protocol.TCP);
 

@@ -48,7 +48,6 @@ public class NetworkServerTCP implements Runnable
             this.server = server;
             this.clients = new ArrayList<>();
             this.socket = new ServerSocket(port);
-            //this.receiver = new TcpReceiver(this).start();
 
 			new Thread(this, "tcp-clients").start();
         }

@@ -106,8 +106,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 			{
 				while (true)
 				{
-					Sleep.sleep(2000);
-
+					Sleep.sleep(100);
 					for (int i = 0; i < core.getGame().getEntityManager().getPlayerEntites().size(); i++)
 					{
 						int key = core.getGame().getEntityManager().getPlayerEntites().get(i);

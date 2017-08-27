@@ -44,7 +44,6 @@ public class RemoteClient
     private NetworkServer   				server;
     private ConcurrentLinkedQueue<Packet> 	sendQueue;
     private int             				id;
-//    private Thread							thread;
     private RemoteClientReceiver			receiver;
     private RemoteClientSender				sender;
 
@@ -52,15 +51,12 @@ public class RemoteClient
     {
         try
         {
-//        	this.thread = new Thread(this, "receive-thread-" + socket.getInetAddress().getHostName());
             this.socket = socket;
             this.socket.setTcpNoDelay(true);
             this.socket.setTrafficClass(0x10);
             this.socket.setKeepAlive(true);
             this.socket.setReuseAddress(false);
             this.socket.setSoTimeout(10000);
-            //this.socket.setReceiveBufferSize(Packet.MAX_SIZE);
-            //this.socket.setSendBufferSize(Packet.MAX_SIZE);
 			this.server = server;
 			this.receiver = new RemoteClientReceiver(this);
 			this.sender = new RemoteClientSender(this);
@@ -83,55 +79,10 @@ public class RemoteClient
 
 	public RemoteClient start()
 	{
-//		this.thread.start();
 		this.receiver.start();
 		this.sender.start();
 		return this;
 	}
-	/*
-       new Thread() {
-
-           public void run()
-           {
-               if (socket == null || out == null)
-               {
-                   server.getTcp().disconnectClient(socket.getInetAddress(), socket.getPort());
-               }
-
-               try
-               {
-                   if (packet == null)
-                   {
-                       server.getTcp().log ("TCP: " + Time.getTime() + " [ERROR]-> Tried to send a null packet");
-                       return;
-                   }
-
-                   if (packet.getData() == null)
-                   {
-                       server.getTcp().log("TCP: " + Time.getTime() + " [ERROR]-> Tried to send an empty packet");
-                       server.getTcp().log("TCP: " + Time.getTime() + " [ERROR]-> " + packet);
-                       return;
-                   }
-
-                   byte[] bytes = packet.getData().getData();
-
-                   if (bytes.length == 0)
-                   {
-                       server.getTcp().log("TCP: " + Time.getTime() + " [ERROR]-> Tried to send an empty packet");
-                       return;
-                   }
-
-                   if (GameCore.isDisplayNetworkDebug())
-                       server.getTcp().log("TCP: " + Time.getTime() + " [OUT]-> sending: " + packet);
-
-                   DataStream.writePacket(out, bytes);
-               } catch (IOException e)
-               {
-                   server.getTcp().disconnectClient(socket.getInetAddress(), socket.getPort());
-               }
-           }
-       }.start();
-    }*/
 
     public void stop()
     {
@@ -144,61 +95,6 @@ public class RemoteClient
             e.printStackTrace();
         }
     }
-
-    public void run()
-	{
-		while (true)
-		{
-			try {
-				receivePackets();
-				sendPackets();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private void receivePackets() throws IOException
-	{
-		byte[] bytes = DataStream.readPacket(in);
-		if (bytes != null)
-		{
-			DataBuffer data = new DataBuffer(bytes);
-			Packet packet = PacketManager.getPacket(data.getInt());
-
-			if (packet == null)
-			{
-				server.log("TCP: " + getTime() + " [ERROR]-> Received empty packet");
-				return;
-			}
-
-			if (GameCore.isDisplayNetworkDebug())
-				server.log("TCP: " + getTime() + " [IN]-> received: " + packet);
-
-			packet.read(data);
-			packet.process(server, socket.getInetAddress(), socket.getPort());
-		}
-	}
-
-	private void sendPackets() throws IOException
-	{
-		while (!sendQueue.isEmpty())
-		{
-			Packet p = sendQueue.poll();
-			if (p == null)
-			{
-				server.log("TCP: SENDER: null packet for client ID: " + id);
-				break;
-			}
-			byte[] packetData = p.getData().getData();
-			if (packetData.length == 0)
-			{
-				server.log("TCP: SENDER: empty packet for client ID: " + id);
-				break;
-			}
-			DataStream.writePacket(out, packetData);
-		}
-	}
 
     public Socket getSocket()
     {

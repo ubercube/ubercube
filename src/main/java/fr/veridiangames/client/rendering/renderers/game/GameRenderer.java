@@ -19,11 +19,13 @@
 
 package fr.veridiangames.client.rendering.renderers.game;
 
+import fr.veridiangames.client.inputs.Input;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.primitives.StaticPrimitive;
 import fr.veridiangames.client.rendering.renderers.game.entities.ModeledEntityRenderer;
 import fr.veridiangames.client.rendering.renderers.game.entities.particles.ParticleRenderer;
 import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerNameRenderer;
+import fr.veridiangames.client.rendering.renderers.game.physics.ColliderRenderer;
 import fr.veridiangames.client.rendering.shaders.*;
 import fr.veridiangames.client.rendering.textures.FrameBuffer;
 import fr.veridiangames.core.GameCore;
@@ -64,12 +66,15 @@ public class GameRenderer
 	private PlayerSelectionRenderer playerSelectionRenderer;
 	private EntityWeaponRenderer 	entityWeaponRenderer;
 	private ModeledEntityRenderer 	modeledEntityRenderer;
+	private ColliderRenderer		colliderRenderer;
 
 	private PlayerNameRenderer 		playerNameRenderer;
 	private PlayerViewport			playerViewport;
 
 	private EnvCubemap				envCubemap;
 	private Camera 					envCamera;
+
+	private boolean					drawColliders;
 
 	public GameRenderer(Ubercube main, GameCore core)
 	{
@@ -89,6 +94,8 @@ public class GameRenderer
 		this.entityWeaponRenderer = new EntityWeaponRenderer();
 		this.modeledEntityRenderer = new ModeledEntityRenderer();
 		this.playerSelectionRenderer = new PlayerSelectionRenderer(main.getPlayerHandler().getSelection());
+		this.colliderRenderer = new ColliderRenderer();
+
 		this.worldRenderer = new WorldRenderer(core);
 		this.gui3DShader = new Gui3DShader();
 
@@ -96,10 +103,14 @@ public class GameRenderer
 
 		this.envCubemap = new EnvCubemap(512);
 		this.envCamera = new Camera(90.0f, 512, 512, 0.5f, 100.0f);
+
+		this.drawColliders = false;
 	}
 
 	public void update()
 	{
+		if (Display.getInstance().getInput().getKeyUp(Input.KEY_F2))
+			drawColliders = !drawColliders;
 		playerViewport.update();
 		playerRenderer.updateInstances(
 			core.getGame().getEntityManager().getEntities(),
@@ -119,6 +130,13 @@ public class GameRenderer
 			core.getGame().getEntityManager().getEntities(),
 			core.getGame().getEntityManager().getPlayerEntites()
 		);
+		if (drawColliders)
+		{
+			colliderRenderer.updateInstances(
+				core.getGame().getEntityManager().getEntities(),
+				core.getGame().getEntityManager().getRenderableEntites()
+			);
+		}
 	}
 
 	public void render()
@@ -224,6 +242,14 @@ public class GameRenderer
 				core.getGame().getEntityManager().getEntities(),
 				core.getGame().getEntityManager().getRenderableEntites()
 		);
+		if (drawColliders)
+		{
+			colliderRenderer.render(
+				entityShader,
+				core.getGame().getEntityManager().getEntities(),
+				core.getGame().getEntityManager().getRenderableEntites()
+			);
+		}
 
 		/* ***** RENDERING PARTICLES ***** */
 		entityShader.bind();

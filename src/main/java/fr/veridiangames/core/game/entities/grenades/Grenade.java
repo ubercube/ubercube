@@ -68,9 +68,9 @@ public class Grenade extends Entity
 
         this.getBody().useGravity(true);
         this.getBody().setIgnoreOthers(false);
-        this.getBody().setAirDragFactor(1f);
-        this.getBody().setFrictionFactor(0.8f);
-        this.getBody().setBounceFactor(0.2f);
+        this.getBody().setAirDragFactor(0.906f);
+        this.getBody().setFrictionFactor(0.88f);
+        this.getBody().setBounceFactor(1f);
         this.getBody().applyForce(direction.getForward().copy(), force);
 
         this.holderID = holderID;

@@ -68,7 +68,7 @@ public class ClientPlayer extends Player
 		super.add(new ECDebug());
 		super.addTag("ClientPlayer");
 
-		getRigidBody().getBody().setFrictionFactor(0.89f);
+		getRigidBody().getBody().setFrictionFactor(0.899f);
 		getRigidBody().getBody().setAirDragFactor(0.9f);
 
 		this.life = Player.MAX_LIFE;
@@ -91,6 +91,14 @@ public class ClientPlayer extends Player
 	public void update(GameCore core)
 	{
 		super.update(core);
+
+		if (this.isDead())
+		{
+			((AABoxCollider)this.getRigidBody().getBody().getCollider()).setSize(new Vec3(0.3f, 0.1f, 0.3f));
+			return;
+		}
+		((AABoxCollider)this.getRigidBody().getBody().getCollider()).setSize(new Vec3(0.3f, 2.8f * 0.5f, 0.3f));
+
 		movementTime++;
 		if (movementTime % 60 == 5)
 		{
@@ -162,7 +170,6 @@ public class ClientPlayer extends Player
 				snow = null;
 			}
 		}
-
 	}
 
 	float walkTimer = 0;

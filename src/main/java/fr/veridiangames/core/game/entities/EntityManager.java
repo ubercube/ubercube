@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.core.GameCore;
@@ -42,18 +43,18 @@ import fr.veridiangames.core.maths.Vec3;
  */
 public class EntityManager
 {
-	private List<Integer>			keys;
-	private Map<Integer, Entity>	entities;
-	private List<Integer>			renderableEntities;
-	private List<Integer>			networkableEntities;
-	private List<Integer>			playerEntities;
-	private List<Integer>			particleEntities;
-	private List<Integer>			audioEntities;
+	private List<Integer>						keys;
+	private ConcurrentHashMap<Integer, Entity>	entities;
+	private List<Integer>						renderableEntities;
+	private List<Integer>						networkableEntities;
+	private List<Integer>						playerEntities;
+	private List<Integer>						particleEntities;
+	private List<Integer>						audioEntities;
 
 	public EntityManager()
 	{
 		keys = new ArrayList<>();
-		entities = new HashMap<>();
+		entities = new ConcurrentHashMap<>();
 		renderableEntities = new ArrayList<>();
 		networkableEntities = new ArrayList<>();
 		playerEntities = new ArrayList<>();

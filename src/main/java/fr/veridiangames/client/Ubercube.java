@@ -139,10 +139,8 @@ public class Ubercube
 				guiManager.setCanvas(1);
 				joinGame = true;
 			}
-			if (joinGame)
+			if (joinGame && !core.getGame().getPlayer().isKicked() && !core.getGame().getPlayer().isTimedOut())
 			{
-				//inConsole.update();
-
 				coreProfiler.start();
 					core.update();
 				coreProfiler.end();
@@ -158,7 +156,6 @@ public class Ubercube
 				AudioListener.setTransform(core.getGame().getPlayer().getEyeTransform());
 			}
 		}
-
 		if (core.getGame().getPlayer().isKicked())
 		{
 			display.getInput().getMouse().setGrabbed(false);
@@ -177,7 +174,6 @@ public class Ubercube
 			if (n == JOptionPane.YES_OPTION)
 				exitGame();
 		}
-
 		updateProfiler.end();
 	}
 
@@ -206,10 +202,6 @@ public class Ubercube
 		mainRenderer.renderAll(display);
 		guiManager.render(display);
 		renderProfiler.end();
-//		if (net.isConnected())
-//		{
-//			inConsole.render(display);
-//		}
 	}
 
 	public void start()
@@ -256,7 +248,6 @@ public class Ubercube
 			}
 			else
 			{
-				//sleepProfiler.start();
 				try
 				{
 					Thread.sleep(1);
@@ -265,7 +256,6 @@ public class Ubercube
 				{
 					e.printStackTrace();
 				}
-				//sleepProfiler.end();
 			}
 			if (second)
 			{
@@ -319,7 +309,7 @@ public class Ubercube
 	public void openConnection(int clientID, String name, String address, int port)
 	{
 		net = new NetworkClient(clientID, address, port, this);
-		
+
 		float midWorld = core.getGame().getData().getWorldSize() / 2 * 16;
 		ClientPlayer player = new ClientPlayer(clientID, name, new Vec3(midWorld, 30, midWorld), new Quat(), address, port);
 		player.setNetwork(net);

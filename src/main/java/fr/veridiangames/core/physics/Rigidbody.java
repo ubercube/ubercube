@@ -101,7 +101,7 @@ public class Rigidbody
 		}
 		else
 		{
-			dragFactor = 0.9f; //airDragFactor;
+			dragFactor = airDragFactor;
 		}
 	}
 
@@ -118,7 +118,7 @@ public class Rigidbody
 		if (networkView)
 			return;
 
-		velocity.mul(0.99f);
+		velocity.mul(dragFactor + 0.09f);
 	}
 	
 	public void applyGravity(float delta)
@@ -181,7 +181,7 @@ public class Rigidbody
 		collidingZ = false;
 
 		Vec3 axis = new Vec3();
-		List<AABoxCollider> blocks = world.getAABoxInRange(position, 3);
+		List<AABoxCollider> blocks = world.getAABoxInRange(position, 4);
 		for (int i = 0; i < blocks.size(); i++)
 		{
 			AABoxCollider b = blocks.get(i);
@@ -203,7 +203,7 @@ public class Rigidbody
 				}
 				else if (data.isCollisionY() && axis.y == 0 && data.getMtdY() * delta == collisionMTD)
 				{
-					if (velocity.y < 0)
+					if (velocity.y < 0 && data.getMtdY() > 0)
 					{
 						if (!hitGrounded && !grounded && velocity.y < -0.10f)
 							hitGrounded = true;

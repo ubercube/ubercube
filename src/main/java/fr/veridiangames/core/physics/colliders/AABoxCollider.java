@@ -92,9 +92,7 @@ public class AABoxCollider extends Collider
 
 		return data;
 	}
-	
 
-	
 	public Vec3 getSize()
 	{
 		return size;

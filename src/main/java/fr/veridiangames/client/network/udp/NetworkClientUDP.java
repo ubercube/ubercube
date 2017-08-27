@@ -61,7 +61,7 @@ public class NetworkClientUDP implements Runnable
     public void run()
     {
         log("UDP: Starting udp-receiver");
-        while (true)
+        while (socket != null)
         {
             try
             {
@@ -85,21 +85,15 @@ public class NetworkClientUDP implements Runnable
 
     public void send(byte[] bytes)
     {
-        new Thread("udp-send-thread")
-        {
-            public void run()
-            {
-                try
-                {
-                    DatagramPacket packet = new DatagramPacket(bytes, bytes.length, address, port);
-                    socket.send(packet);
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
+		try
+		{
+			DatagramPacket packet = new DatagramPacket(bytes, bytes.length, address, port);
+			socket.send(packet);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
     }
 
     public void log(String msg)
@@ -111,4 +105,8 @@ public class NetworkClientUDP implements Runnable
     {
         socket.close();
     }
+
+	public DatagramSocket getSocket() {
+		return socket;
+	}
 }
