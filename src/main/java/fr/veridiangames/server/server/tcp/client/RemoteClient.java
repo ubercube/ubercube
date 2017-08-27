@@ -39,8 +39,13 @@ import static fr.veridiangames.core.utils.Time.getTime;
 public class RemoteClient
 {
     private Socket          				socket;
-    private InputStream     				in;
-    private OutputStream    				out;
+
+//    private InputStream     				in;
+//    private OutputStream    				out;
+
+	private DataInputStream 				in;
+	private DataOutputStream 				out;
+
     private NetworkServer   				server;
     private ConcurrentLinkedQueue<Packet> 	sendQueue;
     private int             				id;
@@ -63,8 +68,8 @@ public class RemoteClient
 			this.sender = new RemoteClientSender(this);
 			this.sendQueue = new ConcurrentLinkedQueue<>();
 
-			this.in = socket.getInputStream();
-			this.out = socket.getOutputStream();
+			this.in = new DataInputStream(socket.getInputStream());
+			this.out = new DataOutputStream(socket.getOutputStream());
         } catch (SocketException e)
         {
             e.printStackTrace();
@@ -103,12 +108,12 @@ public class RemoteClient
         return socket;
     }
 
-    public OutputStream getOutputStream()
+    public DataOutputStream getOutputStream()
     {
         return out;
     }
 
-    public InputStream getInputStream()
+    public DataInputStream getInputStream()
     {
         return in;
     }
@@ -130,11 +135,11 @@ public class RemoteClient
 		return sendQueue;
 	}
 
-	public InputStream getIn() {
+	public DataInputStream getIn() {
 		return in;
 	}
 
-	public OutputStream getOut() {
+	public DataOutputStream getOut() {
 		return out;
 	}
 }

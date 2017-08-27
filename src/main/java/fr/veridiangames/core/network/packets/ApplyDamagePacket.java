@@ -25,6 +25,8 @@ import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
 
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 
 /**
@@ -51,7 +53,7 @@ public class ApplyDamagePacket extends Packet
     }
 
     public void read(DataBuffer buffer)
-    {
+	{
         this.id = buffer.getInt();
         this.damage = buffer.getInt();
     }

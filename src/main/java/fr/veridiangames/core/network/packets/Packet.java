@@ -19,6 +19,8 @@
 
 package fr.veridiangames.core.network.packets;
 
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 
 import fr.veridiangames.core.network.NetworkableClient;
@@ -69,7 +71,7 @@ public abstract class Packet
 		data.put(packetID);
 	}
 
-	public abstract void read(DataBuffer buffer);
+	public abstract void read(DataBuffer data);
 	public abstract void process(NetworkableServer server, InetAddress address, int port);
 	public abstract void process(NetworkableClient client, InetAddress address, int port);
 

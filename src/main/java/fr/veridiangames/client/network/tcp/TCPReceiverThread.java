@@ -7,6 +7,7 @@ import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.utils.DataStream;
 import fr.veridiangames.core.utils.Time;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 
 public class TCPReceiverThread extends Thread
@@ -33,7 +34,8 @@ public class TCPReceiverThread extends Thread
 			try
 			{
 				byte[] bytes = new byte[Packet.MAX_SIZE];
-				client.getIn().read(bytes, 0, bytes.length);
+				DataInputStream dataStream = new DataInputStream(client.getIn());
+				dataStream.read(bytes);
 
 				DataBuffer data = new DataBuffer(bytes);
 				int id = data.getInt();

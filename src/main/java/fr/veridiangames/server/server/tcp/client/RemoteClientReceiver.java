@@ -6,6 +6,7 @@ import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.utils.DataStream;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 
 import static fr.veridiangames.core.utils.Time.getTime;
@@ -25,7 +26,7 @@ public class RemoteClientReceiver extends Thread
 		{
 			try {
 				byte[] bytes = new byte[Packet.MAX_SIZE];
-				client.getIn().read(bytes, 0, bytes.length);
+				client.getIn().read(bytes);
 
 				DataBuffer data = new DataBuffer(bytes);
 				Packet packet = PacketManager.getPacket(data.getInt());

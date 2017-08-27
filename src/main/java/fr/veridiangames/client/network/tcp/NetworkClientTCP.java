@@ -39,8 +39,8 @@ public class NetworkClientTCP
     private InetAddress address;
     private Socket socket;
 
-    private InputStream  in;
-    private OutputStream out;
+    private DataInputStream  in;
+    private DataOutputStream out;
 
     private TCPReceiverThread receiver;
     private TCPSenderThread sender;
@@ -61,8 +61,9 @@ public class NetworkClientTCP
             this.socket.setKeepAlive(false);
             this.socket.setReuseAddress(false);
             this.socket.setSoTimeout(60000);
-            this.in = socket.getInputStream();
-            this.out = socket.getOutputStream();
+
+            this.in = new DataInputStream(socket.getInputStream());
+            this.out = new DataOutputStream(socket.getOutputStream());
 
             this.receiver = new TCPReceiverThread(this);
             this.sender = new TCPSenderThread(this);
@@ -118,11 +119,11 @@ public class NetworkClientTCP
 		return sendQueue;
 	}
 
-	public InputStream getIn() {
+	public DataInputStream getIn() {
 		return in;
 	}
 
-	public OutputStream getOut() {
+	public DataOutputStream getOut() {
 		return out;
 	}
 

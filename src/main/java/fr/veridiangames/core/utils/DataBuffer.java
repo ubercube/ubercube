@@ -43,7 +43,7 @@ public class DataBuffer
 
 	public DataBuffer()
 	{
-		this(2048);
+		this(512);
 	}
 	
 	public DataBuffer(byte[] data)
@@ -64,24 +64,24 @@ public class DataBuffer
 
 	public void flip()
 	{
-		if (writeID != 0)
-		{
-			byte[] nData = new byte[writeID];
-			for (int i = 0; i < writeID; i++)
-			{
-				nData[i] = data[i];
-			}
-			data = nData;
-		}
-		else if (readID != 0)
-		{
-			byte[] nData = new byte[readID];
-			for (int i = 0; i < readID; i++)
-			{
-				nData[i] = data[i];
-			}
-			data = nData;
-		}
+//		if (writeID != 0)
+//		{
+//			byte[] nData = new byte[writeID];
+//			for (int i = 0; i < writeID; i++)
+//			{
+//				nData[i] = data[i];
+//			}
+//			data = nData;
+//		}
+//		else if (readID != 0)
+//		{
+//			byte[] nData = new byte[readID];
+//			for (int i = 0; i < readID; i++)
+//			{
+//				nData[i] = data[i];
+//			}
+//			data = nData;
+//		}
 	}
 
 	public void clear()

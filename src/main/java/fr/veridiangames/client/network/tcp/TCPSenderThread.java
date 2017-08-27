@@ -5,6 +5,7 @@ import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataStream;
 import fr.veridiangames.core.utils.Time;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class TCPSenderThread extends Thread
@@ -47,7 +48,10 @@ public class TCPSenderThread extends Thread
 						client.log("TCP: " + Time.getTime() + " [OUT]-> sending: " + packet);
 
 					if (!client.getSocket().isClosed() && client.getSocket().isConnected())
-						client.getOut().write(bytes);
+					{
+						DataOutputStream outputStream = new DataOutputStream(client.getOut());
+						outputStream.write(bytes);
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 					try {
