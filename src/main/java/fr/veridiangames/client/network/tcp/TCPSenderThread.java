@@ -47,7 +47,7 @@ public class TCPSenderThread extends Thread
 						client.log("TCP: " + Time.getTime() + " [OUT]-> sending: " + packet);
 
 					if (!client.getSocket().isClosed() && client.getSocket().isConnected())
-						DataStream.writePacket(client.getOut(), bytes);
+						client.getOut().write(bytes);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

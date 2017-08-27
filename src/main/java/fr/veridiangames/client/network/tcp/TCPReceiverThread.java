@@ -32,7 +32,9 @@ public class TCPReceiverThread extends Thread
 		{
 			try
 			{
-				byte[] bytes = DataStream.readPacket(client.getIn());
+				byte[] bytes = new byte[Packet.MAX_SIZE];
+				client.getIn().read(bytes, 0, bytes.length);
+
 				DataBuffer data = new DataBuffer(bytes);
 				int id = data.getInt();
 				Packet packet = PacketManager.getPacket(id);

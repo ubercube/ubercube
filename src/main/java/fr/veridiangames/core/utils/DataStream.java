@@ -27,7 +27,7 @@ import java.io.*;
  */
 public class DataStream
 {
-    public static void writePacket(OutputStream out, byte[] data) throws IOException
+    public static synchronized void writePacket(OutputStream out, byte[] data) throws IOException
     {
         if (data.length > Packet.MAX_SIZE)
             throw new RuntimeException("Packet size overflow: " + data.length + "  MAX SIZE: " + Packet.MAX_SIZE);
@@ -35,7 +35,7 @@ public class DataStream
         out.flush();
     }
 
-    public static byte[] readPacket(InputStream in) throws IOException
+    public static synchronized byte[] readPacket(InputStream in) throws IOException
     {
         byte[] data = new byte[Packet.MAX_SIZE];
         in.read(data, 0, data.length);

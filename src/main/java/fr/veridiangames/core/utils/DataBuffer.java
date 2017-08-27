@@ -48,7 +48,7 @@ public class DataBuffer
 	
 	public DataBuffer(byte[] data)
 	{
-		this.dataSize = 2048;
+		this.dataSize = data.length;
 		this.data = data;
 		this.writeID = 0;
 		this.readID = 0;
