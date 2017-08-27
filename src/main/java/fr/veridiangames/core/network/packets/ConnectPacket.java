@@ -49,7 +49,7 @@ public class ConnectPacket extends Packet
 	private String name;
 	private Vec3 position;
 	private Quat rotation;
-	private int version;
+	private String version;
 	
 	public ConnectPacket()
 	
@@ -103,7 +103,7 @@ public class ConnectPacket extends Packet
 		name = data.getString();
 		position = new Vec3(data.getFloat(), data.getFloat(), data.getFloat());
 		rotation = new Quat(data.getFloat(), data.getFloat(), data.getFloat(), data.getFloat());
-		version = data.getInt();
+		version = data.getString();
 	}
 
 	public void process(NetworkableServer server, InetAddress address, int port)
@@ -170,8 +170,7 @@ public class ConnectPacket extends Packet
 
 		server.tcpSend(new RespawnPacket((Player) GameCore.getInstance().getGame().getEntityManager().get(id), this.position), address, port);
 
-		server.log("Client v" + version + " connecting (Current: v" + GameCore.GAME_SUB_VERSION + ")");
-		if (version != GameCore.GAME_SUB_VERSION)
+		if (!version.equals(GameCore.GAME_SUB_VERSION))
 		{
 			server.log(name + " tried to connect with an invalid version: v" + version + "  Current: v" + GameCore.GAME_SUB_VERSION);
 			server.tcpSendToAll(new KickPacket(id, "Invalid game version, please download the latest one: ubercube.github.io"));

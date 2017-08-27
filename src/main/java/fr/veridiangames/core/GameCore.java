@@ -20,6 +20,7 @@
 package fr.veridiangames.core;
 
 import fr.veridiangames.core.game.Game;
+import fr.veridiangames.core.utils.FileUtils;
 
 /**
  * Created by Marccspro on 29 janv. 2016.
@@ -28,7 +29,7 @@ public class GameCore
 {
 	public static final String GAME_NAME = "Ubercube";
 	public static final String GAME_VERSION_NAME = "Pre-Alpha 1.1";
-	public static final int GAME_SUB_VERSION = 1;
+	public static final String GAME_SUB_VERSION = FileUtils.getGitCommitsCount();
 	public static final String RESOURCES_PATH = "res/";
 
 	private static boolean displayNetworkDebug = false;

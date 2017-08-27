@@ -66,6 +66,26 @@ public class FileUtils
 		return null;
 	}
 
+	public static String getGitCommitsCount()
+	{
+		String result = "";
+		File file = new File(".version");
+		if (!file.exists())
+			return "-42";
+		try
+		{
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			result = reader.readLine();
+			if (result == null)
+				return "-42";
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return result.trim();
+	}
+
 	public static boolean newFile(String directory)
 	{
 		File file = new File(directory);
