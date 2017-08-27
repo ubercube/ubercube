@@ -58,9 +58,10 @@ public class NetworkServer implements Runnable, NetworkableServer
 	private Scanner					scanner;
 	private Map<String, Command>	commands;
 	
-	public NetworkServer(int port, Scanner scanner)
+	public NetworkServer(int port, Scanner scanner, GameCore core)
 	{
 		this.port = port;
+		this.core = core;
 		this.scanner = scanner;
 		this.commands = new HashMap<>();
 		this.commands.put("help", new CmdHelp());
@@ -77,6 +78,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 		udp = new NetworkServerUDP(this, port);
 
 		new Thread(this, "server-main-thread").start();
+		ping();
 	}
 
 	public void run()
@@ -84,7 +86,6 @@ public class NetworkServer implements Runnable, NetworkableServer
 		log("Server successfully started on port " + port + " !");
 		log("Type \"help\" to list every command.");
 		log("Type \"stop\" to stop the server.");
-		ping();
 		while (true)
 		{
 			Sleep.sleep(500);
@@ -100,31 +101,25 @@ public class NetworkServer implements Runnable, NetworkableServer
 
 	private void ping()
 	{
-		new Thread("tcp-ping-thread")
+		while (true)
 		{
-			public void run()
+			Sleep.sleep(2000);
+			for (int i = 0; i < core.getGame().getEntityManager().getPlayerEntites().size(); i++)
 			{
-				while (true)
+				int key = core.getGame().getEntityManager().getPlayerEntites().get(i);
+				ServerPlayer player = (ServerPlayer) core.getGame().getEntityManager().getEntities().get(key);
+				player.setPinged(false);
+				player.setTimeOutTests(player.getTimeOutTests() + 1);
+				if (player.getTimeOutTests() > 5)
 				{
-					Sleep.sleep(100);
-					for (int i = 0; i < core.getGame().getEntityManager().getPlayerEntites().size(); i++)
-					{
-						int key = core.getGame().getEntityManager().getPlayerEntites().get(i);
-						ServerPlayer player = (ServerPlayer) core.getGame().getEntityManager().getEntities().get(key);
-						player.setPinged(false);
-						player.setTimeOutTests(player.getTimeOutTests() + 1);
-						if (player.getTimeOutTests() > 5)
-						{
-							tcpSendToAll(new TimeoutPacket(key));
-							tcp.disconnectClient(player.getNetwork().getAddress(), player.getNetwork().getPort());
-							core.getGame().remove(key);
-							log(player.getName() + " timed out !");
-						}
-						tcpSendToAll(new PingPacket(player.getID(), System.currentTimeMillis(), player.getPing()));
-					}
+					tcpSendToAll(new TimeoutPacket(key));
+					tcp.disconnectClient(player.getNetwork().getAddress(), player.getNetwork().getPort());
+					core.getGame().remove(key);
+					log(player.getName() + " timed out !");
 				}
+				tcpSendToAll(new PingPacket(player.getID(), System.currentTimeMillis(), player.getPing()));
 			}
-		}.start();
+		}
 	}
 
 	public void tcpSend(Packet packet, InetAddress address, int port)
@@ -225,11 +220,6 @@ public class NetworkServer implements Runnable, NetworkableServer
 	public GameCore getCore()
 	{
 		return core;
-	}
-
-	public void setGameCore(GameCore core)
-	{
-		this.core = core;
 	}
 
 	public NetworkServerTCP getTcp()

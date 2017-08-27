@@ -42,8 +42,7 @@ public class ServerMain
 		this.scanner = new Scanner(System.in);
 		this.core = new GameCore();
 
-		this.server = new NetworkServer(port, scanner);
-		this.server.setGameCore(core);
+		this.server = new NetworkServer(port, scanner, core);
 	}
 
 	public static void main(String[] args)
