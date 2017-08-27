@@ -48,6 +48,7 @@ public class TDMSpawnPacket extends Packet {
         data.put(blue.x);
         data.put(blue.y);
         data.put(blue.z);
+		data.flip();
     }
 
     @Override

@@ -25,7 +25,8 @@ public class RemoteClientReceiver extends Thread
 		while (client.getSocket() != null && !client.getSocket().isClosed())
 		{
 			try {
-				byte[] bytes = new byte[Packet.MAX_SIZE];
+				int length = client.getIn().readInt();
+				byte[] bytes = new byte[length];
 				client.getIn().read(bytes);
 
 				DataBuffer data = new DataBuffer(bytes);

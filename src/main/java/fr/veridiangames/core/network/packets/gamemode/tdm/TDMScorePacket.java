@@ -42,6 +42,7 @@ public class TDMScorePacket extends Packet {
         super(Packet.GAMEMODE_TDM_SCORE);
         data.put(red);
         data.put(blue);
+        data.flip();
     }
 
     @Override

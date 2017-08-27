@@ -35,7 +35,9 @@ public class RemoteClientSender extends Thread
 						client.getServer().log("TCP: SENDER: empty packet for client ID: " + client.getId());
 						break;
 					}
+					client.getOut().writeInt(packetData.length);
 					client.getOut().write(packetData);
+					client.getOut().flush();
 				} catch (IOException e) {
 					e.printStackTrace();
 					try {

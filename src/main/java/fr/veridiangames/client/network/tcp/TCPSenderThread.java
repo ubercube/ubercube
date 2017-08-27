@@ -49,8 +49,8 @@ public class TCPSenderThread extends Thread
 
 					if (!client.getSocket().isClosed() && client.getSocket().isConnected())
 					{
-						DataOutputStream outputStream = new DataOutputStream(client.getOut());
-						outputStream.write(bytes);
+						client.getOut().writeInt(bytes.length);
+						client.getOut().write(bytes);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();

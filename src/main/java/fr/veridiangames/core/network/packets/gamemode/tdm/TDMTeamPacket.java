@@ -52,6 +52,7 @@ public class TDMTeamPacket extends Packet {
         for(Player p : blue.getPlayers()){
             data.put(p.getID());
         }
+		data.flip();
     }
 
     @Override
