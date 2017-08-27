@@ -56,11 +56,13 @@ public class RemoteClient
             this.socket.setTrafficClass(0x10);
             this.socket.setKeepAlive(true);
             this.socket.setReuseAddress(false);
-            this.socket.setSoTimeout(10000);
+            this.socket.setSoTimeout(60000);
 			this.server = server;
+
 			this.receiver = new RemoteClientReceiver(this);
 			this.sender = new RemoteClientSender(this);
 			this.sendQueue = new ConcurrentLinkedQueue<>();
+
 			this.in = socket.getInputStream();
 			this.out = socket.getOutputStream();
         } catch (SocketException e)

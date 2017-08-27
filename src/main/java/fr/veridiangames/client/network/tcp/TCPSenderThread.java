@@ -46,7 +46,8 @@ public class TCPSenderThread extends Thread
 					if (GameCore.isDisplayNetworkDebug())
 						client.log("TCP: " + Time.getTime() + " [OUT]-> sending: " + packet);
 
-					DataStream.writePacket(client.getOut(), bytes);
+					if (!client.getSocket().isClosed() && client.getSocket().isConnected())
+						DataStream.writePacket(client.getOut(), bytes);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

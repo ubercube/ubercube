@@ -56,7 +56,7 @@ public class CmdKick extends Command
                     server.log("Player not found !");
                     return;
                 }
-                server.tcpSendToAll(new KickPacket(id));
+                server.tcpSendToAll(new KickPacket(id, "You where kicked by the server !"));
                 server.log(name + " has been kicked !");
                 GameCore.getInstance().getGame().remove(id);
             } catch (Exception e)

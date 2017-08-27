@@ -60,7 +60,7 @@ public class NetworkClientTCP
             this.socket.setTrafficClass(0x10);
             this.socket.setKeepAlive(false);
             this.socket.setReuseAddress(false);
-            this.socket.setSoTimeout(10000);
+            this.socket.setSoTimeout(60000);
             this.in = socket.getInputStream();
             this.out = socket.getOutputStream();
 

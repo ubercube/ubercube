@@ -25,6 +25,9 @@ import java.util.List;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
+import fr.veridiangames.core.game.entities.components.ECName;
+import fr.veridiangames.core.game.entities.components.ECNetwork;
+import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
@@ -46,6 +49,7 @@ public class ConnectPacket extends Packet
 	private String name;
 	private Vec3 position;
 	private Quat rotation;
+	private int version;
 	
 	public ConnectPacket()
 	
@@ -67,7 +71,9 @@ public class ConnectPacket extends Packet
 		data.put(player.getRotation().y);
 		data.put(player.getRotation().z);
 		data.put(player.getRotation().w);
-		
+
+		data.put(GameCore.GAME_SUB_VERSION);
+
 		data.flip();
 	}
 	
@@ -85,6 +91,8 @@ public class ConnectPacket extends Packet
 		data.put(packet.rotation.y);
 		data.put(packet.rotation.z);
 		data.put(packet.rotation.w);
+
+		data.put(packet.version);
 		
 		data.flip();
 	}
@@ -95,6 +103,7 @@ public class ConnectPacket extends Packet
 		name = data.getString();
 		position = new Vec3(data.getFloat(), data.getFloat(), data.getFloat());
 		rotation = new Quat(data.getFloat(), data.getFloat(), data.getFloat(), data.getFloat());
+		version = data.getInt();
 	}
 
 	public void process(NetworkableServer server, InetAddress address, int port)
@@ -160,6 +169,16 @@ public class ConnectPacket extends Packet
 		this.position = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(id));
 
 		server.tcpSend(new RespawnPacket((Player) GameCore.getInstance().getGame().getEntityManager().get(id), this.position), address, port);
+
+		server.log("Client v" + version + " connecting (Current: v" + GameCore.GAME_SUB_VERSION + ")");
+		if (version != GameCore.GAME_SUB_VERSION)
+		{
+			server.log(name + " tried to connect with an invalid version: v" + version + "  Current: v" + GameCore.GAME_SUB_VERSION);
+			server.tcpSendToAll(new KickPacket(id, "Invalid game version, please download the latest one: ubercube.github.io"));
+			GameCore.getInstance().getGame().remove(id);
+//			server.getTcp().disconnectClient(address, port);
+			return;
+		}
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)

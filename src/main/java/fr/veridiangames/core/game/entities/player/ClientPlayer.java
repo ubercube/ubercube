@@ -53,6 +53,7 @@ public class ClientPlayer extends Player
 	private int timeoutTime;
 	private boolean timedOut;
 	private boolean kicked;
+	private String kickMessage;
 	private List<ParticleSystem> particleSystems;
 
 	private ParticleSnow	snow;
@@ -255,6 +256,14 @@ public class ClientPlayer extends Player
 	public boolean isKicked()
 	{
 		return kicked;
+	}
+
+	public void setKickMessage(String kickMessage) {
+		this.kickMessage = kickMessage;
+	}
+
+	public String getKickMessage() {
+		return kickMessage;
 	}
 
 	public void setKicked(boolean kicked)

@@ -77,6 +77,7 @@ public class Ubercube
 
 	public Ubercube()
 	{
+		Log.println("Starting " + GameCore.GAME_NAME + " " + GameCore.GAME_VERSION_NAME + " v" + GameCore.GAME_SUB_VERSION);
 		/* *** AUDIO INITIALISATION *** */
 		AudioSystem.init();
 		AudioListener.init();
@@ -159,9 +160,10 @@ public class Ubercube
 		if (core.getGame().getPlayer().isKicked())
 		{
 			display.getInput().getMouse().setGrabbed(false);
+			String msg = core.getGame().getPlayer().getKickMessage();
 			joinGame = false;
 			Object[] options = {"OK"};
-			int n = GuiUtils.warning("You got kicked !", options);
+			int n = GuiUtils.warning("You got kicked: " + msg, options);
 			if (n == JOptionPane.YES_OPTION)
 				exitGame();
 		}
@@ -211,7 +213,7 @@ public class Ubercube
 		fr.veridiangames.client.main.Timer timer = new fr.veridiangames.client.main.Timer();
 		
 		double tickTime = 1000000000.0 / 60.0;
-		double renderTime = 1000000000.0 / 60.0;
+		double renderTime = 1000000000.0 / 9000.0;
 		double updatedTime = 0.0;
 		double renderedTime = 0.0;
 		

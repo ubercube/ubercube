@@ -20,6 +20,7 @@
 package fr.veridiangames.core.network.packets;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.components.ECNetwork;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.utils.DataBuffer;
 
@@ -37,6 +38,7 @@ public class KickPacket extends Packet
 {
 
     private int id;
+    private String msg;
 
     public KickPacket()
 
@@ -44,10 +46,11 @@ public class KickPacket extends Packet
         super(KICK);
     }
 
-    public KickPacket(int id)
+    public KickPacket(int id, String msg)
     {
         super(KICK);
         data.put(id);
+        data.put(msg);
         data.flip();
     }
 
@@ -55,16 +58,25 @@ public class KickPacket extends Packet
     {
         super(KICK);
         data.put(packet.id);
+        data.put(packet.msg);
         data.flip();
     }
 
     public void read(DataBuffer buffer)
     {
-        this.id = buffer.getInt();
+		this.id = buffer.getInt();
+    	this.msg = buffer.getString();
     }
 
     public void process(NetworkableServer server, InetAddress address, int port)
     {
+		if (!server.getCore().getGame().getEntityManager().getEntities().containsKey(id))
+			return;
+		String name = ((ECName) server.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
+		ECNetwork net = ((ECNetwork) server.getCore().getGame().getEntityManager().get(id).get(EComponent.NETWORK));
+		GameCore.getInstance().getGame().remove(id);
+		server.tcpSendToAll(new KickPacket(this));
+		server.log(name + " was kicked... ");
     }
 
     public void process(NetworkableClient client, InetAddress address, int port)
@@ -73,11 +85,12 @@ public class KickPacket extends Packet
         {
             ClientPlayer player = client.getCore().getGame().getPlayer();
             player.setKicked(true);
-            client.log("You were kicked !");
+            player.setKickMessage(msg);
+            client.log("You were kicked: " + msg);
         }
         else
         {
-            String name = ((ECName) client.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
+        	String name = ((ECName) client.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
             client.getCore().getGame().remove(id);
             client.log(name + " was kicked...");
             client.console(name + " was kicked...");
