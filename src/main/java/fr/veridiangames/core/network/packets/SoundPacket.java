@@ -52,7 +52,7 @@ public class SoundPacket extends Packet
         data.put(source.getPosition().x);
         data.put(source.getPosition().y);
         data.put(source.getPosition().z);
-        data.flipped();
+        data.flip();
     }
 
     public SoundPacket(SoundPacket packet)
@@ -63,7 +63,7 @@ public class SoundPacket extends Packet
         data.put(packet.position.x);
         data.put(packet.position.y);
         data.put(packet.position.z);
-        data.flipped();
+        data.flip();
     }
 
     public void read(DataBuffer buffer)

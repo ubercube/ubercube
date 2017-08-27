@@ -115,9 +115,9 @@ public class ConnectPacket extends Packet
 		server.log(name + " just connected !");
 		server.tcpSendToAll(new ConnectPacket(this));
 
-		/* SENDING MULTIPLE PACKETS TO AVOID READ OVERFLOW OF 2048 */
+		/* SENDING MULTIPLE PACKETS TO AVOID READ OVERFLOW OF 512 */
 		int modifiedBlocksSize = server.getCore().getGame().getWorld().getModifiedBlocks().size();
-		int packetCount = (int) ((float) (modifiedBlocksSize * 16) / (Packet.MAX_SIZE)) + 2;
+		int packetCount = (int) ((float) (modifiedBlocksSize * 16) / (Packet.MAX_SIZE - 50)) + 2;
 		List<Vec4i> currentData = GameCore.getInstance().getGame().getWorld().getModifiedBlocks();
 		int count = (int) ((float) modifiedBlocksSize / (float) packetCount);
 

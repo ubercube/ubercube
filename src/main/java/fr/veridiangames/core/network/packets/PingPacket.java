@@ -74,7 +74,6 @@ public class PingPacket extends Packet
         ServerPlayer player = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(userID);
         if (player == null)
             return;
-        server.log("PING !");
         player.setPing((int) (System.currentTimeMillis() - pingTime));
         player.setTimeOutTests(0);
         player.setPinged(true);
