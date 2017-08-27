@@ -34,12 +34,6 @@ import java.net.URL;
  */
 public class FileUtils
 {
-	public static final String S = System.getProperty("file.separator");
-	public static final String ROOT_DIR = getHomeDir() + S + "Ubercube" + S;
-	public static final String UBERCUBE_ROOT_DIR = getHomeDir() + S + "Ubercube" + S;
-	public static final String UBERCUBE_SAVE_DIR = getHomeDir() + S + "Ubercube" + S + "saves" + S;
-	public static final String UBERCUBE_SHADER_DIR = getHomeDir() + S + "Ubercube" + S + "data" + S + "shaders";
-	public static final String UBERCUBE_URL = "http://veridiangames.fr/ubercube/jar/Ubercube.jar";
 	public static final String LOG_PATH = "log.txt";
 
 	public static String getHomeDir()

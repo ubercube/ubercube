@@ -159,7 +159,6 @@ public class ConnectPacket extends Packet
 				server.tcpSend(new EntitySyncPacket((Player) e), address, port);
 		}
 
-
 		/* Game Mode managment */
 		GameMode mode = server.getCore().getGame().getGameMode();
 		mode.onPlayerConnect((Player) server.getCore().getGame().getEntityManager().get(id), server);
