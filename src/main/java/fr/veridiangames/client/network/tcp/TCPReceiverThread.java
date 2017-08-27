@@ -35,7 +35,7 @@ public class TCPReceiverThread extends Thread
 			{
 				int length = client.getIn().readInt();
 				byte[] bytes = new byte[length];
-				client.getIn().read(bytes);
+				client.getIn().readFully(bytes);
 
 				DataBuffer data = new DataBuffer(bytes);
 				int id = data.getInt();
