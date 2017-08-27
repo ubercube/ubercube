@@ -43,6 +43,11 @@ public class RemoteClientReceiver extends Thread
 				packet.process(client.getServer(), client.getSocket().getInetAddress(), client.getSocket().getPort());
 			} catch (IOException e) {
 				e.printStackTrace();
+				try {
+					client.getSocket().close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		}
 	}

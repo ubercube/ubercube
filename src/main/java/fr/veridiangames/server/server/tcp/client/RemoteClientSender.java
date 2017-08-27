@@ -4,6 +4,7 @@ import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataStream;
 
 import java.io.IOException;
+import java.net.SocketException;
 
 public class RemoteClientSender extends Thread
 {
@@ -37,6 +38,11 @@ public class RemoteClientSender extends Thread
 //					DataStream.writePacket(client.getOutputStream(), packetData);
 				} catch (IOException e) {
 					e.printStackTrace();
+					try {
+						client.getSocket().close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		}

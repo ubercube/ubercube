@@ -50,6 +50,11 @@ public class TCPSenderThread extends Thread
 						client.getOut().write(bytes);
 				} catch (IOException e) {
 					e.printStackTrace();
+					try {
+						client.getSocket().close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		}

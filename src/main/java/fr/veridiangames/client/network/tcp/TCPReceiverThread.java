@@ -52,6 +52,11 @@ public class TCPReceiverThread extends Thread
 			} catch (IOException e)
 			{
 				e.printStackTrace();
+				try {
+					client.getSocket().close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		}
 		client.log("TCP: Stopping tcp-receiver Thread");
