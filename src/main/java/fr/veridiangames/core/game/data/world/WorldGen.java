@@ -40,7 +40,7 @@ public class WorldGen
 	private List<Structure> structs;
 	private Random 			rand;
 	private long 			seed;
-	
+
 	private int height;
 	private boolean usingHeight;
 	private float[][] heightData;
@@ -69,11 +69,22 @@ public class WorldGen
 		this.seed = seed;
 	}
 
-	public void addNoisePasses()
+	public void addNoisePasses(WorldType type)
 	{
-		add(new NoisePass(seed, 60, 5, 0, 1));
-		add(new NoisePass(seed, 40, 10, 0.4f, -1));
-		add(new NoisePass(seed, 40, 15, 0.45f, -1));
+		switch (type)
+		{
+			case SNOWY:
+				add(new NoisePass(seed, 60, 5, 0, 1));
+				add(new NoisePass(seed, 40, 10, 0.4f, -1));
+				add(new NoisePass(seed, 40, 15, 0.45f, -1));
+				break;
+
+			case NORMAL:
+				add(new NoisePass(seed, 60, 3, 0, 1));
+				add(new NoisePass(seed, 20, 10, 0.4f, -1));
+				add(new NoisePass(seed, 20, 20, 0, -1));
+				break;
+		}
 	}
 
 	private void add(NoisePass pass)
@@ -134,6 +145,11 @@ public class WorldGen
 	{
 		return rand.nextFloat();
 	}
+
+	public float getRandom(float min, float max)
+	{
+		return rand.nextFloat() * (max - min) + min;
+	}
 	
 	public static void main(String[] args)
 	{
@@ -159,5 +175,13 @@ public class WorldGen
 		}
 		img.setRGB(0, 0, size, size, pixels, 0, size);
 		JOptionPane.showMessageDialog(null, null, "Another", JOptionPane.YES_NO_OPTION, new ImageIcon(img.getScaledInstance(size * 6, size * 6, Image.SCALE_AREA_AVERAGING)));
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public long getSeed() {
+		return seed;
 	}
 }

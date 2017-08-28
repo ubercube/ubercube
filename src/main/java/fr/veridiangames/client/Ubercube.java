@@ -64,6 +64,7 @@ public class Ubercube
 	private boolean 			inConsole;
 	private ConsoleScreen		console;
 	private boolean				inMenu;
+	private boolean				hasInitRendering;
 
 	private Profiler			renderProfiler;
 	private Profiler			updateProfiler;
@@ -90,7 +91,6 @@ public class Ubercube
 
 		/* *** INIT STUFF *** */
 		this.playerHandler = new PlayerHandler(core, net);
-		this.mainRenderer = new MainRenderer(this, core);
 		this.guiManager = new GuiManager();
 
 		/* *** LOADING GUI *** */
@@ -115,6 +115,14 @@ public class Ubercube
 		Profiler.setResolution(5);
 	}
 
+	public void initRendering()
+	{
+		if (hasInitRendering)
+			return;
+		this.mainRenderer = new MainRenderer(this, core);
+		hasInitRendering = true;
+	}
+
 	public void update()
 	{
         core.setIgnoreAction(false);
@@ -129,6 +137,9 @@ public class Ubercube
 		guiProfiler.end();
 
 		gameLoading.update(this);
+
+		if (core.getGame().getWorld() != null && core.getGame().getWorld().isGenerated())
+			initRendering();
 
 		if (net.isConnected() && core.getGame().getWorld().isGenerated())
 		{
@@ -200,6 +211,8 @@ public class Ubercube
 	
 	public void render()
 	{
+		if (!hasInitRendering)
+			return;
 		renderProfiler.start();
 		mainRenderer.renderAll(display);
 		guiManager.render(display);

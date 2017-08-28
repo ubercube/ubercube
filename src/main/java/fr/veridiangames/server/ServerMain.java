@@ -19,6 +19,7 @@
 
 package fr.veridiangames.server;
 
+import java.util.Random;
 import java.util.Scanner;
 
 import fr.veridiangames.core.GameCore;
@@ -27,6 +28,8 @@ import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.utils.Indexer;
 import fr.veridiangames.server.server.NetworkServer;
+
+import static java.lang.Math.abs;
 
 /**
  * Created by Marccspro on 31 janv. 2016.
@@ -41,6 +44,7 @@ public class ServerMain
 	{
 		this.scanner = new Scanner(System.in);
 		this.core = new GameCore();
+		this.core.getGame().createWorld(abs(new Random().nextInt()));
 
 		this.server = new NetworkServer(port, scanner, core);
 	}

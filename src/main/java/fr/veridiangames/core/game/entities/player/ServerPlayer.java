@@ -38,6 +38,7 @@ public class ServerPlayer extends Player
 	private long pingTime;
 	private boolean pinged;
 	private boolean hitable;
+	private int timeSinceSpawn;
 
 	private float high;
 	private boolean falling;
@@ -60,11 +61,13 @@ public class ServerPlayer extends Player
 
 		this.maxGrenades = 10;
 		this.grenadeCount = maxGrenades;
+		this.timeSinceSpawn = 0;
 	}
 
 	public boolean applyDamage (int damage, NetworkableServer server)
 	{
-	    if(this.isDead()) return true;
+	    if (this.isDead()) return true;
+		if (timeSinceSpawn <= 5) return false;
 
 		this.life -= damage;
 
@@ -194,5 +197,15 @@ public class ServerPlayer extends Player
 	public void setGrenadeCount(int grenadeCount)
 	{
 		this.grenadeCount = grenadeCount;
+	}
+
+	public int getTimeSinceSpawn()
+	{
+		return timeSinceSpawn;
+	}
+
+	public void setTimeSinceSpawn(int timeSinceSpawn)
+	{
+		this.timeSinceSpawn = timeSinceSpawn;
 	}
 }

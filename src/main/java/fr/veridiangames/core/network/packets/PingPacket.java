@@ -77,6 +77,7 @@ public class PingPacket extends Packet
         player.setPing((int) (System.currentTimeMillis() - pingTime));
         player.setTimeOutTests(0);
         player.setPinged(true);
+		player.setTimeSinceSpawn(player.getTimeSinceSpawn() + 1);
     }
 
     public void process(NetworkableClient client, InetAddress address, int port)

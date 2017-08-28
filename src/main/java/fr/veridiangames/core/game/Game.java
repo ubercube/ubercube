@@ -21,6 +21,8 @@ package fr.veridiangames.core.game;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.data.GameData;
+import fr.veridiangames.core.game.data.world.WorldGen;
+import fr.veridiangames.core.game.data.world.WorldType;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.EntityManager;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
@@ -35,6 +37,7 @@ import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Indexer;
 import fr.veridiangames.core.game.modes.GameMode;
 import fr.veridiangames.core.game.modes.TDMGameMode;
+import fr.veridiangames.core.utils.Log;
 
 /**
  * Created by Marccspro on 28 janv. 2016.
@@ -59,13 +62,11 @@ public class Game
 		this.gameMode = new TDMGameMode(data);
 	}
 
-	public void init()
+	public void createWorld(long seed)
 	{
+		Log.println("Generating world with seed: " + seed);
+		this.data.createWorld(new WorldGen(seed, data.getWorldSize()), (seed % 2 == 0) ? WorldType.SNOWY : WorldType.NORMAL);
 		this.world = new World(core);
-//		spawn(new NetworkedPlayer(Indexer.getUniqueID(), "Entity", new Vec3(810, 8, 805), new Quat(), "", 0));
-//
-//		/** Test spawn code **/
-//		spawn(new ParticleSystem(Indexer.getUniqueID(), "", new Vec3(805, 7, 805)));
 	}
 
 	public void update()

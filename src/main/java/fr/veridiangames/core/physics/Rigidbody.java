@@ -203,7 +203,7 @@ public class Rigidbody
 				}
 				else if (data.isCollisionY() && axis.y == 0 && data.getMtdY() * delta == collisionMTD)
 				{
-					if (velocity.y < 0 && data.getMtdY() > 0)
+					if (velocity.y < 0 && data.getMtdY() * delta > 0)
 					{
 						if (!hitGrounded && !grounded && velocity.y < -0.10f)
 							hitGrounded = true;
@@ -216,6 +216,8 @@ public class Rigidbody
 						hitGrounded = false;
 						grounded = false;
 					}
+					if (velocity.y > 0 && data.getMtdY() * delta < 0)
+						velocity.y = 0;
 					gravity.y = 0;
 					mainForce.y = 0;
 					velocity.y = 0;

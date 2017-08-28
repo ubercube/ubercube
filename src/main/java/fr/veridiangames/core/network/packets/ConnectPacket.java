@@ -22,6 +22,7 @@ package fr.veridiangames.core.network.packets;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
@@ -50,7 +51,8 @@ public class ConnectPacket extends Packet
 	private Vec3 position;
 	private Quat rotation;
 	private String version;
-	
+	private long seed;
+
 	public ConnectPacket()
 	
 	{
@@ -74,6 +76,8 @@ public class ConnectPacket extends Packet
 
 		data.put(GameCore.GAME_SUB_VERSION);
 
+		data.put((long) 0);
+
 		data.flip();
 	}
 	
@@ -93,6 +97,8 @@ public class ConnectPacket extends Packet
 		data.put(packet.rotation.w);
 
 		data.put(packet.version);
+
+		data.put(packet.seed);
 		
 		data.flip();
 	}
@@ -104,10 +110,12 @@ public class ConnectPacket extends Packet
 		position = new Vec3(data.getFloat(), data.getFloat(), data.getFloat());
 		rotation = new Quat(data.getFloat(), data.getFloat(), data.getFloat(), data.getFloat());
 		version = data.getString();
+		seed = data.getLong();
 	}
 
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
+		seed = server.getCore().getGame().getData().getWorldGen().getSeed();
 		server.getCore().getGame().spawn(new ServerPlayer(id, name, position, rotation, address.getHostName(), port));
 
 		server.getTcp().getClient(address, port).setID(id);
@@ -189,6 +197,7 @@ public class ConnectPacket extends Packet
 		else
 		{
 			client.log("You just connected as " + name);
+			client.getCore().getGame().createWorld(seed);
 			client.setConnected(true);
 		}
 		client.console(name + " just connected !");

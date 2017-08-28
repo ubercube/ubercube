@@ -29,7 +29,7 @@ import fr.veridiangames.core.utils.Color4f;
  */
 public class Tree
 {
-    public static void oakTree(World world, int x, int y, int z) {
+    public static void oakTree(World world, int x, int y, int z, boolean snow) {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 10; j++) {
                 for (int k = 0; k < 9; k++) {
@@ -40,10 +40,10 @@ public class Tree
 
 
                     if (l < 4.5f) {
-                        if(Mathf.sqrt(ii * ii + (jj + 1) * (jj + 1) + kk * kk) >= 4.5f){
-                            world.addBlock(x + (int)ii, y + (int)jj + 9, z + (int)kk, new Color4f(0.9f, 0.9f, 0.98f).add(world.getWorldGen().getRandom() * 0.02f).getARGB());
+                        if(Mathf.sqrt(ii * ii + (jj + 1) * (jj + 1) + kk * kk) >= 4.5f && snow){
+                            world.addBlock(x + (int)ii, y + (int)jj + 9, z + (int)kk, Block.SNOW.copy().add(world.getWorldGen().getRandom() * 0.02f).getARGB());
                         }else{
-                            world.addBlock(x + (int)ii, y + (int)jj + 9, z + (int)kk, Block.LEAF.copy().add(Mathf.random() * 0.1f).getARGB());
+                            world.addBlock(x + (int)ii, y + (int)jj + 9, z + (int)kk, Block.OAK_LEAF.copy().add(world.getWorldGen().getRandom() * 0.1f).getARGB());
                         }
                     }
                 }
@@ -51,11 +51,11 @@ public class Tree
         }
 
         for (int i = 0; i < 9; i++) {
-            world.addBlock(x, y + i, z, Block.WOOD.copy().add(Mathf.random() * 0.05f).getARGB());
+            world.addBlock(x, y + i, z, Block.WOOD.copy().add(world.getWorldGen().getRandom() * 0.05f).getARGB());
         }
     }
 
-    public static void firTree(World world, int x, int y, int z) {
+    public static void firTree(World world, int x, int y, int z, boolean snow) {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 13; j++) {
                 for (int k = 0; k < 9; k++) {
@@ -67,15 +67,18 @@ public class Tree
 
                     size -= (float)j / 13.0f;
 
-                    if (l < 4.5f * size) {
-                        world.addBlock(x + (int)ii, y + (int)jj + 7, z + (int)kk, Block.LEAF.copy().add(Mathf.random() * 0.1f).getARGB());
-                    }
-                }
+                    if (l < 4.5f * size)
+					{
+						if (snow)
+							world.addBlock(x + (int)ii, y + (int)jj + 9, z + (int)kk, Block.SNOW.copy().add(world.getWorldGen().getRandom() * 0.02f).getARGB());
+						world.addBlock(x + (int)ii, y + (int)jj + 8, z + (int)kk, Block.FIR_LEAF.copy().add(world.getWorldGen().getRandom() * 0.1f).getARGB());
+					}
+				}
             }
         }
 
         for (int i = 0; i < 13; i++) {
-            world.addBlock(x, y + i, z, Block.WOOD.copy().add(Mathf.random() * 0.05f).getARGB());
+            world.addBlock(x, y + i, z, Block.WOOD.copy().add(world.getWorldGen().getRandom() * 0.05f).getARGB());
         }
     }
 }

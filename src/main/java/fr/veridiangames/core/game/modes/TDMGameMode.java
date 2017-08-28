@@ -46,8 +46,8 @@ public class TDMGameMode implements GameMode
         redTeam.setColor(Color4f.RED);
         blueTeam.setColor(Color4f.BLUE);
         int worldSize = data.getWorldSize() * Chunk.SIZE;
-        redTeam.setSpawn(new Vec3(50, 25, 50));
-        blueTeam.setSpawn(new Vec3(worldSize - 50, 25, worldSize - 50));
+        redTeam.setSpawn(new Vec3(50, 50, 50));
+        blueTeam.setSpawn(new Vec3(worldSize - 50, 50, worldSize - 50));
     }
 
     private Team redTeam = new Team();

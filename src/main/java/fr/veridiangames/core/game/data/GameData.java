@@ -20,6 +20,7 @@
 package fr.veridiangames.core.game.data;
 
 import fr.veridiangames.core.game.data.world.WorldGen;
+import fr.veridiangames.core.game.data.world.WorldType;
 
 /**
  * Created by Marccspro on 15 f�vr. 2016.
@@ -29,12 +30,11 @@ public class GameData
 	private WorldGen	worldGen;
 	private int			worldSize;
 	private float		viewDistance;
+	private WorldType	worldType;
 
 	public GameData()
 	{
 		worldSize = 15;
-		//worldGen = new WorldGen(5);
-		worldGen = new WorldGen(42 /*new Random().nextInt(99999)*/, worldSize);
 		viewDistance = 16 * 12;
 	}
 
@@ -61,5 +61,15 @@ public class GameData
 	public WorldGen getWorldGen()
 	{
 		return worldGen;
+	}
+
+	public WorldType getWorldType() {
+		return worldType;
+	}
+
+	public void createWorld(WorldGen worldGen, WorldType worldType)
+	{
+		this.worldGen = worldGen;
+		this.worldType = worldType;
 	}
 }

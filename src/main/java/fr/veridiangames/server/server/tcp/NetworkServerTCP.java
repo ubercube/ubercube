@@ -118,6 +118,8 @@ public class NetworkServerTCP implements Runnable
     public void stop() throws IOException
     {
         log("TCP: Closing connection...");
+        for (RemoteClient client : clients)
+        	client.stop();
         socket.close();
     }
 
@@ -129,8 +131,12 @@ public class NetworkServerTCP implements Runnable
             clients.remove(client);
             return;
         }
-        client.stop();
-        clientsToAdd.remove(client);
+		try {
+			client.stop();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		clientsToAdd.remove(client);
         clients.remove(client);
     }
 

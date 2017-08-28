@@ -57,7 +57,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 	private GameCore				core;
 	private Scanner					scanner;
 	private Map<String, Command>	commands;
-	
+
 	public NetworkServer(int port, Scanner scanner, GameCore core)
 	{
 		this.port = port;
@@ -70,6 +70,8 @@ public class NetworkServer implements Runnable, NetworkableServer
 		
 		log("Requesting server start on the " + SystemUtils.getDate());
 		log("Starting server for " + GameCore.GAME_NAME + " " + GameCore.GAME_VERSION_NAME + " v" + GameCore.GAME_SUB_VERSION);
+		long seed = core.getGame().getData().getWorldGen().getSeed();
+		log("Generating world with seed: " + seed + " (" + ((seed % 2 == 0) ? "SNOWY" : "GRASSY") + ")");
 		//log("Setting up server files...");
 		//FileManager.init();
 		log("Requesting connection on port " + port + "...");
@@ -244,6 +246,4 @@ public class NetworkServer implements Runnable, NetworkableServer
 	{
 		return commands;
 	}
-
-
 }

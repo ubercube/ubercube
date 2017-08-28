@@ -46,7 +46,6 @@ public class GameCore
 	{
 		instance = this;
 		mainGame = new Game(this);
-		mainGame.init();
 
 		ignoreAction = false;
 	}

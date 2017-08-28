@@ -27,6 +27,7 @@ import java.util.Map;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.data.GameData;
 import fr.veridiangames.core.game.data.world.WorldGen;
+import fr.veridiangames.core.game.data.world.WorldType;
 import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
@@ -47,6 +48,7 @@ public class World
 	private GameData	gameData;
 	private GameCore	core;
 	private int			worldSize;
+	private WorldType	worldType;
 	private boolean 	generated;
 	
 	public World(GameCore core)
@@ -67,39 +69,40 @@ public class World
 	{
 		worldSize = gameData.getWorldSize();
 		worldGen = gameData.getWorldGen();
+		worldType = gameData.getWorldType();
 		World world = this;
 
-				worldGen.addNoisePasses();
-				worldGen.calcFinalNoise();
-				for (int x = 0; x < worldSize; x++)
+		worldGen.addNoisePasses(worldType);
+		worldGen.calcFinalNoise();
+		for (int x = 0; x < worldSize; x++)
+		{
+			for (int y = 0; y < 5; y++)
+			{
+				for (int z = 0; z < worldSize; z++)
 				{
-					for (int y = 0; y < 5; y++)
-					{
-						for (int z = 0; z < worldSize; z++)
-						{
-							int index = Indexer.index3i(x, y, z);
-							float[][] 	noise = worldGen.getNoiseChunk(x, z);
-							Chunk c = new Chunk(x, y, z, noise, world);
-							c.generateChunk();
-							c.generateTerrainData();
-							chunks.put(index, c);
-						}
-					}
+					int index = Indexer.index3i(x, y, z);
+					float[][] 	noise = worldGen.getNoiseChunk(x, z);
+					Chunk c = new Chunk(x, y, z, noise, world);
+					c.generateChunk();
+					c.generateTerrainData();
+					chunks.put(index, c);
 				}
-				for (int x = 0; x < worldSize; x++)
+			}
+		}
+		for (int x = 0; x < worldSize; x++)
+		{
+			for (int y = 0; y < 1; y++)
+			{
+				for (int z = 0; z < worldSize; z++)
 				{
-					for (int y = 0; y < 5; y++)
-					{
-						for (int z = 0; z < worldSize; z++)
-						{
-							int index = Indexer.index3i(x, y, z);
-							Chunk c = chunks.get(index);
-							c.generateVegetation();
-						}
-					}
+					int index = Indexer.index3i(x, y, z);
+					Chunk c = chunks.get(index);
+					c.generateVegetation();
 				}
+			}
+		}
 
-				generated = true;
+		generated = true;
 
 	}
 	
@@ -565,6 +568,10 @@ public class World
 	public WorldGen getWorldGen()
 	{
 		return worldGen;
+	}
+
+	public WorldType getWorldType() {
+		return worldType;
 	}
 
 	public boolean isGenerated()

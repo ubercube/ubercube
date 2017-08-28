@@ -126,6 +126,7 @@ public class RespawnPacket extends Packet
         p.setLife(Player.MAX_LIFE);
         p.setDead(false);
         p.setGrenadeCount(p.getMaxGrenades());
+        p.setTimeSinceSpawn(0);
 
         // GAME MODE
         GameCore.getInstance().getGame().getGameMode().onPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(playerId), server);

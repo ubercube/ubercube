@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.game.world;
 
+import fr.veridiangames.core.game.data.world.WorldType;
 import fr.veridiangames.core.game.world.vegetations.Rock;
 import fr.veridiangames.core.game.world.vegetations.Tree;
 import fr.veridiangames.core.maths.Mathf;
@@ -27,6 +28,8 @@ import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.maths.Vec4i;
 import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.game.world.vegetations.Bush;
+
+import static java.lang.Math.round;
 
 public class Chunk
 {
@@ -108,7 +111,7 @@ public class Chunk
 					{
 						float snow = (float)(yy - 10) / 6;
 						if(snow > 1) snow = 1;
-						if(snow > world.getWorldGen().getRandom()){
+						if(snow > world.getWorldGen().getRandom() && world.getWorldType() == WorldType.SNOWY){
 							Color4f color = new Color4f(0.9f, 0.9f, 0.98f).add(world.getWorldGen().getRandom() * 0.02f);
 							color.setAlpha(1f);
 							addBlock(x, y, z, color.getARGB());
@@ -135,36 +138,36 @@ public class Chunk
 
 	public void generateVegetation()
 	{
-		for (int x = 0; x < SIZE; x++)
+		int num = 16;
+		for (int i = 0; i < num; i++)
 		{
-			for (int z = 0; z < SIZE; z++)
+			if (world.getWorldGen().getRandom() > 0.3)
+				continue;
+			int x = (i % 4) * 4;
+			int z = (i / 4) * 4;
+			int rx = x + (int) world.getWorldGen().getRandom(0, 2);
+			int rz = z + (int) world.getWorldGen().getRandom(0, 2);
+			if (rx < 0) rx = 0;
+			if (rz < 0) rz = 0;
+			if (rx >= SIZE) rx = SIZE - 1;
+			if (rz >= SIZE) rz = SIZE - 1;
+
+			int xx = position.x * SIZE + rx;
+			int zz = position.z * SIZE + rz;
+
+			float noiseHeight = noise[rx][rz];
+
+			if (noiseHeight < 13 + world.getWorldGen().getRandom(0, 2))
 			{
-				int xx = position.x * SIZE + x;
-				int zz = position.z * SIZE + z;
-
-				float noiseHeight = noise[x][z];
-
-				if (noiseHeight < 13)
-				{
-					if (world.getWorldGen().getRandom() > 0.995f)
-					{
-						Tree.oakTree(world, xx, (int) noiseHeight, zz);
-					}
-				}
+				if (world.getWorldGen().getRandom() > (world.getWorldType() == WorldType.SNOWY ? 0.9 : 0.2))
+					Tree.oakTree(world, xx, (int) noiseHeight, zz, world.getWorldType() == WorldType.SNOWY);
 				else
-				{
-					if (world.getWorldGen().getRandom() > 0.9999f)
-					{
-						Rock.rock(world, xx, (int) noiseHeight, zz);
-					}
-				}
-
+					Tree.firTree(world, xx, (int) noiseHeight - (int) world.getWorldGen().getRandom(0, 2), zz, world.getWorldType() == WorldType.SNOWY);
 			}
 		}
 
 		generated = true;
 	}
-
 
 	public void update()
 	{
