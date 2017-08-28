@@ -216,9 +216,9 @@ public class Rigidbody
 						hitGrounded = false;
 						grounded = false;
 					}
-					if (velocity.y > 0 && data.getMtdY() * delta < 0)
-						velocity.y = 0;
-					gravity.y = 0;
+
+					if (data.getMtdY() * delta > 0)
+						gravity.y = 0;
 					mainForce.y = 0;
 					velocity.y = 0;
 					float mtd = data.getMtdY() * delta;
