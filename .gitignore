@@ -17,11 +17,16 @@ hs_err_pid*
 out/
 out/*
 
-META-INF\
-META-INF\*
+META-INF/
+META-INF/*
 
 target/
 target/*
 
 log.txt
 .version
+
+**/libs
+.classpath
+.project
+save/**

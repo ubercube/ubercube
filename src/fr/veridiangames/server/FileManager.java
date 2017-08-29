@@ -20,9 +20,15 @@
 package fr.veridiangames.server;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Random;
 
+import fr.veridiangames.core.game.Game;
+import fr.veridiangames.core.game.world.Chunk;
+import fr.veridiangames.core.maths.Vec4i;
 import fr.veridiangames.core.utils.FileUtils;
 import fr.veridiangames.core.utils.Log;
 import fr.veridiangames.core.utils.SystemUtils;
@@ -40,6 +46,66 @@ public class FileManager
 		setPlayerAdminFile();
 		setPlayerAdminFile();
 		setPlayerKickedFile();
+	}
+	
+	public static void saveGame(Game game)
+	{
+		if (!FileUtils.fileExist("save"))
+			FileUtils.newFile("save");
+		
+		try
+		{
+			FileOutputStream fos = new FileOutputStream(new File("save/world.ucw"));
+			try
+			{
+				ByteBuffer dataBuffer = ByteBuffer.wrap(new byte[9]);// Max world size (320*320*80*4) + (4*320*320)
+				dataBuffer.put((byte)1);// The world has been generated with a seed
+				dataBuffer.putLong(42);// Write the seed (42)
+				fos.write(dataBuffer.array());
+				dataBuffer = ByteBuffer.wrap(new byte[65536]);// Max chunk size (4*4*4096)
+				for (int x = 0; x < game.getWorld().getWorldSize() ; x++)
+				{
+					for (int y = 0; y < 5 ; y++)
+					{
+						for (int z = 0; z < game.getWorld().getWorldSize() ; z++)
+						{
+							// if (generated with a seed)
+							short modifiedBlockNumber = 0; // number of modified block for this chunk
+							//Chunk chunk = game.getWorld().getChunk(x, y, z);
+							for (int xChunk=0; xChunk < Chunk.SIZE ; xChunk++)
+							{
+								for (int yChunk=0; yChunk < Chunk.SIZE ; yChunk++)
+								{
+									for (int zChunk=0; zChunk < Chunk.SIZE ; zChunk++)
+									{
+										Vec4i v = game.getWorld().getModifiedBlock(x*Chunk.SIZE+xChunk, y*Chunk.SIZE+yChunk, z*Chunk.SIZE+zChunk);
+										//if (v == null) enable if not generated with a seed
+											//dataBuffer.putInt(chunk.getBlock(xChunk, yChunk, zChunk));
+										if (v != null)
+										{
+											modifiedBlockNumber ++;
+											dataBuffer.putInt(v.x);
+											dataBuffer.putInt(v.y);
+											dataBuffer.putInt(v.z);
+											dataBuffer.putInt(v.w);
+										}
+									}
+								}
+							}
+							fos.write(modifiedBlockNumber >> 8);
+							fos.write(modifiedBlockNumber & 0b11111111);
+							fos.write(dataBuffer.array(), 0, dataBuffer.position());
+							dataBuffer.clear();
+						}
+					}
+				}
+				//for (Entity e : g.getEntityManager().getEntities().values())
+				//	e.getID()
+			}
+			catch(IOException e){e.printStackTrace();}
+			finally{fos.close();}
+		}
+		catch(IOException e){e.printStackTrace();}
 	}
 	
 	private static void setWorldFolder()

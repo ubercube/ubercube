@@ -19,6 +19,11 @@
 
 package fr.veridiangames.core.game.world;
 
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +40,9 @@ import fr.veridiangames.core.maths.Vec4i;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
 import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Indexer;
+import fr.veridiangames.server.MinecraftBlock;
+import fr.veridiangames.server.MinecraftFile;
+import fr.veridiangames.server.NBTReader;
 
 public class World
 {
@@ -62,9 +70,99 @@ public class World
 		this.modifiedBlocks = new ArrayList<Vec4i>();
 		this.generated = false;
 
-		this.initWorldData();
+		this.readMinecraftData();
+		//this.readWorldData();
+		//this.initWorldData();
 	}
 
+	private void readMinecraftData()
+	{
+		worldSize = gameData.getWorldSize();
+		worldGen = new WorldGen(0, worldSize);
+		MinecraftFile file = new MinecraftFile(new File("save/r.0.0.mca"));
+		for (int x=0;x<worldSize;x++)
+		{
+			for (int z=0;z<worldSize;z++)
+			{
+				if (file.hasChunk(x, z))
+				{
+					DataInputStream dis = file.getChunkDataInputStream(x, z);
+					for (int y = 0;y<16;y++)
+					{
+						try
+						{
+							NBTReader reader = new NBTReader(dis);
+							byte[] blocks = reader.getNextByteArrayTagData("Blocks");
+							int index = Indexer.index3i(worldSize-1-x, y, z);
+							Chunk c = new Chunk(new Vec3i(worldSize-1-x, y, z));
+							chunks.put(index, c);
+							for (int i=0;i<4096;i++)
+							{
+								int bx = (i>>0)&0b1111;
+								int by = (i>>8)&0b1111;
+								int bz = (i>>4)&0b1111;
+								c.blocks[15 - bx][by][bz] = MinecraftBlock.getColor(blocks[i]);
+							}
+						}
+						catch(Exception e)
+						{
+							//e.printStackTrack(); //Probably end of stream
+						}
+					}
+					try
+					{
+						dis.close();
+					}
+					catch(Exception e){e.printStackTrace();}
+				}
+			}
+		}
+		try
+		{
+			file.close();
+		}
+		catch(IOException e){e.printStackTrace();}
+		generated = true;
+	}
+	
+	private void readWorldData()
+	{
+		worldSize = gameData.getWorldSize();
+		worldGen = gameData.getWorldGen();
+		try
+		{
+			FileInputStream fis = new FileInputStream(new File("save/world.ucw"));
+			try
+			{
+				boolean seeded = fis.read() == 1;
+				if (seeded)
+				{
+					//init world Gen
+					initWorldData();
+				}
+				byte[] file = new byte[65536 + 2]; // MAX SIZE OF A CHUNK + number of modified block
+				fis.read(file);
+				ByteBuffer dataBuffer = ByteBuffer.wrap(file);
+				for (int x = 0; x < getWorldSize(); x++)
+				{
+					for (int y = 0; y < 5; y++)
+					{
+						for (int z = 0; z < getWorldSize(); z++)
+						{
+							int modifiedBlockNumber = dataBuffer.getShort();
+							for (int i=0;i<modifiedBlockNumber;i++)
+								this.modifiedBlocks.add(new Vec4i(dataBuffer.getInt(),dataBuffer.getInt(),dataBuffer.getInt(),dataBuffer.getInt()));
+						}
+					}
+				}
+				generated = true;
+			}
+			catch(IOException e){e.printStackTrace();}
+			finally{fis.close();}
+		}
+		catch(IOException e){e.printStackTrace();initWorldData();}
+	}
+	
 	private void initWorldData()
 	{
 		worldSize = gameData.getWorldSize();
