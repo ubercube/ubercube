@@ -27,8 +27,11 @@ import fr.veridiangames.core.utils.Color4f;
 /**
  * Created by Marc on 21/06/2016.
  */
-public class Tree
+public class TreeOld
 {
+
+
+
     public static void oakTree(World world, int x, int y, int z, boolean snow) {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 10; j++) {
@@ -51,7 +54,13 @@ public class Tree
         }
 
         for (int i = 0; i < 9; i++) {
-            world.addBlock(x, y + i, z, Block.WOOD.copy().add(world.getWorldGen().getRandom() * 0.05f).getARGB());
+        	for (int j = 0; j < 4; j++)
+			{
+				int xx = x + j % 2;
+				int yy = y + i;
+				int zz = z + j / 2;
+				world.addBlock(xx, y + i, zz, Block.WOOD.copy().add(world.getWorldGen().getRandom() * 0.05f).getARGB());
+			}
         }
     }
 

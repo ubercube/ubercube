@@ -20,14 +20,13 @@
 package fr.veridiangames.core.game.world;
 
 import fr.veridiangames.core.game.data.world.WorldType;
-import fr.veridiangames.core.game.world.vegetations.Rock;
-import fr.veridiangames.core.game.world.vegetations.Tree;
+import fr.veridiangames.core.game.world.vegetations.trees.BigOakTree;
+import fr.veridiangames.core.game.world.vegetations.trees.OakTree;
 import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.maths.Vec4i;
 import fr.veridiangames.core.utils.Color4f;
-import fr.veridiangames.core.game.world.vegetations.Bush;
 
 import static java.lang.Math.round;
 
@@ -138,15 +137,15 @@ public class Chunk
 
 	public void generateVegetation()
 	{
-		int num = 16;
+		int num = 4;
 		for (int i = 0; i < num; i++)
 		{
-			if (world.getWorldGen().getRandom() > 0.3)
+			if (world.getWorldGen().getRandom() > 0.5)
 				continue;
-			int x = (i % 4) * 4;
-			int z = (i / 4) * 4;
-			int rx = x + (int) world.getWorldGen().getRandom(0, 2);
-			int rz = z + (int) world.getWorldGen().getRandom(0, 2);
+			int x = (i % 2) * 8;
+			int z = (i / 2) * 8;
+			int rx = x + (int) world.getWorldGen().getRandom(0, 5);
+			int rz = z + (int) world.getWorldGen().getRandom(0, 5);
 			if (rx < 0) rx = 0;
 			if (rz < 0) rz = 0;
 			if (rx >= SIZE) rx = SIZE - 1;
@@ -160,9 +159,12 @@ public class Chunk
 			if (noiseHeight < 13 + world.getWorldGen().getRandom(0, 2))
 			{
 				if (world.getWorldGen().getRandom() > (world.getWorldType() == WorldType.SNOWY ? 0.9 : 0.2))
-					Tree.oakTree(world, xx, (int) noiseHeight, zz, world.getWorldType() == WorldType.SNOWY);
-				else
-					Tree.firTree(world, xx, (int) noiseHeight - (int) world.getWorldGen().getRandom(0, 2), zz, world.getWorldType() == WorldType.SNOWY);
+				{
+					if (world.getWorldGen().getRandom() > 0.05)
+						new OakTree(world).generate(new Vec3i(xx, (int) noiseHeight, zz));
+					else
+						new BigOakTree(world).generate(new Vec3i(xx, (int) noiseHeight, zz));
+				}
 			}
 		}
 

@@ -26,9 +26,17 @@ import fr.veridiangames.core.utils.Color4f;
  */
 public class Block
 {
-    public static final Color4f OAK_LEAF = new Color4f(0.1f, 0.4f, 0.1f, 1f);
-    public static final Color4f FIR_LEAF = new Color4f(0.035f, 0.25f, 0.035f, 1f);
-    public static final Color4f WOOD = new Color4f(0.42f * 0.6f, 0.32f * 0.6f, 0.14f * 0.6f, 1);
+
+	public static final Color4f FIR_LEAF = new Color4f(0.035f, 0.25f, 0.035f, 1f);
+
+	public static final Color4f WOOD = new Color4f(0.42f * 0.6f, 0.32f * 0.6f, 0.14f * 0.6f, 1);
+
+	public static final Color4f OAK_WOOD = new Color4f(0.42f * 0.6f, 0.32f * 0.6f, 0.14f * 0.6f, 1);
+	public static final Color4f OAK_LEAF = new Color4f(0.1f, 0.4f, 0.1f, 1f);
+
+	public static final Color4f BIG_OAK_WOOD = new Color4f(0.42f * 0.5f, 0.32f * 0.5f, 0.14f * 0.5f, 1);
+	public static final Color4f BIG_OAK_LEAF = new Color4f(0.0f, 0.3f, 0.05f, 1f);
+
     public static final Color4f ROCK = new Color4f(0.5f, 0.5f, 0.5f, 1);
     public static final Color4f BUSH = new Color4f(0.1f, 0.4f, 0.1f, 1f);
     public static final Color4f SNOW = new Color4f(0.9f, 0.9f, 0.98f, 1f);
