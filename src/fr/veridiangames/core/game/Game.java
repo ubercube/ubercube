@@ -64,9 +64,7 @@ public class Game
 
 	public void createWorld(long seed)
 	{
-		Log.println("Generating world with seed: " + seed);
-		this.data.createWorld(new WorldGen(seed, data.getWorldSize()), (seed % 2 == 0) ? WorldType.SNOWY : WorldType.NORMAL);
-		this.world = new World(core);
+		this.world = new World(core, seed);
 	}
 
 	public void update()

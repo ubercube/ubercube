@@ -40,6 +40,7 @@ import fr.veridiangames.core.maths.Vec4i;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
 import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Indexer;
+import fr.veridiangames.core.utils.Log;
 import fr.veridiangames.server.MinecraftBlock;
 import fr.veridiangames.server.MinecraftFile;
 import fr.veridiangames.server.NBTReader;
@@ -52,17 +53,14 @@ public class World
 	private List<Integer> 		chunkGarbage;
 	private List<Vec4i>			modifiedBlocks;
 
-	private WorldGen	worldGen;
-	private GameData	gameData;
+	private GameData	data;
 	private GameCore	core;
-	private int			worldSize;
-	private WorldType	worldType;
 	private boolean 	generated;
 	
-	public World(GameCore core)
+	public World(GameCore core, long seed)
 	{
 		this.core = core;
-		this.gameData = core.getGame().getData();
+		this.data = core.getGame().getData();
 		this.generatingChunks = new HashMap<Integer, Chunk>();
 		this.updateRequests = new ArrayList<Integer>();
 		this.chunks = new HashMap<Integer, Chunk>();
@@ -70,19 +68,19 @@ public class World
 		this.modifiedBlocks = new ArrayList<Vec4i>();
 		this.generated = false;
 
-		this.readMinecraftData();
-		//this.readWorldData();
-		//this.initWorldData();
+		//this.readMinecraftData();
+		this.readWorldData();
+		//this.initWorldData(seed);
 	}
 
 	private void readMinecraftData()
 	{
-		worldSize = gameData.getWorldSize();
-		worldGen = new WorldGen(0, worldSize);
+		Log.println("Converting minecraft world");
+		this.data.createWorld(new WorldGen(-1, 15), WorldType.NORMAL);
 		MinecraftFile file = new MinecraftFile(new File("save/r.0.0.mca"));
-		for (int x=0;x<worldSize;x++)
+		for (int x=0;x<data.getWorldSize();x++)
 		{
-			for (int z=0;z<worldSize;z++)
+			for (int z=0;z<data.getWorldSize();z++)
 			{
 				if (file.hasChunk(x, z))
 				{
@@ -93,8 +91,8 @@ public class World
 						{
 							NBTReader reader = new NBTReader(dis);
 							byte[] blocks = reader.getNextByteArrayTagData("Blocks");
-							int index = Indexer.index3i(worldSize-1-x, y, z);
-							Chunk c = new Chunk(new Vec3i(worldSize-1-x, y, z));
+							int index = Indexer.index3i(data.getWorldSize()-1-x, y, z);
+							Chunk c = new Chunk(new Vec3i(data.getWorldSize()-1-x, y, z));
 							chunks.put(index, c);
 							for (int i=0;i<4096;i++)
 							{
@@ -127,59 +125,92 @@ public class World
 	
 	private void readWorldData()
 	{
-		worldSize = gameData.getWorldSize();
-		worldGen = gameData.getWorldGen();
+		Log.println("Reading world data");
 		try
 		{
-			FileInputStream fis = new FileInputStream(new File("save/world.ucw"));
+			DataInputStream dis = new DataInputStream(new FileInputStream(new File("save/world.ucw")));
 			try
 			{
-				boolean seeded = fis.read() == 1;
+				boolean seeded = dis.read() == 1;
 				if (seeded)
 				{
-					//init world Gen
-					initWorldData();
-				}
-				byte[] file = new byte[65536 + 2]; // MAX SIZE OF A CHUNK + number of modified block
-				fis.read(file);
-				ByteBuffer dataBuffer = ByteBuffer.wrap(file);
-				for (int x = 0; x < getWorldSize(); x++)
-				{
-					for (int y = 0; y < 5; y++)
+					long seed = dis.readLong();
+					Log.println("World seed : "+seed);
+					initWorldData(seed);
+					for (int x = 0; x < getWorldSize(); x++)
 					{
-						for (int z = 0; z < getWorldSize(); z++)
+						for (int y = 0; y < 5; y++)
 						{
-							int modifiedBlockNumber = dataBuffer.getShort();
-							for (int i=0;i<modifiedBlockNumber;i++)
-								this.modifiedBlocks.add(new Vec4i(dataBuffer.getInt(),dataBuffer.getInt(),dataBuffer.getInt(),dataBuffer.getInt()));
+							for (int z = 0; z < getWorldSize(); z++)
+							{
+								short modifiedBlockNumber = dis.readShort();
+								byte[] chunk = new byte[modifiedBlockNumber * 16];
+								dis.read(chunk);
+								ByteBuffer dataBuffer = ByteBuffer.wrap(chunk);
+								
+								for (int i=0;i<modifiedBlockNumber;i++)
+									this.modifiedBlocks.add(new Vec4i(dataBuffer.getInt(),dataBuffer.getInt(),dataBuffer.getInt(),dataBuffer.getInt()));
+							}
 						}
 					}
 				}
-				generated = true;
+				else
+				{
+					this.data.createWorld(new WorldGen(-1, 15), WorldType.NORMAL);
+					Log.println("Reading unseeded world");
+					while (dis.available() != 0)
+					{
+						int size = (dis.read() << 8) + dis.read();
+						byte[] chunk = new byte[size];
+						dis.read(chunk);
+						ByteBuffer dataBuffer = ByteBuffer.wrap(chunk);
+						
+						int x = dataBuffer.getShort(), y = dataBuffer.getShort(), z = dataBuffer.getShort();
+						
+						if (x >= 0 && x < data.getWorldSize() && z >= 0 && z < data.getWorldSize() && y >= 0 && y < 16)
+						{
+							int index = Indexer.index3i(x, y, z);
+							Chunk c = new Chunk(new Vec3i(x, y, z));
+							chunks.put(index, c);
+							
+							int blocksRed = 0;
+							while (blocksRed < 4096)
+							{
+								short number = dataBuffer.getShort();
+								int blockType = dataBuffer.getInt();
+								for (int i=0;i<number;i++)
+								{
+									int total = blocksRed + i;
+									c.blocks[total&0b1111][(total >> 8)&0b1111][(total >> 4)&0b1111] = blockType;
+								}
+								blocksRed += number;
+							}
+						}
+					}
+				}
 			}
 			catch(IOException e){e.printStackTrace();}
-			finally{fis.close();}
+			finally{dis.close();}
+			generated = true;
 		}
-		catch(IOException e){e.printStackTrace();initWorldData();}
+		catch(IOException e){e.printStackTrace();initWorldData(42);}
 	}
 	
-	private void initWorldData()
+	private void initWorldData(long seed)
 	{
-		worldSize = gameData.getWorldSize();
-		worldGen = gameData.getWorldGen();
-		worldType = gameData.getWorldType();
+		this.data.createWorld(new WorldGen(seed, 15), (seed % 2) == 0 ? WorldType.SNOWY : WorldType.NORMAL);
 		World world = this;
 
-		worldGen.addNoisePasses(worldType);
-		worldGen.calcFinalNoise();
-		for (int x = 0; x < worldSize; x++)
+		data.getWorldGen().addNoisePasses(data.getWorldType());
+		data.getWorldGen().calcFinalNoise();
+		for (int x = 0; x < data.getWorldSize(); x++)
 		{
 			for (int y = 0; y < 5; y++)
 			{
-				for (int z = 0; z < worldSize; z++)
+				for (int z = 0; z < data.getWorldSize(); z++)
 				{
 					int index = Indexer.index3i(x, y, z);
-					float[][] 	noise = worldGen.getNoiseChunk(x, z);
+					float[][] 	noise = data.getWorldGen().getNoiseChunk(x, z);
 					Chunk c = new Chunk(x, y, z, noise, world);
 					c.generateChunk();
 					c.generateTerrainData();
@@ -187,11 +218,11 @@ public class World
 				}
 			}
 		}
-		for (int x = 0; x < worldSize; x++)
+		for (int x = 0; x < data.getWorldSize(); x++)
 		{
 			for (int y = 0; y < 1; y++)
 			{
-				for (int z = 0; z < worldSize; z++)
+				for (int z = 0; z < data.getWorldSize(); z++)
 				{
 					int index = Indexer.index3i(x, y, z);
 					Chunk c = chunks.get(index);
@@ -665,11 +696,11 @@ public class World
 
 	public WorldGen getWorldGen()
 	{
-		return worldGen;
+		return data.getWorldGen();
 	}
 
 	public WorldType getWorldType() {
-		return worldType;
+		return data.getWorldType();
 	}
 
 	public boolean isGenerated()
@@ -678,7 +709,7 @@ public class World
 	}
 
 	public int getWorldSize() {
-		return worldSize;
+		return data.getWorldSize();
 	}
 }
 /*

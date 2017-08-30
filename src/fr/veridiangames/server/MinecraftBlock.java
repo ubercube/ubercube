@@ -15,9 +15,9 @@ public class MinecraftBlock
 			case 2: // grass
 				return 0xFF599532;
 			case 8: // water
-				return 0x441E398D;
+				return 0xFF1E398D;
 			case 9: // water
-				return 0x441E398D;
+				return 0xFF1E398D;
 			case 10: // lava
 				return 0xFFB12402;
 			case 11: // lava
