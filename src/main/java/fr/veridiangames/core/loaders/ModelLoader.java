@@ -26,6 +26,7 @@ import java.io.IOException;
 import fr.veridiangames.core.game.data.models.ModelVox;
 import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.utils.Color4f;
+import fr.veridiangames.core.utils.Log;
 
 /**
  * Created by Marccspro on 26 mars 2016.
@@ -85,11 +86,11 @@ public class ModelLoader
 		}
 		catch (NumberFormatException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 
 		return result;

@@ -5,6 +5,7 @@ import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.utils.DataStream;
+import fr.veridiangames.core.utils.Log;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -44,9 +45,9 @@ public class RemoteClientReceiver extends Thread
 				packet.read(data);
 				packet.process(client.getServer(), client.getSocket().getInetAddress(), client.getSocket().getPort());
 			} catch (IOException e) {
-				e.printStackTrace();
+				Log.exception(e);
 				try {
-					client.getSocket().close();
+					client.stop();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}

@@ -23,6 +23,7 @@ import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.network.NetworkPacket;
+import fr.veridiangames.core.utils.Log;
 import fr.veridiangames.server.server.NetworkServer;
 
 import java.io.IOException;
@@ -86,7 +87,7 @@ public class NetworkServerUDP implements Runnable
             }
             catch (IOException e)
             {
-                e.printStackTrace();
+                Log.exception(e);
             }
         }
 		socket.close();
@@ -100,7 +101,7 @@ public class NetworkServerUDP implements Runnable
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
     }
 

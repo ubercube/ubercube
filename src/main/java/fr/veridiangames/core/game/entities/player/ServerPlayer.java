@@ -67,7 +67,7 @@ public class ServerPlayer extends Player
 	public boolean applyDamage (int damage, NetworkableServer server)
 	{
 	    if (this.isDead()) return true;
-		if (timeSinceSpawn <= 5) return false;
+		if (timeSinceSpawn <= 10) return false;
 
 		this.life -= damage;
 

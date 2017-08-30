@@ -19,6 +19,8 @@
 
 package fr.veridiangames.core.game.entities.particles;
 
+import fr.veridiangames.core.utils.Log;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,12 +53,12 @@ public class ParticlesManager {
         }
         catch (InstantiationException e)
         {
-            e.printStackTrace();
+            Log.exception(e);
             return null;
         }
         catch (IllegalAccessException e)
         {
-            e.printStackTrace();
+            Log.exception(e);
             return null;
         }
     }

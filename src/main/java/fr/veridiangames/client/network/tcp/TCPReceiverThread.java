@@ -5,6 +5,7 @@ import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.utils.DataStream;
+import fr.veridiangames.core.utils.Log;
 import fr.veridiangames.core.utils.Time;
 
 import java.io.DataInputStream;
@@ -53,12 +54,8 @@ public class TCPReceiverThread extends Thread
 				packet.process(client.getClient(), client.getAddress(), client.getPort());
 			} catch (IOException e)
 			{
-				e.printStackTrace();
-				try {
-					client.getSocket().close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				Log.exception(e);
+				client.close();
 			}
 		}
 		client.log("TCP: Stopping tcp-receiver Thread");

@@ -36,7 +36,7 @@ public class Sleep
             Thread.sleep(factor);
         } catch (InterruptedException e)
         {
-            e.printStackTrace();
+            Log.exception(e);
         }
     }
 }

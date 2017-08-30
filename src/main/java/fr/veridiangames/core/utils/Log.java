@@ -19,10 +19,7 @@
 
 package fr.veridiangames.core.utils;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created by Mimus.
@@ -137,5 +134,20 @@ public class Log
 	public static void crash(String error)
 	{
 		throw new RuntimeException(error);
+	}
+
+	public static void exception(Exception e)
+	{
+		String crash = "======== Exception: " + e.toString() + " =========";
+		Log.addLine(FileUtils.LOG_PATH,"");
+		Log.addLine(FileUtils.LOG_PATH,crash);
+		for (int i = 0; i < e.getStackTrace().length; i++)
+			Log.addLine(FileUtils.LOG_PATH,"	at " + e.getStackTrace()[i].getClassName() + " (" + e.getStackTrace()[i].getMethodName() + ":" + e.getStackTrace()[i].getLineNumber() + ")");
+		String eq = "";
+		for (int i = 0; i < crash.length(); i++)
+			eq += "=";
+		Log.addLine(FileUtils.LOG_PATH,eq);
+		Log.addLine(FileUtils.LOG_PATH,"");
+		e.printStackTrace();
 	}
 }

@@ -210,7 +210,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 	}
 

@@ -269,7 +269,7 @@ public class Ubercube
 				}
 				catch (InterruptedException e)
 				{
-					e.printStackTrace();
+					Log.exception(e);
 				}
 			}
 			if (second)

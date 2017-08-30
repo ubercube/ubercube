@@ -21,6 +21,7 @@ package fr.veridiangames.client.network.tcp;
 
 import fr.veridiangames.client.network.NetworkClient;
 import fr.veridiangames.core.network.packets.Packet;
+import fr.veridiangames.core.utils.Log;
 
 import java.io.*;
 import java.net.*;
@@ -61,6 +62,7 @@ public class NetworkClientTCP
             this.socket.setKeepAlive(false);
             this.socket.setReuseAddress(false);
             this.socket.setSoTimeout(60000);
+            this.socket.setSoLinger(false,0);
 
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
@@ -75,10 +77,10 @@ public class NetworkClientTCP
 
         } catch (UnknownHostException e)
         {
-            e.printStackTrace();
+            Log.exception(e);
         } catch (IOException e)
         {
-            e.printStackTrace();
+            Log.exception(e);
         }
     }
 
@@ -97,9 +99,11 @@ public class NetworkClientTCP
 		receiver.stopRunning();
 		sender.stopRunning();
 		try {
+			in.close();
+			out.close();
 			socket.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.exception(e);
 		}
 	}
 

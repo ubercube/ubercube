@@ -23,14 +23,19 @@ import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
+import fr.veridiangames.client.rendering.guis.StaticFont;
 import fr.veridiangames.client.rendering.guis.components.GuiButton;
 import fr.veridiangames.client.rendering.guis.components.GuiLabel;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
 import fr.veridiangames.client.rendering.guis.components.GuiTextArea;
 import fr.veridiangames.client.rendering.guis.listeners.GuiActionListener;
+import fr.veridiangames.client.rendering.textures.TextureLoader;
 import fr.veridiangames.core.utils.Color4f;
 
 import java.awt.*;
+
+import static fr.veridiangames.client.FileManager.getResource;
+import static org.lwjgl.opengl.GL11.GL_LINEAR;
 
 /**
  * Created by Marc on 02/07/2016.
@@ -48,8 +53,7 @@ public class LoadingScreen extends GuiCanvas
         this.joinGame = false;
 
         GuiPanel bg = new GuiPanel(0, 0, display.getWidth(), display.getHeight());
-        //bg.setTexture(TextureLoader.loadTexture(getResource("textures/LoadingBG.png", GL_LINEAR, false));
-        bg.setColor(new Color4f(0, 0, 0, 0.5f));
+        bg.setTexture(TextureLoader.loadTexture(getResource("textures/LoadingBG.png"), GL_LINEAR, false));
         bg.setOrigin(GuiComponent.GuiOrigin.A);
         bg.setScreenParent(GuiComponent.GuiCorner.SCALED);
         super.add(bg);
@@ -83,13 +87,13 @@ public class LoadingScreen extends GuiCanvas
                 "\n" +
                 "\n" +
                 "Credits to:\n" +
-                " - Mimus Angel for helping in the beginning with the game and  \nfor his awesome BufferData class !\n" +
-                " - Arthur for helping with the game management and for his \nawesome help with the physics !\n" +
+                " - Mimus Angel for helping in the beginning with the game \nand for his awesome BufferData class !\n" +
+                " - Arthur for helping with the game management and for \nhis awesome help with the physics !\n" +
                 " - Freezee for helping with gameplay ideas and  with game  \nmanagement !\n" +
                 " - Every one else who created art and models !\n" +
                 " - The person who proposed the name \"Ubercube\" for the  \ngame (Give me your name ;) ) !\n";
 
-        GuiTextArea creditsTextArea = new GuiTextArea(creditsText, display.getWidth() / 2, display.getHeight() / 2 - 20, 600, 500, new Font("Arial", 0, 20));
+        GuiTextArea creditsTextArea = new GuiTextArea(creditsText, display.getWidth() / 2, display.getHeight() / 2 - 20, 600, 500, StaticFont.Kroftsmann(0, 20));
         creditsTextArea.setOrigin(GuiComponent.GuiOrigin.CENTER);
         creditsTextArea.setScreenParent(GuiComponent.GuiCorner.BC);
         super.add(creditsTextArea);

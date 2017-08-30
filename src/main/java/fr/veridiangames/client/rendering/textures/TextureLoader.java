@@ -33,6 +33,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import fr.veridiangames.core.utils.Log;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL12;
 
@@ -148,7 +149,7 @@ public class TextureLoader
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 
 		int[] data = new int[pixels.length];

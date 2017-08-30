@@ -82,7 +82,7 @@ public class PacketManager
 		}
 		catch (InstantiationException | IllegalAccessException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 			return null;
 		}
 	}

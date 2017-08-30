@@ -236,11 +236,11 @@ public class DataBuffer
 		}
 		catch (FileNotFoundException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 	}
 

@@ -2,6 +2,7 @@ package fr.veridiangames.server.server.tcp.client;
 
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataStream;
+import fr.veridiangames.core.utils.Log;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -39,9 +40,9 @@ public class RemoteClientSender extends Thread
 					client.getOut().write(packetData);
 					client.getOut().flush();
 				} catch (IOException e) {
-					e.printStackTrace();
+					Log.exception(e);
 					try {
-						client.getSocket().close();
+						client.stop();
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}

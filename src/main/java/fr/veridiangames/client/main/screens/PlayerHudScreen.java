@@ -52,6 +52,7 @@ public class PlayerHudScreen extends GuiCanvas
     private GuiPanel damageEffect;
     private GuiCanvas gameMode;
     private ConsoleScreen consoleScreen;
+    private GuiPanel minimap;
 
     private int health;
 
@@ -140,6 +141,25 @@ public class PlayerHudScreen extends GuiCanvas
         playerPosition.setDropShadow(2);
         playerPosition.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
         super.add(playerPosition);
+
+		GuiPanel minimapShadow = new GuiPanel(display.getWidth() - 35 + 2, display.getHeight() - 30 + 3, 200, 150);
+		minimapShadow.setOrigin(GuiComponent.GuiOrigin.C);
+		minimapShadow.setScreenParent(GuiComponent.GuiCorner.BR);
+		minimapShadow.setColor(new Color4f(0.0f, 0.0f, 0.0f, 0.3f));
+		super.add(minimapShadow);
+
+        minimap = new GuiPanel(display.getWidth() - 35, display.getHeight() - 30, 200, 150);
+        minimap.setOrigin(GuiComponent.GuiOrigin.C);
+        minimap.setScreenParent(GuiComponent.GuiCorner.BR);
+        minimap.setColor(new Color4f(0, 0.5f, 0, 1f));
+        super.add(minimap);
+
+        GuiLabel minimapSoon = new GuiLabel("Minimap soon !", display.getWidth() - 35 - 100, display.getHeight() - 30 - 75);
+        minimapSoon.setDropShadow(2);
+        minimapSoon.setOrigin(GuiComponent.GuiOrigin.CENTER);
+        minimapSoon.setScreenParent(GuiComponent.GuiCorner.BR);
+		minimapSoon.setColor(new Color4f(1,1,1,1f));
+        super.add(minimapSoon);
 
         consoleScreen = new ConsoleScreen(this, display, core, 10, Display.getInstance().getHeight() - 130, 600, 450);
         super.addCanvas(consoleScreen);

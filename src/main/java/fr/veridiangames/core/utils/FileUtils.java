@@ -55,7 +55,7 @@ public class FileUtils
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 		return null;
 	}
@@ -75,7 +75,7 @@ public class FileUtils
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 		return result.trim();
 	}
@@ -133,7 +133,7 @@ public class FileUtils
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 		return null;
 	}

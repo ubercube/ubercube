@@ -198,7 +198,7 @@ public abstract class Shader
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 		return result;
 	}

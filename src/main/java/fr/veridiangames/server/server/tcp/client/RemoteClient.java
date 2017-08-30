@@ -24,6 +24,7 @@ import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.utils.DataStream;
+import fr.veridiangames.core.utils.Log;
 import fr.veridiangames.server.server.NetworkServer;
 
 import java.io.*;
@@ -40,15 +41,13 @@ public class RemoteClient
 {
     private Socket          				socket;
 
-//    private InputStream     				in;
-//    private OutputStream    				out;
-
 	private DataInputStream 				in;
 	private DataOutputStream 				out;
 
     private NetworkServer   				server;
     private ConcurrentLinkedQueue<Packet> 	sendQueue;
     private int             				id;
+    private String							name;
     private RemoteClientReceiver			receiver;
     private RemoteClientSender				sender;
 
@@ -62,6 +61,7 @@ public class RemoteClient
             this.socket.setKeepAlive(true);
             this.socket.setReuseAddress(false);
             this.socket.setSoTimeout(60000);
+            this.socket.setSoLinger(false,0);
 			this.server = server;
 
 			this.receiver = new RemoteClientReceiver(this);
@@ -72,10 +72,10 @@ public class RemoteClient
 			this.out = new DataOutputStream(socket.getOutputStream());
         } catch (SocketException e)
         {
-            e.printStackTrace();
+            Log.exception(e);
         } catch (IOException e)
         {
-            e.printStackTrace();
+            Log.exception(e);
         }
     }
 
@@ -92,7 +92,9 @@ public class RemoteClient
 	}
 
     public void stop() throws IOException {
-		socket.close();
+		in.close();
+		out.close();
+    	socket.close();
     }
 
     public Socket getSocket()
@@ -117,6 +119,10 @@ public class RemoteClient
     public void setID(int id) {
         this.id = id;
     }
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public NetworkServer getServer() {
 		return server;

@@ -19,6 +19,8 @@
 
 package fr.veridiangames.core.game.entities.components;
 
+import fr.veridiangames.core.utils.Log;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -41,7 +43,7 @@ public class ECNetwork extends EComponent
 		}
 		catch (UnknownHostException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 	}
 

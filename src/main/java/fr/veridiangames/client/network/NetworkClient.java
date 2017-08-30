@@ -61,7 +61,7 @@ public class NetworkClient implements NetworkableClient
 		}
 		catch (UnknownHostException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 	}
 

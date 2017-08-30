@@ -96,24 +96,24 @@ public class EntityMovementPacket extends Packet
 		//TODO: Prevent teleporation and speed hack (with vel)
 
 		/* Falling system */
-		if(vel.y > 0.0 && !player.isFalling())
-		{
-			player.setFalling(true);
-			player.setHigh(position.y);
-		}
-
-		if(player.isFalling() && vel.y == 0.0)
-		{
-			float fallHight = player.getHigh() - position.y;
-			player.setFalling(false);
-			player.setHigh(0.0f);
-
-			if(fallHight > 5)
-			{
-				int damage = ((int)fallHight - 5) * 5;
-				player.applyDamage(damage, server);
-			}
-		}
+//		if(vel.y > 0.0 && !player.isFalling())
+//		{
+//			player.setFalling(true);
+//			player.setHigh(position.y);
+//		}
+//
+//		if(player.isFalling() && vel.y == 0.0)
+//		{
+//			float fallHight = player.getHigh() - position.y;
+//			player.setFalling(false);
+//			player.setHigh(0.0f);
+//
+//			if(fallHight > 5)
+//			{
+//				int damage = ((int)fallHight - 5) * 5;
+//				player.applyDamage(damage, server);
+//			}
+//		}
 
 		player.setPosition(position);
 		player.setRotation(rotation);

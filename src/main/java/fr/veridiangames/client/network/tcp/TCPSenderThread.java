@@ -2,10 +2,9 @@ package fr.veridiangames.client.network.tcp;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.network.packets.Packet;
-import fr.veridiangames.core.utils.DataStream;
+import fr.veridiangames.core.utils.Log;
 import fr.veridiangames.core.utils.Time;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class TCPSenderThread extends Thread
@@ -53,12 +52,8 @@ public class TCPSenderThread extends Thread
 						client.getOut().write(bytes);
 					}
 				} catch (IOException e) {
-					e.printStackTrace();
-					try {
-						client.getSocket().close();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+					Log.exception(e);
+					client.close();
 				}
 			}
 		}

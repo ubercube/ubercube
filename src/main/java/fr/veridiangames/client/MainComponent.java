@@ -35,23 +35,29 @@ public class MainComponent
 {
 	public static void main(String[] args)
 	{
-		Log.resetLog();
-		if (args.length != 2)
-			System.out.println("Usage: ./ubercube ip:port username");
-		else {
-			Ubercube ubercube = new Ubercube();
-			ubercube.setDisplay(new Display("Ubercube " + GameCore.GAME_VERSION_NAME, 1280, 720));
-			ubercube.setGameCore(new GameCore());
+		try {
+			Log.resetLog();
+			if (args.length != 2)
+				System.out.println("Usage: ./ubercube ip:port username");
+			else {
+				Ubercube ubercube = new Ubercube();
+				ubercube.setDisplay(new Display("Ubercube " + GameCore.GAME_VERSION_NAME, 1280, 720));
+				ubercube.setGameCore(new GameCore());
 
-			SecureRandom rand = new SecureRandom();
-			rand.setSeed(System.nanoTime());
-			int clientID = rand.nextInt(999999999); //Integer.parseInt(args[0]);
-			String address = args[0].split(":")[0];
-			int port = Integer.parseInt(args[0].split(":")[1]);
-			String name = args[1];
+				SecureRandom rand = new SecureRandom();
+				rand.setSeed(System.nanoTime());
+				int clientID = rand.nextInt(999999999); //Integer.parseInt(args[0]);
+				String address = args[0].split(":")[0];
+				int port = Integer.parseInt(args[0].split(":")[1]);
+				String name = args[1];
 
-			ubercube.openConnection(clientID, name, address, port);
-			ubercube.start();
+				ubercube.openConnection(clientID, name, address, port);
+				ubercube.start();
+			}
+		}
+		catch(Exception e)
+		{
+			Log.exception(e);
 		}
 	}
 }

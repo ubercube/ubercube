@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.audio;
 
+import fr.veridiangames.core.utils.Log;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL10;
 
@@ -70,7 +71,7 @@ public class AudioData
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            Log.exception(e);
         }
     }
 
@@ -85,7 +86,7 @@ public class AudioData
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            Log.exception(e);
         }
         return dataBuffer;
     }
@@ -100,7 +101,7 @@ public class AudioData
         }
         catch (FileNotFoundException e)
         {
-            e.printStackTrace();
+            Log.exception(e);
         }
         if (stream == null)
         {
@@ -114,11 +115,11 @@ public class AudioData
         } catch (UnsupportedAudioFileException e)
         {
             System.err.println("UnsupportedAudioFileException");
-            e.printStackTrace();
+            Log.exception(e);
         } catch (IOException e)
         {
             System.err.println("IOException");
-            e.printStackTrace();
+            Log.exception(e);
         }
         AudioData wavStream = new AudioData(audioStream);
         return wavStream;

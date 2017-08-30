@@ -21,6 +21,7 @@ package fr.veridiangames.server.server.tcp;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.network.packets.Packet;
+import fr.veridiangames.core.utils.Log;
 import fr.veridiangames.server.server.NetworkServer;
 import fr.veridiangames.server.server.tcp.client.RemoteClient;
 
@@ -134,7 +135,7 @@ public class NetworkServerTCP implements Runnable
 		try {
 			client.stop();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.exception(e);
 		}
 		clientsToAdd.remove(client);
         clients.remove(client);

@@ -70,7 +70,7 @@ public class FileManager
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 	}
 	
@@ -90,7 +90,7 @@ public class FileManager
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 	}
 	
@@ -110,7 +110,7 @@ public class FileManager
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 	}
 	
@@ -130,7 +130,7 @@ public class FileManager
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 	}
 	
@@ -150,7 +150,7 @@ public class FileManager
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Log.exception(e);
 		}
 	}
 }

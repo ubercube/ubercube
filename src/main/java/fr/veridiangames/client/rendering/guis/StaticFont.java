@@ -19,6 +19,8 @@
 
 package fr.veridiangames.client.rendering.guis;
 
+import fr.veridiangames.core.utils.Log;
+
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.FileInputStream;
@@ -30,11 +32,11 @@ public class StaticFont {
 	public static Font square_bold(int style, float size) {
 		Font font = null;
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(getResource("fonts/Kroftsmann.ttf")));
+			font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(getResource("fonts/RifficFree-Bold.ttf")));
 		} catch (FontFormatException e) {
-			e.printStackTrace();
+			Log.exception(e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.exception(e);
 		}
 		
 		return font.deriveFont(style, size);
@@ -43,11 +45,11 @@ public class StaticFont {
 	public static Font Kroftsmann(int style, float size) {
 		Font font = null;
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(getResource("fonts/Kroftsmann.ttf")));
+			font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(getResource("fonts/RifficFree-Bold.ttf")));
 		} catch (FontFormatException e) {
-			e.printStackTrace();
+			Log.exception(e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.exception(e);
 		}
 
 		return font.deriveFont(style, size);
@@ -56,11 +58,11 @@ public class StaticFont {
 	public static Font HPSimplified_Rg(int style, float size) {
 		Font font = null;
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(getResource("fonts/Kroftsmann.ttf")));
+			font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(getResource("fonts/RifficFree-Bold.ttf")));
 		} catch (FontFormatException e) {
-			e.printStackTrace();
+			Log.exception(e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.exception(e);
 		}
 
 		return font.deriveFont(style, size);
