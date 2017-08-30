@@ -30,3 +30,4 @@ log.txt
 .classpath
 .project
 save/**
+**/.settings
