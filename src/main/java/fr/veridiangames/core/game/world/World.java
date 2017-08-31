@@ -565,6 +565,8 @@ public class World
 		}
 	}
 
+	public int getHeightAt(int x, int z) { return (int) worldGen.getNoise(x, z); }
+
 	public WorldGen getWorldGen()
 	{
 		return worldGen;

@@ -116,13 +116,17 @@ public class NetworkServerTCP implements Runnable
         server.log(msg);
     }
 
-    public void stop() throws IOException
+    public void stop()
     {
         log("TCP: Closing connection...");
         for (RemoteClient client : clients)
         	client.stop();
-        socket.close();
-    }
+		try {
+			socket.close();
+		} catch (IOException e) {
+			Log.exception(e);
+		}
+	}
 
     public void disconnectClient(InetAddress address, int port)
     {
@@ -132,11 +136,7 @@ public class NetworkServerTCP implements Runnable
             clients.remove(client);
             return;
         }
-		try {
-			client.stop();
-		} catch (IOException e) {
-			Log.exception(e);
-		}
+		client.stop();
 		clientsToAdd.remove(client);
         clients.remove(client);
     }

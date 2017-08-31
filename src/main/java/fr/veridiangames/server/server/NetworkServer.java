@@ -202,16 +202,9 @@ public class NetworkServer implements Runnable, NetworkableServer
 
 	public void stop()
 	{
-		try
-		{
-			tcp.stop();
-			udp.stop();
-			log("Server stopped !");
-		}
-		catch (IOException e)
-		{
-			Log.exception(e);
-		}
+		tcp.stop();
+		udp.stop();
+		log("Server stopped !");
 	}
 
 	public int getPort()

@@ -41,11 +41,7 @@ public class RemoteClientSender extends Thread
 					client.getOut().flush();
 				} catch (IOException e) {
 					Log.exception(e);
-					try {
-						client.stop();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+					client.stop();
 				}
 			}
 		}

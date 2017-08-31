@@ -19,8 +19,6 @@
 
 package fr.veridiangames.core.network.packets;
 
-import java.io.DataInputStream;
-import java.io.IOException;
 import java.net.InetAddress;
 
 import fr.veridiangames.core.network.NetworkableClient;

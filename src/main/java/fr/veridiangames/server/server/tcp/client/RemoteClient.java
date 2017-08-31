@@ -91,11 +91,20 @@ public class RemoteClient
 		return this;
 	}
 
-    public void stop() throws IOException {
-		in.close();
-		out.close();
-    	socket.close();
-    }
+    public void stop()
+	{
+		try {
+			in.close();
+			out.close();
+		} catch (IOException e) {
+			Log.exception(e);
+		}
+		try {
+			socket.close();
+		} catch (IOException e) {
+			Log.exception(e);
+		}
+	}
 
     public Socket getSocket()
     {
