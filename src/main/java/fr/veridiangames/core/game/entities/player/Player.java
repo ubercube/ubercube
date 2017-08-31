@@ -38,8 +38,7 @@ public class Player extends Entity
 	private boolean dead;
 	private boolean hitable;
 	private int ping;
-	private int currentBlock = 0x7F555555;
-
+	
 	public Player(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
 		super(id);
@@ -55,34 +54,37 @@ public class Player extends Entity
 	}
 
 	int time = 0;
-	@Override
 	public void update(GameCore core)
 	{
 		super.update(core);
-		this.time++;
-		if (this.time > 60 * 5)
-			this.hitable = true;
+		time++;
+		if (time > 60 * 5)
+			hitable = true;
 
-		if (this.newPosition != null)
+		if (newPosition != null)
 		{
-			Vec3 smoothPosition = this.getPosition().copy().add(this.newPosition.copy().sub(this.getPosition()).mul(0.2f));
-			this.setPosition(smoothPosition);
+			Vec3 smoothPosition = getPosition().copy().add(newPosition.copy().sub(getPosition()).mul(0.2f));
+			setPosition(smoothPosition);
 		}
 	}
-
+	
 	public String getName()
 	{
 		return ((ECName) this.get(EComponent.NAME)).getName();
 	}
-
+	
 	public Vec3 getPosition()
 	{
 		if (this.contains(EComponent.RIGIDBODY))
+		{
 			return ((ECRigidbody) this.get(EComponent.RIGIDBODY)).getBody().getPosition();
+		}
 		else
+		{
 			return ((ECRender) this.get(EComponent.RENDER)).getTransform().getPosition();
+		}
 	}
-
+	
 	public Quat getRotation()
 	{
 		return ((ECRender) this.get(EComponent.RENDER)).getEyeTransform().getRotation();
@@ -90,37 +92,41 @@ public class Player extends Entity
 
 	public Transform getTransform()
 	{
-		return new Transform(this.getPosition(), this.getRotation());
+		return new Transform(getPosition(), getRotation());
 	}
-
+	
 	public void setPositionSmoothly(Vec3 position)
 	{
-		this.newPosition = position;
+		newPosition = position;
 	}
-
+	
 	public void setPosition(Vec3 position)
 	{
 		if (this.contains(EComponent.RIGIDBODY))
+		{
 			((ECRigidbody) this.get(EComponent.RIGIDBODY)).getBody().setPosition(position);
+		}
 		else
+		{
 			((ECRender) this.get(EComponent.RENDER)).getTransform().setLocalPosition(position);
+		}
 	}
-
+	
 	public void setRotation(Quat rotation)
 	{
 		((ECRender) this.get(EComponent.RENDER)).getTransform().setLocalRotation(rotation);
 	}
-
+	
 	public Vec3 getViewDirection()
 	{
-		return this.getRotation().getForward();
+		return getRotation().getForward();
 	}
-
+	
 	public ECNetwork getNetwork()
 	{
 		return ((ECNetwork) this.get(EComponent.NETWORK));
 	}
-
+	
 	public ECWeapon getWeaponManager()
 	{
 		return ((ECWeapon) super.get(EComponent.WEAPON));
@@ -133,7 +139,7 @@ public class Player extends Entity
 
 	public Vec3 getEyePosition()
 	{
-		return this.getPosition().copy().add(0, 2.5f * 0.5f, 0);
+		return getPosition().copy().add(0, 2.5f * 0.5f, 0);
 	}
 
 	public Transform getEyeTransform()
@@ -143,15 +149,15 @@ public class Player extends Entity
 
 	public boolean isDead()
 	{
-		return this.dead;
+		return dead;
 	}
 
 	public void setDead(boolean dead)
 	{
 		if (dead)
 		{
-			this.time = 0;
-			this.hitable = false;
+			time = 0;
+			hitable = false;
 		}
 		this.dead = dead;
 	}
@@ -163,26 +169,16 @@ public class Player extends Entity
 
 	public boolean isHitable()
 	{
-		return this.hitable;
+		return hitable;
 	}
 
 	public int getPing()
 	{
-		return this.ping;
+		return ping;
 	}
 
 	public void setPing(int ping)
 	{
 		this.ping = ping;
-	}
-
-	public int getCurrentBlock()
-	{
-		return this.currentBlock;
-	}
-
-	public void setCurrentBlock(int i)
-	{
-		this.currentBlock = i;
 	}
 }

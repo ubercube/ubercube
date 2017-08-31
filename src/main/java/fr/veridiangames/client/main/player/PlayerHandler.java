@@ -42,7 +42,7 @@ public class PlayerHandler
 	private PlayerSelection	selection;
 	private GameCore 		core;
 	private NetworkClient 	net;
-
+	
 	private boolean 		showEnvSphere;
 	private Vec3 			envSpherePos;
 
@@ -57,13 +57,13 @@ public class PlayerHandler
 
 	public void update(Input input)
 	{
-		ECKeyMovement key = this.player.getKeyComponent();
-		ECMouseLook mouse = this.player.getMouseComponent();
-		ECRaycast ray = this.player.getRaycast();
-		ECWeapon weapon = this.player.getWeaponManager();
-		ECDebug debug = this.player.getDebugComponent();
+		ECKeyMovement key = player.getKeyComponent();
+		ECMouseLook mouse = player.getMouseComponent();
+		ECRaycast ray = player.getRaycast();
+		ECWeapon weapon = player.getWeaponManager();
+		ECDebug debug = player.getDebugComponent();
 
-		AudioListener.setTransform(this.player.getTransform());
+		AudioListener.setTransform(player.getTransform());
 
 		mouse.setDX(0);
 		mouse.setDY(0);
@@ -107,8 +107,8 @@ public class PlayerHandler
 		mouse.setDX(input.getMouse().getDX());
 		mouse.setDY(input.getMouse().getDY());
 
-		ray.setPosition(this.player.getEyePosition().copy());
-		ray.setDirection(this.player.getViewDirection());
+		ray.setPosition(player.getEyePosition().copy());
+		ray.setDirection(player.getViewDirection());
 
 		/** Weapon switch **/
 
@@ -119,7 +119,7 @@ public class PlayerHandler
 			else
 				weapon.setWeapon(weapon.getWeaponID() + 1);
 			weapon.getWeapon().setNet(this.net);
-			this.net.send(new WeaponChangePacket(this.player), Protocol.UDP);
+			this.net.send(new WeaponChangePacket(player), Protocol.UDP);
 		}
 		if(input.getMouse().getDWheel() < 0)
 		{
@@ -128,37 +128,39 @@ public class PlayerHandler
 			else
 				weapon.setWeapon(weapon.getWeaponID() - 1);
 			weapon.getWeapon().setNet(this.net);
-			this.net.send(new WeaponChangePacket(this.player), Protocol.UDP);
+			this.net.send(new WeaponChangePacket(player), Protocol.UDP);
 		}
 
-		this.selection.setShow(false);
+		selection.setShow(false);
 		if(weapon.getWeapon() instanceof WeaponShovel)
 		{
-			this.selection.setShow(true);
-			this.selection.update(ray.getHit());
-			this.applySelectionActions(ray, input);
+			selection.setShow(true);
+			selection.update(ray.getHit());
+			applySelectionActions(ray, input);
 		}
 	}
-
+	
 	private void applySelectionActions(ECRaycast ray, Input input)
 	{
 		if (ray.getHit() != null)
+		{
 			if (ray.getHit().getBlock() != 0)
 			{
 				Vec3i blockPosition = ray.getHit().getBlockPosition();
 				Vec3  hitPoint = ray.getExactHitPoint();
 				if (input.getMouse().getButtonDown(0))
-					this.removeBlock(blockPosition);
+					removeBlock(blockPosition);
 				else if (input.getMouse().getButtonDown(1))
-					this.placeBlock(hitPoint);
+					placeBlock(hitPoint);
 			}
+		}
 	}
-
+	
 	private void removeBlock(Vec3i block)
 	{
-		this.net.send(new BlockActionPacket(this.core.getGame().getPlayer().getID(), 0, block.x, block.y, block.z, 0), Protocol.TCP);
+		net.send(new BlockActionPacket(core.getGame().getPlayer().getID(), 0, block.x, block.y, block.z, 0), Protocol.TCP);
 	}
-
+	
 	private void placeBlock(Vec3 point)
 	{
 		int x = (int) point.x;
@@ -167,7 +169,7 @@ public class PlayerHandler
 		float rx = point.x;
 		float ry = point.y;
 		float rz = point.z;
-
+		
 		float vx = rx - x;
 		float vy = ry - y;
 		float vz = rz - z;
@@ -178,17 +180,17 @@ public class PlayerHandler
 		int yp = (int) check.y;
 		int zp = (int) check.z;
 
-		this.net.send(new BlockActionPacket(this.core.getGame().getPlayer().getID(), 1, x + xp, y + yp, z + zp, this.player.getCurrentBlock()), Protocol.TCP);
+		net.send(new BlockActionPacket(core.getGame().getPlayer().getID(), 1, x + xp, y + yp, z + zp, 0x7f555555), Protocol.TCP);
 	}
-
+	
 	public PlayerSelection getSelection()
 	{
-		return this.selection;
+		return selection;
 	}
 
 	public ClientPlayer getPlayer()
 	{
-		return this.player;
+		return player;
 	}
 
 	public void setPlayer(ClientPlayer player)
@@ -198,11 +200,11 @@ public class PlayerHandler
 
 	public boolean isShowEnvSphere()
 	{
-		return this.showEnvSphere;
+		return showEnvSphere;
 	}
 
 	public Vec3 getEnvSpherePos()
 	{
-		return this.envSpherePos;
+		return envSpherePos;
 	}
 }

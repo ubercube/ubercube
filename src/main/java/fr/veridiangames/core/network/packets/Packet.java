@@ -19,6 +19,8 @@
 
 package fr.veridiangames.core.network.packets;
 
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 
 import fr.veridiangames.core.network.NetworkableClient;
@@ -55,7 +57,6 @@ public abstract class Packet
 	public static final int AUDIO				= 20;
 	public static final int GRENADE_SPAWN		= 21;
 	public static final int APPLY_DAMAGE		= 22;
-	public static final int CURRENT_BLOCK		= 23;
 
 	/* GAME MODES  [500-600[ */
 	public static final int GAMEMODE_TDM_SPAWN = 501;
@@ -66,8 +67,8 @@ public abstract class Packet
 
 	public Packet(int packetID)
 	{
-		this.data = new DataBuffer(MAX_SIZE);
-		this.data.put(packetID);
+		data = new DataBuffer(MAX_SIZE);
+		data.put(packetID);
 	}
 
 	public abstract void read(DataBuffer data);
@@ -76,6 +77,6 @@ public abstract class Packet
 
 	public DataBuffer getData()
 	{
-		return this.data;
+		return data;
 	}
 }

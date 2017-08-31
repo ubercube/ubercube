@@ -20,6 +20,7 @@
 package fr.veridiangames.core.game.entities.weapons.meleeWeapon;
 
 import fr.veridiangames.core.game.entities.Model;
+import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 
@@ -36,19 +37,16 @@ public class WeaponShovel extends MeleeWeapon
 		this.start();
 	}
 
-	@Override
 	public void onAction()
 	{
 
 	}
 
-	@Override
 	public void onActionUp()
 	{
 
 	}
 
-	@Override
 	public void onActionDown()
 	{
 
