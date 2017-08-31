@@ -1,4 +1,4 @@
-package fr.veridiangames.server;
+package fr.veridiangames.core.game.world.save;
 
 public class MinecraftBlock 
 {

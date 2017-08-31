@@ -50,7 +50,7 @@ public class CmdSetBlock extends Command
 			}
 		}
 		else
-			server.log("Incorrect syntax : setBlock [8 hexit value (e.g CF1756FA)] [player]");
+			server.log("Incorrect syntax : setBlock [value] [player]");
 	}
 
 }

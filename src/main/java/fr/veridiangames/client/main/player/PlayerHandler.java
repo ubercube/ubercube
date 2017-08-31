@@ -21,6 +21,8 @@ package fr.veridiangames.client.main.player;
 
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.audio.AudioListener;
+import fr.veridiangames.client.inputs.Input;
+import fr.veridiangames.client.network.NetworkClient;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
@@ -29,8 +31,7 @@ import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.BlockActionPacket;
-import fr.veridiangames.client.inputs.Input;
-import fr.veridiangames.client.network.NetworkClient;
+import fr.veridiangames.core.network.packets.CurrentBlockPacket;
 import fr.veridiangames.core.network.packets.WeaponChangePacket;
 
 /**
@@ -152,8 +153,15 @@ public class PlayerHandler
 					removeBlock(blockPosition);
 				else if (input.getMouse().getButtonDown(1))
 					placeBlock(hitPoint);
+				else if (input.getMouse().getButtonDown(2)) // Wheel click
+					takeBlock(blockPosition);
 			}
 		}
+	}
+	
+	private void takeBlock(Vec3i block)
+	{
+		net.send(new CurrentBlockPacket(core.getGame().getWorld().getBlock(block.x, block.y, block.z), core.getGame().getPlayer().getID()), Protocol.TCP);
 	}
 	
 	private void removeBlock(Vec3i block)

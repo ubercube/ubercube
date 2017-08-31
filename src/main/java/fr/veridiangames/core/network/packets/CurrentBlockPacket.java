@@ -32,7 +32,13 @@ public class CurrentBlockPacket extends Packet
 	@Override
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
-		// Shouldn't happen on server side
+		Entity e = server.getCore().getGame().getEntityManager().get(this.player);
+		if (e != null)
+			if (e instanceof Player)
+			{
+				((Player)e).setCurrentBlock(this.block);
+				server.tcpSendToAll(new CurrentBlockPacket(block, player));
+			}
 	}
 
 	@Override

@@ -56,7 +56,7 @@
 
  */
 
-package fr.veridiangames.server;
+package fr.veridiangames.core.game.world.save;
 
 
 import java.io.*;

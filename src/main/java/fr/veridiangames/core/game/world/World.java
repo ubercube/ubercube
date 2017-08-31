@@ -19,11 +19,7 @@
 
 package fr.veridiangames.core.game.world;
 
-import java.io.DataInputStream;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +30,9 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.data.GameData;
 import fr.veridiangames.core.game.data.world.WorldGen;
 import fr.veridiangames.core.game.data.world.WorldType;
+import fr.veridiangames.core.game.world.save.MinecraftBlock;
+import fr.veridiangames.core.game.world.save.MinecraftFile;
+import fr.veridiangames.core.game.world.save.NBTReader;
 import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
@@ -42,9 +41,6 @@ import fr.veridiangames.core.physics.colliders.AABoxCollider;
 import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Indexer;
 import fr.veridiangames.core.utils.Log;
-import fr.veridiangames.server.MinecraftBlock;
-import fr.veridiangames.server.MinecraftFile;
-import fr.veridiangames.server.NBTReader;
 
 public class World
 {
@@ -69,8 +65,8 @@ public class World
 		this.modifiedBlocks = new ArrayList<Vec4i>();
 		this.generated = false;
 
-		this.readMinecraftData();
-		//this.readWorldData();
+		//this.readMinecraftData();
+		this.readWorldData();
 		//this.initWorldData(seed);
 	}
 

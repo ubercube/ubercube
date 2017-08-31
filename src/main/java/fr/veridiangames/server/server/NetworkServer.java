@@ -19,9 +19,11 @@
 
 package fr.veridiangames.server.server;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
@@ -32,12 +34,11 @@ import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.network.packets.PingPacket;
 import fr.veridiangames.core.network.packets.TimeoutPacket;
-import fr.veridiangames.core.utils.*;
-import fr.veridiangames.server.server.commands.CmdHelp;
-import fr.veridiangames.server.server.commands.CmdKick;
-import fr.veridiangames.server.server.commands.CmdSetBlock;
-import fr.veridiangames.server.server.commands.CmdStop;
-import fr.veridiangames.server.server.commands.Command;
+import fr.veridiangames.core.utils.Log;
+import fr.veridiangames.core.utils.Sleep;
+import fr.veridiangames.core.utils.SystemUtils;
+import fr.veridiangames.core.utils.Time;
+import fr.veridiangames.server.server.commands.*;
 import fr.veridiangames.server.server.tcp.NetworkServerTCP;
 import fr.veridiangames.server.server.udp.NetworkServerUDP;
 
@@ -66,6 +67,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 		this.commands.put("stop", new CmdStop());
 		this.commands.put("kick", new CmdKick());
 		this.commands.put("setBlock", new CmdSetBlock());
+		this.commands.put("placeBlock", new CmdPlaceBlock());
 		
 		log("Requesting server start on the " + SystemUtils.getDate());
 		log("Starting server for " + GameCore.GAME_NAME + " " + GameCore.GAME_VERSION_NAME + " v" + GameCore.GAME_SUB_VERSION);

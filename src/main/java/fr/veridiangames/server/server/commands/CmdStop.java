@@ -19,7 +19,7 @@
 
 package fr.veridiangames.server.server.commands;
 
-import fr.veridiangames.server.FileManager;
+import fr.veridiangames.core.game.world.save.UbercubeSave;
 import fr.veridiangames.server.server.NetworkServer;
 
 public class CmdStop extends Command
@@ -31,7 +31,7 @@ public class CmdStop extends Command
 
 	public void process(NetworkServer server, String[] params)
 	{
-		FileManager.saveGame(server.getCore().getGame());
+		UbercubeSave.saveGame(server.getCore().getGame());
 		server.stop();
 		System.exit(0);
 	}

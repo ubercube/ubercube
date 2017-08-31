@@ -1,4 +1,4 @@
-package fr.veridiangames.server;
+package fr.veridiangames.core.game.world.save;
 
 import java.io.DataInputStream;
 import java.io.IOException;
