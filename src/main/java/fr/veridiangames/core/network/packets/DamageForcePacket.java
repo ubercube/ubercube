@@ -51,37 +51,39 @@ public class DamageForcePacket extends Packet
 	{
 		super(DAMAGE_FORCE);
 
-		data.put(pos.x);
-		data.put(pos.y);
-		data.put(pos.z);
+		this.data.put(pos.x);
+		this.data.put(pos.y);
+		this.data.put(pos.z);
 
-		data.put(force);
+		this.data.put(force);
 
-		data.flip();
+		this.data.flip();
 	}
 
 	public DamageForcePacket(DamageForcePacket packet)
 	{
 		super(DAMAGE_FORCE);
-		
-		data.put(packet.position.x);
-		data.put(packet.position.y);
-		data.put(packet.position.z);
-		
-		data.put(packet.force);
 
-		data.flip();
+		this.data.put(packet.position.x);
+		this.data.put(packet.position.y);
+		this.data.put(packet.position.z);
+
+		this.data.put(packet.force);
+
+		this.data.flip();
 	}
 
+	@Override
 	public void read(DataBuffer data)
 	{
-		position = new Vec3(data.getFloat(), data.getFloat(), data.getFloat());
-		force = data.getFloat();
+		this.position = new Vec3(data.getFloat(), data.getFloat(), data.getFloat());
+		this.force = data.getFloat();
 	}
 
+	@Override
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
-		server.getCore().getGame().getWorld().applyDamageForce(position, force, false);
+		server.getCore().getGame().getWorld().applyDamageForce(this.position, this.force, false);
 		server.tcpSendToAll(new DamageForcePacket(this));
 
 		for (int id : server.getCore().getGame().getEntityManager().getPlayerEntites())
@@ -99,9 +101,10 @@ public class DamageForcePacket extends Packet
 		}
 	}
 
+	@Override
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		client.getCore().getGame().getWorld().applyDamageForce(position, force, true);
+		client.getCore().getGame().getWorld().applyDamageForce(this.position, this.force, true);
 
 		ClientPlayer p = client.getCore().getGame().getPlayer();
 

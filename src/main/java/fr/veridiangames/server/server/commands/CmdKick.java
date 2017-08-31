@@ -20,13 +20,8 @@
 package fr.veridiangames.server.server.commands;
 
 import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.game.entities.Entity;
-import fr.veridiangames.core.game.entities.components.ECName;
-import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.network.packets.KickPacket;
 import fr.veridiangames.server.server.NetworkServer;
-
-import java.util.Map;
 
 public class CmdKick extends Command
 {
@@ -35,29 +30,21 @@ public class CmdKick extends Command
         super("kick", "Kicks a player out of the server.");
     }
 
-    public void process(NetworkServer server, String[] params)
+    @Override
+	public void process(NetworkServer server, String[] params)
     {
         if (params.length == 2)
         {
             try
             {
-                int id = -1;
-                String name = "";
-                for (Map.Entry<Integer, Entity> e : GameCore.getInstance().getGame().getEntityManager().getEntities().entrySet())
-                {
-                    name = ((ECName) GameCore.getInstance().getGame().getEntityManager().get(e.getKey()).get(EComponent.NAME)).getName();
-                    if (params[1].equals(name))
-                    {
-                        id = e.getKey();
-                    }
-                }
+                int id = this.getPlayerByName(params[1]);
                 if (id == -1)
                 {
                     server.log("Player not found !");
                     return;
                 }
                 server.tcpSendToAll(new KickPacket(id, "You where kicked by the server !"));
-                server.log(name + " has been kicked !");
+                server.log(params[1] + " has been kicked !");
                 GameCore.getInstance().getGame().remove(id);
             } catch (Exception e)
             {

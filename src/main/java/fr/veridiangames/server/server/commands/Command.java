@@ -19,28 +19,49 @@
 
 package fr.veridiangames.server.server.commands;
 
+import java.util.Map;
+
+import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.Entity;
+import fr.veridiangames.core.game.entities.components.ECName;
+import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.server.server.NetworkServer;
 
 public abstract class Command
 {
 	private String name;
 	private String desc;
-	
+
 	public Command(String name, String desc)
 	{
 		this.name = name;
 		this.desc = desc;
 	}
-	
+
 	public abstract void process(NetworkServer server, String[] params);
 
 	public String getName()
 	{
-		return name;
+		return this.name;
 	}
-	
+
 	public String getDesc()
 	{
-		return desc;
+		return this.desc;
+	}
+
+	public int getPlayerByName(String nam)
+	{
+		int id = -1;
+        String name = "";
+        for (Map.Entry<Integer, Entity> e : GameCore.getInstance().getGame().getEntityManager().getEntities().entrySet())
+        {
+            name = ((ECName) GameCore.getInstance().getGame().getEntityManager().get(e.getKey()).get(EComponent.NAME)).getName();
+            if (nam.equals(name))
+            {
+                id = e.getKey();
+            }
+        }
+        return id;
 	}
 }

@@ -54,73 +54,74 @@ public class ConnectPacket extends Packet
 	private long seed;
 
 	public ConnectPacket()
-	
 	{
 		super(CONNECT);
 	}
-	
+
 	public ConnectPacket(Player player)
 	{
 		super(CONNECT);
-		data.put(player.getID());
-		data.put(player.getName());
-		
-		data.put(player.getPosition().x);
-		data.put(player.getPosition().y);
-		data.put(player.getPosition().z);
-		
-		data.put(player.getRotation().x);
-		data.put(player.getRotation().y);
-		data.put(player.getRotation().z);
-		data.put(player.getRotation().w);
+		this.data.put(player.getID());
+		this.data.put(player.getName());
 
-		data.put(GameCore.GAME_SUB_VERSION);
+		this.data.put(player.getPosition().x);
+		this.data.put(player.getPosition().y);
+		this.data.put(player.getPosition().z);
 
-		data.put((long) 0);
+		this.data.put(player.getRotation().x);
+		this.data.put(player.getRotation().y);
+		this.data.put(player.getRotation().z);
+		this.data.put(player.getRotation().w);
 
-		data.flip();
+		this.data.put(GameCore.GAME_SUB_VERSION);
+
+		this.data.put((long) 0);
+
+		this.data.flip();
 	}
-	
+
 	public ConnectPacket(ConnectPacket packet)
 	{
 		super(CONNECT);
-		data.put(packet.id);
-		data.put(packet.name);
-		
-		data.put(packet.position.x);
-		data.put(packet.position.y);
-		data.put(packet.position.z);
-		
-		data.put(packet.rotation.x);
-		data.put(packet.rotation.y);
-		data.put(packet.rotation.z);
-		data.put(packet.rotation.w);
+		this.data.put(packet.id);
+		this.data.put(packet.name);
 
-		data.put(packet.version);
+		this.data.put(packet.position.x);
+		this.data.put(packet.position.y);
+		this.data.put(packet.position.z);
 
-		data.put(packet.seed);
-		
-		data.flip();
+		this.data.put(packet.rotation.x);
+		this.data.put(packet.rotation.y);
+		this.data.put(packet.rotation.z);
+		this.data.put(packet.rotation.w);
+
+		this.data.put(packet.version);
+
+		this.data.put(packet.seed);
+
+		this.data.flip();
 	}
 
+	@Override
 	public void read(DataBuffer data)
 	{
-		id = data.getInt();
-		name = data.getString();
-		position = new Vec3(data.getFloat(), data.getFloat(), data.getFloat());
-		rotation = new Quat(data.getFloat(), data.getFloat(), data.getFloat(), data.getFloat());
-		version = data.getString();
-		seed = data.getLong();
+		this.id = data.getInt();
+		this.name = data.getString();
+		this.position = new Vec3(data.getFloat(), data.getFloat(), data.getFloat());
+		this.rotation = new Quat(data.getFloat(), data.getFloat(), data.getFloat(), data.getFloat());
+		this.version = data.getString();
+		this.seed = data.getLong();
 	}
 
+	@Override
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
-		seed = server.getCore().getGame().getData().getWorldGen().getSeed();
-		server.getCore().getGame().spawn(new ServerPlayer(id, name, position, rotation, address.getHostName(), port));
+		this.seed = server.getCore().getGame().getData().getWorldGen().getSeed();
+		server.getCore().getGame().spawn(new ServerPlayer(this.id, this.name, this.position, this.rotation, address.getHostName(), port));
 
-		server.getTcp().getClient(address, port).setID(id);
+		server.getTcp().getClient(address, port).setID(this.id);
 
-		server.log(name + " just connected !");
+		server.log(this.name + " just connected !");
 		server.tcpSendToAll(new ConnectPacket(this));
 
 		/* SENDING MULTIPLE PACKETS TO AVOID READ OVERFLOW OF 512 */
@@ -160,7 +161,7 @@ public class ConnectPacket extends Packet
 		for (int i = 0; i < server.getCore().getGame().getEntityManager().getNetworkableEntites().size(); i++)
 		{
 			int id = server.getCore().getGame().getEntityManager().getNetworkableEntites().get(i);
-			if (id == this.id) 
+			if (id == this.id)
 				continue;
 			Entity e = server.getCore().getGame().getEntityManager().getEntities().get(id);
 			if (e instanceof Player)
@@ -169,37 +170,38 @@ public class ConnectPacket extends Packet
 
 		/* Game Mode managment */
 		GameMode mode = server.getCore().getGame().getGameMode();
-		mode.onPlayerConnect((Player) server.getCore().getGame().getEntityManager().get(id), server);
+		mode.onPlayerConnect((Player) server.getCore().getGame().getEntityManager().get(this.id), server);
 
 		// GAME MODE
-		GameCore.getInstance().getGame().getGameMode().onPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(id), server);
-		this.position = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(id));
+		GameCore.getInstance().getGame().getGameMode().onPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(this.id), server);
+		this.position = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(this.id));
 
-		server.tcpSend(new RespawnPacket((Player) GameCore.getInstance().getGame().getEntityManager().get(id), this.position), address, port);
+		server.tcpSend(new RespawnPacket((Player) GameCore.getInstance().getGame().getEntityManager().get(this.id), this.position), address, port);
 
-		if (!version.equals(GameCore.GAME_SUB_VERSION))
+		if (!this.version.equals(GameCore.GAME_SUB_VERSION))
 		{
-			server.log(name + " tried to connect with an invalid version: v" + version + "  Current: v" + GameCore.GAME_SUB_VERSION);
-			server.tcpSendToAll(new KickPacket(id, "Invalid game version, please download the latest one: ubercube.github.io"));
-			GameCore.getInstance().getGame().remove(id);
+			server.log(this.name + " tried to connect with an invalid version: v" + this.version + "  Current: v" + GameCore.GAME_SUB_VERSION);
+			server.tcpSendToAll(new KickPacket(this.id, "Invalid game version, please download the latest one: ubercube.github.io"));
+			GameCore.getInstance().getGame().remove(this.id);
 //			server.getTcp().disconnectClient(address, port);
 			return;
 		}
 	}
 
+	@Override
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		if (client.getCore().getGame().getPlayer().getID() != id)
+		if (client.getCore().getGame().getPlayer().getID() != this.id)
 		{
-			client.getCore().getGame().spawn(new NetworkedPlayer(id, name, position, rotation, address.getHostName(), port));
-			client.log(name + " just connected !");
+			client.getCore().getGame().spawn(new NetworkedPlayer(this.id, this.name, this.position, this.rotation, address.getHostName(), port));
+			client.log(this.name + " just connected !");
 		}
 		else
 		{
-			client.log("You just connected as " + name);
-			client.getCore().getGame().createWorld(seed);
+			client.log("You just connected as " + this.name);
+			client.getCore().getGame().createWorld(this.seed);
 			client.setConnected(true);
 		}
-		client.console(name + " just connected !");
+		client.console(this.name + " just connected !");
 	}
 }

@@ -57,7 +57,7 @@ public class World
 	private GameData	data;
 	private GameCore	core;
 	private boolean 	generated;
-	
+
 	public World(GameCore core, long seed)
 	{
 		this.core = core;
@@ -79,9 +79,9 @@ public class World
 		Log.println("Converting minecraft world");
 		this.data.createWorld(new WorldGen(-1, 15), WorldType.NORMAL);
 		MinecraftFile file = new MinecraftFile(new File("save/r.0.0.mca"));
-		for (int x=0;x<data.getWorldSize();x++)
+		for (int x=0;x<this.data.getWorldSize();x++)
 		{
-			for (int z=0;z<data.getWorldSize();z++)
+			for (int z=0;z<this.data.getWorldSize();z++)
 			{
 				if (file.hasChunk(x, z))
 				{
@@ -93,15 +93,15 @@ public class World
 							try
 							{
 								NBTReader reader = new NBTReader(dis);
-								
+
 								byte[] blocks = reader.getNextByteArrayTagData("Blocks");
 								byte y = reader.getNextByteTagData("Y");
 								byte[] add = reader.getNextByteArrayTagData("Data");
-								
-								int index = Indexer.index3i(data.getWorldSize()-1-x, y, z);
-								Chunk c = new Chunk(new Vec3i(data.getWorldSize()-1-x, y, z));
-								chunks.put(index, c);
-								
+
+								int index = Indexer.index3i(this.data.getWorldSize()-1-x, y, z);
+								Chunk c = new Chunk(new Vec3i(this.data.getWorldSize()-1-x, y, z));
+								this.chunks.put(index, c);
+
 								for (int i=0;i<4096;i++)
 								{
 									int bx = (i>>0)&0b1111;
@@ -127,9 +127,9 @@ public class World
 			file.close();
 		}
 		catch(IOException e){e.printStackTrace();}
-		generated = true;
+		this.generated = true;
 	}
-	
+
 	private void readWorldData()
 	{
 		Log.println("Reading world data");
@@ -143,18 +143,18 @@ public class World
 				{
 					long seed = dis.readLong();
 					Log.println("World seed : "+seed);
-					initWorldData(seed);
-					for (int x = 0; x < getWorldSize(); x++)
+					this.initWorldData(seed);
+					for (int x = 0; x < this.getWorldSize(); x++)
 					{
 						for (int y = 0; y < 5; y++)
 						{
-							for (int z = 0; z < getWorldSize(); z++)
+							for (int z = 0; z < this.getWorldSize(); z++)
 							{
 								short modifiedBlockNumber = dis.readShort();
 								byte[] chunk = new byte[modifiedBlockNumber * 16];
 								dis.read(chunk);
 								ByteBuffer dataBuffer = ByteBuffer.wrap(chunk);
-								
+
 								for (int i=0;i<modifiedBlockNumber;i++)
 									this.modifiedBlocks.add(new Vec4i(dataBuffer.getInt(),dataBuffer.getInt(),dataBuffer.getInt(),dataBuffer.getInt()));
 							}
@@ -171,15 +171,15 @@ public class World
 						byte[] chunk = new byte[size];
 						dis.read(chunk);
 						ByteBuffer dataBuffer = ByteBuffer.wrap(chunk);
-						
+
 						int x = dataBuffer.getShort(), y = dataBuffer.getShort(), z = dataBuffer.getShort();
-						
-						if (x >= 0 && x < data.getWorldSize() && z >= 0 && z < data.getWorldSize() && y >= 0 && y < 16)
+
+						if (x >= 0 && x < this.data.getWorldSize() && z >= 0 && z < this.data.getWorldSize() && y >= 0 && y < 16)
 						{
 							int index = Indexer.index3i(x, y, z);
 							Chunk c = new Chunk(new Vec3i(x, y, z));
-							chunks.put(index, c);
-							
+							this.chunks.put(index, c);
+
 							int blocksRed = 0;
 							while (blocksRed < 4096)
 							{
@@ -198,53 +198,53 @@ public class World
 			}
 			catch(IOException e){e.printStackTrace();}
 			finally{dis.close();}
-			generated = true;
+			this.generated = true;
 		}
-		catch(IOException e){e.printStackTrace();initWorldData(42);}
+		catch(IOException e){e.printStackTrace();this.initWorldData(42);}
 	}
-	
+
 	private void initWorldData(long seed)
 	{
 		this.data.createWorld(new WorldGen(seed, 15), (seed % 2) == 0 ? WorldType.SNOWY : WorldType.NORMAL);
 		World world = this;
 
-		data.getWorldGen().addNoisePasses(data.getWorldType());
-		data.getWorldGen().calcFinalNoise();
-		for (int x = 0; x < data.getWorldSize(); x++)
+		this.data.getWorldGen().addNoisePasses(this.data.getWorldType());
+		this.data.getWorldGen().calcFinalNoise();
+		for (int x = 0; x < this.data.getWorldSize(); x++)
 		{
 			for (int y = 0; y < 5; y++)
 			{
-				for (int z = 0; z < data.getWorldSize(); z++)
+				for (int z = 0; z < this.data.getWorldSize(); z++)
 				{
 					int index = Indexer.index3i(x, y, z);
-					float[][] 	noise = data.getWorldGen().getNoiseChunk(x, z);
+					float[][] 	noise = this.data.getWorldGen().getNoiseChunk(x, z);
 					Chunk c = new Chunk(x, y, z, noise, world);
 					c.generateChunk();
 					c.generateTerrainData();
-					chunks.put(index, c);
+					this.chunks.put(index, c);
 				}
 			}
 		}
-		for (int x = 0; x < data.getWorldSize(); x++)
+		for (int x = 0; x < this.data.getWorldSize(); x++)
 		{
 			for (int y = 0; y < 1; y++)
 			{
-				for (int z = 0; z < data.getWorldSize(); z++)
+				for (int z = 0; z < this.data.getWorldSize(); z++)
 				{
 					int index = Indexer.index3i(x, y, z);
-					Chunk c = chunks.get(index);
+					Chunk c = this.chunks.get(index);
 					c.generateVegetation();
 				}
 			}
 		}
 
-		generated = true;
+		this.generated = true;
 
 	}
-	
+
 	public void update()
 	{
-		for (Chunk c : chunks.values())
+		for (Chunk c : this.chunks.values())
 		{
 			c.update();
 		}
@@ -337,22 +337,22 @@ public class World
 
 	public Chunk getChunk(int x, int y, int z)
 	{
-		return chunks.get(Indexer.index3i(x, y, z));
+		return this.chunks.get(Indexer.index3i(x, y, z));
 	}
-	
+
 	public void updateRequest(int x, int y, int z)
 	{
 		int xc = x / Chunk.SIZE;
 		int yc = y / Chunk.SIZE;
 		int zc = z / Chunk.SIZE;
-		
-		Chunk c = getChunk(xc, yc, zc);
+
+		Chunk c = this.getChunk(xc, yc, zc);
 		if (c == null)
 			return;
-		
+
 		int index = Indexer.index3i(c.getPosition());
-		updateChunk(index);
-		checkChunksAroundOther(c, x % Chunk.SIZE, y % Chunk.SIZE, z % Chunk.SIZE);
+		this.updateChunk(index);
+		this.checkChunksAroundOther(c, x % Chunk.SIZE, y % Chunk.SIZE, z % Chunk.SIZE);
 	}
 
 	public void updateRequest(int xp, int yp, int zp, int radius)
@@ -367,7 +367,7 @@ public class World
 					int yy = y + yp - radius;
 					int zz = z + zp - radius;
 
-					updateRequest(xx, yy, zz);
+					this.updateRequest(xx, yy, zz);
 				}
 			}
 		}
@@ -380,109 +380,109 @@ public class World
 		int zz = c.position.z;
 		if (x == 0)
 		{
-			if (getChunk(xx - 1, yy, zz) != null)
+			if (this.getChunk(xx - 1, yy, zz) != null)
 			{
-				updateChunk(Indexer.index3i(xx - 1, yy, zz));
+				this.updateChunk(Indexer.index3i(xx - 1, yy, zz));
 			}
 		}
 		if (y == 0)
 		{
-			if (getChunk(xx, yy - 1, zz) != null)
+			if (this.getChunk(xx, yy - 1, zz) != null)
 			{
-				updateChunk(Indexer.index3i(xx, yy - 1, zz));
+				this.updateChunk(Indexer.index3i(xx, yy - 1, zz));
 			}
 		}
 		if (z == 0)
 		{
-			if (getChunk(xx, yy, zz - 1) != null)
+			if (this.getChunk(xx, yy, zz - 1) != null)
 			{
-				updateChunk(Indexer.index3i(xx, yy, zz - 1));
+				this.updateChunk(Indexer.index3i(xx, yy, zz - 1));
 			}
 		}
 		if (x == Chunk.SIZE - 1)
 		{
-			if (getChunk(xx + 1, yy, zz) != null)
+			if (this.getChunk(xx + 1, yy, zz) != null)
 			{
-				updateChunk(Indexer.index3i(xx + 1, yy, zz));
+				this.updateChunk(Indexer.index3i(xx + 1, yy, zz));
 			}
 		}
 		if (y == Chunk.SIZE - 1)
 		{
-			if (getChunk(xx, yy + 1, zz) != null)
+			if (this.getChunk(xx, yy + 1, zz) != null)
 			{
-				updateChunk(Indexer.index3i(xx, yy + 1, zz));
+				this.updateChunk(Indexer.index3i(xx, yy + 1, zz));
 			}
 		}
 		if (z == Chunk.SIZE - 1)
 		{
-			if (getChunk(xx, yy, zz + 1) != null)
+			if (this.getChunk(xx, yy, zz + 1) != null)
 			{
-				updateChunk(Indexer.index3i(xx, yy, zz + 1));
+				this.updateChunk(Indexer.index3i(xx, yy, zz + 1));
 			}
 		}
 
 		// Update corners for Ambient Occlusion
 		if (x == 0 && z == 0)
 		{
-			if (getChunk(xx - 1, yy, zz - 1) != null)
+			if (this.getChunk(xx - 1, yy, zz - 1) != null)
 			{
-				updateChunk(Indexer.index3i(xx - 1, yy, zz - 1));
+				this.updateChunk(Indexer.index3i(xx - 1, yy, zz - 1));
 			}
 		}
 		if (x == Chunk.SIZE - 1 && z == 0)
 		{
-			if (getChunk(xx + 1, yy, zz - 1) != null)
+			if (this.getChunk(xx + 1, yy, zz - 1) != null)
 			{
-				updateChunk(Indexer.index3i(xx + 1, yy, zz - 1));
+				this.updateChunk(Indexer.index3i(xx + 1, yy, zz - 1));
 			}
 		}
 		if (x == Chunk.SIZE - 1 && z == Chunk.SIZE - 1)
 		{
-			if (getChunk(xx + 1, yy, zz + 1) != null)
+			if (this.getChunk(xx + 1, yy, zz + 1) != null)
 			{
-				updateChunk(Indexer.index3i(xx + 1, yy, zz + 1));
+				this.updateChunk(Indexer.index3i(xx + 1, yy, zz + 1));
 			}
 		}
 		if (x == 0 && z == Chunk.SIZE - 1)
 		{
-			if (getChunk(xx - 1, yy, zz + 1) != null)
+			if (this.getChunk(xx - 1, yy, zz + 1) != null)
 			{
-				updateChunk(Indexer.index3i(xx - 1, yy, zz + 1));
+				this.updateChunk(Indexer.index3i(xx - 1, yy, zz + 1));
 			}
 		}
 	}
-	
+
 	public void updateChunk(int index)
 	{
-		if (!updateRequests.contains(index))
-			updateRequests.add(index);
+		if (!this.updateRequests.contains(index))
+			this.updateRequests.add(index);
 	}
-	
+
 	public int getBlock(int x, int y, int z)
 	{
 		int xc = x / Chunk.SIZE;
 		int yc = y / Chunk.SIZE;
 		int zc = z / Chunk.SIZE;
-		
-		Chunk c = getChunk(xc, yc, zc);
+
+		Chunk c = this.getChunk(xc, yc, zc);
 		if (c == null)
 			return 0;
-		
+
 		int xx = x % Chunk.SIZE;
 		int yy = y % Chunk.SIZE;
 		int zz = z % Chunk.SIZE;
-		
+
 		return c.getBlock(xx, yy, zz);
 	}
-	
+
 	public void addBlock(int x, int y, int z, int block)
 	{
 		//addModifiedBlock(x, y, z, block);
 		int xc = x / Chunk.SIZE;
 		int yc = y / Chunk.SIZE;
 		int zc = z / Chunk.SIZE;
-		
-		Chunk c = getChunk(xc, yc, zc);
+
+		Chunk c = this.getChunk(xc, yc, zc);
 		if (c == null)
 			return;
 
@@ -492,32 +492,32 @@ public class World
 
 		c.addBlock(xx, yy, zz, block);
 	}
-	
+
 	public void removeBlock(int x, int y, int z)
 	{
 		if (y == 0)
 			return;
 
-		addModifiedBlock(x, y, z, 0);
+		this.addModifiedBlock(x, y, z, 0);
 		int xc = x / Chunk.SIZE;
 		int yc = y / Chunk.SIZE;
 		int zc = z / Chunk.SIZE;
-		
-		Chunk c = getChunk(xc, yc, zc);
+
+		Chunk c = this.getChunk(xc, yc, zc);
 		if (c == null)
 			return;
-		
+
 		int xx = x % Chunk.SIZE;
 		int yy = y % Chunk.SIZE;
 		int zz = z % Chunk.SIZE;
-		
+
 		c.removeBlock(xx, yy, zz);
 	}
-	
+
 	public int getBlockAt(Vec3 point)
 	{
 		Vec3i ip = point.getInts();
-		return getBlock(ip.x, ip.y, ip.z);
+		return this.getBlock(ip.x, ip.y, ip.z);
 	}
 
 	public List<Integer> getBlockInRange(Vec3 pos, int range)
@@ -530,25 +530,25 @@ public class World
 		int y1 = (int) pos.y + range;
 		int z0 = (int) pos.z - range;
 		int z1 = (int) pos.z + range;
-		
+
 		for (int x = x0; x < x1; x++)
 		{
 			for (int y = y0; y < y1; y++)
 			{
 				for (int z = z0; z < z1; z++)
 				{
-					int block = getBlock(x, y, z);
+					int block = this.getBlock(x, y, z);
 					if (block != 0)
 					{
-						result.add(block);			
+						result.add(block);
 					}
-				}	
-			}	
+				}
+			}
 		}
-		
+
 		return result;
 	}
-	
+
 	public List<AABoxCollider> getAABoxInRange(Vec3 pos, int range)
 	{
 		List<AABoxCollider> result = new ArrayList<AABoxCollider>();
@@ -559,68 +559,68 @@ public class World
 		int y1 = (int) pos.y + range;
 		int z0 = (int) pos.z - range;
 		int z1 = (int) pos.z + range;
-		
+
 		for (int x = x0; x < x1; x++)
 		{
 			for (int y = y0; y < y1; y++)
 			{
 				for (int z = z0; z < z1; z++)
 				{
-					if (getBlock(x, y, z) != 0)
+					if (this.getBlock(x, y, z) != 0)
 					{
 						AABoxCollider c = new AABoxCollider();
 						c.setPosition(new Vec3(x + 0.5f, y + 0.5f, z + 0.5f));
 						result.add(c);
 					}
-				}	
-			}	
+				}
+			}
 		}
-		
+
 		return result;
 	}
-	
+
 	public Map<Integer, Chunk> getRenderableChunks()
 	{
-		return chunks;
+		return this.chunks;
 	}
-	
+
 	public Map<Integer, Chunk> getGeneretingChunks()
 	{
-		return chunks;
+		return this.chunks;
 	}
-	
+
 	public List<Integer> getChunkGarbage()
 	{
-		return chunkGarbage;
+		return this.chunkGarbage;
 	}
 
 	public List<Integer> getUpdateRequests()
 	{
-		return updateRequests;
+		return this.updateRequests;
 	}
-	
+
 	public void addModifiedBlock(int x, int y, int z, int block)
 	{
-		Vec4i v = getModifiedBlock(x, y, z);
+		Vec4i v = this.getModifiedBlock(x, y, z);
 		if (v != null)
 		{
-			int index = modifiedBlocks.indexOf(v);
-			modifiedBlocks.get(index).w = block;
+			int index = this.modifiedBlocks.indexOf(v);
+			this.modifiedBlocks.get(index).w = block;
 			return;
 		}
-		modifiedBlocks.add(new Vec4i(x, y, z, block));
+		this.modifiedBlocks.add(new Vec4i(x, y, z, block));
 	}
-	
+
 	public List<Vec4i> getModifiedBlocks()
 	{
-		return modifiedBlocks;
+		return this.modifiedBlocks;
 	}
-	
+
 	public Vec4i getModifiedBlock(int x, int y, int z)
 	{
-		for (int i = 0; i < modifiedBlocks.size(); i++)
+		for (int i = 0; i < this.modifiedBlocks.size(); i++)
 		{
-			Vec4i b = modifiedBlocks.get(i);
+			Vec4i b = this.modifiedBlocks.get(i);
 			if (b.x == x && b.y == y && b.z == z)
 				return b;
 		}
@@ -629,7 +629,7 @@ public class World
 
 	public int getBlockDamage(int x, int y, int z, float damage)
 	{
-		return applyBlockDamage(x, y, z, damage);
+		return this.applyBlockDamage(x, y, z, damage);
 	}
 
 	public int applyBlockDamage(int x, int y, int z, float damage)
@@ -637,11 +637,11 @@ public class World
 		int blockID = 0;
 
 
-		Vec4i modBlock = getModifiedBlock(x, y, z);
+		Vec4i modBlock = this.getModifiedBlock(x, y, z);
 		if (modBlock != null)
 			blockID = modBlock.w;
 		else
-			blockID = getBlock(x, y, z);
+			blockID = this.getBlock(x, y, z);
 
 		Color4f block = Color4f.getColorFromARGB(blockID);
 
@@ -667,7 +667,7 @@ public class World
 					int yp = (int) (pos.y + y - force);
 					int zp = (int) (pos.z + z - force);
 
-					if (getBlock(xp, yp, zp) == 0)
+					if (this.getBlock(xp, yp, zp) == 0)
 						continue;
 
 					float xx = x - force;
@@ -682,19 +682,19 @@ public class World
 						if (dammageAmnt < 0) dammageAmnt = 0;
 						if (dammageAmnt > 1) dammageAmnt = 1;
 
-						int block = applyBlockDamage(xp, yp, zp, dammageAmnt);
+						int block = this.applyBlockDamage(xp, yp, zp, dammageAmnt);
 						float alpha = Color4f.getColorFromARGB(block).getAlpha();
 						if (alpha <= 0)
 							block = 0;
 						if (setBlockAndUpdate)
 						{
 							if (block == 0)
-								removeBlock(xp, yp, zp);
+								this.removeBlock(xp, yp, zp);
 							else
-								addBlock(xp, yp, zp, block);
-							updateRequest(xp, yp, zp);
+								this.addBlock(xp, yp, zp, block);
+							this.updateRequest(xp, yp, zp);
 						}
-						addModifiedBlock(xp, yp, zp, block);
+						this.addModifiedBlock(xp, yp, zp, block);
 					}
 				}
 			}
@@ -703,20 +703,20 @@ public class World
 
 	public WorldGen getWorldGen()
 	{
-		return data.getWorldGen();
+		return this.data.getWorldGen();
 	}
 
 	public WorldType getWorldType() {
-		return data.getWorldType();
+		return this.data.getWorldType();
 	}
 
 	public boolean isGenerated()
 	{
-		return generated;
+		return this.generated;
 	}
 
 	public int getWorldSize() {
-		return data.getWorldSize();
+		return this.data.getWorldSize();
 	}
 }
 /*
