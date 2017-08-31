@@ -22,8 +22,31 @@ package fr.veridiangames.core.network;
 import java.util.HashMap;
 import java.util.Map;
 
-import fr.veridiangames.core.network.packets.*;
+import fr.veridiangames.core.network.packets.ApplyDamagePacket;
+import fr.veridiangames.core.network.packets.BlockActionPacket;
+import fr.veridiangames.core.network.packets.BulletHitBlockPacket;
+import fr.veridiangames.core.network.packets.BulletHitPlayerPacket;
+import fr.veridiangames.core.network.packets.BulletShootPacket;
+import fr.veridiangames.core.network.packets.ConnectPacket;
+import fr.veridiangames.core.network.packets.CurrentBlockPacket;
+import fr.veridiangames.core.network.packets.DamageForcePacket;
+import fr.veridiangames.core.network.packets.DeathPacket;
+import fr.veridiangames.core.network.packets.DisconnectPacket;
+import fr.veridiangames.core.network.packets.EntityMovementPacket;
+import fr.veridiangames.core.network.packets.EntitySyncPacket;
 import fr.veridiangames.core.network.packets.GrenadeSpawnPacket;
+import fr.veridiangames.core.network.packets.KickPacket;
+import fr.veridiangames.core.network.packets.Packet;
+import fr.veridiangames.core.network.packets.ParticlesRemovePacket;
+import fr.veridiangames.core.network.packets.ParticlesSpawnPacket;
+import fr.veridiangames.core.network.packets.PingPacket;
+import fr.veridiangames.core.network.packets.RespawnPacket;
+import fr.veridiangames.core.network.packets.SoundPacket;
+import fr.veridiangames.core.network.packets.SyncBlocksPacket;
+import fr.veridiangames.core.network.packets.TchatMsgPacket;
+import fr.veridiangames.core.network.packets.TimeoutPacket;
+import fr.veridiangames.core.network.packets.WeaponChangePacket;
+import fr.veridiangames.core.network.packets.WeaponPositionPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMScorePacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMSpawnPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMTeamPacket;
@@ -35,7 +58,7 @@ import fr.veridiangames.core.utils.Log;
 public class PacketManager
 {
 	private static Map<Integer, Class<? extends Packet>> packets;
-	
+
 	static
 	{
 		packets = new HashMap<>();
@@ -62,13 +85,14 @@ public class PacketManager
 		packets.put(Packet.AUDIO, SoundPacket.class);
 		packets.put(Packet.GRENADE_SPAWN, GrenadeSpawnPacket.class);
 		packets.put(Packet.APPLY_DAMAGE, ApplyDamagePacket.class);
+		packets.put(Packet.CURRENT_BLOCK, CurrentBlockPacket.class);
 
 		/* GAME MODES */
 		packets.put(Packet.GAMEMODE_TDM_SPAWN, TDMSpawnPacket.class);
 		packets.put(Packet.GAMEMODE_TDM_SCORE, TDMScorePacket.class);
 		packets.put(Packet.GAMEMODE_TDM_TEAM, TDMTeamPacket.class);
 	}
-	
+
 	public static Packet getPacket(int packet)
 	{
 		try
@@ -78,7 +102,7 @@ public class PacketManager
 				Log.println("Packets does not contain packet ID: " + packet + ", packets size: " + packets.size());
 				return null;
 			}
-			return (Packet) packets.get(packet).newInstance();
+			return packets.get(packet).newInstance();
 		}
 		catch (InstantiationException | IllegalAccessException e)
 		{
