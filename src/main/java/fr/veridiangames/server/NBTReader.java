@@ -51,7 +51,7 @@ public class NBTReader
 		}
 		else
 			tagName = null;
-		System.out.println(type + " ; " + tagName);
+		//System.out.println(type + " ; " + tagName);
 		return type;
 	}
 	public int skipNextTag() throws IOException

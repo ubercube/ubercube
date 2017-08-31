@@ -38,6 +38,7 @@ public class Player extends Entity
 	private boolean dead;
 	private boolean hitable;
 	private int ping;
+	private int currentBlock = 0x7f555555;
 	
 	public Player(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
@@ -180,5 +181,15 @@ public class Player extends Entity
 	public void setPing(int ping)
 	{
 		this.ping = ping;
+	}
+	
+	public void setCurrentBlock(int block)
+	{
+		currentBlock = block;
+	}
+	
+	public int getCurrentBlock()
+	{
+		return currentBlock;
 	}
 }

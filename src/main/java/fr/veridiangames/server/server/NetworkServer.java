@@ -19,10 +19,11 @@
 
 package fr.veridiangames.server.server;
 
-import java.io.*;
-import java.net.*;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
@@ -30,14 +31,16 @@ import fr.veridiangames.core.game.entities.components.ECNetwork;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
 import fr.veridiangames.core.network.NetworkableServer;
-import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.network.packets.PingPacket;
 import fr.veridiangames.core.network.packets.TimeoutPacket;
-import fr.veridiangames.core.utils.*;
-import fr.veridiangames.server.FileManager;
+import fr.veridiangames.core.utils.Log;
+import fr.veridiangames.core.utils.Sleep;
+import fr.veridiangames.core.utils.SystemUtils;
+import fr.veridiangames.core.utils.Time;
 import fr.veridiangames.server.server.commands.CmdHelp;
 import fr.veridiangames.server.server.commands.CmdKick;
+import fr.veridiangames.server.server.commands.CmdSetBlock;
 import fr.veridiangames.server.server.commands.CmdStop;
 import fr.veridiangames.server.server.commands.Command;
 import fr.veridiangames.server.server.tcp.NetworkServerTCP;
@@ -67,6 +70,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 		this.commands.put("help", new CmdHelp());
 		this.commands.put("stop", new CmdStop());
 		this.commands.put("kick", new CmdKick());
+		this.commands.put("setBlock", new CmdSetBlock());
 		
 		log("Requesting server start on the " + SystemUtils.getDate());
 		log("Starting server for " + GameCore.GAME_NAME + " " + GameCore.GAME_VERSION_NAME + " v" + GameCore.GAME_SUB_VERSION);

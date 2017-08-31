@@ -57,6 +57,7 @@ public abstract class Packet
 	public static final int AUDIO				= 20;
 	public static final int GRENADE_SPAWN		= 21;
 	public static final int APPLY_DAMAGE		= 22;
+	public static final int CURRENT_BLOCK		= 23;
 
 	/* GAME MODES  [500-600[ */
 	public static final int GAMEMODE_TDM_SPAWN = 501;
