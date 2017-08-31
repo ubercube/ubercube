@@ -78,7 +78,7 @@ public class ServerPlayer extends Player
 			server.tcpSendToAll(new DeathPacket(this.getID()));
 
 			/* GAME MODE */
-			server.getCore().getGame().getGameMode().onPlayerDeath(this, server);
+			server.getCore().getGame().getGameMode().onPlayerDeath(id, server);
 
 			this.setDead(true);
 			String name = ((ECName) this.get(EComponent.NAME)).getName();

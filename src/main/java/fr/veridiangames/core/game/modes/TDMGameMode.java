@@ -83,33 +83,33 @@ public class TDMGameMode implements GameMode
     }
 
     @Override
-    public Vec3 getPlayerSpawn(Player p) {
-        if(redTeam.getPlayers().contains(p))
+    public Vec3 getPlayerSpawn(int id) {
+        if(redTeam.getPlayers().contains(id))
             return redTeam.getSpawn();
 
-        if(blueTeam.getPlayers().contains(p))
+        if(blueTeam.getPlayers().contains(id))
             return blueTeam.getSpawn();
 
         return new Vec3();
     }
 
     @Override
-    public Team getPlayerTeam(Player p) {
-        if(redTeam.getPlayers().contains(p))
+    public Team getPlayerTeam(int id) {
+        if(redTeam.getPlayers().contains(id))
             return redTeam;
 
-        if(blueTeam.getPlayers().contains(p))
+        if(blueTeam.getPlayers().contains(id))
             return blueTeam;
 
         return null;
     }
 
     @Override
-    public void onPlayerConnect(Player p, NetworkableServer server) {
-        if(redTeam.getPlayers().size() < blueTeam.getPlayers().size()){
-            redTeam.getPlayers().add(p);
+    public void onPlayerConnect(int id, NetworkableServer server) {
+        if(redTeam.getPlayers().getSize() < blueTeam.getPlayers().getSize()){
+            redTeam.getPlayers().add(id);
         }else{
-            blueTeam.getPlayers().add(p);
+            blueTeam.getPlayers().add(id);
         }
         server.tcpSendToAll(new TDMScorePacket(redScore, blueScore)); // All to player
         server.tcpSendToAll(new TDMTeamPacket(redTeam, blueTeam));
@@ -117,18 +117,18 @@ public class TDMGameMode implements GameMode
     }
 
     @Override
-    public void onPlayerDisconnect(Player p, NetworkableServer server) {
-        if(!redTeam.getPlayers().remove(p))
-            blueTeam.getPlayers().remove(p);
+    public void onPlayerDisconnect(int id, NetworkableServer server) {
+        if(!redTeam.getPlayers().remove(id))
+            blueTeam.getPlayers().remove(id);
 
         server.tcpSendToAll(new TDMTeamPacket(redTeam, blueTeam));
     }
 
     @Override
-    public void onPlayerDeath(Player p, NetworkableServer server) {
-        if(redTeam.getPlayers().contains(p)){
+    public void onPlayerDeath(int id, NetworkableServer server) {
+        if(redTeam.getPlayers().contains(id)){
             blueScore++;
-        }else if(blueTeam.getPlayers().contains(p)){
+        }else if(blueTeam.getPlayers().contains(id)){
             redScore++;
         }
 
@@ -136,7 +136,7 @@ public class TDMGameMode implements GameMode
     }
 
     @Override
-    public void onPlayerSpawn(Player p, NetworkableServer server) {
+    public void onPlayerSpawn(int id, NetworkableServer server) {
 
     }
 }

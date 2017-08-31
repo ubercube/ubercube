@@ -58,7 +58,7 @@ public class RespawnPacket extends Packet
 
         data.put(player.getName());
 
-        Vec3 spawn = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(playerId));
+        Vec3 spawn = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn(playerId);
         data.put(spawn.x);
         data.put(spawn.y);
         data.put(spawn.z);
@@ -129,8 +129,8 @@ public class RespawnPacket extends Packet
         p.setTimeSinceSpawn(0);
 
         // GAME MODE
-        GameCore.getInstance().getGame().getGameMode().onPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(playerId), server);
-        this.position = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(playerId));
+        GameCore.getInstance().getGame().getGameMode().onPlayerSpawn(playerId, server);
+        this.position = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn(playerId);
 
         /*int x = server.getCore().getGame().getData().getWorldSize() * 8;
         int y = server.getCore().getGame().getData().getWorldSize() * 8;

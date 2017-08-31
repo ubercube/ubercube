@@ -44,13 +44,13 @@ public class TDMTeamPacket extends Packet {
 
     public TDMTeamPacket(Team red, Team blue) {
         super(Packet.GAMEMODE_TDM_TEAM);
-        data.put(red.getPlayers().size());
-        for(Player p : red.getPlayers()){
-            data.put(p.getID());
+        data.put(red.getPlayers().getSize());
+        for(int id : red.getPlayers().getList()){
+            data.put(id);
         }
-        data.put(blue.getPlayers().size());
-        for(Player p : blue.getPlayers()){
-            data.put(p.getID());
+        data.put(blue.getPlayers().getSize());
+        for(int id : blue.getPlayers().getList()){
+            data.put(id);
         }
 		data.flip();
     }
@@ -79,13 +79,13 @@ public class TDMTeamPacket extends Packet {
         mode.getRedTeam().getPlayers().clear();
         for(int i : redTeam){
             if(i != 0)
-                mode.getRedTeam().getPlayers().add((Player) client.getCore().getGame().getEntityManager().get(i));
+                mode.getRedTeam().getPlayers().add(i);
         }
 
         mode.getBlueTeam().getPlayers().clear();
         for(int i : blueTeam){
             if(i != 0)
-                mode.getBlueTeam().getPlayers().add((Player) client.getCore().getGame().getEntityManager().get(i));
+                mode.getBlueTeam().getPlayers().add(i);
         }
     }
 }

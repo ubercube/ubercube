@@ -19,13 +19,8 @@
 
 package fr.veridiangames.core.game.modes;
 
-import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Vec3;
-import fr.veridiangames.core.maths.Vec4;
 import fr.veridiangames.core.utils.Color4f;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jimi Vacarians on 25/07/2016.
@@ -39,8 +34,8 @@ public class Team {
         return name;
     }
 
-    private List<Player> players = new ArrayList<>();
-    public List<Player> getPlayers(){
+    private PlayerList players = new PlayerList();
+    public PlayerList getPlayers(){
         return players;
     }
 

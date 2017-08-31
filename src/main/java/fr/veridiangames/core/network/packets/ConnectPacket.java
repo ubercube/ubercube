@@ -169,11 +169,11 @@ public class ConnectPacket extends Packet
 
 		/* Game Mode managment */
 		GameMode mode = server.getCore().getGame().getGameMode();
-		mode.onPlayerConnect((Player) server.getCore().getGame().getEntityManager().get(id), server);
+		mode.onPlayerConnect(id, server);
 
 		// GAME MODE
-		GameCore.getInstance().getGame().getGameMode().onPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(id), server);
-		this.position = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn((Player) GameCore.getInstance().getGame().getEntityManager().get(id));
+		GameCore.getInstance().getGame().getGameMode().onPlayerSpawn(id, server);
+		this.position = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn(id);
 
 		server.tcpSend(new RespawnPacket((Player) GameCore.getInstance().getGame().getEntityManager().get(id), this.position), address, port);
 

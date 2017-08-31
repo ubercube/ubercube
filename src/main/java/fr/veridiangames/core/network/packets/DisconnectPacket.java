@@ -72,7 +72,7 @@ public class DisconnectPacket extends Packet
 
 		/* Game Mode managment */
 		GameMode mode = server.getCore().getGame().getGameMode();
-		mode.onPlayerDisconnect((Player) server.getCore().getGame().getEntityManager().get(id), server);
+		mode.onPlayerDisconnect(id, server);
 
 		String name = ((ECName) server.getCore().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
 		ECNetwork net = ((ECNetwork) server.getCore().getGame().getEntityManager().get(id).get(EComponent.NETWORK));

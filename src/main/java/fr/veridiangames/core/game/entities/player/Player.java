@@ -164,7 +164,7 @@ public class Player extends Entity
 
 	public Team getTeam()
 	{
-		return GameCore.getInstance().getGame().getGameMode().getPlayerTeam(this);
+		return GameCore.getInstance().getGame().getGameMode().getPlayerTeam(this.id);
 	}
 
 	public boolean isHitable()

@@ -31,15 +31,15 @@ public interface GameMode
 {
     void update();
 
-    Vec3 getPlayerSpawn(Player p);
-    Team getPlayerTeam(Player p);
+    Vec3 getPlayerSpawn(int id);
+    Team getPlayerTeam(int id);
 
     /**
      *  All event need a NetworkableServer param
      */
 
-    void onPlayerConnect(Player p, NetworkableServer server);
-    void onPlayerDisconnect(Player p, NetworkableServer server);
-    void onPlayerDeath(Player p, NetworkableServer server);
-    void onPlayerSpawn(Player p, NetworkableServer server);
+    void onPlayerConnect(int id, NetworkableServer server);
+    void onPlayerDisconnect(int id, NetworkableServer server);
+    void onPlayerDeath(int id, NetworkableServer server);
+    void onPlayerSpawn(int id, NetworkableServer server);
 }
