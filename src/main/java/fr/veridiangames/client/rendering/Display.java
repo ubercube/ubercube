@@ -95,6 +95,8 @@ public class Display
 		Log.println("glfw inputs callbacks...");
 		this.input = new Input(this);
 		glfwSetKeyCallback(window, input.getKeyboardCallback());
+		glfwSetCharCallback(window, input.getTextInputCallback());
+		glfwSetKeyCallback(window, input.getKeyboardCallback());
 		glfwSetCursorPosCallback(window, input.getMouse().getCursorPosCallback());
 		glfwSetMouseButtonCallback(window, input.getMouse().getMouseButtonCallback());
 		glfwSetScrollCallback(window, input.getMouse().getScrollCallback());

@@ -21,13 +21,16 @@ package fr.veridiangames.client.inputs;
 
 import java.util.ArrayList;
 
+import org.lwjgl.glfw.GLFWCharCallback;
+import org.lwjgl.glfw.GLFWCharCallbackI;
 import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWKeyCallbackI;
 
 /**
  * Created by Marccspro on 9 f�vr. 2016.
  */
-public class Keyboard extends GLFWKeyCallback {
-	
+public class Keyboard implements GLFWKeyCallbackI
+{
 	public static boolean AZERTY = true;
 	
 	public static final int NUM_KEYCODES = 1000;

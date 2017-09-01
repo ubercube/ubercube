@@ -192,11 +192,13 @@ public class Input
 		JOYSTICK_LAST = JOYSTICK_16;
 	
 	private Keyboard	keyboard;
+	private TextInput	textInput;
 	private Mouse		mouse;
 
 	public Input(Display display)
 	{
 		this.keyboard = new Keyboard();
+		this.textInput = new TextInput();
 		this.mouse = new Mouse(display);
 	}
 	
@@ -214,10 +216,20 @@ public class Input
 	{
 		return keyboard.getKeyUp(key);
 	}
-	
+
+	public int getKeyCode()
+	{
+		return textInput.getKeyCode();
+	}
+
 	public Keyboard getKeyboardCallback()
 	{
 		return keyboard;
+	}
+
+	public TextInput getTextInputCallback()
+	{
+		return textInput;
 	}
 	
 	public Mouse getMouse()

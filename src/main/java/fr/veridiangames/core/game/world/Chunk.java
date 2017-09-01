@@ -210,6 +210,11 @@ public class Chunk
 		blocks[x][y][z] = 0;
 	}
 
+	public float getHeightAt(int x, int z)
+	{
+		return noise[x][z];
+	}
+
 	public Vec3i getPosition()
 	{
 		return position;

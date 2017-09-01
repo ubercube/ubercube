@@ -130,7 +130,8 @@ public class RespawnPacket extends Packet
 
         // GAME MODE
         GameCore.getInstance().getGame().getGameMode().onPlayerSpawn(playerId, server);
-        this.position = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn(playerId);
+		Vec3 spawPos = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn(playerId);
+		this.position = new Vec3(spawPos.x, server.getCore().getGame().getWorld().getHeightAt((int)spawPos.x, (int)spawPos.z), spawPos.z);
 
         /*int x = server.getCore().getGame().getData().getWorldSize() * 8;
         int y = server.getCore().getGame().getData().getWorldSize() * 8;

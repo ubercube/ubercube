@@ -33,6 +33,7 @@ import fr.veridiangames.core.maths.Vec3;
 public class Player extends Entity
 {
 	public static final int MAX_LIFE = 100;
+	public static final float HEIGHT = 2.5f;
 
 	private Vec3 newPosition;
 	private boolean dead;
@@ -43,7 +44,7 @@ public class Player extends Entity
 	{
 		super(id);
 		super.add(new ECName(name));
-		super.add(new ECRender(position, rotation, new Vec3(0.4f, 2.5f * 0.5f, 0.4f)));
+		super.add(new ECRender(position, rotation, new Vec3(0.4f, HEIGHT * 0.5f, 0.4f)));
 		super.add(new ECNetwork(address, port));
 		super.add(new ECWeapon(0));
 		super.add(new ECAudioSource());

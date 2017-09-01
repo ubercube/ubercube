@@ -19,8 +19,6 @@
 
 package fr.veridiangames.core.game.modes;
 
-import fr.veridiangames.client.rendering.guis.GuiCanvas;
-import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableServer;
 
