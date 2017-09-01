@@ -33,6 +33,7 @@ import java.awt.Font;
 
 public class GuiTextBox extends GuiComponent
 {
+	private boolean firstLoop = true;
 	private Color4f selectionColor;
 	private String text = "";
 	GuiLabel label;
@@ -67,8 +68,12 @@ public class GuiTextBox extends GuiComponent
 	
 	int time = 0;
 	public void update() {
+		if (!super.getCanvas().isRendered())
+		{
+			firstLoop = true;
+			return;
+		}
 		super.update();
-		
 		time++;
 		showCaret = false;
 		manageKeys();
@@ -173,6 +178,12 @@ public class GuiTextBox extends GuiComponent
 	private void manageKeys() {
 		Input input = Display.getInstance().getInput();
 		int keycode = input.getKeyCode();
+		if (firstLoop)
+		{
+			if (input.getKeyUp(Input.KEY_T))
+				firstLoop = false;
+			return;
+		}
 		if (keycode != 0)
 			addChar((char) keycode);
 		if (getKey(input.KEY_BACKSPACE)) removeChar(0);

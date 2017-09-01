@@ -56,6 +56,7 @@ public abstract class GuiComponent
 	protected GuiOrigin origin;
 	protected GuiCorner corner;
 	protected int xScreen, yScreen;
+	protected GuiCanvas canvas;
 
 	protected GuiComponent parent;
 	protected List<GuiComponent> nodes;
@@ -390,5 +391,11 @@ public abstract class GuiComponent
 		this.useable = useable;
 	}
 
+	public void setCanvas(GuiCanvas canvas) {
+		this.canvas = canvas;
+	}
 
+	public GuiCanvas getCanvas() {
+		return canvas;
+	}
 }

@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.network.packets;
 
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
@@ -34,6 +35,7 @@ import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.utils.Log;
 
 import java.net.InetAddress;
+import java.util.Random;
 
 /**
  * Created by Tybau on 13/06/2016.

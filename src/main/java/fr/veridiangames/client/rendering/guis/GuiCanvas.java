@@ -88,6 +88,7 @@ public class GuiCanvas
 	public void render(GuiShader shader) {}
 	
 	public void add(GuiComponent gui) {
+		gui.setCanvas(this);
 		components.add(gui);
 	}
 	

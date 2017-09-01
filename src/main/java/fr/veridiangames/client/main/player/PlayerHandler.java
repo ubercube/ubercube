@@ -102,8 +102,6 @@ public class PlayerHandler
 		if (input.getKeyDown(Input.KEY_F))
 			key.setFly(!key.isFly());
 
-
-
 		mouse.setDX(input.getMouse().getDX());
 		mouse.setDY(input.getMouse().getDY());
 

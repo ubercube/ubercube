@@ -102,6 +102,8 @@ public class World
 			}
 		}
 
+		GameCore.getInstance().getGame().getGameMode().onWorldGeneration(this);
+
 		generated = true;
 
 	}
