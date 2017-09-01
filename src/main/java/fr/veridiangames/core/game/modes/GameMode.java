@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.game.modes;
 
+import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableServer;
 
@@ -32,10 +33,7 @@ public interface GameMode
     Vec3 getPlayerSpawn(int id);
     Team getPlayerTeam(int id);
 
-    /**
-     *  All event need a NetworkableServer param
-     */
-
+    void onWorldGeneration(World w);
     void onPlayerConnect(int id, NetworkableServer server);
     void onPlayerDisconnect(int id, NetworkableServer server);
     void onPlayerDeath(int id, NetworkableServer server);

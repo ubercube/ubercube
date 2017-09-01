@@ -27,7 +27,9 @@ import fr.veridiangames.core.game.Game;
 import fr.veridiangames.core.game.data.GameData;
 import fr.veridiangames.core.game.data.world.WorldGen;
 import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.game.world.Block;
 import fr.veridiangames.core.game.world.Chunk;
+import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec4;
 import fr.veridiangames.core.network.NetworkableServer;
@@ -53,7 +55,7 @@ public class TDMGameMode implements GameMode
         int worldSize = data.getWorldSize() * Chunk.SIZE;
         redTeam.setSpawn(new Vec3(50, 50, 50));
         blueTeam.setSpawn(new Vec3(worldSize - 50, 50, worldSize - 50));
-    }
+	}
 
     private Team redTeam = new Team();
     public Team getRedTeam(){
@@ -99,6 +101,10 @@ public class TDMGameMode implements GameMode
 		sp.x += -8 + (Math.random() * (8 - (-8)));
 		sp.z += -8 + (Math.random() * (8 - (-8)));
 		sp.y = GameCore.getInstance().getGame().getWorld().getHeightAt((int)sp.x, (int)sp.z)+2;
+/*
+		if(sp.equals(redTeam.getSpawn()) || sp.equals(blueTeam.getSpawn())){
+			sp = getPlayerSpawn(id);
+		}*/
 
         return sp;
     }
@@ -114,7 +120,20 @@ public class TDMGameMode implements GameMode
         return null;
     }
 
-    @Override
+	@Override
+	public void onWorldGeneration(World w) {
+		w.addBlock((int)redTeam.getSpawn().x, w.getHeightAt((int)redTeam.getSpawn().x,(int)redTeam.getSpawn().z),(int)redTeam.getSpawn().z, Block.ROCK.getARGB());
+		w.addBlock((int)redTeam.getSpawn().x, w.getHeightAt((int)redTeam.getSpawn().x,(int)redTeam.getSpawn().z)+1,(int)redTeam.getSpawn().z, Block.ROCK.getARGB());
+		w.addBlock((int)redTeam.getSpawn().x, w.getHeightAt((int)redTeam.getSpawn().x,(int)redTeam.getSpawn().z)+2,(int)redTeam.getSpawn().z, Block.ROCK.getARGB());
+		w.addBlock((int)redTeam.getSpawn().x, w.getHeightAt((int)redTeam.getSpawn().x,(int)redTeam.getSpawn().z)+3,(int)redTeam.getSpawn().z, Color4f.RED.getARGB());
+
+		w.addBlock((int)blueTeam.getSpawn().x, w.getHeightAt((int)blueTeam.getSpawn().x,(int)blueTeam.getSpawn().z),(int)blueTeam.getSpawn().z, Block.ROCK.getARGB());
+		w.addBlock((int)blueTeam.getSpawn().x, w.getHeightAt((int)blueTeam.getSpawn().x,(int)blueTeam.getSpawn().z)+1,(int)blueTeam.getSpawn().z, Block.ROCK.getARGB());
+		w.addBlock((int)blueTeam.getSpawn().x, w.getHeightAt((int)blueTeam.getSpawn().x,(int)blueTeam.getSpawn().z)+2,(int)blueTeam.getSpawn().z, Block.ROCK.getARGB());
+		w.addBlock((int)blueTeam.getSpawn().x, w.getHeightAt((int)blueTeam.getSpawn().x,(int)blueTeam.getSpawn().z)+3,(int)blueTeam.getSpawn().z, Color4f.BLUE.getARGB());
+	}
+
+	@Override
     public void onPlayerConnect(int id, NetworkableServer server) {
         if(redTeam.getPlayers().getSize() < blueTeam.getPlayers().getSize()){
             redTeam.getPlayers().add(id);

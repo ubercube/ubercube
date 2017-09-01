@@ -2,6 +2,7 @@ package fr.veridiangames.core.game.modes;
 
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.core.game.Game;
+import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableServer;
 
@@ -39,6 +40,11 @@ public class TOTEMGameMode implements GameMode {
 	@Override
 	public Team getPlayerTeam(int id) {
 		return null;
+	}
+
+	@Override
+	public void onWorldGeneration(World w) {
+
 	}
 
 	@Override
