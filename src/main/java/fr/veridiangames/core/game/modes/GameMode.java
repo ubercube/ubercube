@@ -19,9 +19,12 @@
 
 package fr.veridiangames.core.game.modes;
 
+import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableServer;
+
+import java.util.List;
 
 /**
  * Created by Jimi Vacarians on 24/07/2016.
@@ -32,6 +35,9 @@ public interface GameMode
 
     Vec3 getPlayerSpawn(int id);
     Team getPlayerTeam(int id);
+    List<Team> getTeams();
+    GuiCanvas getPlayerListScreen(GuiCanvas parent);
+
 
     void onWorldGeneration(World w);
     void onPlayerConnect(int id, NetworkableServer server);

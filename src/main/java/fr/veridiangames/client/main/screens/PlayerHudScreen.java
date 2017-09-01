@@ -29,7 +29,7 @@ import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.components.GuiLabel;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
 import fr.veridiangames.core.GameCore;
-import fr.veridiangames.client.main.screens.gamemode.TDMGameModeScreen;
+import fr.veridiangames.client.main.screens.gamemode.TDMHudScreen;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.explosiveWeapons.WeaponGrenade;
@@ -164,13 +164,16 @@ public class PlayerHudScreen extends GuiCanvas
         consoleScreen = new ConsoleScreen(this, display, core, 10, Display.getInstance().getHeight() - 130, 600, 450);
         super.addCanvas(consoleScreen);
 
+/*
         PlayerListScreen playerListScreen = new PlayerListScreen(this, display, core, Display.getInstance().getWidth() / 2, Display.getInstance().getHeight() / 2);
-        super.addCanvas(playerListScreen);
+        super.addCanvas(playerListScreen);*/
+        GuiCanvas gc = GameCore.getInstance().getGame().getGameMode().getPlayerListScreen(this);
+        super.addCanvas(gc);
 
         ProfilerScreen profilerScreen = new ProfilerScreen(this, display, core);
         super.addCanvas(profilerScreen);
 
-        TDMGameModeScreen gameMode = new TDMGameModeScreen(this);
+        TDMHudScreen gameMode = new TDMHudScreen(this);
         super.addCanvas(gameMode);
 
         GameMenuScreen gameMenuGui = new GameMenuScreen(this, display, core);

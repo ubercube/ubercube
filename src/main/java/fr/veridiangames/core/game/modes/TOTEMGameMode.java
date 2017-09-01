@@ -1,6 +1,7 @@
 package fr.veridiangames.core.game.modes;
 
 import fr.veridiangames.client.Ubercube;
+import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.core.game.Game;
 import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Vec3;
@@ -39,6 +40,16 @@ public class TOTEMGameMode implements GameMode {
 
 	@Override
 	public Team getPlayerTeam(int id) {
+		return null;
+	}
+
+	@Override
+	public List<Team> getTeams() {
+		return null;
+	}
+
+	@Override
+	public GuiCanvas getPlayerListScreen(GuiCanvas parent) {
 		return null;
 	}
 

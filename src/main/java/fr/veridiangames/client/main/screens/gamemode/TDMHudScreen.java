@@ -31,20 +31,20 @@ import fr.veridiangames.core.utils.Color4f;
 /**
  * Created by Jimi Vacarians on 25/07/2016.
  */
-public class TDMGameModeScreen extends GuiCanvas {
+public class TDMHudScreen extends GuiCanvas {
 
     private GuiLabel redLabel;
     private GuiLabel blueLabel;
     private GuiCanvas parent;
 
-    public TDMGameModeScreen(GuiCanvas parent)
+    public TDMHudScreen(GuiCanvas parent)
     {
         super(parent);
         this.parent = parent;
 
         Display display = Ubercube.getInstance().getDisplay();
 
-        redLabel = new GuiLabel("Blue : 0", display.getWidth() / 2-40, 30, 20f);
+        redLabel = new GuiLabel("Blue : 0", display.getWidth() / 2-160, 10, 20f);
         redLabel.setOrigin(GuiComponent.GuiOrigin.TC);
         redLabel.setScreenParent(GuiComponent.GuiCorner.TC);
         redLabel.setColor(Color4f.RED);
@@ -52,7 +52,7 @@ public class TDMGameModeScreen extends GuiCanvas {
         redLabel.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
         super.add(redLabel);
 
-        blueLabel = new GuiLabel("Blue : 0", display.getWidth() / 2 +40, 30, 20f);
+        blueLabel = new GuiLabel("Blue : 0", display.getWidth() / 2 +160, 10, 20f);
         blueLabel.setOrigin(GuiComponent.GuiOrigin.TC);
         blueLabel.setScreenParent(GuiComponent.GuiCorner.TC);
         blueLabel.setColor(Color4f.BLUE);

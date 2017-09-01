@@ -19,19 +19,14 @@
 
 package fr.veridiangames.core.game.modes;
 
-import fr.veridiangames.client.Ubercube;
-import fr.veridiangames.client.main.screens.gamemode.TDMGameModeScreen;
+import fr.veridiangames.client.main.screens.gamemode.TDMPlayerListScreen;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.game.Game;
 import fr.veridiangames.core.game.data.GameData;
-import fr.veridiangames.core.game.data.world.WorldGen;
-import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.world.Block;
 import fr.veridiangames.core.game.world.Chunk;
 import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Vec3;
-import fr.veridiangames.core.maths.Vec4;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMScorePacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMSpawnPacket;
@@ -40,6 +35,7 @@ import fr.veridiangames.core.utils.Color4f;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Jimi Vacarians on 24/07/2016.
@@ -92,14 +88,26 @@ public class TDMGameMode implements GameMode
     @Override
     public Vec3 getPlayerSpawn(int id) {
     	Vec3 sp = new Vec3();
+    	Vec3 offset = new Vec3();
         if(redTeam.getPlayers().contains(id))
             sp = redTeam.getSpawn();
 
         if(blueTeam.getPlayers().contains(id))
             sp = blueTeam.getSpawn();
 
-		sp.x += -8 + (Math.random() * (8 - (-8)));
-		sp.z += -8 + (Math.random() * (8 - (-8)));
+		offset.x = (int)(Math.random() * 8);
+		offset.z = (int)(Math.random() * 8);
+
+		Random rdm = new Random();
+		if(rdm.nextBoolean()){
+			sp.x -= offset.x;
+		}
+
+		if(rdm.nextBoolean()){
+			sp.z -= offset.z;
+		}
+
+		System.out.println(sp.x + " " + sp.y + " " + sp.z);
 		sp.y = GameCore.getInstance().getGame().getWorld().getHeightAt((int)sp.x, (int)sp.z)+2;
 /*
 		if(sp.equals(redTeam.getSpawn()) || sp.equals(blueTeam.getSpawn())){
@@ -119,6 +127,19 @@ public class TDMGameMode implements GameMode
 
         return null;
     }
+
+	@Override
+	public List<Team> getTeams() {
+    	List<Team> t = new ArrayList<>();
+    	t.add(redTeam);
+    	t.add(blueTeam);
+		return t;
+	}
+
+	@Override
+	public GuiCanvas getPlayerListScreen(GuiCanvas parent) {
+		return new TDMPlayerListScreen(parent);
+	}
 
 	@Override
 	public void onWorldGeneration(World w) {
