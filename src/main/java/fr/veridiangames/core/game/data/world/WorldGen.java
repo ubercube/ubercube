@@ -110,7 +110,7 @@ public class WorldGen
 							float nn = p.getNoisePass(x + xi, y + yi);
 							if (nn > n) n = nn;
 						}
-						noise[x + xi][y + yi] = n;
+						noise[x + xi][y + yi] = n + 0.5f * Chunk.SIZE;
 					}
 				}
 			}
@@ -127,7 +127,7 @@ public class WorldGen
 		{
 			for (int y = 0; y < Chunk.SIZE; y++)
 			{
-				noise[x][y] = this.noise[x + xp * Chunk.SIZE][y + yp * Chunk.SIZE] + 0.5f * Chunk.SIZE;
+				noise[x][y] = this.noise[x + xp * Chunk.SIZE][y + yp * Chunk.SIZE];
 			}	
 		}
 		return noise;

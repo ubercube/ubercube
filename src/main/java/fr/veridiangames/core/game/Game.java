@@ -69,6 +69,7 @@ public class Game
 
 		entityManager.update(core);
 //		world.update();
+		gameMode.update();
 	}
 
 	public void updatePhysics()

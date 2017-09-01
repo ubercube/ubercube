@@ -68,7 +68,7 @@ public class TDMGameModeScreen extends GuiCanvas {
 
         super.update();
         TDMGameMode mode = (TDMGameMode) Ubercube.getInstance().getGameCore().getGame().getGameMode();
-        redLabel.setText("Red : " + mode.getRedScore());
-        blueLabel.setText("Blue : " + mode.getBlueScore());
+        redLabel.setText(mode.getRedTeam().getName() + " : " + mode.getRedScore());
+        blueLabel.setText(mode.getBlueTeam().getName() + " : " + mode.getBlueScore());
     }
 }

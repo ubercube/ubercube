@@ -19,8 +19,6 @@
 
 package fr.veridiangames.core.game.modes;
 
-import fr.veridiangames.client.rendering.guis.GuiCanvas;
-import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableServer;
 
@@ -42,4 +40,5 @@ public interface GameMode
     void onPlayerDisconnect(int id, NetworkableServer server);
     void onPlayerDeath(int id, NetworkableServer server);
     void onPlayerSpawn(int id, NetworkableServer server);
+    boolean canSpawnTree(float x, float z);
 }

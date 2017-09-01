@@ -36,6 +36,9 @@ import fr.veridiangames.core.network.packets.gamemode.tdm.TDMSpawnPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMTeamPacket;
 import fr.veridiangames.core.utils.Color4f;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Jimi Vacarians on 24/07/2016.
  */
@@ -43,7 +46,9 @@ public class TDMGameMode implements GameMode
 {
     public TDMGameMode(GameData data)
     {
+    	redTeam.setName("Red");
         redTeam.setColor(Color4f.RED);
+        blueTeam.setName("Blue");
         blueTeam.setColor(Color4f.BLUE);
         int worldSize = data.getWorldSize() * Chunk.SIZE;
         redTeam.setSpawn(new Vec3(50, 50, 50));
@@ -84,13 +89,18 @@ public class TDMGameMode implements GameMode
 
     @Override
     public Vec3 getPlayerSpawn(int id) {
+    	Vec3 sp = new Vec3();
         if(redTeam.getPlayers().contains(id))
-            return redTeam.getSpawn();
+            sp = redTeam.getSpawn();
 
         if(blueTeam.getPlayers().contains(id))
-            return blueTeam.getSpawn();
+            sp = blueTeam.getSpawn();
 
-        return new Vec3();
+		sp.x += -8 + (Math.random() * (8 - (-8)));
+		sp.z += -8 + (Math.random() * (8 - (-8)));
+		sp.y = GameCore.getInstance().getGame().getWorld().getHeightAt((int)sp.x, (int)sp.z)+2;
+
+        return sp;
     }
 
     @Override
@@ -139,4 +149,20 @@ public class TDMGameMode implements GameMode
     public void onPlayerSpawn(int id, NetworkableServer server) {
 
     }
+
+	@Override
+	public boolean canSpawnTree(float x, float z) {
+    	double d = Math.hypot(x-redTeam.getSpawn().x, z-redTeam.getSpawn().z);
+    	if(d < 10){
+    		return false;
+		}
+
+		d = Math.hypot(x-blueTeam.getSpawn().x, z-blueTeam.getSpawn().z);
+		if(d < 10){
+			return false;
+		}
+
+		return true;
+	}
+
 }

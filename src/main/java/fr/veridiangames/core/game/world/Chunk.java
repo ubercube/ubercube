@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.game.world;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.data.world.WorldType;
 import fr.veridiangames.core.game.world.vegetations.trees.BigOakTree;
 import fr.veridiangames.core.game.world.vegetations.trees.OakTree;
@@ -42,11 +43,11 @@ public class Chunk
 	public int[][][]	blocks;
 	public Vec3i		position;
 	public Vec3			centerPosition;
-	
+
 	private float[][] noise;
 
 	private World world;
-	
+
 	public Chunk(Vec3i pos)
 	{
 		this.position = new Vec3i(pos);
@@ -58,7 +59,7 @@ public class Chunk
 		this.world = null;
 		this.blocks = new int[SIZE][SIZE][SIZE];
 	}
-	
+
 	public Chunk(int x, int y, int z, float[][] noise, World world)
 	{
 		this.position = new Vec3i(x, y, z);
@@ -158,12 +159,13 @@ public class Chunk
 
 			if (noiseHeight < 13 + world.getWorldGen().getRandom(0, 2))
 			{
-				if (world.getWorldGen().getRandom() > (world.getWorldType() == WorldType.SNOWY ? 0.9 : 0.2))
-				{
-					if (world.getWorldGen().getRandom() > 0.05)
-						new OakTree(world).generate(new Vec3i(xx, (int) noiseHeight, zz));
-					else
-						new BigOakTree(world).generate(new Vec3i(xx, (int) noiseHeight, zz));
+				if(GameCore.getInstance().getGame().getGameMode().canSpawnTree(xx, zz)) {
+					if (world.getWorldGen().getRandom() > (world.getWorldType() == WorldType.SNOWY ? 0.9 : 0.2)) {
+						if (world.getWorldGen().getRandom() > 0.05)
+							new OakTree(world).generate(new Vec3i(xx, (int) noiseHeight, zz));
+						else
+							new BigOakTree(world).generate(new Vec3i(xx, (int) noiseHeight, zz));
+					}
 				}
 			}
 		}

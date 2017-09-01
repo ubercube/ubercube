@@ -170,8 +170,6 @@ public class ConnectPacket extends Packet
 		/* Game Mode managment */
 		GameMode mode = server.getCore().getGame().getGameMode();
 		mode.onPlayerConnect(id, server);
-
-		// GAME MODE
 		GameCore.getInstance().getGame().getGameMode().onPlayerSpawn(id, server);
 		this.position = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn(id);
 
