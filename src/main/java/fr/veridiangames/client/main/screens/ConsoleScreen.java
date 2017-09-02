@@ -83,8 +83,7 @@ public class ConsoleScreen extends GuiCanvas
     {
         super.update();
 
-        if (Display.getInstance().getInput().getKeyDown(Input.KEY_T) ||
-                Display.getInstance().getInput().getKeyDown(Input.KEY_ENTER))
+        if (Display.getInstance().getInput().getKeyDown(Input.KEY_T) || Display.getInstance().getInput().getKeyDown(Input.KEY_ENTER))
         {
             console = true;
             this.setRendered(true);
@@ -101,7 +100,7 @@ public class ConsoleScreen extends GuiCanvas
         }
         Ubercube.getInstance().setInConsole(console);
         bg.setUseable(console);
-        write.setUseable(console);
+        write.setRendered(console);
 
         if (Display.getInstance().getInput().getKeyDown(Input.KEY_ENTER) && console && write.getText().length() > 0)
         {
@@ -131,7 +130,7 @@ public class ConsoleScreen extends GuiCanvas
         if (console)
         {
             glEnable(GL_SCISSOR_TEST);
-            glScissor(bg.getX(), Display.getInstance().getHeight() - bg.getY() - bg.getH(), bg.getW(), bg.getH());
+            glScissor(bg.getX() + 4, Display.getInstance().getHeight() - bg.getY() - bg.getH() + 4, bg.getW() - 8, bg.getH() - 8);
         }
         for (int i = 0; i < messageList.size(); i++)
         {
@@ -193,7 +192,6 @@ public class ConsoleScreen extends GuiCanvas
             {
                 color.setAlpha(1.0f);
             }
-
         }
 
         void render(GuiShader shader)

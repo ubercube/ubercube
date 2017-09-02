@@ -20,7 +20,6 @@
 package fr.veridiangames.client.rendering.guis.components;
 
 import fr.veridiangames.client.inputs.Input;
-import fr.veridiangames.client.inputs.Mouse;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.StaticFont;
@@ -28,8 +27,6 @@ import fr.veridiangames.client.rendering.guis.primitives.StaticPrimitive;
 import fr.veridiangames.client.rendering.shaders.GuiShader;
 import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Log;
-
-import java.awt.Font;
 
 public class GuiTextBox extends GuiComponent
 {
@@ -87,7 +84,6 @@ public class GuiTextBox extends GuiComponent
 		if (Display.getInstance().getInput().getMouse().getButtonUp(0) && !mouseIn) {
 			focused = false;
 		}
-		Log.println("Caretpos: " + caretPosition);
 		caretDistance = 0;
 		for (int i = 0; i < caretPosition; i++) {
 			char c = text.charAt(i);
@@ -140,20 +136,9 @@ public class GuiTextBox extends GuiComponent
 			caretPosition--;
 		showCaret = true;
 	}
-	
-	public void render(GuiShader shader) {
-//		if (focused)
-//		{
-//			shader.setColor(selectionColor);
-//			int selectionWidth =
-//			StaticPrimitive.quadPrimitive().render(shader,
-//				x + w / 2,
-//				y + h / 2,
-//				0,
-//				w / 2,
-//				11,
-//				0);
-//		}
+
+	public void render(GuiShader shader)
+	{
 		shader.setColor(color);
 		StaticPrimitive.quadPrimitive().render(shader, x +w/2, y +h/2, 0, w/2, h/2, 0);
 		if (!focused)
@@ -178,9 +163,14 @@ public class GuiTextBox extends GuiComponent
 	private void manageKeys() {
 		Input input = Display.getInstance().getInput();
 		int keycode = input.getKeyCode();
+		boolean activation = input.getKeyboardCallback().currentKeys.size() == 0 &&
+			input.getKeyboardCallback().upKeys.size() == 0 &&
+			input.getKeyboardCallback().downKeys.size() == 0 && keycode == 0;
+
+		Log.println("Can use console: " + activation + " is first loop ? " + firstLoop);
 		if (firstLoop)
 		{
-			if (input.getKeyUp(Input.KEY_T))
+			if (activation)
 				firstLoop = false;
 			return;
 		}
@@ -191,7 +181,7 @@ public class GuiTextBox extends GuiComponent
 		if (getKey(input.KEY_LEFT)) moveCaret(-1);
 		if (getKey(input.KEY_RIGHT)) moveCaret(1);
 	}
-	
+
 	int keyCode = -1;
 	boolean keyDown = false;
 	int keyTime = 0;
@@ -199,8 +189,6 @@ public class GuiTextBox extends GuiComponent
 	public boolean getKey(int key) {
 		Input input = Display.getInstance().getInput();
 		if (input.getKeyboardCallback().currentKeys.size() > 2) return false;
-//		if (input.getKeyDown(key))
-//			return true;
 		if (input.getKey(key)) {
 			if (keyDown) {
 				if (keyCode == key) {
@@ -211,10 +199,8 @@ public class GuiTextBox extends GuiComponent
 					else return false;
 				}
 			}
-
 			keyCode = key;
 			keyDown = input.getKey(key);
-
 			return keyDown;
 		}
 		if (keyCode == key) {
@@ -226,7 +212,7 @@ public class GuiTextBox extends GuiComponent
 		
 		return false;
 	}
-	
+
 	public void dispose() {
 		
 	}
@@ -234,7 +220,7 @@ public class GuiTextBox extends GuiComponent
 	public String getText() {
 		return text;
 	}
-	
+
 	public void clear() {
 		text = "";
 		textWidth = 0;

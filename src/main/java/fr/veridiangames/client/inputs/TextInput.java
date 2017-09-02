@@ -9,11 +9,10 @@ public class TextInput implements GLFWCharCallbackI
 {
 	private List<Integer> keyCodes = new ArrayList<>();
 
-	private int keyCode = 0;
+	private int keyCode = -1;
 
 	public void invoke(long window, int codepoint)
 	{
-		System.out.println("LOL: " + codepoint);
 		keyCode = codepoint;
 	}
 

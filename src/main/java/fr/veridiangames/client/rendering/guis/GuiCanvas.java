@@ -41,6 +41,7 @@ public class GuiCanvas
 	private List<GuiCanvas> canvasOverlays;
 
 	private GuiShader shader;
+	private boolean enabled;
 
 	public GuiCanvas(GuiCanvas parent)
 	{
@@ -50,6 +51,7 @@ public class GuiCanvas
 		canvasOverlays = new ArrayList<>();
 		rendered = true;
 		updated = true;
+		enabled = true;
 	}
 	
 	public void update()
@@ -62,7 +64,7 @@ public class GuiCanvas
 
 		for (int i = 0; i < canvasOverlays.size(); i++)
 		{
-			if (canvasOverlays.get(i).isUpdated())
+			if (canvasOverlays.get(i).isUpdated() && canvasOverlays.get(i).isEnabled())
 				canvasOverlays.get(i).update();
 		}
 	}
@@ -79,7 +81,7 @@ public class GuiCanvas
 					gui.renderSteps(shader);
 
 		for (GuiCanvas canvas : canvasOverlays)
-			if (canvas.isRendered())
+			if (canvas.isRendered() && canvas.isEnabled())
 				canvas.render(display);
 
 		render(shader);
@@ -133,4 +135,12 @@ public class GuiCanvas
 	}
 
 	public GuiCanvas getParent() { return parent; }
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
 }

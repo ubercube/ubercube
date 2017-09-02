@@ -40,6 +40,7 @@ public abstract class GuiComponent
 	}
 
 	protected boolean useable = true;
+	protected boolean rendered = true;
 	protected boolean mouseFocused;
 	protected boolean mouseEnter, mouseIn, mouseExit;
 	protected boolean mouseButtonDown, mouseButtonPressed, mouseButtonUp;
@@ -289,6 +290,8 @@ public abstract class GuiComponent
 
 	public void renderSteps(GuiShader shader)
 	{
+		if (!rendered)
+			return;
 		render(shader);
 	}
 
@@ -397,5 +400,13 @@ public abstract class GuiComponent
 
 	public GuiCanvas getCanvas() {
 		return canvas;
+	}
+
+	public void setRendered(boolean rendered) {
+		this.rendered = rendered;
+	}
+
+	public boolean isRendered() {
+		return rendered;
 	}
 }

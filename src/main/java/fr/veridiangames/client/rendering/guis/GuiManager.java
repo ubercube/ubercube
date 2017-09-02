@@ -19,7 +19,6 @@
 
 package fr.veridiangames.client.rendering.guis;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
