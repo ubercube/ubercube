@@ -1,6 +1,7 @@
 
 Ubercube
 ===
+![](https://travis-ci.org/ubercube/ubercube.svg?branch=develop)
 
 Ubercube is a first person shooter multi-player game set in a completely destroyable voxel world.
 The map can be procedurally generated or pre-made.
