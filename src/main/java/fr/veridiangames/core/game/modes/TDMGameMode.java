@@ -98,8 +98,8 @@ public class TDMGameMode implements GameMode
 			Log.error("Player(" + id + ") hose no team !");
 		}
 
-		offset.x = (int)((Math.random() * 2.0 - 1.0) * 8);
-		offset.z = (int)((Math.random() * 2.0 - 1.0) * 8);
+		offset.x = (int)(((Math.random() * 0.8 + 0.2) * 2.0 - 1.0) * 8);
+		offset.z = (int)(((Math.random() * 0.8 + 0.2) * 2.0 - 1.0) * 8);
 
 		sp.x += offset.x;
 		sp.z += offset.z;

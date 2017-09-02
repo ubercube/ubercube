@@ -66,7 +66,6 @@ public class DeathScreen extends GuiCanvas
         {
             setRendered(true);
             display.getInput().getMouse().setGrabbed(false);
-            Ubercube.getInstance().setInMenu(true);
             super.update();
         }
         else
