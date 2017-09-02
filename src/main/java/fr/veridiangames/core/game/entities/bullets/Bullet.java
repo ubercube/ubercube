@@ -50,8 +50,9 @@ public class Bullet extends Entity
 	private float				force;
 	private NetworkableClient	net;
 	private Vec3 startPosition = new Vec3();
+	private int shooterId;
 
-	public Bullet(int id, int holderID, String name, Vec3 spawnPoint, Quat orientation, float force)
+	public Bullet(int id, int holderID, String name, Vec3 spawnPoint, Quat orientation, float force, int shooterId)
 	{
 		super(id);
 		super.add(new ECName(name));
@@ -70,6 +71,7 @@ public class Bullet extends Entity
 		startPosition.set(this.getPosition());
 
 		this.force = force;
+		this.shooterId = shooterId;
 	}
 
 	public void update(GameCore core)
@@ -130,7 +132,7 @@ public class Bullet extends Entity
 			ParticleSystem blood = new ParticlesBlood(Indexer.getUniqueID(), getPosition().copy());
 			blood.setParticleVelocity(getRotation().getBack().copy().mul(0.02f));
 			blood.setNetwork(net);
-			this.net.send(new BulletHitPlayerPacket(player), Protocol.TCP);
+			this.net.send(new BulletHitPlayerPacket(player, shooterId), Protocol.TCP);
 			this.destroy();
 		}
 	}
@@ -177,5 +179,9 @@ public class Bullet extends Entity
 	public float getForce()
 	{
 		return force;
+	}
+
+	public int getShooterID(){
+		return this.shooterId;
 	}
 }

@@ -41,6 +41,7 @@ import java.net.InetAddress;
 public class DeathPacket extends Packet
 {
     private int playerId;
+	private int shooterId;
 
     public DeathPacket()
     {
@@ -54,9 +55,18 @@ public class DeathPacket extends Packet
         data.flip();
     }
 
+	public DeathPacket(int playerId, int shooterId)
+	{
+		super(DEATH);
+		data.put(playerId);
+		data.put(shooterId);
+		data.flip();
+	}
+
     public void read(DataBuffer buffer)
     {
         this.playerId = buffer.getInt();
+        this.shooterId = buffer.getInt();
     }
 
     public void process(NetworkableServer server, InetAddress address, int port)
@@ -67,16 +77,24 @@ public class DeathPacket extends Packet
     public void process(NetworkableClient client, InetAddress address, int port)
     {
         Entity e = client.getCore().getGame().getEntityManager().get(this.playerId);
+		String shooterName;
+        if(!GameCore.getInstance().getGame().getEntityManager().getEntities().containsKey(shooterId)) {
+			shooterName = "Server";
+		}else {
+			shooterName = ((Player) GameCore.getInstance().getGame().getEntityManager().getEntities().get(shooterId)).getName();
+		}
+
+
         if (e != null || !(e instanceof Player))
-            client.console(((ECName)e.get(EComponent.NAME)).getName() + " just died !");
+            client.console(((ECName)e.get(EComponent.NAME)).getName() + " has been killed by " + shooterName + " !");
         else
             return;
 		Player p = (Player) e;
         if(client.getCore().getGame().getPlayer().getID() != this.playerId)
-            client.log(((ECName)e.get(EComponent.NAME)).getName() + " just died !");
+            client.log(((ECName)e.get(EComponent.NAME)).getName() + " has been killed by " + shooterName + " !");
         else
         {
-            client.log("You died !");
+            client.log("You died by " + shooterName + " !");
             client.getCore().getGame().getPlayer().setDead(true);
             //client.send(new RespawnPacket(GameCore.getInstance().getGame().getPlayer().getID()), Protocol.TCP);
         }

@@ -64,7 +64,12 @@ public class ServerPlayer extends Player
 		this.timeSinceSpawn = 0;
 	}
 
-	public boolean applyDamage (int damage, NetworkableServer server)
+	public boolean applyDamage (int damage, NetworkableServer server){
+		return applyDamage(damage, server, 0);
+	}
+
+
+	public boolean applyDamage (int damage, NetworkableServer server, int shooterId)
 	{
 	    if (this.isDead()) return true;
 		if (timeSinceSpawn <= 10) return false;
@@ -75,7 +80,7 @@ public class ServerPlayer extends Player
 
 		if(this.life <= 0 && !this.isDead())
 		{
-			server.tcpSendToAll(new DeathPacket(this.getID()));
+			server.tcpSendToAll(new DeathPacket(this.getID(), shooterId));
 
 			/* GAME MODE */
 			server.getCore().getGame().getGameMode().onPlayerDeath(id, server);

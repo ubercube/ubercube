@@ -42,6 +42,7 @@ public class BulletHitPlayerPacket extends Packet
     private int playerId;
     private int life;
     private boolean hitable;
+    private int shooterId;
 
     public BulletHitPlayerPacket()
 
@@ -49,10 +50,11 @@ public class BulletHitPlayerPacket extends Packet
         super(BULLET_HIT_PLAYER);
     }
 
-    public BulletHitPlayerPacket(Player player)
+    public BulletHitPlayerPacket(Player player, int shooterId)
     {
         super(BULLET_HIT_PLAYER);
         data.put(player.getID());
+        data.put(shooterId);
         data.put(0);
         data.put(player.isHitable() ? 1 : 0);
 
@@ -63,6 +65,7 @@ public class BulletHitPlayerPacket extends Packet
     {
         super(BULLET_HIT_PLAYER);
         data.put(packet.playerId);
+        data.put(packet.shooterId);
         data.put(life);
         data.put(hitable ? 1 : 0);
 
@@ -72,6 +75,7 @@ public class BulletHitPlayerPacket extends Packet
     public void read(DataBuffer data)
     {
         playerId = data.getInt();
+        shooterId = data.getInt();
         life = data.getInt();
         hitable = data.getInt() == 0 ? false : true;
     }
@@ -81,20 +85,16 @@ public class BulletHitPlayerPacket extends Packet
         ServerPlayer p = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId);
         if (p == null)
             return;
-        boolean dead = p.applyDamage(20, server);
+        boolean dead = p.applyDamage(20, server, shooterId);
         if(!dead)
             server.tcpSendToAll(new BulletHitPlayerPacket(this, p.isHitable(), p.getLife()));
     }
 
     public void process(NetworkableClient client, InetAddress address, int port)
     {
-        if (client.getCore().getGame().getPlayer().getID() == playerId)
+        if ((client.getCore().getGame().getPlayer().getID() == playerId) || (client.getCore().getGame().getPlayer().getID() == shooterId))
         {
             client.playSound(new AudioSource(Sound.PLAYER_HIT));
-        }
-        else if (client.getCore().getGame().getEntityManager().getEntities().containsKey(playerId))
-        {
-            client.playSound(new AudioSource(Sound.PLAYER_HIT, ((Player) client.getCore().getGame().getEntityManager().get(playerId)).getPosition().copy()));
         }
     }
 }
