@@ -26,6 +26,8 @@ import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.particles.ParticleSnow;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
+import fr.veridiangames.core.game.entities.weapons.Weapon;
+import fr.veridiangames.core.game.entities.weapons.explosiveWeapons.WeaponGrenade;
 import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
@@ -86,7 +88,17 @@ public class ClientPlayer extends Player
 		super.init(core);
 		this.getWeaponManager().getWeapon().setNet(net);
 	}
-	
+
+	public void respawn(Vec3 position, Quat rotation)
+	{
+		getRigidBody().getBody().killForces();
+		setPosition(position);
+		setRotation(rotation);
+		setLife(Player.MAX_LIFE);
+		((WeaponGrenade) getWeaponManager().getWeapons().get(Weapon.GRENADE)).resetGrenades();
+		setDead(false);
+	}
+
 	int movementTime = 0;
 	int timeOutTime = 0;
 	public void update(GameCore core)
@@ -101,7 +113,7 @@ public class ClientPlayer extends Player
 		((AABoxCollider)this.getRigidBody().getBody().getCollider()).setSize(new Vec3(0.3f, 2.8f * 0.5f, 0.3f));
 
 		movementTime++;
-		if (movementTime % 60 == 5)
+		if (movementTime % 60 == 10)
 		{
 			net.send(new EntityMovementPacket(this), Protocol.UDP);
 			movementTime = 0;

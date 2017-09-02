@@ -124,7 +124,8 @@ public class PlayerRenderer
 			Entity e = entities.get(indices.get(i));
 			if (e instanceof ClientPlayer) 
 				continue;
-			
+			if (!((ECRender)e.get(EComponent.RENDER)).isRendered())
+				continue;
 			renderCount++;
 			Transform transform = ((ECRender) e.get(EComponent.RENDER)).getTransform();
 			

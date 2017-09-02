@@ -66,7 +66,9 @@ public class Rigidbody
 	private boolean ignoreOthers;
 	
 	private boolean networkView;
-	private Vec3 		movementAxis;
+	private Vec3 movementAxis;
+
+	private boolean enabled;
 
 	public Rigidbody(Entity e, Vec3 position, Quat rotation, Collider collider, boolean networkView)
 	{
@@ -83,6 +85,7 @@ public class Rigidbody
 		this.networkView = networkView;
 		this.mainForce = new Vec3();
 		this.collidingAxis = new Vec3(1, 1, 1);
+		this.enabled = true;
 	}
 
 	public void updateDragFactor(float delta)
@@ -394,5 +397,13 @@ public class Rigidbody
 	public boolean isHitGrounded()
 	{
 		return hitGrounded;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
 	}
 }

@@ -28,6 +28,7 @@ import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
 import fr.veridiangames.core.game.entities.particles.ParticlesBulletHit;
+import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.world.Chunk;
 import fr.veridiangames.core.maths.Quat;
@@ -90,9 +91,15 @@ public class Bullet extends Entity
 			block = core.getGame().getWorld().getBlockAt(stepedPosition);
 			blockPosition = stepedPosition.copy();
 			e = core.getGame().getEntityManager().getEntityAt(stepedPosition, "NetPlayer");
-			if (e != null)
-				if (e.getID() == holderID)
+			if (e != null) {
+				if (!(e instanceof NetworkedPlayer))
 					e = null;
+				else {
+					NetworkedPlayer player = (NetworkedPlayer) e;
+					if (player.isDead())
+						e = null;
+				}
+			}
 			if (block == 0 && e == null)
 			{
 				position.set(stepedPosition);
@@ -117,10 +124,12 @@ public class Bullet extends Entity
 		}
 		if (e != null)
 		{
+			Player player = (Player) e;
+			if (((Player) e).isDead())
+				return;
 			ParticleSystem blood = new ParticlesBlood(Indexer.getUniqueID(), getPosition().copy());
 			blood.setParticleVelocity(getRotation().getBack().copy().mul(0.02f));
 			blood.setNetwork(net);
-			Player player = (Player) e;
 			this.net.send(new BulletHitPlayerPacket(player), Protocol.TCP);
 			this.destroy();
 		}

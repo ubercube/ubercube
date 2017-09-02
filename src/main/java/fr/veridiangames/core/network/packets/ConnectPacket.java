@@ -40,6 +40,7 @@ import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.game.modes.GameMode;
+import fr.veridiangames.core.utils.Log;
 
 /**
  * Created by Marccspro on 26 f�vr. 2016.
@@ -62,6 +63,7 @@ public class ConnectPacket extends Packet
 	public ConnectPacket(Player player)
 	{
 		super(CONNECT);
+		Log.println("Your trying to connect with id: " + player.getID());
 		data.put(player.getID());
 		data.put(player.getName());
 		
@@ -116,7 +118,9 @@ public class ConnectPacket extends Packet
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
 		seed = server.getCore().getGame().getData().getWorldGen().getSeed();
-		server.getCore().getGame().spawn(new ServerPlayer(id, name, position, rotation, address.getHostName(), port));
+		ServerPlayer connectPlayer = new ServerPlayer(id, name, position, rotation, address.getHostName(), port);
+		connectPlayer.setDead(true);
+		server.getCore().getGame().spawn(connectPlayer);
 
 		server.getTcp().getClient(address, port).setID(id);
 
@@ -170,10 +174,9 @@ public class ConnectPacket extends Packet
 		/* Game Mode managment */
 		GameMode mode = server.getCore().getGame().getGameMode();
 		mode.onPlayerConnect(id, server);
-		GameCore.getInstance().getGame().getGameMode().onPlayerSpawn(id, server);
-		this.position = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn(id);
-
-		server.tcpSend(new RespawnPacket((Player) GameCore.getInstance().getGame().getEntityManager().get(id), this.position), address, port);
+//		GameCore.getInstance().getGame().getGameMode().onPlayerSpawn(id, server);
+//		this.position = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn(id);
+//		server.tcpSend(new RespawnPacket((Player) GameCore.getInstance().getGame().getEntityManager().get(id), this.position), address, port);
 
 		if (!version.equals(GameCore.GAME_SUB_VERSION))
 		{
@@ -189,12 +192,14 @@ public class ConnectPacket extends Packet
 	{
 		if (client.getCore().getGame().getPlayer().getID() != id)
 		{
-			client.getCore().getGame().spawn(new NetworkedPlayer(id, name, position, rotation, address.getHostName(), port));
+			NetworkedPlayer player = new NetworkedPlayer(id, name, position, rotation, address.getHostName(), port);
+			player.setDead(true);
+			client.getCore().getGame().spawn(player);
 			client.log(name + " just connected !");
 		}
 		else
 		{
-			client.log("You just connected as " + name);
+			client.log("You just connected as " + name + " with id: " + id);
 			client.getCore().getGame().createWorld(seed);
 			client.setConnected(true);
 		}

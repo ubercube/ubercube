@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.game.entities.player;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.ECRigidbody;
 import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.maths.Quat;
@@ -36,6 +37,26 @@ public class NetworkedPlayer extends Player
 		super(id, name, position, rotation, address, port);
 		super.add(new ECRigidbody(this, position, rotation, new AABoxCollider(new Vec3(0.5f, 2.5f * 0.5f, 0.5f)), true));
 		super.addTag("NetPlayer");
+	}
+
+	public void respawn(Vec3 position, Quat rotation)
+	{
+		setPosition(position);
+		setRotation(rotation);
+		getBody().setEnabled(true);
+		getRenderer().setRendered(true);
+		setDead(false);
+	}
+
+	public void update(GameCore core)
+	{
+		if (this.isDead())
+		{
+			getRenderer().setRendered(false);
+			getBody().setEnabled(false);
+			return;
+		}
+		super.update(core);
 	}
 
 	public Rigidbody getBody()

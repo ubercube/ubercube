@@ -31,12 +31,14 @@ public class ECRender extends EComponent
 {
 	private Transform 	transform;
 	private Transform	eyePoint;
+	private boolean		rendered;
 	
 	public ECRender(Vec3 position, Quat rotation, Vec3 scale)
 	{
 		super(RENDER);
 		this.transform = new Transform(position, rotation, scale);
 		this.eyePoint = new Transform();
+		this.rendered = true;
 	}
 
 	public void update(GameCore core)
@@ -74,5 +76,13 @@ public class ECRender extends EComponent
 	public void setScale(Vec3 scale)
 	{
 		transform.setLocalScale(scale);
+	}
+
+	public boolean isRendered() {
+		return rendered;
+	}
+
+	public void setRendered(boolean renderer) {
+		this.rendered = renderer;
 	}
 }

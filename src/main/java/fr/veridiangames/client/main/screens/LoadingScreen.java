@@ -30,6 +30,10 @@ import fr.veridiangames.client.rendering.guis.components.GuiPanel;
 import fr.veridiangames.client.rendering.guis.components.GuiTextArea;
 import fr.veridiangames.client.rendering.guis.listeners.GuiActionListener;
 import fr.veridiangames.client.rendering.textures.TextureLoader;
+import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.player.ClientPlayer;
+import fr.veridiangames.core.network.Protocol;
+import fr.veridiangames.core.network.packets.RespawnPacket;
 import fr.veridiangames.core.utils.Color4f;
 
 import java.awt.*;
@@ -68,6 +72,8 @@ public class LoadingScreen extends GuiCanvas
             public void onAction()
             {
                 loadingInfo.setText("Joining game...");
+				ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
+				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
                 joinGame = true;
             }
         });

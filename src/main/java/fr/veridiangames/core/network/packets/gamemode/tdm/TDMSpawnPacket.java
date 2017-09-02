@@ -25,6 +25,7 @@ import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
+import fr.veridiangames.core.utils.Log;
 
 import java.net.InetAddress;
 
@@ -53,12 +54,12 @@ public class TDMSpawnPacket extends Packet {
 
     @Override
     public void read(DataBuffer buffer) {
-        redSpawn.x = data.getFloat();
-        redSpawn.y = data.getFloat();
-        redSpawn.z = data.getFloat();
-        blueSpawn.x = data.getFloat();
-        blueSpawn.y = data.getFloat();
-        blueSpawn.z = data.getFloat();
+        redSpawn.x = buffer.getFloat();
+        redSpawn.y = buffer.getFloat();
+        redSpawn.z = buffer.getFloat();
+        blueSpawn.x = buffer.getFloat();
+        blueSpawn.y = buffer.getFloat();
+        blueSpawn.z = buffer.getFloat();
     }
 
     @Override
@@ -69,6 +70,8 @@ public class TDMSpawnPacket extends Packet {
     @Override
     public void process(NetworkableClient client, InetAddress address, int port) {
         TDMGameMode mode = (TDMGameMode) client.getCore().getGame().getGameMode();
+		Log.println("Receiving Red team spawn: " + redSpawn);
+		Log.println("Receiving Blue team spawn: " + blueSpawn);
         mode.getRedTeam().setSpawn(redSpawn);
         mode.getBlueTeam().setSpawn(blueSpawn);
     }

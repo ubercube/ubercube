@@ -41,7 +41,6 @@ public class TCPReceiverThread extends Thread
 				DataBuffer data = new DataBuffer(bytes);
 				int id = data.getInt();
 				Packet packet = PacketManager.getPacket(id);
-				client.log("Received packet " + packet + " of size: " + length);
 				if (packet == null)
 				{
 					client.log("TCP: " + Time.getTime() + " [ERROR]-> Received null packet, packet ID: " + id);

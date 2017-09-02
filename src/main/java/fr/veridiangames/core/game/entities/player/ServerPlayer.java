@@ -88,9 +88,12 @@ public class ServerPlayer extends Player
 		return false;
 	}
 
+	public void respawn(Vec3 position, Quat rotation) {}
+
     public void kill (NetworkableServer server)
     {
-        this.applyDamage(this.life, server);
+    	this.applyDamage(this.life, server);
+    	this.setDead(true);
     }
 
 	public void sendTCP(Packet packet, NetworkableServer server)

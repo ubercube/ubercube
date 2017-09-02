@@ -84,6 +84,8 @@ public class EntityWeaponRenderer
 		if (!e.contains(EComponent.RENDER) || !e.contains(EComponent.WEAPON))
 			return;
 		ECRender render = (ECRender) e.get(EComponent.RENDER);
+		if (!render.isRendered())
+			return;
 		ECWeapon weaponComp = (ECWeapon) e.get(EComponent.WEAPON);
 		if (render == null || weaponComp == null)
 			return;

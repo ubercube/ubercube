@@ -44,6 +44,8 @@ public class PhysicsEngine
 			for (int i = 0; i < bodys.size(); i++)
 			{
 				Rigidbody a = bodys.get(i);
+				if (!a.isEnabled())
+					continue;
 				a.applyGravity(delta);
 				a.applyForces(delta);
 				a.updateDragFactor(delta);
@@ -58,6 +60,9 @@ public class PhysicsEngine
 							continue;
 
 						if (b.isIgnoreOthers())
+							continue;
+
+						if (!b.isEnabled())
 							continue;
 
 						CollisionData data = a.getCollisionData(b);

@@ -89,6 +89,8 @@ public class EntityMovementPacket extends Packet
 		ServerPlayer player = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(id);
 		if (player == null) 
 			return;
+		if (player.isDead())
+			return;
 
 		Vec3 vel = player.getPosition().copy().sub(position);
 		player.setOnlineVelocity(vel);

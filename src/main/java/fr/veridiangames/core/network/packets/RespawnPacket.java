@@ -60,7 +60,7 @@ public class RespawnPacket extends Packet
 
         data.put(player.getName());
 
-        Vec3 spawn = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn(playerId);
+        Vec3 spawn = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn(player.getID());
         data.put(spawn.x);
         data.put(spawn.y);
         data.put(spawn.z);
@@ -133,7 +133,7 @@ public class RespawnPacket extends Packet
         // GAME MODE
         GameCore.getInstance().getGame().getGameMode().onPlayerSpawn(playerId, server);
 		Vec3 spawPos = GameCore.getInstance().getGame().getGameMode().getPlayerSpawn(playerId);
-		this.position = new Vec3(spawPos.x, server.getCore().getGame().getWorld().getHeightAt((int)spawPos.x, (int)spawPos.z), spawPos.z);
+		this.position = new Vec3(spawPos.x, spawPos.y, spawPos.z);
 
         /*int x = server.getCore().getGame().getData().getWorldSize() * 8;
         int y = server.getCore().getGame().getData().getWorldSize() * 8;
@@ -148,18 +148,12 @@ public class RespawnPacket extends Packet
         if(playerId == client.getID())
         {
             ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
-            p.getRigidBody().getBody().killForces();
-            p.setPosition(this.position);
-            p.setLife(Player.MAX_LIFE);
-            p.setDead(false);
-            ((WeaponGrenade) p.getWeaponManager().getWeapons().get(Weapon.GRENADE)).resetGrenades();
+			p.respawn(position, rotation);
         }
         else
         {
-            if(!client.getCore().getGame().getEntityManager().getPlayerEntites().contains(playerId))
-            {
-                client.getCore().getGame().spawn(new NetworkedPlayer(playerId, name, position, rotation, address.getHostName(), port));
-            }
+            NetworkedPlayer p = (NetworkedPlayer)client.getCore().getGame().getEntityManager().get(playerId);
+        	p.respawn(position, rotation);
         }
     }
 }

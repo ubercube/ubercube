@@ -84,6 +84,12 @@ public abstract class Weapon
 	
 	public void update(GameCore core)
 	{
+		if (holder.isDead())
+		{
+			this.undraw();
+			return;
+		}
+		this.draw();
 		if (currentPosition == 0)
 			setTransformSmoothly(idlePosition, 0.4f);
 		else if (currentPosition == 1)

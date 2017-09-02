@@ -67,11 +67,11 @@ public class DeathPacket extends Packet
     public void process(NetworkableClient client, InetAddress address, int port)
     {
         Entity e = client.getCore().getGame().getEntityManager().get(this.playerId);
-        if (e != null)
+        if (e != null || !(e instanceof Player))
             client.console(((ECName)e.get(EComponent.NAME)).getName() + " just died !");
         else
             return;
-
+		Player p = (Player) e;
         if(client.getCore().getGame().getPlayer().getID() != this.playerId)
             client.log(((ECName)e.get(EComponent.NAME)).getName() + " just died !");
         else
@@ -96,6 +96,6 @@ public class DeathPacket extends Packet
             .setParticleLifeTimeRandomness(120));
 
         if(playerId != client.getID())
-            e.destroy();
+            p.setDead(true);
     }
 }

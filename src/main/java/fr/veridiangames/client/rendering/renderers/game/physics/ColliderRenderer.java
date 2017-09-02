@@ -118,7 +118,10 @@ public class ColliderRenderer
 			Mat4 matrix = Mat4.translate(collider.getPosition()).mul(Mat4.scale(collider.getSize()));
 
 			instanceBuffer.put(matrix.getComponents());
-			instanceBuffer.put(Color4f.GREEN.toArray());
+			if (body.isEnabled())
+				instanceBuffer.put(Color4f.GREEN.toArray());
+			else
+				instanceBuffer.put(Color4f.RED.toArray());
 		}
 		instanceBuffer.flip();
 		glBindBuffer(GL_ARRAY_BUFFER, vio);

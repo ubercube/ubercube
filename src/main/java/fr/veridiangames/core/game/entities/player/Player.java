@@ -30,7 +30,7 @@ import fr.veridiangames.core.maths.Vec3;
 /**
  * Created by Marccspro on 26 f�vr. 2016.
  */
-public class Player extends Entity
+public abstract class Player extends Entity
 {
 	public static final int MAX_LIFE = 100;
 	public static final float HEIGHT = 2.5f;
@@ -68,12 +68,16 @@ public class Player extends Entity
 			setPosition(smoothPosition);
 		}
 	}
-	
+
+	public abstract void respawn(Vec3 position, Quat rotation);
+
 	public String getName()
 	{
 		return ((ECName) this.get(EComponent.NAME)).getName();
 	}
-	
+
+	public ECRender getRenderer() { return ((ECRender) this.get(EComponent.RENDER)); }
+
 	public Vec3 getPosition()
 	{
 		if (this.contains(EComponent.RIGIDBODY))

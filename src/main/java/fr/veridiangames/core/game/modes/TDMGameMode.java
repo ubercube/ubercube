@@ -32,6 +32,7 @@ import fr.veridiangames.core.network.packets.gamemode.tdm.TDMScorePacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMSpawnPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMTeamPacket;
 import fr.veridiangames.core.utils.Color4f;
+import fr.veridiangames.core.utils.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,29 +91,21 @@ public class TDMGameMode implements GameMode
     	Vec3 sp = new Vec3();
     	Vec3 offset = new Vec3();
         if(redTeam.getPlayers().contains(id))
-            sp = redTeam.getSpawn();
-
-        if(blueTeam.getPlayers().contains(id))
-            sp = blueTeam.getSpawn();
-
-		offset.x = (int)(Math.random() * 8);
-		offset.z = (int)(Math.random() * 8);
-
-		Random rdm = new Random();
-		if(rdm.nextBoolean()){
-			sp.x -= offset.x;
+			sp = redTeam.getSpawn();
+        else if(blueTeam.getPlayers().contains(id))
+			sp = blueTeam.getSpawn();
+        else {
+			Log.error("Player(" + id + ") hose no team !");
 		}
 
-		if(rdm.nextBoolean()){
-			sp.z -= offset.z;
-		}
+		offset.x = (int)((Math.random() * 2.0 - 1.0) * 8);
+		offset.z = (int)((Math.random() * 2.0 - 1.0) * 8);
 
+		sp.x += offset.x;
+		sp.z += offset.z;
+
+		sp.y = GameCore.getInstance().getGame().getWorld().getHeightAt((int)sp.x, (int)sp.z) + 2;
 		System.out.println(sp.x + " " + sp.y + " " + sp.z);
-		sp.y = GameCore.getInstance().getGame().getWorld().getHeightAt((int)sp.x, (int)sp.z)+2;
-/*
-		if(sp.equals(redTeam.getSpawn()) || sp.equals(blueTeam.getSpawn())){
-			sp = getPlayerSpawn(id);
-		}*/
 
         return sp;
     }
@@ -163,6 +156,8 @@ public class TDMGameMode implements GameMode
         }
         server.tcpSendToAll(new TDMScorePacket(redScore, blueScore)); // All to player
         server.tcpSendToAll(new TDMTeamPacket(redTeam, blueTeam));
+        Log.println("Sending Red team spawn: " + redTeam.getSpawn());
+        Log.println("Sending Blue team spawn: " + blueTeam.getSpawn());
         server.tcpSendToAll(new TDMSpawnPacket(redTeam.getSpawn(), blueTeam.getSpawn()));
     }
 

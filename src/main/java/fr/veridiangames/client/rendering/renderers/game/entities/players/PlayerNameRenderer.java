@@ -61,6 +61,8 @@ public class PlayerNameRenderer
             Entity e = entities.get(key);
             if (!(e instanceof NetworkedPlayer))
                 continue;
+            if (((Player)e).isDead())
+            	continue;
             String name = ((Player) e).getName();
             Team team = ((Player) e).getTeam();
             Vec3 position = ((Player) e).getPosition();

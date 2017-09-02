@@ -73,7 +73,7 @@ public class ConsoleScreen extends GuiCanvas
         bg.setOrigin(GuiComponent.GuiOrigin.D);
         super.add(bg);
 
-        write = new GuiTextBox(x, y + 1, w, 64 - 15);
+        write = new GuiTextBox(x, y + 1, w, 500);
         write.setOrigin(GuiComponent.GuiOrigin.D);
         write.setScreenParent(GuiComponent.GuiCorner.BL);
         super.add(write);
@@ -87,6 +87,7 @@ public class ConsoleScreen extends GuiCanvas
                 Display.getInstance().getInput().getKeyDown(Input.KEY_ENTER))
         {
             console = true;
+            this.setRendered(true);
             Display.getInstance().getInput().getMouse().setGrabbed(false);
             write.setFocused(true);
             yScroll = 0;
@@ -94,6 +95,7 @@ public class ConsoleScreen extends GuiCanvas
         if (Display.getInstance().getInput().getKeyDown(Input.KEY_ESCAPE))
         {
             console = false;
+			this.setRendered(false);
             Display.getInstance().getInput().getMouse().setGrabbed(true);
             write.setFocused(false);
         }

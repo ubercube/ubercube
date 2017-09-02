@@ -25,8 +25,11 @@ public class PlayerList {
 	}
 
 	public boolean remove(int id){
-		for(int i : list){
-			if(i == id){
+		for(int i = 0; i < list.size(); i++)
+		{
+			int cid = list.get(i);
+			if (cid == id)
+			{
 				list.remove(i);
 			}
 			return true;
