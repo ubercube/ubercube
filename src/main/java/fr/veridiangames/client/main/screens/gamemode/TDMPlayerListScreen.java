@@ -132,7 +132,7 @@ public class TDMPlayerListScreen extends GuiCanvas {
 		public PLine(Player player, GuiComponent parent, int i)
 		{
 			this.name = player.getName();
-			this.ping = 0;
+			this.ping = player.getPing();
 			this.x = parent.getX();
 			this.y = parent.getY() + i * 25;
 			this.nameLabel = new FontRenderer(FONT, name, x + 5, y + 2);

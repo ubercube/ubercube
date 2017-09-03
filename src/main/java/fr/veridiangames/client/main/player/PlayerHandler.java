@@ -99,8 +99,8 @@ public class PlayerHandler
 		else
 			weapon.getWeapon().setPosition(0);
 
-		if (input.getKeyDown(Input.KEY_F))
-			key.setFly(!key.isFly());
+//		if (input.getKeyDown(Input.KEY_F))
+//			key.setFly(!key.isFly());
 
 		mouse.setDX(input.getMouse().getDX());
 		mouse.setDY(input.getMouse().getDY());

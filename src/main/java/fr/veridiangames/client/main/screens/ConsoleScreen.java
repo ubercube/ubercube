@@ -87,7 +87,6 @@ public class ConsoleScreen extends GuiCanvas
         if (Display.getInstance().getInput().getKeyDown(Input.KEY_T) || Display.getInstance().getInput().getKeyDown(Input.KEY_ENTER))
         {
             console = true;
-            this.setRendered(true);
             Display.getInstance().getInput().getMouse().setGrabbed(false);
             write.setFocused(true);
             yScroll = 0;
@@ -95,7 +94,6 @@ public class ConsoleScreen extends GuiCanvas
         if (Display.getInstance().getInput().getKeyDown(Input.KEY_ESCAPE))
         {
             console = false;
-			this.setRendered(false);
             Display.getInstance().getInput().getMouse().setGrabbed(true);
             write.setFocused(false);
         }
