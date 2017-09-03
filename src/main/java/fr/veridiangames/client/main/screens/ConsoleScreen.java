@@ -38,6 +38,7 @@ import fr.veridiangames.core.utils.Color4f;
 import java.util.ArrayList;
 import java.util.List;
 
+import static fr.veridiangames.core.maths.Mathf.ceil;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -73,7 +74,7 @@ public class ConsoleScreen extends GuiCanvas
         bg.setOrigin(GuiComponent.GuiOrigin.D);
         super.add(bg);
 
-        write = new GuiTextBox(x, y + 1, w, 500);
+        write = new GuiTextBox(x, y + 1, w, 256);
         write.setOrigin(GuiComponent.GuiOrigin.D);
         write.setScreenParent(GuiComponent.GuiCorner.BL);
         super.add(write);
@@ -118,10 +119,12 @@ public class ConsoleScreen extends GuiCanvas
         else
             yScroll = 0;
 
-        for (int i = 0; i < messageList.size(); i++)
+        int offset = 0;
+        for (int i = messageList.size() - 1; i >= 0; i--)
         {
             CLine msg = messageList.get(i);
-            msg.update(x + 5, bg.getY() + bg.getH() - 16 - (messageList.size() - 1) * 20 + i * 16 + (int) yScroll - 5, console);
+            offset += msg.height;
+            msg.update(x + 5, bg.getY() + bg.getH() - offset * 16 + (int) yScroll - 5, console);
         }
     }
 
@@ -153,13 +156,16 @@ public class ConsoleScreen extends GuiCanvas
         String msg;
         Color4f color;
         int time;
-        FontRenderer renderer;
+        List<FontRenderer> renderers;
         int x, y;
         boolean init = false;
+        int height;
+		final int maxWidth = w;
 
         public CLine(String msg, Color4f color)
         {
             this.msg = msg;
+            this.height = 1;
             this.color = new Color4f(color);
             this.time = 0;
             this.x = x;
@@ -168,7 +174,30 @@ public class ConsoleScreen extends GuiCanvas
 
         void init()
         {
-            this.renderer = new FontRenderer(FONT, msg, 0, 0);
+        	this.renderers = new ArrayList<>();
+        	FontRenderer renderer = new FontRenderer(FONT, msg, 0, 0);
+			this.height = (int) ceil((float)renderer.getWidth() / (float)(maxWidth - 40));
+        	int lastPos = 0;
+        	int width = 0;
+        	System.out.println("HEIGHT: " + height + "    " + renderer.getWidth() + "     " + maxWidth);
+        	if (height == 1)
+			{
+				renderers.add(renderer);
+				return;
+			}
+        	for (int i = 0; i < msg.length(); i++)
+			{
+				width += renderer.getCharData(msg.charAt(i)).width;
+				if (width >= maxWidth - 40 || i == msg.length() - 1)
+				{
+					String a = this.msg.substring(lastPos, i + 1);
+					if (a.isEmpty())
+						continue;
+					renderers.add(new FontRenderer(FONT, a, 0, 0));
+					width = 0;
+					lastPos = i + 1;
+				}
+			}
         }
 
         void update(int x, int y, boolean console)
@@ -196,10 +225,14 @@ public class ConsoleScreen extends GuiCanvas
 
         void render(GuiShader shader)
         {
-            if (renderer == null)
+            if (renderers == null)
                 return;
-            renderer.setPosition(x, y);
-            renderer.render(shader, color, 2);
+            for (int i = 0; i < renderers.size(); i++)
+			{
+				FontRenderer renderer = renderers.get(i);
+				renderer.setPosition(x, y + i * 16);
+				renderer.render(shader, color, 2);
+			}
         }
 
         boolean isRemoved()

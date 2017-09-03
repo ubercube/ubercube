@@ -91,9 +91,9 @@ public class TDMGameMode implements GameMode
     	Vec3 sp = new Vec3();
     	Vec3 offset = new Vec3();
         if(redTeam.getPlayers().contains(id))
-			sp = redTeam.getSpawn();
+			sp = redTeam.getSpawn().copy();
         else if(blueTeam.getPlayers().contains(id))
-			sp = blueTeam.getSpawn();
+			sp = blueTeam.getSpawn().copy();
         else {
 			Log.error("Player(" + id + ") hose no team !");
 		}
@@ -104,8 +104,8 @@ public class TDMGameMode implements GameMode
 		sp.x += offset.x;
 		sp.z += offset.z;
 
-		sp.y = GameCore.getInstance().getGame().getWorld().getHeightAt((int)sp.x, (int)sp.z) + 2;
 		System.out.println(sp.x + " " + sp.y + " " + sp.z);
+		sp.y = GameCore.getInstance().getGame().getWorld().getHeightAt((int)sp.x, (int)sp.z) + 2;
 
         return sp;
     }

@@ -20,6 +20,7 @@
 package fr.veridiangames.client.rendering.guis.components;
 
 import fr.veridiangames.client.inputs.Input;
+import fr.veridiangames.client.main.screens.ConsoleScreen;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.StaticFont;
@@ -27,6 +28,9 @@ import fr.veridiangames.client.rendering.guis.primitives.StaticPrimitive;
 import fr.veridiangames.client.rendering.shaders.GuiShader;
 import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Log;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_SCISSOR_TEST;
 
 public class GuiTextBox extends GuiComponent
 {
@@ -48,6 +52,11 @@ public class GuiTextBox extends GuiComponent
 	private int selectionEndDistance;
 	private int selectionWidth;
 
+	private int offset;
+	private int offsetDistance;
+
+	private int maxWidth;
+
 	public GuiTextBox(int x, int y, int w, int maxChars) {
 		super(x, y, w, 30, new Color4f(0, 0, 0, 0.35f));
 		this.maxChars = maxChars;
@@ -61,13 +70,19 @@ public class GuiTextBox extends GuiComponent
 		showCaret = false;
 		selectionStart = 2;
 		selectionEnd = 4;
+		offset = 0;
+		maxWidth = w - 12;
 	}
-	
+
 	int time = 0;
 	public void update() {
-		if (!super.getCanvas().isRendered())
+		if (!this.isRendered())
 		{
 			firstLoop = true;
+			offset = 0;
+			caretDistance = 0;
+			offsetDistance = 0;
+			caretPosition = 0;
 			return;
 		}
 		super.update();
@@ -75,33 +90,46 @@ public class GuiTextBox extends GuiComponent
 		showCaret = false;
 		manageKeys();
 		
-		label.update();
-		label.setPosition(x + 6, y + 3);
-
 		if (mouseButtonUp) {
 			focused = true;
 		}
 		if (Display.getInstance().getInput().getMouse().getButtonUp(0) && !mouseIn) {
 			focused = false;
 		}
+
 		caretDistance = 0;
-		for (int i = 0; i < caretPosition; i++) {
+		for (int i = 0; i < caretPosition; i++)
+		{
 			char c = text.charAt(i);
 			caretDistance += label.getCharData(c).width;
 		}
+		if (caretDistance - offsetDistance > maxWidth)
+		{
+			char c = text.charAt(caretPosition - 1);
+			int lastCharWidth = label.getCharData(c).width;
+			offset++;
+			offsetDistance += lastCharWidth;
+		}
+
+		label.update();
+		label.setPosition(x + 6 - offsetDistance, y + 3);
 		label.setText(text);
 	}
-	
+
+	public char getValidCharacter(int unicode)
+	{
+		if (unicode < Character.MAX_VALUE && unicode >= 0)
+			return (char) unicode;
+		return (char) 0;
+	}
+
 	public void addChar(char c) {
 		if (!focused) return;
 		if (text != null) if (text.length() >= maxChars) return;
 		if (text == null) text = "" + c;
 		else
 		{
-			if (caretDistance == textWidth)
-				text += c;
-			else
-				addCharAt(c, caretPosition);
+			addCharAt(c, caretPosition);
 		}
 		textWidth += label.getCharData(c).width;
 		caretPosition++;
@@ -130,10 +158,24 @@ public class GuiTextBox extends GuiComponent
 		int index = caretPosition - 1 + offset;
 		if (index < 0 || index >= text.length())
 			return;
-		textWidth -= label.getCharData(text.charAt(index)).width;
+		int charWidth = label.getCharData(text.charAt(index)).width;
+		textWidth -= charWidth;
 		removeCharAt(index);
 		if (offset == 0)
 			caretPosition--;
+		if (this.offset != 0)
+		{
+			if (caretDistance >= maxWidth && offset != 0)
+			{
+				this.offset--;
+				this.offsetDistance -= label.getCharData(text.charAt(index - 1)).width;
+			}
+			else
+			{
+				this.offset--;
+				this.offsetDistance -= charWidth;
+			}
+		}
 		showCaret = true;
 	}
 
@@ -143,10 +185,15 @@ public class GuiTextBox extends GuiComponent
 		StaticPrimitive.quadPrimitive().render(shader, x +w/2, y +h/2, 0, w/2, h/2, 0);
 		if (!focused)
 			time = 0;
+
+		glEnable(GL_SCISSOR_TEST);
+		glScissor(x + 4, Display.getInstance().getHeight() - y - h, w - 8, h);
 		label.render(shader);
+		glDisable(GL_SCISSOR_TEST);
+
 		if ((time % 60 > 30 && focused) || showCaret) {
 			shader.setColor(Color4f.WHITE);
-			StaticPrimitive.quadPrimitive().render(shader, x + caretDistance + 8, y + h / 2, 0, 1.5f, 11, 0);
+			StaticPrimitive.quadPrimitive().render(shader, x + caretDistance - offsetDistance + 8, y + h / 2, 0, 1.5f, 11, 0);
 		}
 	}
 
@@ -156,18 +203,18 @@ public class GuiTextBox extends GuiComponent
 			return;
 		if (dir > 0 && caretPosition == text.length())
 			return;
+		if (caretDistance - offsetDistance < 0 && dir < 0)
+			return;
 		caretPosition += dir;
 		showCaret = true;
 	}
 
 	private void manageKeys() {
 		Input input = Display.getInstance().getInput();
-		int keycode = input.getKeyCode();
+		char keycode = getValidCharacter(input.getKeyCode());
 		boolean activation = input.getKeyboardCallback().currentKeys.size() == 0 &&
 			input.getKeyboardCallback().upKeys.size() == 0 &&
 			input.getKeyboardCallback().downKeys.size() == 0 && keycode == 0;
-
-		Log.println("Can use console: " + activation + " is first loop ? " + firstLoop);
 		if (firstLoop)
 		{
 			if (activation)
@@ -180,6 +227,11 @@ public class GuiTextBox extends GuiComponent
 		if (getKey(input.KEY_DELETE)) removeChar(1);
 		if (getKey(input.KEY_LEFT)) moveCaret(-1);
 		if (getKey(input.KEY_RIGHT)) moveCaret(1);
+
+//		if (getKey(input.KEY_LEFT)) offset++;
+//		if (getKey(input.KEY_RIGHT)) offset--;
+		if (offset < 0)
+			offset = 0;
 	}
 
 	int keyCode = -1;
@@ -213,7 +265,8 @@ public class GuiTextBox extends GuiComponent
 		return false;
 	}
 
-	public void dispose() {
+	public void dispose()
+	{
 		
 	}
 
@@ -221,7 +274,8 @@ public class GuiTextBox extends GuiComponent
 		return text;
 	}
 
-	public void clear() {
+	public void clear()
+	{
 		text = "";
 		textWidth = 0;
 		label.setText("");

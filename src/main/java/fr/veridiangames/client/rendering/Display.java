@@ -55,6 +55,7 @@ public class Display
 	private Input 		input;
 	private int			fps;
 	private int			tps;
+	private boolean 	vsync;
 
 	public Display(String title, int width, int height)
 	{
@@ -64,6 +65,7 @@ public class Display
 		this.height = height;
 		this.closed = false;
 		this.windowSizeBuffer = BufferUtils.createByteBuffer(4);
+		this.vsync = true;
 		this.init();
 	}
 
@@ -106,7 +108,7 @@ public class Display
 		glfwShowWindow(window);
 
 		Log.println("glfwSwapInterval...");
-		glfwSwapInterval(0);
+		glfwSwapInterval(vsync ? 1 : 0);
 
 		Log.println("GL.createCapabilities()...");
 		GL.createCapabilities();
@@ -266,5 +268,14 @@ public class Display
 	public static Display getInstance()
 	{
 		return instance;
+	}
+
+	public void setVsync(boolean vsync) {
+		glfwSwapInterval(vsync ? 1 : 0);
+		this.vsync = vsync;
+	}
+
+	public boolean isVsync() {
+		return vsync;
 	}
 }

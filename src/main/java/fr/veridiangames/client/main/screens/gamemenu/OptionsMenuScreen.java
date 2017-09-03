@@ -18,6 +18,7 @@ public class OptionsMenuScreen extends GuiCanvas
     private GuiSlider mouseSpeed;
     private GuiSlider audioGain;
     private GuiCheckBox renderSnow;
+    private GuiCheckBox enableVsync;
 
     public OptionsMenuScreen(GuiCanvas parent, Display display)
     {
@@ -75,6 +76,14 @@ public class OptionsMenuScreen extends GuiCanvas
         renderSnow.triggered = Ubercube.getInstance().getGameCore().getGame().getPlayer().isRenderSnow();
         super.add(renderSnow);
 
+		enableVsync = new GuiCheckBox("Enable vSync", display.getWidth() / 2, 350, true);
+		enableVsync.setOrigin(GuiComponent.GuiOrigin.TC);
+		enableVsync.setScreenParent(GuiComponent.GuiCorner.TC);
+		enableVsync.getLabel().setColor(Color4f.WHITE);
+		enableVsync.getLabel().setDropShadow(2);
+		enableVsync.triggered = Display.getInstance().isVsync();
+		super.add(enableVsync);
+
         setRendered(false);
     }
 
@@ -90,5 +99,6 @@ public class OptionsMenuScreen extends GuiCanvas
         audioGain.getLabel().setText((int)(AudioSystem.getMainVolume() * 100) + "");
         AudioSystem.setMainVolume(audioGain.getValue());
         Ubercube.getInstance().getGameCore().getGame().getPlayer().setRenderSnow(renderSnow.triggered);
+        Display.getInstance().setVsync(enableVsync.triggered);
     }
 }
