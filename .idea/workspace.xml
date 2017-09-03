@@ -1,7 +1,305 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f28ed1ea-4b9f-4aaf-ad54-734b1dcff581" name="Default" comment="" />
+    <list default="true" id="f28ed1ea-4b9f-4aaf-ad54-734b1dcff581" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/audio/waterexplode.wav" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/fonts/RifficFree-Bold.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.editorconfig" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.travis.yml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/shaders/weapon_fbo.frag" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/Nop.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/FileManager.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/inputs/TextInput.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/main/screens/DeathScreen.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/main/screens/gamemenu/GameMenuScreen.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/main/screens/gamemenu/OptionsMenuScreen.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/main/screens/gamemode/TDMHudScreen.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/main/screens/gamemode/TDMPlayerListScreen.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/network/tcp/NetworkClientTCP.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/network/tcp/TCPReceiverThread.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/network/tcp/TCPSenderThread.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/GuiUtils.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/components/GuiTextBox.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/game/physics/ColliderRenderer.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/shaders/WeaponFboShader.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/data/world/WorldType.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/player/ServerPlayer.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/modes/GameMode.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/modes/PlayerList.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/modes/TDMGameMode.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/modes/TOTEMGameMode.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/modes/Team.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/world/vegetations/Bush.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/world/vegetations/trees/BigOakTree.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/world/vegetations/trees/OakTree.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/world/vegetations/trees/Tree.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/Protocol.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/ApplyDamagePacket.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/GrenadeSpawnPacket.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/RespawnPacket.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/gamemode/tdm/TDMScorePacket.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/gamemode/tdm/TDMSpawnPacket.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/gamemode/tdm/TDMTeamPacket.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/utils/Time.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/tcp/NetworkServerTCP.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/tcp/client/RemoteClient.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/tcp/client/RemoteClientReceiver.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/tcp/client/RemoteClientSender.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/fr/veridiangames/AppTest.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/META-INF/MANIFEST.MF" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/lwjgl.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/native/OpenAL.dll" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/native/OpenAL32.dll" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/native/glfw.dll" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/native/glfw32.dll" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/native/jemalloc.dll" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/native/jemalloc32.dll" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/native/libglfw.dylib" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/native/libglfw.so" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/native/libjemalloc.dylib" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/native/libjemalloc.so" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/native/liblwjgl.dylib" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/native/liblwjgl.so" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/native/libopenal.dylib" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/native/libopenal.so" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/native/lwjgl.dll" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libs/native/lwjgl32.dll" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/ubercube/META-INF/MANIFEST.MF" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/shaders/120/entity.frag" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/shaders/120/entity.vert" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/shaders/120/gui.frag" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/shaders/120/main.frag" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/shaders/120/main.vert" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/shaders/120/weapon.frag" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/shaders/120/weapon.vert" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/shaders/120/world.frag" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/shaders/120/world.vert" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/main/screens/DeathScreen.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/network/NetworkClientTCP.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/components/GuiTextBox.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/player/ServerPlayer.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/RespawnPacket.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/server/server/tcp/NetworkServerTCP.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/server/server/tcp/RemoteClient.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ubercube.iml" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/120/gui.vert" afterPath="$PROJECT_DIR$/res/shaders/weapon_fbo.vert" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/330/entity.frag" afterPath="$PROJECT_DIR$/res/shaders/entity.frag" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/330/entity.vert" afterPath="$PROJECT_DIR$/res/shaders/entity.vert" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/330/env_sphere.frag" afterPath="$PROJECT_DIR$/res/shaders/env_sphere.frag" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/330/env_sphere.vert" afterPath="$PROJECT_DIR$/res/shaders/env_sphere.vert" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/330/gui.frag" afterPath="$PROJECT_DIR$/res/shaders/gui.frag" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/330/gui.vert" afterPath="$PROJECT_DIR$/res/shaders/gui.vert" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/330/gui_3d.frag" afterPath="$PROJECT_DIR$/res/shaders/gui_3d.frag" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/330/gui_3d.vert" afterPath="$PROJECT_DIR$/res/shaders/gui_3d.vert" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/330/main.frag" afterPath="$PROJECT_DIR$/res/shaders/main.frag" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/330/main.vert" afterPath="$PROJECT_DIR$/res/shaders/main.vert" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/330/player.frag" afterPath="$PROJECT_DIR$/res/shaders/player.frag" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/330/player.vert" afterPath="$PROJECT_DIR$/res/shaders/player.vert" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/330/weapon.frag" afterPath="$PROJECT_DIR$/res/shaders/weapon.frag" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/330/weapon.vert" afterPath="$PROJECT_DIR$/res/shaders/weapon.vert" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/330/world.frag" afterPath="$PROJECT_DIR$/res/shaders/world.frag" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/shaders/330/world.vert" afterPath="$PROJECT_DIR$/res/shaders/world.vert" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/MainComponent.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/MainComponent.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/Ubercube.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/Ubercube.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/audio/AudioListener.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/audio/AudioListener.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/audio/AudioPlayer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/audio/AudioPlayer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/audio/AudioSystem.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/audio/AudioSystem.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/audio/AudioTester.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/audio/AudioTester.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/guis/TrueTypeFont.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/guis/TrueTypeFont.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/inputs/Input.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/inputs/Input.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/inputs/Keyboard.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/inputs/Keyboard.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/inputs/Mouse.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/inputs/Mouse.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/inputs/MouseButton.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/inputs/MouseButton.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/inputs/MousePosition.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/inputs/MousePosition.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/inputs/MouseScroll.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/inputs/MouseScroll.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/main/Timer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/main/Timer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/main/console/Console.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/main/console/Console.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/main/player/PlayerHandler.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/main/player/PlayerHandler.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/main/player/PlayerSelection.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/main/player/PlayerSelection.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/main/screens/ConsoleScreen.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/main/screens/ConsoleScreen.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/main/screens/ErrorScreen.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/main/screens/ErrorScreen.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/main/screens/LoadingScreen.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/main/screens/LoadingScreen.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/main/screens/PlayerHudScreen.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/main/screens/PlayerHudScreen.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/main/screens/PlayerListScreen.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/main/screens/PlayerListScreen.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/main/screens/ProfilerScreen.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/main/screens/ProfilerScreen.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/network/NetworkClient.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/network/NetworkClient.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/network/NetworkClientUDP.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/network/udp/NetworkClientUDP.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/Camera.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/Camera.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/Display.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/Display.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/buffers/Buffers.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/buffers/Buffers.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/GuiCanvas.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/GuiCanvas.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/GuiComponent.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/GuiComponent.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/GuiManager.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/GuiManager.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/StaticFont.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/StaticFont.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/components/GuiButton.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/components/GuiButton.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/components/GuiCheckBox.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/components/GuiCheckBox.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/components/GuiLabel.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/components/GuiLabel.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/components/GuiPanel.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/components/GuiPanel.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/components/GuiProgressBar.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/components/GuiProgressBar.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/components/GuiSlider.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/components/GuiSlider.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/components/GuiTextArea.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/components/GuiTextArea.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/listeners/GuiActionListener.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/listeners/GuiActionListener.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/primitives/CurvePrimitive.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/primitives/CurvePrimitive.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/primitives/LinePrimitive.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/primitives/LinePrimitive.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/primitives/QuadPrimitive.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/primitives/QuadPrimitive.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/guis/primitives/StaticPrimitive.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/primitives/StaticPrimitive.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/player/PlayerViewport.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/player/PlayerViewport.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/MainRenderer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/MainRenderer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/Renderer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/Renderer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/cullings/DistanceCulling.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/cullings/DistanceCulling.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/cullings/FrustumCulling.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/cullings/FrustumCulling.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/game/EnvCubemap.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/game/EnvCubemap.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/game/GameRenderer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/game/GameRenderer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/game/entities/EntityRenderer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/game/entities/EntityRenderer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/game/entities/EntityWeaponRenderer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/game/entities/EntityWeaponRenderer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/game/entities/ModeledEntityRenderer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/game/entities/ModeledEntityRenderer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/game/entities/particles/ParticleRenderer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/game/entities/particles/ParticleRenderer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/game/entities/players/PlayerNameRenderer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/game/entities/players/PlayerNameRenderer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/game/entities/players/PlayerRenderer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/game/entities/players/PlayerRenderer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/game/entities/players/PlayerSelectionRenderer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/game/entities/players/PlayerSelectionRenderer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/game/world/BlockData.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/game/world/BlockData.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/game/world/ChunkDebugRenderer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/game/world/ChunkDebugRenderer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/game/world/ChunkRenderer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/game/world/ChunkRenderer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/game/world/WorldRenderer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/game/world/WorldRenderer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/guis/Font3DRenderer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/guis/Font3DRenderer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/guis/FontRenderer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/guis/FontRenderer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/renderers/models/ModelVoxRenderer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/renderers/models/ModelVoxRenderer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/shaders/EntityShader.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/shaders/EntityShader.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/shaders/EnvSphereShader.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/shaders/EnvSphereShader.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/shaders/Gui3DShader.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/shaders/Gui3DShader.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/shaders/GuiShader.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/shaders/GuiShader.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/shaders/MainShader.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/shaders/MainShader.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/shaders/ModelShader.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/shaders/ModelShader.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/shaders/PlayerShader.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/shaders/PlayerShader.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/shaders/Shader.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/shaders/Shader.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/shaders/WorldShader.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/shaders/WorldShader.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/textures/CubeMap.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/textures/CubeMap.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/textures/FrameBuffer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/textures/FrameBuffer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/textures/Texture.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/textures/Texture.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/textures/TextureData.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/textures/TextureData.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/textures/TextureLoader.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/textures/TextureLoader.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/client/rendering/utils/BufferUtil.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/utils/BufferUtil.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/GameCore.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/GameCore.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/audio/AudioData.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/audio/AudioData.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/audio/Sound.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/audio/Sound.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/exceptions/EComponentException.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/exceptions/EComponentException.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/Game.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/Game.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/data/GameData.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/data/GameData.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/data/models/ModelVox.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/data/models/ModelVox.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/data/world/Noise.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/data/world/Noise.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/data/world/NoisePass.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/data/world/NoisePass.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/data/world/WorldGen.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/data/world/WorldGen.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/Entity.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/Entity.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/EntityManager.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/EntityManager.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/Model.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/Model.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/audio/AudioSource.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/audio/AudioSource.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/bullets/Bullet.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/bullets/Bullet.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/components/ECAudioSource.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/components/ECAudioSource.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/components/ECDebug.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/components/ECDebug.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/components/ECKeyMovement.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/components/ECKeyMovement.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/components/ECModel.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/components/ECModel.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/components/ECMouseLook.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/components/ECMouseLook.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/components/ECName.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/components/ECName.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/components/ECNetwork.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/components/ECNetwork.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/components/ECRaycast.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/components/ECRaycast.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/components/ECRender.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/components/ECRender.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/components/ECRigidbody.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/components/ECRigidbody.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/components/ECWeapon.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/components/ECWeapon.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/components/EComponent.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/components/EComponent.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/grenades/Grenade.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/grenades/Grenade.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/particles/Particle.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/particles/Particle.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/particles/ParticleSnow.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/particles/ParticleSnow.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/particles/ParticleSystem.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/particles/ParticleSystem.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/particles/ParticlesBlood.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/particles/ParticlesBlood.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/particles/ParticlesBulletHit.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/particles/ParticlesBulletHit.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/particles/ParticlesExplosion.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/particles/ParticlesExplosion.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/particles/ParticlesManager.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/particles/ParticlesManager.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/player/ClientPlayer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/player/ClientPlayer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/player/NetworkedPlayer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/player/NetworkedPlayer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/player/Player.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/player/Player.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/weapons/Weapon.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/weapons/Weapon.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/weapons/explosiveWeapons/ExplosiveWeapon.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/weapons/explosiveWeapons/ExplosiveWeapon.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/weapons/explosiveWeapons/WeaponGrenade.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/weapons/explosiveWeapons/WeaponGrenade.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/weapons/fireWeapons/FireWeapon.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/weapons/fireWeapons/FireWeapon.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/weapons/fireWeapons/WeaponAK47.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/weapons/fireWeapons/WeaponAK47.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/weapons/fireWeapons/WeaponAWP.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/weapons/fireWeapons/WeaponAWP.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/weapons/meleeWeapon/MeleeWeapon.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/weapons/meleeWeapon/MeleeWeapon.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/entities/weapons/meleeWeapon/WeaponShovel.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/entities/weapons/meleeWeapon/WeaponShovel.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/world/Block.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/world/Block.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/world/Chunk.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/world/Chunk.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/world/World.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/world/World.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/world/structures/Structure.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/world/structures/Structure.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/world/vegetations/Rock.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/world/vegetations/Rock.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/game/world/vegetations/Tree.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/game/world/vegetations/TreeOld.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/loaders/ModelLoader.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/loaders/ModelLoader.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/maths/Mat4.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/maths/Mat4.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/maths/Mathf.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/maths/Mathf.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/maths/Quat.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/maths/Quat.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/maths/Transform.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/maths/Transform.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/maths/Vec2.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/maths/Vec2.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/maths/Vec2i.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/maths/Vec2i.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/maths/Vec3.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/maths/Vec3.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/maths/Vec3i.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/maths/Vec3i.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/maths/Vec4.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/maths/Vec4.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/maths/Vec4i.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/maths/Vec4i.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/NetworkPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/NetworkPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/NetworkableClient.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/NetworkableClient.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/NetworkableServer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/NetworkableServer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/PacketManager.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/PacketManager.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/BlockActionPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/BlockActionPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/BulletHitBlockPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/BulletHitBlockPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/BulletHitPlayerPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/BulletHitPlayerPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/BulletShootPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/BulletShootPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/ConnectPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/ConnectPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/DamageForcePacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/DamageForcePacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/DeathPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/DeathPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/DisconnectPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/DisconnectPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/EntityMovementPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/EntityMovementPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/EntitySyncPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/EntitySyncPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/KickPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/KickPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/Packet.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/Packet.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/ParticlesRemovePacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/ParticlesRemovePacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/ParticlesSpawnPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/ParticlesSpawnPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/PingPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/PingPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/SoundPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/SoundPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/SyncBlocksPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/SyncBlocksPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/TchatMsgPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/TchatMsgPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/TimeoutPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/TimeoutPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/WeaponChangePacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/WeaponChangePacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/network/packets/WeaponPositionPacket.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/packets/WeaponPositionPacket.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/physics/CollisionData.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/physics/CollisionData.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/physics/CollisionDetector.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/physics/CollisionDetector.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/physics/CollisionHandler.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/physics/CollisionHandler.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/physics/PhysicsEngine.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/physics/PhysicsEngine.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/physics/Rigidbody.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/physics/Rigidbody.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/physics/colliders/AABoxCollider.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/physics/colliders/AABoxCollider.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/physics/colliders/Collider.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/physics/colliders/Collider.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/profiler/Profiler.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/profiler/Profiler.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/utils/Color4f.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/utils/Color4f.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/utils/DataBuffer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/utils/DataBuffer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/utils/DataStream.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/utils/DataStream.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/utils/FileUtils.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/utils/FileUtils.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/utils/Indexer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/utils/Indexer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/utils/Log.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/utils/Log.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/utils/OS.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/utils/OS.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/utils/Sleep.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/utils/Sleep.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/core/utils/SystemUtils.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/core/utils/SystemUtils.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/server/FileManager.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/server/FileManager.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/server/ServerMain.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/server/ServerMain.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/server/server/ClientData.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/ClientData.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/server/server/NetworkServer.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/NetworkServer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/server/server/commands/CmdHelp.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/commands/CmdHelp.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/server/server/commands/CmdKick.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/commands/CmdKick.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/server/server/commands/CmdStop.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/commands/CmdStop.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/server/server/commands/Command.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/commands/Command.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/fr/veridiangames/server/server/udp/NetworkServerUDP.java" afterPath="$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/udp/NetworkServerUDP.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -13,41 +311,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
+      <file leaf-file-name="ServerMain.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/server/ServerMain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1598">
-              <caret line="94" column="0" lean-forward="true" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Sound.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/core/audio/Sound.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="38" column="96" lean-forward="false" selection-start-line="38" selection-start-column="96" selection-end-line="38" selection-end-column="96" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FileManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/client/FileManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="27" column="31" lean-forward="false" selection-start-line="27" selection-start-column="31" selection-end-line="27" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StaticFont.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/StaticFont.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="58" column="110" lean-forward="false" selection-start-line="58" selection-start-column="110" selection-end-line="58" selection-end-column="110" />
+            <state relative-caret-position="442">
+              <caret line="53" column="29" lean-forward="false" selection-start-line="53" selection-start-column="29" selection-end-line="53" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -56,62 +324,18 @@
       <file leaf-file-name="MainComponent.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/client/MainComponent.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#1759#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CmdStop.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/commands/CmdStop.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="34" column="5" lean-forward="true" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+            <state relative-caret-position="306">
+              <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServerMain.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/server/ServerMain.java">
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="53" column="54" lean-forward="false" selection-start-line="53" selection-start-column="54" selection-end-line="53" selection-end-column="54" />
-              <folding>
-                <element signature="e#0#1638#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Protocole.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/Protocole.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="2" lean-forward="false" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NetworkServer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/NetworkServer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="73" column="79" lean-forward="false" selection-start-line="73" selection-start-column="79" selection-end-line="73" selection-end-column="79" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GameCore.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/core/GameCore.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="30" column="54" lean-forward="false" selection-start-line="30" selection-start-column="54" selection-end-line="30" selection-end-column="54" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -137,6 +361,9 @@
       <replace>getPath(&quot;res/.*&quot;)</replace>
       <replace>getPath(&quot;res/</replace>
     </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
@@ -180,12 +407,7 @@
   </component>
   <component name="MavenProjectNavigator">
     <treeState>
-      <expand>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="ubercube" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-        </path>
-      </expand>
+      <expand />
       <select />
     </treeState>
   </component>
@@ -195,6 +417,7 @@
     <option name="width" value="1402" />
     <option name="height" value="1029" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
@@ -210,21 +433,65 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="AndroidView" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="ubercube" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ubercube" type="462c0819:PsiDirectoryNode" />
+              <item name="ubermaster" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ubercube" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ubermaster" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ubercube" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ubermaster" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ubercube" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ubermaster" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ubercube" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ubermaster" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="veridiangames" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ubercube" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ubermaster" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="veridiangames" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ubercube" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ubermaster" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="veridiangames" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="AndroidView" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -233,7 +500,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
     <property name="settings.editor.selected.configurable" value="copyright" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
@@ -413,11 +680,12 @@
       <workItem from="1502206589538" duration="349000" />
       <workItem from="1502207102323" duration="4589000" />
       <workItem from="1502211767845" duration="42000" />
+      <workItem from="1504468787672" duration="226000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4980000" />
+    <option name="totallyTimeSpent" value="5206000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1859" y="24" width="1922" height="1092" extended-state="6" />
@@ -425,29 +693,29 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295099" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20340788" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27528676" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20340788" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27528676" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25825346" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26091588" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295099" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -463,6 +731,70 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/core/audio/Sound.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="38" column="96" lean-forward="false" selection-start-line="38" selection-start-column="96" selection-end-line="38" selection-end-column="96" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/client/FileManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="27" column="31" lean-forward="false" selection-start-line="27" selection-start-column="31" selection-end-line="27" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/StaticFont.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="58" column="25" lean-forward="true" selection-start-line="58" selection-start-column="25" selection-end-line="58" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/client/MainComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/commands/CmdStop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="34" column="5" lean-forward="true" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/server/ServerMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="53" column="29" lean-forward="true" selection-start-line="53" selection-start-column="29" selection-end-line="53" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/NetworkServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="73" column="79" lean-forward="false" selection-start-line="73" selection-start-column="79" selection-end-line="73" selection-end-column="79" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/core/GameCore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="30" column="54" lean-forward="false" selection-start-line="30" selection-start-column="54" selection-end-line="30" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
@@ -499,9 +831,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
           <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#1759#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -509,20 +839,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="493">
           <caret line="53" column="54" lean-forward="false" selection-start-line="53" selection-start-column="54" selection-end-line="53" selection-end-column="54" />
-          <folding>
-            <element signature="e#0#1638#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/Protocole.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="2" lean-forward="false" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/Protocole.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/NetworkServer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
@@ -687,7 +1008,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/client/FileManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
+        <state relative-caret-position="136">
           <caret line="27" column="31" lean-forward="false" selection-start-line="27" selection-start-column="31" selection-end-line="27" selection-end-column="31" />
           <folding />
         </state>
@@ -695,15 +1016,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/client/rendering/guis/StaticFont.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="58" column="110" lean-forward="false" selection-start-line="58" selection-start-column="110" selection-end-line="58" selection-end-column="110" />
+        <state relative-caret-position="578">
+          <caret line="58" column="25" lean-forward="false" selection-start-line="58" selection-start-column="25" selection-end-line="58" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/NetworkServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
+        <state relative-caret-position="578">
           <caret line="73" column="79" lean-forward="false" selection-start-line="73" selection-start-column="79" selection-end-line="73" selection-end-column="79" />
           <folding />
         </state>
@@ -711,20 +1032,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/core/GameCore.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
+        <state relative-caret-position="204">
           <caret line="30" column="54" lean-forward="false" selection-start-line="30" selection-start-column="54" selection-end-line="30" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/Protocole.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="2" lean-forward="false" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/core/network/Protocole.java" />
     <entry file="file://$PROJECT_DIR$/src/test/java/fr/veridiangames/AppTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="493">
@@ -732,38 +1046,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/server/ServerMain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="53" column="54" lean-forward="false" selection-start-line="53" selection-start-column="54" selection-end-line="53" selection-end-column="54" />
-          <folding>
-            <element signature="e#0#1638#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/client/MainComponent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#1759#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/server/server/commands/CmdStop.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
-          <caret line="34" column="5" lean-forward="true" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+          <caret line="34" column="5" lean-forward="false" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1598">
-          <caret line="94" column="0" lean-forward="true" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+        <state relative-caret-position="1081">
+          <caret line="94" column="0" lean-forward="false" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/server/ServerMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="53" column="29" lean-forward="false" selection-start-line="53" selection-start-column="29" selection-end-line="53" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/fr/veridiangames/client/MainComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -837,7 +1155,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

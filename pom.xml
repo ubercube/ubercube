@@ -1,0 +1,145 @@
+<!--
+  ~ Copyright (C) 2016 Team Ubercube
+  ~
+  ~ This file is part of Ubercube.
+  ~
+  ~     Ubercube is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     Ubercube is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>fr.veridiangames</groupId>
+  <artifactId>ubercube</artifactId>
+  <version>pre-alpha-1.1</version>
+  <packaging>jar</packaging>
+
+  <name>ubercube</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <lwjgl.version>3.1.2</lwjgl.version>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>fr.veridiangames.Nop</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <appendAssemblyId>false</appendAssemblyId>
+          <finalName>ubercube</finalName>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>lwjgl-natives-linux</id>
+      <activation>
+        <os><family>unix</family></os>
+      </activation>
+      <properties>
+        <lwjgl.natives>natives-linux</lwjgl.natives>
+      </properties>
+    </profile>
+    <profile>
+      <id>lwjgl-natives-macos</id>
+      <activation>
+        <os><family>mac</family></os>
+      </activation>
+      <properties>
+        <lwjgl.natives>natives-macos</lwjgl.natives>
+      </properties>
+    </profile>
+    <profile>
+      <id>lwjgl-natives-windows</id>
+      <activation>
+        <os><family>windows</family></os>
+      </activation>
+      <properties>
+        <lwjgl.natives>natives-windows</lwjgl.natives>
+      </properties>
+    </profile>
+  </profiles>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl</artifactId>
+      <version>${lwjgl.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl-glfw</artifactId>
+      <version>${lwjgl.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl-openal</artifactId>
+      <version>${lwjgl.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl-opengl</artifactId>
+      <version>${lwjgl.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl</artifactId>
+      <version>${lwjgl.version}</version>
+      <classifier>${lwjgl.natives}</classifier>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl-glfw</artifactId>
+      <version>${lwjgl.version}</version>
+      <classifier>${lwjgl.natives}</classifier>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl-openal</artifactId>
+      <version>${lwjgl.version}</version>
+      <classifier>${lwjgl.natives}</classifier>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl-opengl</artifactId>
+      <version>${lwjgl.version}</version>
+      <classifier>${lwjgl.natives}</classifier>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+</project>
