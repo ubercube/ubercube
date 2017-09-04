@@ -41,25 +41,25 @@ public class TDMPlayerListScreen extends GuiCanvas {
 		super(parent);
 		this.parent = parent;
 
-		redHeadBG = new GuiPanel(Display.getInstance().getWidth()/2-10, Display.getInstance().getHeight()/2-196, 250, 31);
+		redHeadBG = new GuiPanel(Display.getInstance().getWidth()/2-10, Display.getInstance().getHeight()/2-196, 300, 31);
 		redHeadBG.setOrigin(GuiComponent.GuiOrigin.RC);
 		redHeadBG.setScreenParent(GuiComponent.GuiCorner.CENTER);
 		redHeadBG.setColor(new Color4f(0, 0, 0, 0.35f));
 		super.add(redHeadBG);
 
-		redBG = new GuiPanel(Display.getInstance().getWidth()/2-10, Display.getInstance().getHeight()/2, 250, 350);
+		redBG = new GuiPanel(Display.getInstance().getWidth()/2-10, Display.getInstance().getHeight()/2, 300, 350);
 		redBG.setOrigin(GuiComponent.GuiOrigin.RC);
 		redBG.setScreenParent(GuiComponent.GuiCorner.CENTER);
 		redBG.setColor(new Color4f(0, 0, 0, 0.35f));
 		super.add(redBG);
 
-		blueHeadBG = new GuiPanel(Display.getInstance().getWidth()/2+10, Display.getInstance().getHeight()/2-196, 250, 31);
+		blueHeadBG = new GuiPanel(Display.getInstance().getWidth()/2+10, Display.getInstance().getHeight()/2-196, 300, 31);
 		blueHeadBG.setOrigin(GuiComponent.GuiOrigin.LC);
 		blueHeadBG.setScreenParent(GuiComponent.GuiCorner.CENTER);
 		blueHeadBG.setColor(new Color4f(0, 0, 0, 0.35f));
 		super.add(blueHeadBG);
 
-		blueBG = new GuiPanel(Display.getInstance().getWidth()/2+10, Display.getInstance().getHeight()/2, 250, 350);
+		blueBG = new GuiPanel(Display.getInstance().getWidth()/2+10, Display.getInstance().getHeight()/2, 300, 350);
 		blueBG.setOrigin(GuiComponent.GuiOrigin.LC);
 		blueBG.setScreenParent(GuiComponent.GuiCorner.CENTER);
 		blueBG.setColor(new Color4f(0, 0, 0, 0.35f));
@@ -180,8 +180,8 @@ public class TDMPlayerListScreen extends GuiCanvas {
 				kills = 0;
 				deaths = 0;
 			}
-			this.killsLabel = new FontRenderer(FONT, "" + kills, x + parent.getW() - 130, y + 2);
-			this.deathsLabel = new FontRenderer(FONT, "" + deaths, x + parent.getW() - 90, y + 2);
+			this.killsLabel = new FontRenderer(FONT, "" + kills, x + parent.getW() - 150, y + 2);
+			this.deathsLabel = new FontRenderer(FONT, "" + deaths, x + parent.getW() - 110, y + 2);
 		}
 
 		void render(GuiShader shader)
@@ -206,8 +206,8 @@ public class TDMPlayerListScreen extends GuiCanvas {
 			this.x = parent.getX();
 			this.y = parent.getY();
 			this.nameLabel = new FontRenderer(FONT, "Name", x + 2, y + 2);
-			this.killsLabel = new FontRenderer(FONT, "K", x + parent.getW() - 130, y + 2);
-			this.deathsLabel = new FontRenderer(FONT, "D", x + parent.getW() - 90, y + 2);
+			this.killsLabel = new FontRenderer(FONT, "K", x + parent.getW() - 150, y + 2);
+			this.deathsLabel = new FontRenderer(FONT, "D", x + parent.getW() - 110, y + 2);
 			this.pingLabel = new FontRenderer(FONT, "Ping", x + parent.getW() - 2, y + 2);
 			this.pingLabel.setPosition(x + parent.getW() - 5 - pingLabel.getWidth(), y + 2);
 		}
