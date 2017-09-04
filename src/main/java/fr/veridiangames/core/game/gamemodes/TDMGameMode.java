@@ -107,7 +107,7 @@ public class TDMGameMode implements GameMode
 		sp.x += offset.x;
 		sp.z += offset.z;
 
-		System.out.println(sp.x + " " + sp.y + " " + sp.z);
+		//System.out.println(sp.x + " " + sp.y + " " + sp.z);
 		sp.y = GameCore.getInstance().getGame().getWorld().getHeightAt((int)sp.x, (int)sp.z) + 2;
 
         return sp;

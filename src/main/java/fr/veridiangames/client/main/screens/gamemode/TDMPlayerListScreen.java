@@ -16,7 +16,9 @@ import fr.veridiangames.core.game.gamemodes.TDMGameMode;
 import fr.veridiangames.core.utils.Color4f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jimi Vacarians on 01/09/2017.
@@ -136,6 +138,16 @@ public class TDMPlayerListScreen extends GuiCanvas {
 		red.render(gs);
 		blue.render(gs);
 
+/*
+		System.out.println("--------------------------------------");
+		PlayerStats ps = GameCore.getInstance().getGame().getGameMode().getPlayerStats();
+
+		for(Map.Entry<Integer, HashMap<PlayerStats.Stats, Object>> e : ps.get().entrySet()){
+			System.out.println("Key : " + e.getKey() + " Value :" + e.getValue());
+		}
+		System.out.println("--------------------------------------");*/
+
+
 		for(PLine pl : lines){
 			pl.render(gs);
 		}
@@ -176,11 +188,11 @@ public class TDMPlayerListScreen extends GuiCanvas {
 				this.kills = (int) GameCore.getInstance().getGame().getGameMode().getPlayerStats().get(player.getID()).get(PlayerStats.Stats.KILLS);
 				this.deaths = (int) GameCore.getInstance().getGame().getGameMode().getPlayerStats().get(player.getID()).get(PlayerStats.Stats.DEATHS);
 			} catch(Exception e){
-				//System.out.println("Can't access player stats !");
+				System.out.println("Null pointer on player stats !");
 				kills = 0;
 				deaths = 0;
 			}
-			this.killsLabel = new FontRenderer(FONT, "" + kills, x + parent.getW() - 150, y + 2);
+			this.killsLabel = new FontRenderer(FONT, "" +  + kills, x + parent.getW() - 150, y + 2);
 			this.deathsLabel = new FontRenderer(FONT, "" + deaths, x + parent.getW() - 110, y + 2);
 		}
 
