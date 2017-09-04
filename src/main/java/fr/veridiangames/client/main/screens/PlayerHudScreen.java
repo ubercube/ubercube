@@ -133,14 +133,14 @@ public class PlayerHudScreen extends GuiCanvas
         audioStatus.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
         audioStatus.setUseable(AudioPlayer.muteAudio);
         super.add(audioStatus);
-
+/*
         playerPosition = new GuiLabel("0 - 0 - 0", display.getWidth() / 2, 10, 20f);
         playerPosition.setOrigin(GuiComponent.GuiOrigin.TC);
         playerPosition.setScreenParent(GuiComponent.GuiCorner.TC);
         playerPosition.setColor(Color4f.WHITE);
         playerPosition.setDropShadow(2);
         playerPosition.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
-        super.add(playerPosition);
+        super.add(playerPosition);*/
 
 		GuiPanel minimapShadow = new GuiPanel(display.getWidth() - 35 + 2, display.getHeight() - 30 + 3, 200, 150);
 		minimapShadow.setOrigin(GuiComponent.GuiOrigin.C);

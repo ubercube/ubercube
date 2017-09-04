@@ -176,7 +176,7 @@ public class TDMPlayerListScreen extends GuiCanvas {
 				this.kills = (int) GameCore.getInstance().getGame().getGameMode().getPlayerStats().get(player.getID()).get(PlayerStats.Stats.KILLS);
 				this.deaths = (int) GameCore.getInstance().getGame().getGameMode().getPlayerStats().get(player.getID()).get(PlayerStats.Stats.DEATHS);
 			} catch(Exception e){
-				System.out.println("Can't access player stats !");
+				//System.out.println("Can't access player stats !");
 				kills = 0;
 				deaths = 0;
 			}
