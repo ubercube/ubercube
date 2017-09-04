@@ -118,9 +118,9 @@ public class GuiTextBox extends GuiComponent
 
 	public char getValidCharacter(int unicode)
 	{
-		if (unicode < Character.MAX_VALUE && unicode >= 0)
-			return (char) unicode;
-		return (char) 0;
+		if (Character.isDefined(unicode))
+			return ((char) unicode);
+		return '?';
 	}
 
 	public void addChar(char c) {

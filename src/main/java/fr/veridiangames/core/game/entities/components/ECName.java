@@ -29,8 +29,26 @@ public class ECName extends EComponent
 	public ECName(String name)
 	{
 		super(NAME);
-		this.name = name;
+		this.name = getValidString(name);
 
+	}
+
+	public char getValidCharacter(char c)
+	{
+		if (Character.isDefined(c))
+			return (c);
+		return '?';
+	}
+
+	private String getValidString(String name)
+	{
+		String result = "";
+		for (int i = 0; i < name.length(); i++)
+		{
+			char c = getValidCharacter(name.charAt(i));
+			result += c;
+		}
+		return result;
 	}
 
 	public String getName()

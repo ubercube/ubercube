@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.physics;
 
+import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
 
 /**
@@ -26,28 +27,33 @@ import fr.veridiangames.core.physics.colliders.AABoxCollider;
  */
 public class CollisionDetector
 {
-	public static boolean detectAABBvsAABB(AABoxCollider a, AABoxCollider b)
+	public static boolean detectAABBvsAABB(Vec3 aPos, Vec3 aSize, Vec3 bPos, Vec3 bSize)
 	{
-		float ax0 = a.getPosition().x - a.getSize().x;
-		float ax1 = a.getPosition().x + a.getSize().x;
-		float ay0 = a.getPosition().y - a.getSize().y;
-		float ay1 = a.getPosition().y + a.getSize().y;
-		float az0 = a.getPosition().z - a.getSize().z;
-		float az1 = a.getPosition().z + a.getSize().z;
+		float ax0 = aPos.x - aSize.x;
+		float ax1 = aPos.x + aSize.x;
+		float ay0 = aPos.y - aSize.y;
+		float ay1 = aPos.y + aSize.y;
+		float az0 = aPos.z - aSize.z;
+		float az1 = aPos.z + aSize.z;
 
-		float bx0 = b.getPosition().x - b.getSize().x;
-		float bx1 = b.getPosition().x + b.getSize().x;
-		float by0 = b.getPosition().y - b.getSize().y;
-		float by1 = b.getPosition().y + b.getSize().y;
-		float bz0 = b.getPosition().z - b.getSize().z;
-		float bz1 = b.getPosition().z + b.getSize().z;
-				
+		float bx0 = bPos.x - bSize.x;
+		float bx1 = bPos.x + bSize.x;
+		float by0 = bPos.y - bSize.y;
+		float by1 = bPos.y + bSize.y;
+		float bz0 = bPos.z - bSize.z;
+		float bz1 = bPos.z + bSize.z;
+
 		if (ax0 < bx1 && ax1 >= bx0 &&
 			ay0 < by1 && ay1 >= by0 &&
 			az0 < bz1 && az1 >= bz0)
 			return true;
-		
+
 		return false;
+	}
+
+	public static boolean detectAABBvsAABB(AABoxCollider a, AABoxCollider b)
+	{
+		return detectAABBvsAABB(a.getPosition(), a.getSize(), b.getPosition(), b.getSize());
 	}
 
 	public static boolean detectAxisX(AABoxCollider a, AABoxCollider b)

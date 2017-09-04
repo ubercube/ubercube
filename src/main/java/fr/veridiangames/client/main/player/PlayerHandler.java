@@ -32,6 +32,8 @@ import fr.veridiangames.core.network.packets.BlockActionPacket;
 import fr.veridiangames.client.inputs.Input;
 import fr.veridiangames.client.network.NetworkClient;
 import fr.veridiangames.core.network.packets.WeaponChangePacket;
+import fr.veridiangames.core.physics.CollisionDetector;
+import fr.veridiangames.core.physics.colliders.AABoxCollider;
 
 /**
  * Created by Marccspro on 14 f�vr. 2016.
@@ -161,9 +163,13 @@ public class PlayerHandler
 	
 	private void placeBlock(Vec3 point)
 	{
+		Vec3 playerPos = Ubercube.getInstance().getGameCore().getGame().getPlayer().getRigidBody().getBody().getCollider().getPosition();
+		Vec3 playerSize = ((AABoxCollider) Ubercube.getInstance().getGameCore().getGame().getPlayer().getRigidBody().getBody().getCollider()).getSize();
+
 		int x = (int) point.x;
 		int y = (int) point.y;
 		int z = (int) point.z;
+
 		float rx = point.x;
 		float ry = point.y;
 		float rz = point.z;
@@ -178,7 +184,11 @@ public class PlayerHandler
 		int yp = (int) check.y;
 		int zp = (int) check.z;
 
-		net.send(new BlockActionPacket(core.getGame().getPlayer().getID(), 1, x + xp, y + yp, z + zp, 0x7f555555), Protocol.TCP);
+		Vec3 blockPos = new Vec3(x + xp + 0.5f, y + yp + 0.5f, z + zp + 0.5f);
+		Vec3 blockSize = new Vec3(0.4f, 0.4f, 0.4f);
+		boolean isCollisionWithPlayer = CollisionDetector.detectAABBvsAABB(playerPos, playerSize, blockPos, blockSize);
+		if (!isCollisionWithPlayer)
+			net.send(new BlockActionPacket(core.getGame().getPlayer().getID(), 1, x + xp, y + yp, z + zp, 0x7f555555), Protocol.TCP);
 	}
 	
 	public PlayerSelection getSelection()
