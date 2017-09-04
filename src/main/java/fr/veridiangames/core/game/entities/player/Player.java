@@ -22,7 +22,7 @@ package fr.veridiangames.core.game.entities.player;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.*;
-import fr.veridiangames.core.game.modes.Team;
+import fr.veridiangames.core.game.gamemodes.Team;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;

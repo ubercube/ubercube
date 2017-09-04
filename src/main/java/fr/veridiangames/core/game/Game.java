@@ -28,8 +28,8 @@ import fr.veridiangames.core.game.entities.EntityManager;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.physics.PhysicsEngine;
-import fr.veridiangames.core.game.modes.GameMode;
-import fr.veridiangames.core.game.modes.TDMGameMode;
+import fr.veridiangames.core.game.gamemodes.GameMode;
+import fr.veridiangames.core.game.gamemodes.TDMGameMode;
 import fr.veridiangames.core.utils.Log;
 
 /**

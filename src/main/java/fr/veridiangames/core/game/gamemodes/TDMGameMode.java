@@ -17,7 +17,7 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.core.game.modes;
+package fr.veridiangames.core.game.gamemodes;
 
 import fr.veridiangames.client.main.screens.gamemode.TDMPlayerListScreen;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
@@ -36,7 +36,6 @@ import fr.veridiangames.core.utils.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Jimi Vacarians on 24/07/2016.
@@ -79,6 +78,8 @@ public class TDMGameMode implements GameMode
     public void setBlueScore(int i){
         blueScore = i;
     }
+
+    private PlayerStats stats = new PlayerStats();
 
     @Override
     public void update()
@@ -132,6 +133,14 @@ public class TDMGameMode implements GameMode
 	@Override
 	public GuiCanvas getPlayerListScreen(GuiCanvas parent) {
 		return new TDMPlayerListScreen(parent);
+	}
+
+	@Override
+	public List<String> getPlayerStats() {
+		List<String> stats = new ArrayList<>();
+
+
+		return null;
 	}
 
 	@Override

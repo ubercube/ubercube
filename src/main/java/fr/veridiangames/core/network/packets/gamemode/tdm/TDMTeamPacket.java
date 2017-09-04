@@ -19,9 +19,8 @@
 
 package fr.veridiangames.core.network.packets.gamemode.tdm;
 
-import fr.veridiangames.core.game.entities.player.Player;
-import fr.veridiangames.core.game.modes.TDMGameMode;
-import fr.veridiangames.core.game.modes.Team;
+import fr.veridiangames.core.game.gamemodes.TDMGameMode;
+import fr.veridiangames.core.game.gamemodes.Team;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.network.packets.Packet;

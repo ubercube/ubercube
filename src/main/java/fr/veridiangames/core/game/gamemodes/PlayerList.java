@@ -1,4 +1,4 @@
-package fr.veridiangames.core.game.modes;
+package fr.veridiangames.core.game.gamemodes;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -24,8 +24,7 @@ import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.components.GuiLabel;
-import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.game.modes.TDMGameMode;
+import fr.veridiangames.core.game.gamemodes.TDMGameMode;
 import fr.veridiangames.core.utils.Color4f;
 
 /**

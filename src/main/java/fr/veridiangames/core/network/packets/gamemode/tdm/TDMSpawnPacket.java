@@ -19,7 +19,7 @@
 
 package fr.veridiangames.core.network.packets.gamemode.tdm;
 
-import fr.veridiangames.core.game.modes.TDMGameMode;
+import fr.veridiangames.core.game.gamemodes.TDMGameMode;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;

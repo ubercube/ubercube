@@ -11,7 +11,7 @@ import fr.veridiangames.client.rendering.renderers.guis.FontRenderer;
 import fr.veridiangames.client.rendering.shaders.GuiShader;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.Player;
-import fr.veridiangames.core.game.modes.TDMGameMode;
+import fr.veridiangames.core.game.gamemodes.TDMGameMode;
 import fr.veridiangames.core.utils.Color4f;
 
 import java.util.ArrayList;

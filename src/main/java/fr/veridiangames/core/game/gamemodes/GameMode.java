@@ -17,7 +17,7 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.core.game.modes;
+package fr.veridiangames.core.game.gamemodes;
 
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.core.game.world.World;
@@ -37,6 +37,7 @@ public interface GameMode
     Team getPlayerTeam(int id);
     List<Team> getTeams();
     GuiCanvas getPlayerListScreen(GuiCanvas parent);
+    List<String> getPlayerStats();
 
 
     void onWorldGeneration(World w);

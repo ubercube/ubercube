@@ -22,24 +22,19 @@ package fr.veridiangames.core.network.packets;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
-import fr.veridiangames.core.game.entities.components.ECName;
-import fr.veridiangames.core.game.entities.components.ECNetwork;
-import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
-import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec4i;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
-import fr.veridiangames.core.game.modes.GameMode;
+import fr.veridiangames.core.game.gamemodes.GameMode;
 import fr.veridiangames.core.utils.Log;
 
 /**

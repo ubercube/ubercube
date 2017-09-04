@@ -17,7 +17,7 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.core.game.modes;
+package fr.veridiangames.core.game.gamemodes;
 
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.utils.Color4f;

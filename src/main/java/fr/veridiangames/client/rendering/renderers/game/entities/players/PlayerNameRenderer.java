@@ -24,19 +24,15 @@ import fr.veridiangames.client.rendering.Camera;
 import fr.veridiangames.client.rendering.guis.StaticFont;
 import fr.veridiangames.client.rendering.renderers.guis.Font3DRenderer;
 import fr.veridiangames.client.rendering.shaders.Gui3DShader;
-import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
-import fr.veridiangames.core.game.modes.Team;
+import fr.veridiangames.core.game.gamemodes.Team;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.utils.Color4f;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
-
-import static sun.audio.AudioPlayer.player;
 
 /**
  * Created by Marc on 13/06/2016.
