@@ -232,7 +232,7 @@ public class PlayerHudScreen extends GuiCanvas
         int px = (int) player.getPosition().x;
         int py = (int) player.getPosition().y;
         int pz = (int) player.getPosition().z;
-        playerPosition.setText(px + " - " + py + " - " + pz);
+//        playerPosition.setText(px + " - " + py + " - " + pz);
     }
 
     public ConsoleScreen getConsoleScreen()
