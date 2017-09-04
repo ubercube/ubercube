@@ -6,17 +6,36 @@ import java.util.HashMap;
  * Created by Jimi Vacarians on 04/09/2017.
  */
 public class PlayerStats {
-	private HashMap<Integer, HashMap<String, Object>> stats = new HashMap<>();
+	private HashMap<Integer, HashMap<Stats, Object>> stats = new HashMap<>();
 
-	public HashMap<String, Object> get(int id){
+	public HashMap<Stats, Object> get(int id){
 		return stats.get(id);
 	}
 
-	private void set(int id, String statName, Object value){
+	public HashMap<Integer, HashMap<Stats, Object>> get(){
+		return stats;
+	}
+
+	public void set(int id, Stats statName, Object value){
 		if(!stats.containsKey(id)){
 			stats.put(id, new HashMap<>());
 		}
 
 		stats.get(id).put(statName, value);
+	}
+
+	public void set(HashMap<Integer, HashMap<Stats, Object>> h){
+		this.stats = h;
+	}
+
+	public void remove(int id){
+		if(stats.containsKey(id)) {
+			stats.remove(id);
+		}
+	}
+
+	public enum Stats{
+		KILLS, //int
+		DEATHS //int
 	}
 }

@@ -30,7 +30,7 @@ import fr.veridiangames.core.utils.DataBuffer;
  */
 public abstract class Packet
 {
-	public static final int MAX_SIZE = 512;
+	public static final int MAX_SIZE = 4087;
 
 	public static final int	DISCONNECT			= 0;
 	public static final int	CONNECT				= 1;
@@ -60,6 +60,7 @@ public abstract class Packet
 	public static final int GAMEMODE_TDM_SPAWN = 501;
 	public static final int GAMEMODE_TDM_SCORE	= 502;
 	public static final int GAMEMODE_TDM_TEAM = 503;
+	public static final int GAMEMODE_TDM_STATS = 504;
 
 	protected DataBuffer data;
 

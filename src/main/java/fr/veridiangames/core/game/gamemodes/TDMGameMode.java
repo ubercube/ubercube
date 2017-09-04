@@ -28,6 +28,7 @@ import fr.veridiangames.core.game.world.Chunk;
 import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableServer;
+import fr.veridiangames.core.network.packets.gamemode.tdm.TDMPlayerStatsPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMScorePacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMSpawnPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMTeamPacket;
@@ -35,6 +36,7 @@ import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -96,7 +98,7 @@ public class TDMGameMode implements GameMode
         else if(blueTeam.getPlayers().contains(id))
 			sp = blueTeam.getSpawn().copy();
         else {
-			Log.error("Player(" + id + ") hose no team !");
+			Log.error("Player(" + id + ") has no team !");
 		}
 
 		offset.x = (int)(((Math.random() * 0.8 + 0.2) * 2.0 - 1.0) * 8);
@@ -136,11 +138,8 @@ public class TDMGameMode implements GameMode
 	}
 
 	@Override
-	public List<String> getPlayerStats() {
-		List<String> stats = new ArrayList<>();
-
-
-		return null;
+	public PlayerStats getPlayerStats() {
+		return stats;
 	}
 
 	@Override
@@ -163,11 +162,14 @@ public class TDMGameMode implements GameMode
         }else{
             blueTeam.getPlayers().add(id);
         }
+
+        stats.set(id, PlayerStats.Stats.KILLS, 0);
+		stats.set(id, PlayerStats.Stats.DEATHS, 0);
+
         server.tcpSendToAll(new TDMScorePacket(redScore, blueScore)); // All to player
         server.tcpSendToAll(new TDMTeamPacket(redTeam, blueTeam));
-        Log.println("Sending Red team spawn: " + redTeam.getSpawn());
-        Log.println("Sending Blue team spawn: " + blueTeam.getSpawn());
         server.tcpSendToAll(new TDMSpawnPacket(redTeam.getSpawn(), blueTeam.getSpawn()));
+        server.tcpSendToAll(new TDMPlayerStatsPacket(stats));
     }
 
     @Override
@@ -175,18 +177,24 @@ public class TDMGameMode implements GameMode
         if(!redTeam.getPlayers().remove(id))
             blueTeam.getPlayers().remove(id);
 
+        stats.remove(id);
+
         server.tcpSendToAll(new TDMTeamPacket(redTeam, blueTeam));
+		server.tcpSendToAll(new TDMPlayerStatsPacket(stats));
     }
 
     @Override
-    public void onPlayerDeath(int id, NetworkableServer server) {
-        if(redTeam.getPlayers().contains(id)){
+    public void onPlayerDeath(int victimId, int shooterId, NetworkableServer server) {
+        if(redTeam.getPlayers().contains(victimId)){
             blueScore++;
-        }else if(blueTeam.getPlayers().contains(id)){
+        }else if(blueTeam.getPlayers().contains(victimId)){
             redScore++;
         }
+		stats.set(shooterId, PlayerStats.Stats.KILLS, (int)stats.get(shooterId).get(PlayerStats.Stats.KILLS)+1);
+		stats.set(victimId, PlayerStats.Stats.DEATHS, (int)stats.get(victimId).get(PlayerStats.Stats.DEATHS)+1);
 
         server.tcpSendToAll(new TDMScorePacket(redScore, blueScore));
+		server.tcpSendToAll(new TDMPlayerStatsPacket(stats));
     }
 
     @Override

@@ -24,6 +24,7 @@ import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableServer;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -37,13 +38,13 @@ public interface GameMode
     Team getPlayerTeam(int id);
     List<Team> getTeams();
     GuiCanvas getPlayerListScreen(GuiCanvas parent);
-    List<String> getPlayerStats();
+    PlayerStats getPlayerStats();
 
 
     void onWorldGeneration(World w);
     void onPlayerConnect(int id, NetworkableServer server);
     void onPlayerDisconnect(int id, NetworkableServer server);
-    void onPlayerDeath(int id, NetworkableServer server);
+    void onPlayerDeath(int victimId, int shooterId, NetworkableServer server);
     void onPlayerSpawn(int id, NetworkableServer server);
     boolean canSpawnTree(float x, float z);
 }

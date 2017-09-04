@@ -11,6 +11,7 @@ import fr.veridiangames.client.rendering.renderers.guis.FontRenderer;
 import fr.veridiangames.client.rendering.shaders.GuiShader;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.game.gamemodes.PlayerStats;
 import fr.veridiangames.core.game.gamemodes.TDMGameMode;
 import fr.veridiangames.core.utils.Color4f;
 
@@ -26,8 +27,12 @@ public class TDMPlayerListScreen extends GuiCanvas {
 
 	private GuiCanvas parent;
 
+	private GuiPanel redHeadBG;
 	private GuiPanel redBG;
+
+	private GuiPanel blueHeadBG;
 	private GuiPanel blueBG;
+
 	private List<PLine> lines = new ArrayList<>();
 	private boolean rendered = false;
 	private TDMGameMode tdm = (TDMGameMode) GameCore.getInstance().getGame().getGameMode();
@@ -36,11 +41,23 @@ public class TDMPlayerListScreen extends GuiCanvas {
 		super(parent);
 		this.parent = parent;
 
+		redHeadBG = new GuiPanel(Display.getInstance().getWidth()/2-10, Display.getInstance().getHeight()/2-196, 250, 31);
+		redHeadBG.setOrigin(GuiComponent.GuiOrigin.RC);
+		redHeadBG.setScreenParent(GuiComponent.GuiCorner.CENTER);
+		redHeadBG.setColor(new Color4f(0, 0, 0, 0.35f));
+		super.add(redHeadBG);
+
 		redBG = new GuiPanel(Display.getInstance().getWidth()/2-10, Display.getInstance().getHeight()/2, 250, 350);
 		redBG.setOrigin(GuiComponent.GuiOrigin.RC);
 		redBG.setScreenParent(GuiComponent.GuiCorner.CENTER);
 		redBG.setColor(new Color4f(0, 0, 0, 0.35f));
 		super.add(redBG);
+
+		blueHeadBG = new GuiPanel(Display.getInstance().getWidth()/2+10, Display.getInstance().getHeight()/2-196, 250, 31);
+		blueHeadBG.setOrigin(GuiComponent.GuiOrigin.LC);
+		blueHeadBG.setScreenParent(GuiComponent.GuiCorner.CENTER);
+		blueHeadBG.setColor(new Color4f(0, 0, 0, 0.35f));
+		super.add(blueHeadBG);
 
 		blueBG = new GuiPanel(Display.getInstance().getWidth()/2+10, Display.getInstance().getHeight()/2, 250, 350);
 		blueBG.setOrigin(GuiComponent.GuiOrigin.LC);
@@ -64,7 +81,9 @@ public class TDMPlayerListScreen extends GuiCanvas {
 			rendered = true;
 
 
+		redHeadBG.setUseable(rendered);
 		redBG.setUseable(rendered);
+		blueHeadBG.setUseable(rendered);
 		blueBG.setUseable(rendered);
 
 		if (!rendered)
@@ -112,6 +131,11 @@ public class TDMPlayerListScreen extends GuiCanvas {
 		if (!rendered)
 			return;
 
+		SLine red = new SLine(redHeadBG);
+		SLine blue = new SLine(blueHeadBG);
+		red.render(gs);
+		blue.render(gs);
+
 		for(PLine pl : lines){
 			pl.render(gs);
 		}
@@ -123,11 +147,16 @@ public class TDMPlayerListScreen extends GuiCanvas {
 	{
 		FontRenderer nameLabel;
 		FontRenderer pingLabel;
+		FontRenderer killsLabel;
+		FontRenderer deathsLabel;
 		String name;
 		int ping;
 		int x, y;
 		Color4f pingColor;
 		Color4f nameColor;
+
+		int kills;
+		int deaths;
 
 		public PLine(Player player, GuiComponent parent, int i)
 		{
@@ -142,33 +171,53 @@ public class TDMPlayerListScreen extends GuiCanvas {
 			this.nameColor = Color4f.WHITE;
 			if (player.getTeam() != null)
 				this.nameColor = player.getTeam().getColor();
-		}
 
-		void update(int x, int y, int ping, GuiComponent parent)
-		{
-			this.x = x;
-			this.y = y;
-			this.ping = ping;
-			this.nameLabel.setPosition(x + 5, y + 2);
-
-			this.pingLabel.setText(this.ping + " ms");
-			this.pingLabel.setPosition(x + parent.getW() - 5 - pingLabel.getWidth(), y + 2);
-
-			float r = (float)(this.ping - 50) / 50.0f;
-			float g = 1.0f - r;
-			if (r < 0) r = 0;
-			if (r > 1) r = 1;
-			if (g < 0) g = 0;
-			if (g > 1) g = 1;
-
-			this.pingColor.setRed(r);
-			this.pingColor.setGreen(g);
+			try {
+				this.kills = (int) GameCore.getInstance().getGame().getGameMode().getPlayerStats().get(player.getID()).get(PlayerStats.Stats.KILLS);
+				this.deaths = (int) GameCore.getInstance().getGame().getGameMode().getPlayerStats().get(player.getID()).get(PlayerStats.Stats.DEATHS);
+			} catch(Exception e){
+				System.out.println("Can't access player stats !");
+				kills = 0;
+				deaths = 0;
+			}
+			this.killsLabel = new FontRenderer(FONT, "" + kills, x + parent.getW() - 130, y + 2);
+			this.deathsLabel = new FontRenderer(FONT, "" + deaths, x + parent.getW() - 90, y + 2);
 		}
 
 		void render(GuiShader shader)
 		{
 			this.nameLabel.render(shader, nameColor, 1);
 			this.pingLabel.render(shader, pingColor, 1);
+			this.killsLabel.render(shader, Color4f.WHITE, 1);
+			this.deathsLabel.render(shader, Color4f.WHITE, 1);
+		}
+	}
+
+	class SLine{
+
+		FontRenderer nameLabel;
+		FontRenderer killsLabel;
+		FontRenderer deathsLabel;
+		FontRenderer pingLabel;
+
+		int x, y;
+
+		public SLine(GuiComponent parent){
+			this.x = parent.getX();
+			this.y = parent.getY();
+			this.nameLabel = new FontRenderer(FONT, "Name", x + 2, y + 2);
+			this.killsLabel = new FontRenderer(FONT, "K", x + parent.getW() - 130, y + 2);
+			this.deathsLabel = new FontRenderer(FONT, "D", x + parent.getW() - 90, y + 2);
+			this.pingLabel = new FontRenderer(FONT, "Ping", x + parent.getW() - 2, y + 2);
+			this.pingLabel.setPosition(x + parent.getW() - 5 - pingLabel.getWidth(), y + 2);
+		}
+
+		void render(GuiShader shader)
+		{
+			this.nameLabel.render(shader, Color4f.WHITE, 1);
+			this.killsLabel.render(shader, Color4f.WHITE, 1);
+			this.deathsLabel.render(shader, Color4f.WHITE, 1);
+			this.pingLabel.render(shader, Color4f.WHITE, 1);
 		}
 	}
 }
