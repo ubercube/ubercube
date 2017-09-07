@@ -19,7 +19,7 @@
 
 package fr.veridiangames.client.rendering.textures;
 
-import static fr.veridiangames.client.FileManager.getResource;
+import static fr.veridiangames.client.Resource.getResource;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
 

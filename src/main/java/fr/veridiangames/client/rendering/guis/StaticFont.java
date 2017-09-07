@@ -26,7 +26,7 @@ import java.awt.FontFormatException;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import static fr.veridiangames.client.FileManager.getResource;
+import static fr.veridiangames.client.Resource.getResource;
 
 public class StaticFont {
 	public static Font square_bold(int style, float size) {

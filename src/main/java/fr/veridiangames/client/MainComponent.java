@@ -23,10 +23,7 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.core.utils.Log;
 
-import java.io.File;
 import java.security.SecureRandom;
-
-import static fr.veridiangames.client.FileManager.getResource;
 
 /**
  * Created by Marccspro on 28 janv. 2016.

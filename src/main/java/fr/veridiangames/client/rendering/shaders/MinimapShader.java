@@ -25,20 +25,21 @@ import fr.veridiangames.core.utils.Color4f;
 /**
  * Created by Marccspro on 8 f�vr. 2016.
  */
-public class WeaponFboShader extends Shader
+public class MinimapShader extends Shader
 {
-	public static final String VERTEX_PATH = "/weapon_fbo.vert";
-	public static final String FRAGMENT_PATH = "/weapon_fbo.frag";
+	public static final String VERTEX_PATH = "/minimap.vert";
+	public static final String FRAGMENT_PATH = "/minimap.frag";
 
 	private int projectionMatrixLocation;
 	private int modelViewMatrixLocation;
+	private int inColorLocation;
 
-	public WeaponFboShader()
+	public MinimapShader()
 	{
 		super(VERTEX_PATH, FRAGMENT_PATH);
 	}
 
-	public WeaponFboShader(String vertexPath, String fragmentPath)
+	public MinimapShader(String vertexPath, String fragmentPath)
 	{
 		super(vertexPath, fragmentPath);
 	}
@@ -53,6 +54,7 @@ public class WeaponFboShader extends Shader
 	{
 		projectionMatrixLocation = super.getUniformLocation("projectionMatrix");
 		modelViewMatrixLocation = super.getUniformLocation("modelViewMatrix");
+		inColorLocation = super.getUniformLocation("in_color");
 	}
 	
 	public void setOrtho(float right, float left, float top, float bottom, float zNear, float zFar)
@@ -72,7 +74,7 @@ public class WeaponFboShader extends Shader
 
 	public void setColor(Color4f color)
 	{
-		super.load4f(super.getUniformLocation("in_color"), color.r, color.g, color.b, color.a);
+		super.load4f(inColorLocation, color.r, color.g, color.b, color.a);
 	}
 
 	public void setUseTexture(boolean useTexture) {}
