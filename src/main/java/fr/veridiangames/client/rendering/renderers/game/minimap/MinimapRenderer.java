@@ -132,7 +132,6 @@ public class MinimapRenderer
 		Vec2 p = Ubercube.getInstance().getGameCore().getGame().getPlayer().getPosition().xz();
 		Vec2 dir = Ubercube.getInstance().getGameCore().getGame().getPlayer().getRotation().getForward().xz().normalize();
 		float yRot = toDegrees(atan2(dir.y, dir.x));
-		System.out.println(yRot);
 		shader.setModelViewMatrix(Mat4.translate(width / 2, height / 2, 0).mul(Mat4.rotate(0, 0, -yRot - 90).mul(Mat4.translate(-p.x * scale, -p.y * scale, 0).mul(Mat4.scale(scale, scale, scale)))));
 
 		glBindVertexArray(vao);

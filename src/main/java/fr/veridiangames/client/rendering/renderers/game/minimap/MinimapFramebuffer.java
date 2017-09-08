@@ -73,8 +73,8 @@ public class MinimapFramebuffer
 		StaticPrimitive.quadPrimitive().render(fboShader,
 			Display.getInstance().getWidth() - 35 - width / 2,
 			Display.getInstance().getHeight() - 30 - height / 2,0,
-			35,
-			35, 1);
+			75,
+			75, 1);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glEnable(GL_CULL_FACE);
 	}
