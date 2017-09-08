@@ -63,6 +63,7 @@ public class PacketManager
 		packets.put(Packet.AUDIO, SoundPacket.class);
 		packets.put(Packet.GRENADE_SPAWN, GrenadeSpawnPacket.class);
 		packets.put(Packet.APPLY_DAMAGE, ApplyDamagePacket.class);
+		packets.put(Packet.SHOVEL_HIT_BLOCK, ShovelHitBlockPacket.class);
 
 		/* GAME MODES */
 		packets.put(Packet.GAMEMODE_TDM_SPAWN, TDMSpawnPacket.class);

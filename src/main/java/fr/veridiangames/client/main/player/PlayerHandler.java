@@ -23,15 +23,18 @@ import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.audio.AudioListener;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.*;
+import fr.veridiangames.core.game.entities.particles.ParticleSystem;
+import fr.veridiangames.core.game.entities.particles.ParticlesBulletHit;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.weapons.meleeWeapon.WeaponShovel;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.Protocol;
-import fr.veridiangames.core.network.packets.BlockActionPacket;
+import fr.veridiangames.core.network.packets.*;
 import fr.veridiangames.client.inputs.Input;
 import fr.veridiangames.client.network.NetworkClient;
-import fr.veridiangames.core.network.packets.WeaponChangePacket;
+import fr.veridiangames.core.utils.Color4f;
+import fr.veridiangames.core.utils.Indexer;
 
 /**
  * Created by Marccspro on 14 f�vr. 2016.
@@ -146,10 +149,15 @@ public class PlayerHandler
 			{
 				Vec3i blockPosition = ray.getHit().getBlockPosition();
 				Vec3  hitPoint = ray.getExactHitPoint();
-				if (input.getMouse().getButtonDown(0))
-					removeBlock(blockPosition);
-				else if (input.getMouse().getButtonDown(1))
+				if (input.getMouse().getButtonDown(0)) {
+					//removeBlock(blockPosition);
+					net.send(new ShovelHitBlockPacket( blockPosition, 0.50f, ray.getHit().getBlock()), Protocol.TCP);
+					ParticleSystem hitParticles = new ParticlesBulletHit(Indexer.getUniqueID(), ray.getExactHitPoint(), new Color4f(ray.getHit().getBlock()));
+					hitParticles.useCollision(false);
+					GameCore.getInstance().getGame().spawn(hitParticles);
+				}else if (input.getMouse().getButtonDown(1)) {
 					placeBlock(hitPoint);
+				}
 			}
 		}
 	}

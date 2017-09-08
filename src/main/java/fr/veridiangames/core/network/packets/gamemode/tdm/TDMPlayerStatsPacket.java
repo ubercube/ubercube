@@ -25,11 +25,8 @@ public class TDMPlayerStatsPacket extends Packet {
 		data.put(stats.size());
 		for(Map.Entry<Integer, HashMap<PlayerStats.Stats, Object>> e : stats.entrySet()){
 			data.put(e.getKey());
-			//=System.out.println(e.getKey());
 			data.put((int)e.getValue().get(PlayerStats.Stats.KILLS));
-			//System.out.println((int)e.getValue().get(PlayerStats.Stats.KILLS));
 			data.put((int)e.getValue().get(PlayerStats.Stats.DEATHS));
-			//System.out.println((int)e.getValue().get(PlayerStats.Stats.DEATHS));
 		}
 		data.flip();
 	}
@@ -42,17 +39,11 @@ public class TDMPlayerStatsPacket extends Packet {
 		int id;
 		int kills;
 		int deaths;
-		//System.out.println(" PlayerStats size " + size);
-		//System.out.println("---------------------------");
 		for(int i=0;i<size;i++){
 			h = new HashMap<>();
 			id = data.getInt();
-			//System.out.println(id);
 			kills = data.getInt();
-			//System.out.println(kills);
 			deaths = data.getInt();
-			//System.out.println(deaths);
-			//System.out.println("---------------------------");
 			h.put(PlayerStats.Stats.KILLS, kills);
 			h.put(PlayerStats.Stats.DEATHS, deaths);
 			stats.put(id, h);
@@ -66,12 +57,6 @@ public class TDMPlayerStatsPacket extends Packet {
 
 	@Override
 	public void process(NetworkableClient client, InetAddress address, int port) {
-		System.out.println("--------------------------------------");
-
-		for(Map.Entry<Integer, HashMap<PlayerStats.Stats, Object>> e : stats.entrySet()){
-			System.out.println("Key : " + e.getKey() + " Value :" + e.getValue());
-		}
-		System.out.println("--------------------------------------");
 		GameCore.getInstance().getGame().getGameMode().getPlayerStats().set(stats);
 	}
 }
