@@ -172,10 +172,12 @@ public class GameRenderer
 		glDisable(GL_CULL_FACE);
 		StaticPrimitive.quadPrimitive().render(weaponFboShader,
 				Display.getInstance().getWidth() / 2,
-				Display.getInstance().getHeight() / 2,0 ,
+				Display.getInstance().getHeight() / 2,0,
 				Display.getInstance().getWidth() / 2,
-				-Display.getInstance().getHeight() / 2, 0);
+				-Display.getInstance().getHeight() / 2, 1);
 		glEnable(GL_CULL_FACE);
+
+		minimap.render();
 	}
 
 	public void bindEnvMap()
@@ -313,8 +315,6 @@ public class GameRenderer
 				gui3DShader,
 				camera
 		);
-
-		minimap.render();
 	}
 	
 	public GameCore getGameCore()
