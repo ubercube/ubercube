@@ -23,7 +23,7 @@ import fr.veridiangames.core.GameCore;
 
 import static fr.veridiangames.core.utils.FileUtils.fileExist;
 
-public class FileManager
+public class Resource
 {
     public static String getResource(String path)
     {

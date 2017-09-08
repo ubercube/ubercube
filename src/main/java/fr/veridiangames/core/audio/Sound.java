@@ -19,7 +19,7 @@
 
 package fr.veridiangames.core.audio;
 
-import static fr.veridiangames.client.FileManager.getResource;
+import static fr.veridiangames.client.Resource.getResource;
 import static org.lwjgl.openal.AL10.alBufferData;
 import static org.lwjgl.openal.AL10.alGenBuffers;
 

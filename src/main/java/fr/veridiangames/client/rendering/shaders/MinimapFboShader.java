@@ -25,20 +25,20 @@ import fr.veridiangames.core.utils.Color4f;
 /**
  * Created by Marccspro on 8 f�vr. 2016.
  */
-public class WeaponFboShader extends Shader
+public class MinimapFboShader extends Shader
 {
-	public static final String VERTEX_PATH = "/weapon_fbo.vert";
-	public static final String FRAGMENT_PATH = "/weapon_fbo.frag";
+	public static final String VERTEX_PATH = "/minimap_fbo.vert";
+	public static final String FRAGMENT_PATH = "/minimap_fbo.frag";
 
 	private int projectionMatrixLocation;
 	private int modelViewMatrixLocation;
 
-	public WeaponFboShader()
+	public MinimapFboShader()
 	{
 		super(VERTEX_PATH, FRAGMENT_PATH);
 	}
 
-	public WeaponFboShader(String vertexPath, String fragmentPath)
+	public MinimapFboShader(String vertexPath, String fragmentPath)
 	{
 		super(vertexPath, fragmentPath);
 	}

@@ -19,6 +19,7 @@
 
 package fr.veridiangames.client.main.screens;
 
+import fr.veridiangames.client.Resource;
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.audio.AudioPlayer;
 import fr.veridiangames.client.inputs.Input;
@@ -28,6 +29,8 @@ import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.components.GuiLabel;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
+import fr.veridiangames.client.rendering.textures.Texture;
+import fr.veridiangames.client.rendering.textures.TextureLoader;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.client.main.screens.gamemode.TDMHudScreen;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
@@ -35,6 +38,8 @@ import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.explosiveWeapons.WeaponGrenade;
 import fr.veridiangames.core.game.entities.weapons.fireWeapons.FireWeapon;
 import fr.veridiangames.core.utils.Color4f;
+
+import static org.lwjgl.opengl.GL11.GL_LINEAR;
 
 /**
  * Created by Marc on 23/06/2016.
@@ -52,7 +57,6 @@ public class PlayerHudScreen extends GuiCanvas
     private GuiPanel damageEffect;
     private GuiCanvas gameMode;
     private ConsoleScreen consoleScreen;
-    private GuiPanel minimap;
 
     private int health;
 
@@ -133,6 +137,7 @@ public class PlayerHudScreen extends GuiCanvas
         audioStatus.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
         audioStatus.setUseable(AudioPlayer.muteAudio);
         super.add(audioStatus);
+
 /*
         playerPosition = new GuiLabel("0 - 0 - 0", display.getWidth() / 2, 10, 20f);
         playerPosition.setOrigin(GuiComponent.GuiOrigin.TC);
@@ -141,25 +146,6 @@ public class PlayerHudScreen extends GuiCanvas
         playerPosition.setDropShadow(2);
         playerPosition.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
         super.add(playerPosition);*/
-
-		GuiPanel minimapShadow = new GuiPanel(display.getWidth() - 35 + 2, display.getHeight() - 30 + 3, 200, 150);
-		minimapShadow.setOrigin(GuiComponent.GuiOrigin.C);
-		minimapShadow.setScreenParent(GuiComponent.GuiCorner.BR);
-		minimapShadow.setColor(new Color4f(0.0f, 0.0f, 0.0f, 0.3f));
-		super.add(minimapShadow);
-
-        minimap = new GuiPanel(display.getWidth() - 35, display.getHeight() - 30, 200, 150);
-        minimap.setOrigin(GuiComponent.GuiOrigin.C);
-        minimap.setScreenParent(GuiComponent.GuiCorner.BR);
-        minimap.setColor(new Color4f(0, 0.5f, 0, 1f));
-        super.add(minimap);
-
-        GuiLabel minimapSoon = new GuiLabel("Minimap soon !", display.getWidth() - 35 - 100, display.getHeight() - 30 - 75);
-        minimapSoon.setDropShadow(2);
-        minimapSoon.setOrigin(GuiComponent.GuiOrigin.CENTER);
-        minimapSoon.setScreenParent(GuiComponent.GuiCorner.BR);
-		minimapSoon.setColor(new Color4f(1,1,1,1f));
-        super.add(minimapSoon);
 
         consoleScreen = new ConsoleScreen(this, display, core, 10, Display.getInstance().getHeight() - 130, 600, 450);
         super.addCanvas(consoleScreen);

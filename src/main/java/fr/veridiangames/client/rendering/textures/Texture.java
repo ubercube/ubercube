@@ -48,6 +48,10 @@ public class Texture
 		return height;
 	}
 
+	public int getId() {
+		return id;
+	}
+
 	public void bind(Shader shader)
 	{
 		glBindTexture(GL_TEXTURE_2D, id);

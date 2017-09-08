@@ -36,9 +36,7 @@ import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.RespawnPacket;
 import fr.veridiangames.core.utils.Color4f;
 
-import java.awt.*;
-
-import static fr.veridiangames.client.FileManager.getResource;
+import static fr.veridiangames.client.Resource.getResource;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
 
 /**

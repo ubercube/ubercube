@@ -25,6 +25,7 @@ import fr.veridiangames.client.rendering.guis.primitives.StaticPrimitive;
 import fr.veridiangames.client.rendering.renderers.game.entities.ModeledEntityRenderer;
 import fr.veridiangames.client.rendering.renderers.game.entities.particles.ParticleRenderer;
 import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerNameRenderer;
+import fr.veridiangames.client.rendering.renderers.game.minimap.MinimapFramebuffer;
 import fr.veridiangames.client.rendering.renderers.game.physics.ColliderRenderer;
 import fr.veridiangames.client.rendering.shaders.*;
 import fr.veridiangames.client.rendering.textures.FrameBuffer;
@@ -76,6 +77,8 @@ public class GameRenderer
 
 	private boolean					drawColliders;
 
+	private MinimapFramebuffer		minimap;
+
 	public GameRenderer(Ubercube main, GameCore core)
 	{
 		this.core = core;
@@ -98,6 +101,8 @@ public class GameRenderer
 
 		this.worldRenderer = new WorldRenderer(core);
 		this.gui3DShader = new Gui3DShader();
+
+		this.minimap = new MinimapFramebuffer();
 
 		this.playerViewport = new PlayerViewport(main.getDisplay(), main);
 
@@ -130,6 +135,7 @@ public class GameRenderer
 			core.getGame().getEntityManager().getEntities(),
 			core.getGame().getEntityManager().getPlayerEntites()
 		);
+		minimap.update();
 		if (drawColliders)
 		{
 			colliderRenderer.updateInstances(
@@ -146,7 +152,10 @@ public class GameRenderer
 		if (weaponFbo == null || Display.getInstance().wasResized())
 		{
 			if (weaponFbo != null)
+			{
 				this.weaponFbo.destroy();
+				this.weaponFbo = null;
+			}
 			this.weaponFbo = new FrameBuffer(Display.getInstance().getWidth(), Display.getInstance().getHeight());
 		}
 
@@ -163,10 +172,12 @@ public class GameRenderer
 		glDisable(GL_CULL_FACE);
 		StaticPrimitive.quadPrimitive().render(weaponFboShader,
 				Display.getInstance().getWidth() / 2,
-				Display.getInstance().getHeight() / 2,0 ,
+				Display.getInstance().getHeight() / 2,0,
 				Display.getInstance().getWidth() / 2,
-				-Display.getInstance().getHeight() / 2, 0);
+				-Display.getInstance().getHeight() / 2, 1);
 		glEnable(GL_CULL_FACE);
+
+		minimap.render();
 	}
 
 	public void bindEnvMap()

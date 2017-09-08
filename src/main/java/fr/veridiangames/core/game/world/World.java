@@ -38,6 +38,8 @@ import fr.veridiangames.core.utils.Indexer;
 
 public class World
 {
+	public final int 			MAX_CHUNK_HEIGHT = 5;
+
 	private Map<Integer, Chunk> generatingChunks;
 	private List<Integer> 		updateRequests;
 	private Map<Integer, Chunk> chunks;
@@ -50,7 +52,7 @@ public class World
 	private int			worldSize;
 	private WorldType	worldType;
 	private boolean 	generated;
-	
+
 	public World(GameCore core)
 	{
 		this.core = core;
@@ -76,7 +78,7 @@ public class World
 		worldGen.calcFinalNoise();
 		for (int x = 0; x < worldSize; x++)
 		{
-			for (int y = 0; y < 5; y++)
+			for (int y = 0; y < MAX_CHUNK_HEIGHT; y++)
 			{
 				for (int z = 0; z < worldSize; z++)
 				{
@@ -91,14 +93,11 @@ public class World
 		}
 		for (int x = 0; x < worldSize; x++)
 		{
-			for (int y = 0; y < 1; y++)
+			for (int z = 0; z < worldSize; z++)
 			{
-				for (int z = 0; z < worldSize; z++)
-				{
-					int index = Indexer.index3i(x, y, z);
-					Chunk c = chunks.get(index);
-					c.generateVegetation();
-				}
+				int index = Indexer.index3i(x, 0, z);
+				Chunk c = chunks.get(index);
+				c.generateVegetation();
 			}
 		}
 
@@ -379,7 +378,18 @@ public class World
 		
 		c.removeBlock(xx, yy, zz);
 	}
-	
+
+	public int getHeighestBlockAt(int x, int z)
+	{
+		for (int i = MAX_CHUNK_HEIGHT * Chunk.SIZE - 1; i >= 0; i--)
+		{
+			int block = getBlock(x, i, z);
+			if (block != 0)
+				return block;
+		}
+		return 0;
+	}
+
 	public int getBlockAt(Vec3 point)
 	{
 		Vec3i ip = point.getInts();
