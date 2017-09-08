@@ -56,9 +56,9 @@ public class Renderer
 		String glVersionString = GL11.glGetString(GL11.GL_VERSION).split(" ")[0].trim();
 		float glVersion = Float.parseFloat(glVersionString.substring(0, 3));
 		System.out.println("Available GL Version " + glVersion);
-		if (glVersion < 3.3)
+		if (glVersion < 3.3f)
 		{
-			System.err.println("Not GL33 compatible !");
+			System.err.println("Not GL33 compatible ! (" + glVersion + ")");
 			return GL33 = false;
 		}
 		return GL33 = true;

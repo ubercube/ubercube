@@ -22,6 +22,7 @@ package fr.veridiangames.client.rendering.renderers.game.entities;
 import java.util.List;
 import java.util.Map;
 
+import fr.veridiangames.client.rendering.renderers.models.OBJModel;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Model;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
@@ -112,7 +113,7 @@ public class EntityWeaponRenderer
 				SHOVEL_RENDERER.render();
 				break;
 			case Model.GRENADE:
-				GRENADE_RENDERER.render();
+				OBJModel.GRENADE_RENDERER.render();
 				break;
 		}
 	}

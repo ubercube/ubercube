@@ -21,6 +21,7 @@ package fr.veridiangames.client.rendering.renderers.game.entities;
 
 import fr.veridiangames.client.rendering.buffers.Buffers;
 import fr.veridiangames.client.rendering.renderers.Renderer;
+import fr.veridiangames.client.rendering.renderers.models.OBJModel;
 import fr.veridiangames.client.rendering.shaders.Shader;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
@@ -103,7 +104,7 @@ public class ModeledEntityRenderer
                 SHOVEL_RENDERER.render();
                 break;
             case Model.GRENADE:
-                GRENADE_RENDERER.render();
+				OBJModel.GRENADE_RENDERER.render();
                 break;
         }
     }
