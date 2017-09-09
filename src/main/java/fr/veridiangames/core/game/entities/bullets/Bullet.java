@@ -94,15 +94,15 @@ public class Bullet extends Entity
 			blockPosition = stepedPosition.copy();
 			e = core.getGame().getEntityManager().getEntityAt(stepedPosition, "NetPlayer");
 			if (e != null) {
-				if (!(e instanceof NetworkedPlayer))
+				if (e.getID() == holderID)
+					e = null;
+				else if (!(e instanceof NetworkedPlayer))
 					e = null;
 				else {
 					NetworkedPlayer player = (NetworkedPlayer) e;
 					if (player.isDead())
 						e = null;
 				}
-				if (e.getID() == core.getGame().getPlayer().getID())
-					e = null;
 			}
 			if (block == 0 && e == null)
 			{

@@ -19,16 +19,12 @@
 
 package fr.veridiangames.core.network.packets;
 
-import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
-import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
 import fr.veridiangames.core.maths.Vec3;
-import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
-import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.DataBuffer;
 
 import java.net.InetAddress;
@@ -38,6 +34,7 @@ import java.net.InetAddress;
  */
 public class DamageForcePacket extends Packet
 {
+	private int authorID;
 	private Vec3 position;
 	private float force;
 
@@ -47,9 +44,11 @@ public class DamageForcePacket extends Packet
 		super(DAMAGE_FORCE);
 	}
 
-	public DamageForcePacket(Vec3 pos, float force)
+	public DamageForcePacket(int authorID, Vec3 pos, float force)
 	{
 		super(DAMAGE_FORCE);
+
+		data.put(authorID);
 
 		data.put(pos.x);
 		data.put(pos.y);
@@ -63,7 +62,9 @@ public class DamageForcePacket extends Packet
 	public DamageForcePacket(DamageForcePacket packet)
 	{
 		super(DAMAGE_FORCE);
-		
+
+		data.put(packet.authorID);
+
 		data.put(packet.position.x);
 		data.put(packet.position.y);
 		data.put(packet.position.z);
@@ -75,6 +76,7 @@ public class DamageForcePacket extends Packet
 
 	public void read(DataBuffer data)
 	{
+		authorID = data.getInt();
 		position = new Vec3(data.getFloat(), data.getFloat(), data.getFloat());
 		force = data.getFloat();
 	}
@@ -94,7 +96,7 @@ public class DamageForcePacket extends Packet
 
 				float len = this.position.copy().sub(p.getPosition()).magnitude();
 				if(len <= 10.0f)
-					p.applyDamage((int)((10 - len) * 10), server);
+					p.applyDamage((int)((10 - len) * 10), server, authorID);
 			}
 		}
 	}
