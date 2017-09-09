@@ -150,7 +150,6 @@ public class PlayerHandler
 				Vec3i blockPosition = ray.getHit().getBlockPosition();
 				Vec3  hitPoint = ray.getExactHitPoint();
 				if (input.getMouse().getButtonDown(0)) {
-					//removeBlock(blockPosition);
 					net.send(new ShovelHitBlockPacket( blockPosition, 0.50f, ray.getHit().getBlock()), Protocol.TCP);
 					ParticleSystem hitParticles = new ParticlesBulletHit(Indexer.getUniqueID(), ray.getExactHitPoint(), new Color4f(ray.getHit().getBlock()));
 					hitParticles.useCollision(false);

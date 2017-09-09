@@ -63,7 +63,7 @@ public class PlayerSelection
 			{
 				Vec3i bPos = hit.getBlockPosition();
 				this.pos = new Vec3(bPos).add(0.5f);
-				this.size = new Vec3(0.51f);
+				this.size = new Vec3(0.501f);
 			}
 		}
 	}

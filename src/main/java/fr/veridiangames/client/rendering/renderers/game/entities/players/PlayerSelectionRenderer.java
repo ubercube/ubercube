@@ -105,12 +105,8 @@ public class PlayerSelectionRenderer
 		if (selection.isShowed())
 		{
 			shader.setModelViewMatrix(Mat4.translate(selection.getPos()).mul(Mat4.scale(selection.getSize())));
-			shader.setColor(1, 1, 1, 0.2f);
-			glBindVertexArray(vao);
-			glDrawArrays(GL_QUADS, 0, 4 * 6);
-			glBindVertexArray(0);
 			
-			shader.setColor(0, 0, 0, 0.5f);
+			shader.setColor(0, 0, 0, 0.25f);
 			glLineWidth(2);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			glBindVertexArray(vao);

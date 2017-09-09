@@ -101,6 +101,8 @@ public class Bullet extends Entity
 					if (player.isDead())
 						e = null;
 				}
+				if (e.getID() == core.getGame().getPlayer().getID())
+					e = null;
 			}
 			if (block == 0 && e == null)
 			{
