@@ -64,10 +64,10 @@ public class ServerPlayer extends Player
 		this.timeSinceSpawn = 0;
 	}
 
-	public boolean applyDamage (int damage, NetworkableServer server){
+	public boolean applyDamage (int damage, NetworkableServer server)
+	{
 		return applyDamage(damage, server, 0);
 	}
-
 
 	public boolean applyDamage (int damage, NetworkableServer server, int shooterId)
 	{

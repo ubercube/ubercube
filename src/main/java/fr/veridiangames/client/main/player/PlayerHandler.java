@@ -63,7 +63,7 @@ public class PlayerHandler
 		ECKeyMovement key = player.getKeyComponent();
 		ECMouseLook mouse = player.getMouseComponent();
 		ECRaycast ray = player.getRaycast();
-		ECWeapon weapon = player.getWeaponManager();
+		ECWeapon weapon = player.getWeaponComponent();
 		ECDebug debug = player.getDebugComponent();
 
 		AudioListener.setTransform(player.getTransform());

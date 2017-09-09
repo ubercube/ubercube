@@ -26,8 +26,6 @@ import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.particles.ParticleSnow;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
-import fr.veridiangames.core.game.entities.weapons.Weapon;
-import fr.veridiangames.core.game.entities.weapons.explosiveWeapons.WeaponGrenade;
 import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
@@ -39,7 +37,6 @@ import fr.veridiangames.core.network.packets.WeaponPositionPacket;
 import fr.veridiangames.core.physics.Rigidbody;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
 import fr.veridiangames.core.utils.Indexer;
-import fr.veridiangames.core.utils.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +83,7 @@ public class ClientPlayer extends Player
 	public void init(GameCore core)
 	{
 		super.init(core);
-		this.getWeaponManager().getWeapon().setNet(net);
+		this.getWeaponComponent().getWeapon().setNet(net);
 	}
 
 	public void respawn(Vec3 position, Quat rotation)
@@ -95,7 +92,7 @@ public class ClientPlayer extends Player
 		setPosition(position);
 		setRotation(rotation);
 		setLife(Player.MAX_LIFE);
-		((WeaponGrenade) getWeaponManager().getWeapons().get(Weapon.GRENADE)).resetGrenades();
+		this.getWeaponComponent().getKit().reset();
 		setDead(false);
 	}
 
@@ -131,10 +128,10 @@ public class ClientPlayer extends Player
 		if (this.life < 0) this.life = 0;
 		if (this.life > 100) this.life = 100;
 
-		if (this.getWeaponManager().getWeapon().hasPositionChanged())
+		if (this.getWeaponComponent().getWeapon().hasPositionChanged())
 		{
-			this.getWeaponManager().getWeapon().setPositionChanged(false);
-			net.send(new WeaponPositionPacket(this.getID(), this.getWeaponManager().getWeapon().getCurrentPosition()), Protocol.UDP);
+			this.getWeaponComponent().getWeapon().setPositionChanged(false);
+			net.send(new WeaponPositionPacket(this.getID(), this.getWeaponComponent().getWeapon().getCurrentPosition()), Protocol.UDP);
 		}
 
 		/** Debug **/

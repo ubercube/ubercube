@@ -119,7 +119,7 @@ public class GrenadeSpawnPacket extends Packet
         ClientPlayer player = client.getCore().getGame().getPlayer();
         if (player.getID() == holderID)
         {
-            WeaponGrenade g = (WeaponGrenade) player.getWeaponManager().getWeapons().get(Weapon.GRENADE);
+            WeaponGrenade g = (WeaponGrenade) player.getWeaponComponent().getKit().getWeaponManager().get(Weapon.GRENADE);
             g.setGrenadeCount(g.getGrenadesLeft() - 1);
         }
 

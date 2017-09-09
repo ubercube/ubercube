@@ -22,7 +22,11 @@ package fr.veridiangames.core.game.entities.components;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
+import fr.veridiangames.core.game.entities.weapons.WeaponManager;
 import fr.veridiangames.core.game.entities.weapons.explosiveWeapons.WeaponGrenade;
+import fr.veridiangames.core.game.entities.weapons.kits.AssaultKit;
+import fr.veridiangames.core.game.entities.weapons.kits.BuilderKit;
+import fr.veridiangames.core.game.entities.weapons.kits.Kit;
 import fr.veridiangames.core.game.entities.weapons.meleeWeapon.WeaponShovel;
 import fr.veridiangames.core.game.entities.weapons.fireWeapons.WeaponAK47;
 import fr.veridiangames.core.maths.Transform;
@@ -39,8 +43,10 @@ public class ECWeapon extends EComponent
 {
 	private int weaponID;
 	private Weapon weapon;
-	private ConcurrentHashMap<Integer, Weapon> weapons;
+	//private List<Weapon> weapons;
 	private Profiler profiler;
+
+	private Kit kit;
 
 	public ECWeapon(int weapon)
 	{
@@ -48,17 +54,20 @@ public class ECWeapon extends EComponent
 		super.addDependencies(RENDER);
 		this.weaponID = weapon;
 
-		this.weapons = new ConcurrentHashMap<>();
+		this.kit = new AssaultKit();
+
+		/*this.weapons = new ConcurrentHashMap<>();
 		this.weapons.put(Weapon.AK47, new WeaponAK47());
 		this.weapons.put(Weapon.SHOVEL, new WeaponShovel());
-		this.weapons.put(Weapon.GRENADE, new WeaponGrenade(10));
+		this.weapons.put(Weapon.GRENADE, new WeaponGrenade(10));*/
 
 		this.profiler = new Profiler("WEAPON", true);
 	}
 	
 	public void init(GameCore core)
 	{
-		this.weapon = weapons.get(weaponID);
+		this.weaponID = 0;
+		this.weapon = this.getWeapons().get(0);
 		this.weapon.setHolder((Player) parent);
 		this.weapon.onChange();
 		Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
@@ -86,15 +95,26 @@ public class ECWeapon extends EComponent
 	{
 		this.weaponID = weapon;
 		this.weapon.onChange();
-		this.weapon = weapons.get(weapon);
+		this.weapon = this.getWeapons().get(weapon);
 		this.weapon.setHolder((Player) parent);
 		this.weapon.init();
 		Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
 		this.weapon.getTransform().setParent(parentTransform);
 	}
 
-	public ConcurrentHashMap<Integer, Weapon> getWeapons()
+	public Kit getKit()
 	{
-		return weapons;
+		return kit;
+	}
+
+	public void setKit(Kit kit)
+	{
+		this.kit = kit;
+		this.init(GameCore.getInstance());
+	}
+
+	public List<Weapon> getWeapons()
+	{
+		return this.kit.getWeapons();
 	}
 }
