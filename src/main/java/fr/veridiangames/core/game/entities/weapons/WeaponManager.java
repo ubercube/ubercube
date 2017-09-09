@@ -5,19 +5,22 @@ import fr.veridiangames.core.game.entities.weapons.fireWeapons.WeaponAK47;
 import fr.veridiangames.core.game.entities.weapons.meleeWeapon.WeaponShovel;
 
 import java.util.concurrent.ConcurrentHashMap;
-import static fr.veridiangames.core.game.entities.weapons.Weapon.*;
 
 public class WeaponManager
 {
 	private ConcurrentHashMap<Integer, Weapon> weapons;
 
+	public static Weapon AK47 = new WeaponAK47();
+	public static Weapon GRENADE = new WeaponGrenade(10); //TODO modify grenade count
+	public static Weapon SHOVEL = new WeaponShovel();
+
 	public WeaponManager()
 	{
 		this.weapons = new ConcurrentHashMap<>();
 
-		this.weapons.put(AK47, new WeaponAK47());
-		this.weapons.put(GRENADE, new WeaponGrenade(10)); //TODO modify grenade count
-		this.weapons.put(SHOVEL, new WeaponShovel());
+		this.weapons.put(Weapon.AK47, AK47);
+		this.weapons.put(Weapon.GRENADE, GRENADE);
+		this.weapons.put(Weapon.SHOVEL, SHOVEL);
 	}
 
 	public Weapon get(int id)

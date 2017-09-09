@@ -22,26 +22,19 @@ package fr.veridiangames.core.game.entities.components;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
-import fr.veridiangames.core.game.entities.weapons.WeaponManager;
-import fr.veridiangames.core.game.entities.weapons.explosiveWeapons.WeaponGrenade;
 import fr.veridiangames.core.game.entities.weapons.kits.AssaultKit;
-import fr.veridiangames.core.game.entities.weapons.kits.BuilderKit;
 import fr.veridiangames.core.game.entities.weapons.kits.Kit;
-import fr.veridiangames.core.game.entities.weapons.meleeWeapon.WeaponShovel;
-import fr.veridiangames.core.game.entities.weapons.fireWeapons.WeaponAK47;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.profiler.Profiler;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Marccspro on 7 f�vr. 2016.
  */
 public class ECWeapon extends EComponent
 {
-	private int weaponID;
+	private int weaponIndex;
 	private Weapon weapon;
 	//private List<Weapon> weapons;
 	private Profiler profiler;
@@ -52,7 +45,7 @@ public class ECWeapon extends EComponent
 	{
 		super(WEAPON);
 		super.addDependencies(RENDER);
-		this.weaponID = weapon;
+		this.weaponIndex = weapon;
 
 		this.kit = new AssaultKit();
 
@@ -66,7 +59,7 @@ public class ECWeapon extends EComponent
 	
 	public void init(GameCore core)
 	{
-		this.weaponID = 0;
+		this.weaponIndex = 0;
 		this.weapon = this.getWeapons().get(0);
 		this.weapon.setHolder((Player) parent);
 		this.weapon.onChange();
@@ -81,9 +74,9 @@ public class ECWeapon extends EComponent
 		profiler.end();
 	}
 	
-	public int getWeaponID()
+	public int getWeaponIndex()
 	{
-		return weaponID;
+		return weaponIndex;
 	}
 	
 	public Weapon getWeapon()
@@ -91,11 +84,11 @@ public class ECWeapon extends EComponent
 		return weapon;
 	}
 
-	public void setWeapon(int weapon)
+	public void setWeapon(int weaponIndex)
 	{
-		this.weaponID = weapon;
+		this.weaponIndex = weaponIndex;
 		this.weapon.onChange();
-		this.weapon = this.getWeapons().get(weapon);
+		this.weapon = this.getWeapons().get(weaponIndex);
 		this.weapon.setHolder((Player) parent);
 		this.weapon.init();
 		Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();

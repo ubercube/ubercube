@@ -44,7 +44,7 @@ public class WeaponChangePacket extends Packet
         super(WEAPON_CHANGE);
 
         data.put(player.getID());
-        data.put(player.getWeaponComponent().getWeaponID());
+        data.put(player.getWeaponComponent().getWeaponIndex());
 
         data.flip();
     }
