@@ -1,20 +1,25 @@
 package fr.veridiangames.client.rendering.renderers.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import fr.veridiangames.core.maths.Vec2;
 import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.utils.Color4f;
 import org.lwjgl.opengl.GL11;
 
 import static fr.veridiangames.client.Resource.getResource;
 
 public class OBJModel {
-	public static final OBJModel GRENADE_RENDERER = ObjModelLoader.loadModel(getResource("weapons/monkey.obj"));
+	public static final OBJModel GRENADE_RENDERER = ObjModelLoader.loadModel(getResource("weapons/GRENADE.obj"));
+	public static final OBJModel AK47_RENDERER = ObjModelLoader.loadModel(getResource("weapons/AK47.obj"));
+	public static final OBJModel SHOVEL_RENDERER = ObjModelLoader.loadModel(getResource("weapons/SHOVEL.obj"));
 
 	private List<Vec3> verticesList = new ArrayList<Vec3>();
 	private List<Vec3> normalsList = new ArrayList<Vec3>();
 	private List<OBJIndex> indicesList = new ArrayList<OBJIndex>();
+	private HashMap<String, Color4f> colorMap = new HashMap<>();
 
 	private Mesh mesh;
 
@@ -34,7 +39,7 @@ public class OBJModel {
 
 		for (int i = 0; i < r.length; i++) {
 			OBJIndex index = indicesList.get(i);
-			r[i] = new Vertex(verticesList.get(index.positionIndex), normalsList.get(index.normalIndex));
+			r[i] = new Vertex(verticesList.get(index.positionIndex), colorMap.get(index.material), normalsList.get(index.normalIndex));
 		}
 
 		mesh = new Mesh(r, nIndices);
@@ -59,6 +64,10 @@ public class OBJModel {
 
 	public void setNormals(List<Vec3> normals) {
 		normalsList = normals;
+	}
+
+	public void setColorMap(HashMap<String, Color4f> colorMap) {
+		this.colorMap = colorMap;
 	}
 
 	public Mesh getMesh() {

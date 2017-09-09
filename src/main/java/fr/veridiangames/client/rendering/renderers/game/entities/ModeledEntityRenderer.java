@@ -95,13 +95,10 @@ public class ModeledEntityRenderer
         switch (model)
         {
             case Model.AK47:
-                AK47_RENDERER.render();
-                break;
-            case Model.AWP:
-                AWP_RENDERER.render();
+				OBJModel.AK47_RENDERER.render();
                 break;
             case Model.SHOVEL:
-                SHOVEL_RENDERER.render();
+				OBJModel.SHOVEL_RENDERER.render();
                 break;
             case Model.GRENADE:
 				OBJModel.GRENADE_RENDERER.render();

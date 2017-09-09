@@ -58,7 +58,7 @@ public class FireWeapon extends Weapon
 		this.maxBullets = 30;
 		this.bulletsLeft = maxBullets;
 		this.runRotation = new Vec3(10f, -20f, 0);
-		this.shootPecision = 0.02f;
+		this.shootPecision = 0.01f;
 		this.audioGain = 1.0f;
 	}
 	

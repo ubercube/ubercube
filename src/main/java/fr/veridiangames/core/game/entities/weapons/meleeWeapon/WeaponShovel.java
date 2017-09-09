@@ -36,19 +36,4 @@ public class WeaponShovel extends MeleeWeapon
 		this.setPosition(2);
 		this.start();
 	}
-
-	public void onAction()
-	{
-
-	}
-
-	public void onActionUp()
-	{
-
-	}
-
-	public void onActionDown()
-	{
-
-	}
 }

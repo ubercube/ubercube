@@ -43,7 +43,12 @@ public class Mesh {
 			vertices.put(verts[i].getPosition().x);
 			vertices.put(verts[i].getPosition().y);
 			vertices.put(verts[i].getPosition().z);
-			
+
+			vertices.put(verts[i].getColor().r);
+			vertices.put(verts[i].getColor().g);
+			vertices.put(verts[i].getColor().b);
+			vertices.put(verts[i].getColor().a);
+
 			vertices.put(verts[i].getNormal().x);
 			vertices.put(verts[i].getNormal().y);
 			vertices.put(verts[i].getNormal().z);
@@ -58,16 +63,19 @@ public class Mesh {
 	
 	public void render() {
 		glEnableVertexAttribArray(0); // position
+		glEnableVertexAttribArray(1); // position
 		glEnableVertexAttribArray(2); // normal
 
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, Vertex.BUFFER_SIZE * 4, 0);
-		glVertexAttribPointer(2, 3, GL_FLOAT, true, Vertex.BUFFER_SIZE * 4, 12);
+		glVertexAttribPointer(1, 4, GL_FLOAT, false, Vertex.BUFFER_SIZE * 4, 12);
+		glVertexAttribPointer(2, 3, GL_FLOAT, false, Vertex.BUFFER_SIZE * 4, 28);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 		glDrawElements(GL_TRIANGLES, indicesSize, GL_UNSIGNED_INT, 0);
 		
 		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
 	}
 
