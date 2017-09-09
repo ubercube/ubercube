@@ -43,7 +43,7 @@ Or download the archive [here](https://github.com/TeamUbercube/ubercube/archive/
 The compilation is done with **Maven** so you need to install it.
 ```sh
 $ cd ubercube
-$ mvn package assambly:single
+$ mvn package assembly:single
 ```
 
 Then you just have to run a **server** then a **client**.

@@ -28,7 +28,7 @@ import fr.veridiangames.core.utils.FileUtils;
 public class GameCore
 {
 	public static final String GAME_NAME = "Ubercube";
-	public static final String GAME_VERSION_NAME = "Pre-Alpha 1.1";
+	public static final String GAME_VERSION_NAME = "Alpha 1";
 	public static final String GAME_SUB_VERSION = FileUtils.getGitCommitsCount();
 	public static final String RESOURCES_PATH = "res/";
 

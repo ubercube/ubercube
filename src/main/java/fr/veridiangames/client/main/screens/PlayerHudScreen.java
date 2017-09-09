@@ -133,14 +133,14 @@ public class PlayerHudScreen extends GuiCanvas
         audioStatus.setUseable(AudioPlayer.muteAudio);
         super.add(audioStatus);
 
-/*
+
         playerPosition = new GuiLabel("0 - 0 - 0", display.getWidth() / 2, 10, 20f);
         playerPosition.setOrigin(GuiComponent.GuiOrigin.TC);
         playerPosition.setScreenParent(GuiComponent.GuiCorner.TC);
         playerPosition.setColor(Color4f.WHITE);
         playerPosition.setDropShadow(2);
         playerPosition.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
-        super.add(playerPosition);*/
+        super.add(playerPosition);
 
         consoleScreen = new ConsoleScreen(this, display, core, 10, Display.getInstance().getHeight() - 130, 600, 450);
         super.addCanvas(consoleScreen);
@@ -213,7 +213,7 @@ public class PlayerHudScreen extends GuiCanvas
         int px = (int) player.getPosition().x;
         int py = (int) player.getPosition().y;
         int pz = (int) player.getPosition().z;
-//        playerPosition.setText(px + " - " + py + " - " + pz);
+        playerPosition.setText(px + " - " + py + " - " + pz);
     }
 
     public ConsoleScreen getConsoleScreen()

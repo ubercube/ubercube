@@ -70,9 +70,15 @@ public class MinimapFboShader extends Shader
 		super.loadMat4(modelViewMatrixLocation, modelViewMatrix);
 	}
 
-	public void setColor(Color4f color)
+	public void startColor(Color4f color)
 	{
+		super.loadInt(super.getUniformLocation("use_color"), 1);
 		super.load4f(super.getUniformLocation("in_color"), color.r, color.g, color.b, color.a);
+	}
+
+	public void endColor()
+	{
+		super.loadInt(super.getUniformLocation("use_color"), 0);
 	}
 
 	public void setUseTexture(boolean useTexture) {}

@@ -21,6 +21,7 @@ package fr.veridiangames.client;
 
 import fr.veridiangames.client.audio.AudioListener;
 import fr.veridiangames.client.audio.AudioSystem;
+import fr.veridiangames.client.main.minimap.MinimapHandler;
 import fr.veridiangames.client.main.screens.ConsoleScreen;
 import fr.veridiangames.client.main.screens.PlayerHudScreen;
 import fr.veridiangames.client.main.screens.LoadingScreen;
@@ -56,6 +57,7 @@ public class Ubercube
 	
 	private MainRenderer		mainRenderer;
 	private PlayerHandler		playerHandler;
+	private MinimapHandler		minimapHandler;
 	private NetworkClient		net;
 	private GuiManager 			guiManager;
 	private boolean 			connected;
@@ -91,6 +93,7 @@ public class Ubercube
 
 		/* *** INIT STUFF *** */
 		this.playerHandler = new PlayerHandler(core, net);
+		this.minimapHandler = new MinimapHandler(core);
 		this.guiManager = new GuiManager();
 
 		/* *** LOADING GUI *** */
@@ -382,5 +385,10 @@ public class Ubercube
 	public ConsoleScreen getConsole()
 	{
 		return console;
+	}
+
+	public MinimapHandler getMinimapHandler()
+	{
+		return minimapHandler;
 	}
 }

@@ -39,6 +39,7 @@ import fr.veridiangames.core.utils.Log;
  */
 public class NetworkClient implements NetworkableClient
 {
+	private Ubercube		ubercube;
 	private int 			port;
 	private InetAddress 	address;
 	private boolean 		connected;
@@ -52,6 +53,7 @@ public class NetworkClient implements NetworkableClient
 	{
 		try
 		{
+			this.ubercube = ubercube;
 			this.address = InetAddress.getByName(address);
 			this.port = port;
 
@@ -91,7 +93,7 @@ public class NetworkClient implements NetworkableClient
 
 	public void console(String msg)
 	{
-		ConsoleScreen console = Ubercube.getInstance().getConsole();
+		ConsoleScreen console = ubercube.getConsole();
 		if (console != null)
 			console.log(msg);
 	}

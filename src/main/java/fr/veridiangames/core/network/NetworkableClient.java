@@ -22,7 +22,6 @@ package fr.veridiangames.core.network;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.network.packets.Packet;
-import fr.veridiangames.core.utils.DataBuffer;
 
 /**
  * Created by Marccspro on 26 f�vr. 2016.
