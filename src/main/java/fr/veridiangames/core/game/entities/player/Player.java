@@ -132,7 +132,7 @@ public abstract class Player extends Entity
 		return ((ECNetwork) this.get(EComponent.NETWORK));
 	}
 	
-	public ECWeapon getWeaponManager()
+	public ECWeapon getWeaponComponent()
 	{
 		return ((ECWeapon) super.get(EComponent.WEAPON));
 	}

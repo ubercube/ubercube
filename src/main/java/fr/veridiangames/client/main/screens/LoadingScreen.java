@@ -65,13 +65,13 @@ public class LoadingScreen extends GuiCanvas
         loadingInfo.setScreenParent(GuiComponent.GuiCorner.BC);
         super.add(loadingInfo);
 
-        joinGameButton = new GuiButton("Join game", display.getWidth() / 2, display.getHeight() - 50, 200, new GuiActionListener()
-        {
+        joinGameButton = new GuiButton("Join game", display.getWidth() / 2, display.getHeight() - 50, 200, new GuiActionListener() {
             public void onAction()
             {
                 loadingInfo.setText("Joining game...");
 				ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
-				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
+				//p.getNet().send(new RespawnPacket(p), Protocol.TCP);
+				p.setDead(true);
                 joinGame = true;
             }
         });

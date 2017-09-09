@@ -19,7 +19,6 @@
 
 package fr.veridiangames.client.main.screens;
 
-import fr.veridiangames.client.Resource;
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.audio.AudioPlayer;
 import fr.veridiangames.client.inputs.Input;
@@ -29,8 +28,6 @@ import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.components.GuiLabel;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
-import fr.veridiangames.client.rendering.textures.Texture;
-import fr.veridiangames.client.rendering.textures.TextureLoader;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.client.main.screens.gamemode.TDMHudScreen;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
@@ -38,8 +35,6 @@ import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.explosiveWeapons.WeaponGrenade;
 import fr.veridiangames.core.game.entities.weapons.fireWeapons.FireWeapon;
 import fr.veridiangames.core.utils.Color4f;
-
-import static org.lwjgl.opengl.GL11.GL_LINEAR;
 
 /**
  * Created by Marc on 23/06/2016.
@@ -165,7 +160,7 @@ public class PlayerHudScreen extends GuiCanvas
         GameMenuScreen gameMenuGui = new GameMenuScreen(this, display, core);
         this.addCanvas(gameMenuGui);
 
-        DeathScreen deathScreen = new DeathScreen(this, display, core);
+        SpawnScreen deathScreen = new SpawnScreen(this, display, core);
         this.addCanvas(deathScreen);
     }
 
@@ -184,7 +179,7 @@ public class PlayerHudScreen extends GuiCanvas
         float normalizedLife = (float) life / 100.0f;
         playerHealth.setW((int) (normalizedLife * 300));
 
-        Weapon weapon = player.getWeaponManager().getWeapon();
+        Weapon weapon = player.getWeaponComponent().getWeapon();
         weaponStats.setUseable(false);
         if (weapon instanceof FireWeapon)
         {
