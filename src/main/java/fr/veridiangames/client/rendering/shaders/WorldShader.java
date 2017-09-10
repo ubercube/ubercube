@@ -69,12 +69,12 @@ public class WorldShader extends Shader
 		this.setFogDistance(fogDistance);
 		this.setColor(-1, -1, -1, -1);
 	}
-	
+
 	public void setProjectionMatrix(Mat4 projectionMatrix)
 	{
 		super.loadMat4(projectionMatrixLocation, projectionMatrix);
 	}
-	
+
 	public void setModelViewMatrix(Mat4 modelViewMatrix)
 	{
 		super.loadMat4(modelViewMatrixLocation, modelViewMatrix);

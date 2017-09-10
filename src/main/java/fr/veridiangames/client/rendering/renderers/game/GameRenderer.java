@@ -53,7 +53,7 @@ public class GameRenderer
 	private PlayerShader			playerShader;
 	private EntityShader			entityShader;
 	private WorldShader				worldShader;
-	private ModelShader 			modelShader;
+	private WeaponShader modelShader;
 	private EnvSphereShader			envSphereShader;
 	private WeaponFboShader			weaponFboShader;
 	private FrameBuffer				weaponFbo;
@@ -86,7 +86,7 @@ public class GameRenderer
 		this.playerShader = new PlayerShader();
 		this.entityShader = new EntityShader();
 		this.worldShader = new WorldShader();
-		this.modelShader = new ModelShader();
+		this.modelShader = new WeaponShader();
 		this.envSphereShader = new EnvSphereShader();
 		this.weaponFboShader = new WeaponFboShader();
 
@@ -216,11 +216,11 @@ public class GameRenderer
 	{
 		modelShader.bind();
 		modelShader.setShaderBase(
-				camera.getProjection(),
+				camera.getProjectionMatrix(),
 				camera.getTransform().getPosition(),
 				core.getGame().getData().getViewDistance()
 		);
-		modelShader.setModelViewMatrix(Mat4.identity());
+		modelShader.setViewMatrix(camera.getViewMatrix());
 		entityWeaponRenderer.renderPlayerWeapon(
 				modelShader,
 				envCubemap.getCubemap(),
@@ -233,7 +233,7 @@ public class GameRenderer
 		/* ***** RENDERING PLAYER ENTITIES ***** */
 		playerShader.bind();
 		playerShader.setShaderBase(
-			camera.getProjection(),
+			camera.getProjectionMatrix(),
 			camera.getTransform().getPosition(),
 			core.getGame().getData().getViewDistance()
 		);
@@ -243,7 +243,7 @@ public class GameRenderer
 		/* ***** RENDERING OTHER ENTITIES ***** */
 		entityShader.bind();
 		entityShader.setShaderBase(
-				camera.getProjection(),
+				camera.getProjectionMatrix(),
 				camera.getTransform().getPosition(),
 				core.getGame().getData().getViewDistance()
 		);
@@ -265,7 +265,7 @@ public class GameRenderer
 		/* ***** RENDERING PARTICLES ***** */
 		entityShader.bind();
 		entityShader.setShaderBase(
-				camera.getProjection(),
+				camera.getProjectionMatrix(),
 				camera.getTransform().getPosition(),
 				core.getGame().getData().getViewDistance()
 		);
@@ -279,7 +279,7 @@ public class GameRenderer
 		/* ***** RENDERING WEAPONS AND MODELS ***** */
 		modelShader.bind();
 		modelShader.setShaderBase(
-				camera.getProjection(),
+				camera.getProjectionMatrix(),
 				camera.getTransform().getPosition(),
 				core.getGame().getData().getViewDistance()
 		);
@@ -299,7 +299,7 @@ public class GameRenderer
 		/* ***** RENDERING THE WORLD ***** */
 		worldShader.bind();
 		worldShader.setShaderBase(
-				camera.getProjection(),
+				camera.getProjectionMatrix(),
 				camera.getTransform().getPosition(),
 				core.getGame().getData().getViewDistance()
 		);
@@ -309,7 +309,7 @@ public class GameRenderer
 
 		/* ***** RENDERING BILLBOARDED TEXT ***** */
 		gui3DShader.bind();
-		gui3DShader.setProjectionMatrix(camera.getProjection());
+		gui3DShader.setProjectionMatrix(camera.getProjectionMatrix());
 		gui3DShader.setModelViewMatrix(Mat4.identity());
 		playerNameRenderer.render(
 				gui3DShader,

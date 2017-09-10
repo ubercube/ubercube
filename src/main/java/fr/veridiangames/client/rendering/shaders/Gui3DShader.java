@@ -66,7 +66,7 @@ public class Gui3DShader extends Shader
 	{
 		this.setProjectionMatrix(projectionMatrix);
 	}
-	
+
 	public void setProjectionMatrix(Mat4 projectionMatrix)
 	{
 		super.loadMat4(projectionMatrixLocation, projectionMatrix);

@@ -78,15 +78,19 @@ public class Camera
 		this.far = far;
 	}
 	
-	public Mat4 getProjection()
+	public Mat4 getProjectionMatrix()
+	{
+		Mat4 projectionMatrix = Mat4.perspective(fov, aspect, near, far);
+		return projectionMatrix.mul(getViewMatrix());
+	}
+
+	public Mat4 getViewMatrix()
 	{
 		Mat4 translationMatrix = Mat4.translate(-transform.getPosition().x, -transform.getPosition().y, -transform.getPosition().z);
 		Mat4 rotationMatrix = Mat4.rotate(transform.getRotation().getForward(), transform.getRotation().getUp());
-		Mat4 projectionMatrix = Mat4.perspective(fov, aspect, near, far);
-
-		return projectionMatrix.mul(rotationMatrix.mul(translationMatrix));
+		return rotationMatrix.mul(translationMatrix);
 	}
-	
+
 	public void update(float distance)
 	{
 		aspect = display.getAspect();

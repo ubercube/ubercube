@@ -19,6 +19,7 @@
 
 package fr.veridiangames.client.rendering.shaders;
 
+import fr.veridiangames.client.rendering.Camera;
 import fr.veridiangames.core.maths.Mat4;
 import fr.veridiangames.core.maths.Vec3;
 
@@ -77,12 +78,12 @@ public class MainShader extends Shader
 	{
 		super.loadMat4(projectionMatrixLocation, projectionMatrix);
 	}
-	
+
 	public void setModelViewMatrix(Mat4 modelViewMatrix)
 	{
 		super.loadMat4(modelViewMatrixLocation, modelViewMatrix);
 	}
-	
+
 	public void setCameraPosition(Vec3 cameraPosition)
 	{
 		super.loadVec3(cameraPositionLocation, cameraPosition);

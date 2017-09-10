@@ -31,7 +31,6 @@ public class MinimapFramebuffer
 
 	private Texture playerPosition;
 	private Texture shadowColor;
-	private Texture overlay;
 
 	private MinimapHandler minimap;
 
@@ -46,7 +45,6 @@ public class MinimapFramebuffer
 		this.worldShader = new MinimapShader();
 		this.playerPosition = TextureLoader.loadTexture(Resource.getResource("textures/player_minimap.png"), GL_LINEAR, false);
 		this.shadowColor = TextureLoader.loadTexture(Resource.getResource("textures/shadow.png"), GL_NEAREST, false);
-		this.overlay = TextureLoader.loadTexture(Resource.getResource("textures/minimap_overlay.png"), GL_NEAREST, false);
 	}
 
 	public void update()
@@ -82,12 +80,6 @@ public class MinimapFramebuffer
 			Display.getInstance().getHeight() - minimap.getPos().y - height / 2,0,
 			-width / 2,
 			-height / 2, 1);
-		glBindTexture(GL_TEXTURE_2D, overlay.getId());
-		StaticPrimitive.quadPrimitive().render(fboShader,
-			Display.getInstance().getWidth() - minimap.getPos().x - width / 2,
-			Display.getInstance().getHeight() - minimap.getPos().y - height / 2,0,
-			-width / 2,
-			-height / 2, 1);
 		glBindTexture(GL_TEXTURE_2D, playerPosition.getId());
 		StaticPrimitive.quadPrimitive().render(fboShader,
 			Display.getInstance().getWidth() - minimap.getPos().x - width / 2,
@@ -111,10 +103,10 @@ public class MinimapFramebuffer
 			float rx = (x * sin(yRot) + y * cos(yRot));
 			float ry = (y * sin(yRot) - x * cos(yRot));
 
-			if (rx < -width / 2 + 10) rx = -width / 2 + 10;
-			if (rx > width / 2 - 10) rx = width / 2 - 10;
-			if (ry < -height / 2 + 10) ry = -height / 2 + 10;
-			if (ry > height / 2 - 10) ry = height / 2 - 10;
+//			if (rx < -width / 2 + 10) rx = -width / 2 + 10;
+//			if (rx > width / 2 - 10) rx = width / 2 - 10;
+//			if (ry < -height / 2 + 10) ry = -height / 2 + 10;
+//			if (ry > height / 2 - 10) ry = height / 2 - 10;
 
 			glBindTexture(GL_TEXTURE_2D, obj.getIcon().getId());
 			fboShader.startColor(obj.getColor());

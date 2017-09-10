@@ -19,16 +19,23 @@
 
 package fr.veridiangames.client.rendering.shaders;
 
+import fr.veridiangames.core.maths.Mat4;
+
 /**
  * Created by Marccspro on 8 f�vr. 2016.
  */
-public class ModelShader extends MainShader
+public class WeaponShader extends MainShader
 {
 	public static final String VERTEX_PATH = "/weapon.vert";
 	public static final String FRAGMENT_PATH = "/weapon.frag";
 	
-	public ModelShader()
+	public WeaponShader()
 	{
 		super(VERTEX_PATH, FRAGMENT_PATH);
+	}
+
+	public void setViewMatrix(Mat4 viewMatrix)
+	{
+		super.loadMat4(super.getUniformLocation("viewMatrix"), viewMatrix);
 	}
 }
