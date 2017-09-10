@@ -20,9 +20,9 @@ public abstract class Kit
 		this.weapons = new ArrayList<>();
 	}
 
-	public void addWeapon(Weapon weapon)
+	public void addWeapon(int weaponId)
 	{
-		this.weapons.add(weapon);
+		this.weapons.add(weaponManager.get(weaponId));
 	}
 
 	public abstract void reset();

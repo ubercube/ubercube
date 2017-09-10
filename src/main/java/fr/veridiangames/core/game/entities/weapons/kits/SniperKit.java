@@ -4,13 +4,13 @@ import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.WeaponManager;
 import fr.veridiangames.core.game.entities.weapons.explosiveWeapons.WeaponGrenade;
 
-public class AssaultKit extends Kit
+public class SniperKit extends Kit
 {
-	public AssaultKit(WeaponManager weaponManager)
+	public SniperKit(WeaponManager weaponManager)
 	{
-		super("Assault", weaponManager);
-		this.addWeapon(Weapon.AK47);
-		this.addWeapon(Weapon.GRENADE);
+		super("Sniper", weaponManager);
+		this.addWeapon(Weapon.AWP);
+		//this.addWeapon(Weapon.GRENADE);
 		this.addWeapon(Weapon.SHOVEL);
 	}
 

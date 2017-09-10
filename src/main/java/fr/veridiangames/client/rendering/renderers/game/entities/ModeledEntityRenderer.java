@@ -97,6 +97,9 @@ public class ModeledEntityRenderer
             case Model.AK47:
 				OBJModel.AK47_RENDERER.render();
                 break;
+			case Model.AWP:
+				OBJModel.AK47_RENDERER.render();
+				break;
             case Model.SHOVEL:
 				OBJModel.SHOVEL_RENDERER.render();
                 break;

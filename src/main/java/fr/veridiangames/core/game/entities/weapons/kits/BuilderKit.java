@@ -8,7 +8,7 @@ public class BuilderKit extends Kit
 	public BuilderKit(WeaponManager weaponManager)
 	{
 		super("Builder", weaponManager);
-		this.addWeapon(weaponManager.get(Weapon.SHOVEL));
+		this.addWeapon(Weapon.SHOVEL);
 	}
 
 	@Override
