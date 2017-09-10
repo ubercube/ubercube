@@ -35,9 +35,9 @@ public class MeleeWeapon extends Weapon
 	private Vec3 runRotation;
 	private int attackTime;
 
-	public MeleeWeapon(int id)
+	public MeleeWeapon(int model, int id)
     {
-        super(id);
+        super(model, id);
         this.attackRotation = new Vec3(90, -40, -40);
         this.runRotation = new Vec3(-5, 0, -5);
         this.attackTime = 0;

@@ -20,6 +20,7 @@
 package fr.veridiangames.core.game.entities.weapons.fireWeapons;
 
 import fr.veridiangames.core.game.entities.Model;
+import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 
@@ -27,7 +28,7 @@ public class WeaponAK47 extends FireWeapon
 {
 	public WeaponAK47()
 	{
-		super(Model.AK47);
+		super(Weapon.AK47, Model.AK47);
 		this.transform.setLocalScale(new Vec3(1, 1, -1));
 		this.setIdlePosition(new Transform(new Vec3(0.25f, -0.05f, 0f)));
 		this.setHidePosition(new Transform(new Vec3(0.3f, -0.05f - 1f, 0)));

@@ -29,6 +29,7 @@ public abstract class Weapon
 	public static final int AK47 = 0;
 	public static final int SHOVEL = 1;
 	public static final int GRENADE = 2;
+	public static final int AWP = 3;
 
 	protected NetworkableClient	net;
 
@@ -52,8 +53,9 @@ public abstract class Weapon
 	protected boolean zoomed;
 	
 	protected int model;
+	protected int id;
 	
-	public Weapon(int model)
+	public Weapon(int id, int model)
 	{
 		this.model = model;
 		this.drawed = true;
@@ -61,6 +63,7 @@ public abstract class Weapon
 		this.transform = new Transform();
 		this.positionChanged = false;
 		this.velocity = new Vec2();
+		this.id = id;
 	}
 
 	public void start()
@@ -241,5 +244,12 @@ public abstract class Weapon
 
 	public void undraw() { this.drawed = false; }
 
-	public boolean isDrawed() { return drawed; }
+	public boolean isDrawed() {
+		return drawed;
+	}
+
+	public int getId()
+	{
+		return id;
+	}
 }

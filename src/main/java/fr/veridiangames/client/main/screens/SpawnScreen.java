@@ -65,7 +65,7 @@ public class SpawnScreen extends GuiCanvas
 			{
 				ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
 				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
-				p.getWeaponComponent().setKit(new AssaultKit());
+				p.getWeaponComponent().setKit(new AssaultKit(p.getWeaponComponent().getWeaponManager()));
 				display.getInput().getMouse().setGrabbed(true);
 			}
 		});
@@ -81,7 +81,7 @@ public class SpawnScreen extends GuiCanvas
 			{
 				ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
 				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
-				p.getWeaponComponent().setKit(new BuilderKit());
+				p.getWeaponComponent().setKit(new BuilderKit(p.getWeaponComponent().getWeaponManager()));
 				display.getInput().getMouse().setGrabbed(true);
 			}
 		});

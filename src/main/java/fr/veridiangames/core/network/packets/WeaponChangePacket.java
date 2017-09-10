@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.network.packets;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
@@ -44,7 +45,7 @@ public class WeaponChangePacket extends Packet
         super(WEAPON_CHANGE);
 
         data.put(player.getID());
-        data.put(player.getWeaponComponent().getWeaponIndex());
+        data.put(player.getWeaponComponent().getWeapon().getId());
 
         data.flip();
     }
@@ -77,7 +78,7 @@ public class WeaponChangePacket extends Packet
             Player p = (Player)client.getCore().getGame().getEntityManager().getEntities().get(playerID);
             if(p != null)
             {
-                p.getWeaponComponent().setWeapon(weaponID);
+                p.getWeaponComponent().setWeaponByID(weaponID);
             }
         }
     }

@@ -26,8 +26,8 @@ import fr.veridiangames.core.game.entities.weapons.Weapon;
  */
 public abstract class ExplosiveWeapon extends Weapon
 {
-    public ExplosiveWeapon(int model)
+    public ExplosiveWeapon(int id, int model)
     {
-        super(model);
+        super(id, model);
     }
 }

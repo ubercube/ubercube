@@ -31,6 +31,7 @@ import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
+import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.utils.Log;
 
@@ -149,6 +150,7 @@ public class RespawnPacket extends Packet
         {
             ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
 			p.respawn(position, rotation);
+			client.send(new WeaponChangePacket(), Protocol.TCP);
         }
         else
         {

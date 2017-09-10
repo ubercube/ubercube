@@ -22,6 +22,7 @@ package fr.veridiangames.core.game.entities.weapons.explosiveWeapons;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Model;
 import fr.veridiangames.core.game.entities.grenades.Grenade;
+import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.Protocol;
@@ -39,7 +40,7 @@ public class WeaponGrenade extends ExplosiveWeapon
 
     public WeaponGrenade(int num)
     {
-        super(Model.GRENADE);
+        super(Weapon.GRENADE, Model.GRENADE);
         this.transform.setLocalScale(new Vec3(1, 1, -1));
         this.setIdlePosition(new Transform(new Vec3(0.4f, -0.5f, 1)));
         this.setHidePosition(new Transform(new Vec3(0.3f, -0.05f - 1f, 0)));

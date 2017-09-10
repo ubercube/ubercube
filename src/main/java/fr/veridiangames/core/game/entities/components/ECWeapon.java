@@ -20,8 +20,10 @@
 package fr.veridiangames.core.game.entities.components;
 
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
+import fr.veridiangames.core.game.entities.weapons.WeaponManager;
 import fr.veridiangames.core.game.entities.weapons.kits.AssaultKit;
 import fr.veridiangames.core.game.entities.weapons.kits.Kit;
 import fr.veridiangames.core.maths.Transform;
@@ -41,13 +43,16 @@ public class ECWeapon extends EComponent
 
 	private Kit kit;
 
+	private WeaponManager weaponManager;
+
 	public ECWeapon(int weapon)
 	{
 		super(WEAPON);
 		super.addDependencies(RENDER);
 		this.weaponIndex = weapon;
 
-		this.kit = new AssaultKit();
+		this.weaponManager = new WeaponManager();
+		this.kit = new AssaultKit(this.weaponManager);
 
 		/*this.weapons = new ConcurrentHashMap<>();
 		this.weapons.put(Weapon.AK47, new WeaponAK47());
@@ -65,6 +70,9 @@ public class ECWeapon extends EComponent
 		this.weapon.onChange();
 		Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
 		this.weapon.getTransform().setParent(parentTransform);
+
+		if(this.parent instanceof ClientPlayer)
+			this.weapon.setNet(((ClientPlayer)this.parent).getNet());
 	}
 	
 	public void update(GameCore core)
@@ -93,6 +101,23 @@ public class ECWeapon extends EComponent
 		this.weapon.init();
 		Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
 		this.weapon.getTransform().setParent(parentTransform);
+
+		if(this.parent instanceof ClientPlayer)
+			this.weapon.setNet(((ClientPlayer)this.parent).getNet());
+	}
+
+	public void setWeaponByID(int weaponId)
+	{
+		this.weaponIndex = weaponId;
+		this.weapon.onChange();
+		this.weapon = this.getWeaponManager().get(weaponId);
+		this.weapon.setHolder((Player) parent);
+		this.weapon.init();
+		Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
+		this.weapon.getTransform().setParent(parentTransform);
+
+		if(this.parent instanceof ClientPlayer)
+			this.weapon.setNet(((ClientPlayer)this.parent).getNet());
 	}
 
 	public Kit getKit()
@@ -109,5 +134,10 @@ public class ECWeapon extends EComponent
 	public List<Weapon> getWeapons()
 	{
 		return this.kit.getWeapons();
+	}
+
+	public WeaponManager getWeaponManager()
+	{
+		return weaponManager;
 	}
 }

@@ -10,13 +10,12 @@ public abstract class Kit
 {
 	protected List<Weapon> weapons;
 	protected String name;
-
 	protected WeaponManager weaponManager;
 
-	public Kit(String name)
+	public Kit(String name, WeaponManager weaponManager)
 	{
 		this.name = name;
-		this.weaponManager = new WeaponManager();
+		this.weaponManager = weaponManager;
 
 		this.weapons = new ArrayList<>();
 	}

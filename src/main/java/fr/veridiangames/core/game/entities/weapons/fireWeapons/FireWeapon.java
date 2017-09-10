@@ -50,9 +50,9 @@ public class FireWeapon extends Weapon
 
 	private float audioGain;
 	
-	public FireWeapon(int model)
+	public FireWeapon(int id, int model)
 	{
-		super(model);
+		super(id, model);
 		this.shootPoint = new Transform();
 		this.setShootForce(2);
 		this.maxBullets = 30;
