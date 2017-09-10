@@ -150,7 +150,7 @@ public class RespawnPacket extends Packet
         {
             ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
 			p.respawn(position, rotation);
-			client.send(new WeaponChangePacket(), Protocol.TCP);
+			client.send(new WeaponChangePacket(p), Protocol.TCP);
         }
         else
         {

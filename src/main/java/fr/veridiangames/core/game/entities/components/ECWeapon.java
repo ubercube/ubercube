@@ -116,6 +116,8 @@ public class ECWeapon extends EComponent
 		Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
 		this.weapon.getTransform().setParent(parentTransform);
 
+		System.out.println(weapon);
+
 		if(this.parent instanceof ClientPlayer)
 			this.weapon.setNet(((ClientPlayer)this.parent).getNet());
 	}

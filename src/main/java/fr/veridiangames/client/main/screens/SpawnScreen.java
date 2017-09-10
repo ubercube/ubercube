@@ -15,6 +15,7 @@ import fr.veridiangames.core.game.entities.weapons.kits.AssaultKit;
 import fr.veridiangames.core.game.entities.weapons.kits.BuilderKit;
 import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.RespawnPacket;
+import fr.veridiangames.core.network.packets.WeaponChangePacket;
 import fr.veridiangames.core.utils.Color4f;
 
 public class SpawnScreen extends GuiCanvas
@@ -64,9 +65,9 @@ public class SpawnScreen extends GuiCanvas
 			public void onAction()
 			{
 				ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
-				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
 				p.getWeaponComponent().setKit(new AssaultKit(p.getWeaponComponent().getWeaponManager()));
 				display.getInput().getMouse().setGrabbed(true);
+				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
 			}
 		});
 		assaultButton.centerText();
@@ -80,9 +81,9 @@ public class SpawnScreen extends GuiCanvas
 			public void onAction()
 			{
 				ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
-				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
 				p.getWeaponComponent().setKit(new BuilderKit(p.getWeaponComponent().getWeaponManager()));
 				display.getInput().getMouse().setGrabbed(true);
+				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
 			}
 		});
 		builderButton.centerText();
