@@ -164,6 +164,8 @@ public class Ubercube
 					playerHandler.update(display.getInput());
 				playerProfiler.end();
 
+				minimapHandler.update();
+
 				renderUpdateProfiler.start();
 					mainRenderer.update();
 				renderUpdateProfiler.end();
@@ -191,15 +193,6 @@ public class Ubercube
 				exitGame();
 		}
 		updateProfiler.end();
-	}
-
-	public static boolean warning(String msg)
-	{
-		Object[] options = {"OK"};
-		int n = GuiUtils.warning(msg, options);
-		if (n == JOptionPane.YES_OPTION)
-			return true;
-		return false;
 	}
 
 	public void updatePhysics()
