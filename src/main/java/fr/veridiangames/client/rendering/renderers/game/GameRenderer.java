@@ -116,6 +116,7 @@ public class GameRenderer
 	{
 		if (Display.getInstance().getInput().getKeyUp(Input.KEY_F2))
 			drawColliders = !drawColliders;
+		minimap.update();
 		playerViewport.update();
 		playerRenderer.updateInstances(
 			core.getGame().getEntityManager().getEntities(),
@@ -135,7 +136,6 @@ public class GameRenderer
 			core.getGame().getEntityManager().getEntities(),
 			core.getGame().getEntityManager().getPlayerEntites()
 		);
-		minimap.update();
 		if (drawColliders)
 		{
 			colliderRenderer.updateInstances(

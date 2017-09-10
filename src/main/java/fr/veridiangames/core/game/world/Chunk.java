@@ -45,6 +45,7 @@ public class Chunk
 	public Vec3			centerPosition;
 
 	private float[][] noise;
+	private boolean populated;
 
 	private World world;
 
@@ -74,20 +75,11 @@ public class Chunk
 	public void generateChunk()
 	{
 		this.blocks = new int[SIZE][SIZE][SIZE];
-//		this.generationThread = new Thread("chunk-" + position.x + "-" + position.y + "-" + position.z + "-generation")
-//		{
-//			public void run()
-//			{
-//				generateTerrainData();
-//				generateVegetation();
-//				generated = true;
-//			}
-//		};
-//		generationThread.start();
 	}
 
 	public void generateTerrainData()
 	{
+		this.populated = false;
 		for (int x = 0; x < SIZE; x++)
 		{
 			for (int z = 0; z < SIZE; z++)
@@ -100,7 +92,7 @@ public class Chunk
 					Vec4i modifiedBlock = world.getModifiedBlock(xx, yy, zz);
 					if (modifiedBlock != null)
 					{
-						blocks[x][y][z] = modifiedBlock.w;
+						addBlock(x, y, z, modifiedBlock.w);
 						continue;
 					}
 
@@ -202,6 +194,8 @@ public class Chunk
 			return;
 
 		blocks[x][y][z] = block;
+		if (block != 0)
+			populated = true;
 	}
 	
 	public void removeBlock(int x, int y, int z)
@@ -210,6 +204,11 @@ public class Chunk
 			return;
 
 		blocks[x][y][z] = 0;
+	}
+
+	public boolean isPopulated()
+	{
+		return populated;
 	}
 
 	public float getHeightAt(int x, int z)

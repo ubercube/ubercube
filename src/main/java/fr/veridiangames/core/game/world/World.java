@@ -390,6 +390,17 @@ public class World
 		return 0;
 	}
 
+	public int getHeighestPopulatedChunkIndexAt(int cx, int cy)
+	{
+		for (int i = MAX_CHUNK_HEIGHT - 1; i >= 0; i--)
+		{
+			Chunk c = getChunk(cx, i, cy);
+			if (c.isPopulated())
+				return (i);
+		}
+		return 0;
+	}
+
 	public int getBlockAt(Vec3 point)
 	{
 		Vec3i ip = point.getInts();
