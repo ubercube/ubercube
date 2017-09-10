@@ -25,6 +25,6 @@ void main(void)
 	vec3 reflectDirection = reflect(-eyeDirection, v_normal);
 	vec4 reflectionColor = textureCube(map, reflectDirection);
 	vec4 weaponColor = v_color;
-	vec4 finalColor = mix(weaponColor, reflectionColor, 0.05);
+	vec4 finalColor = mix(weaponColor, reflectionColor, 0.03);
 	fragColor = mix(finalColor, FOG_COLOR, dist);
 }

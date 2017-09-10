@@ -13,7 +13,7 @@ import static fr.veridiangames.client.Resource.getResource;
 
 public class OBJModel {
 	public static final OBJModel GRENADE_RENDERER = ObjModelLoader.loadModel(getResource("weapons/GRENADE.obj"));
-	public static final OBJModel AK47_RENDERER = ObjModelLoader.loadModel(getResource("weapons/AK47.obj"));
+	public static final OBJModel AK47_RENDERER = ObjModelLoader.loadModel(getResource("weapons/ak47/AK47.obj"));
 	public static final OBJModel SHOVEL_RENDERER = ObjModelLoader.loadModel(getResource("weapons/SHOVEL.obj"));
 
 	private List<Vec3> verticesList = new ArrayList<Vec3>();
