@@ -19,5 +19,5 @@ void main(void)
 	if (dist < 0)
 		dist = 0;
 
-	fragColor = mix(v_color, FOG_COLOR, dist);
+	fragColor = mix(v_color*1.3, FOG_COLOR, dist);
 }
