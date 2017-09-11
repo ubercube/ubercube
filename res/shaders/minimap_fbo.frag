@@ -14,5 +14,5 @@ void main(void)
 	if (use_color == 1)
 		fragColor = texture(tex, v_coords) * in_color;
 	else
-		fragColor = texture(tex, v_coords) * vec4(1, 1, 1, 1);
+		fragColor = texture(tex, v_coords) * vec4(1, 1, 1, 0.5f);
 }

@@ -33,12 +33,16 @@ public class ECMouseLook extends EComponent
 	private float	dx, dy;
 	private float 	rotAmnt;
 	private float	speed;
+	private float	idleSpeed;
+	private float	zoomedSpeed;
 
-	public ECMouseLook(float speed)
+	public ECMouseLook(float idleSpeed, float zoomedSpeed)
 	{
 		super(MOUSE_LOOK);
 
-		this.speed = speed;
+		this.idleSpeed = idleSpeed;
+		this.zoomedSpeed = zoomedSpeed;
+		this.speed = this.idleSpeed;
 		this.rotAmnt = 0;
 	}
 
@@ -89,4 +93,14 @@ public class ECMouseLook extends EComponent
 	public void setSpeed(float speed) { this.speed = speed; }
 
 	public float getSpeed() { return this.speed; }
+
+	public float getZoomedSpeed() {
+		return zoomedSpeed;
+	}
+
+	public void setZoomedSpeed(float zoomedSpeed) {
+		this.zoomedSpeed = zoomedSpeed;
+	}
+
+	public void useZoomSpeed(boolean trigger) { this.speed = trigger ? zoomedSpeed : idleSpeed;}
 }

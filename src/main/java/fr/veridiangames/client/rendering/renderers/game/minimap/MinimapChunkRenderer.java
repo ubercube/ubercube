@@ -24,7 +24,7 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 public class MinimapChunkRenderer
 {
-	private int x, y, z;
+	private int x, z;
 	private World world;
 
 	private FloatBuffer positionsBuffer;
@@ -32,10 +32,9 @@ public class MinimapChunkRenderer
 	private int vao, vbo, cbo;
 
 
-	public MinimapChunkRenderer(int x, int y, int z)
+	public MinimapChunkRenderer(int x, int z)
 	{
 		this.x = x;
-		this.y = y;
 		this.z = z;
 		this.world = Ubercube.getInstance().getGameCore().getGame().getWorld();
 		createBuffer();

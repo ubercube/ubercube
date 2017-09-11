@@ -54,21 +54,25 @@ public class MinimapRenderer
 		{
 			for (int z = 0; z < world.getWorldSize(); z++)
 			{
-				int y = world.getHeighestPopulatedChunkIndexAt(x, z);
-				MinimapChunkRenderer c = new MinimapChunkRenderer(x, y, z);
-				chunks.put(Indexer.index3i(x, y, z), c);
+				MinimapChunkRenderer c = new MinimapChunkRenderer(x, z);
+				chunks.put(Indexer.index2i(x, z), c);
 			}
 		}
 	}
 
-	public void update()
+	public synchronized void update()
 	{
-		for (int index : world.getUpdateRequests())
+		synchronized (world.getUpdateRequests())
 		{
-			MinimapChunkRenderer c = chunks.get(index);
-			if (c == null)
-				continue;
-			c.update();
+			for (int i = 0; i < world.getUpdateRequests().size(); i++)
+			{
+				int index = world.getUpdateRequests().get(i);
+				Chunk c = world.getChunk(index);
+				MinimapChunkRenderer mc = chunks.get(Indexer.index2i(c.position.x, c.position.z));
+				if (mc == null)
+					continue;
+				mc.update();
+			}
 		}
 	}
 

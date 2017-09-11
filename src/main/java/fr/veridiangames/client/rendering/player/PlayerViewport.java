@@ -44,6 +44,7 @@ public class PlayerViewport
 
 	public void update()
 	{
+		camera.setFov(camera.getFov() - player.getPlayer().getWeaponComponent().getWeapon().getCurrentZoom());
 		camera.getTransform().setLocalPosition(player.getPlayer().getPosition().copy().add(0, 2.5f * 0.5f, 0));
 		camera.getTransform().setLocalRotation(player.getPlayer().getRotation());
 		camera.update(gameData.getViewDistance());

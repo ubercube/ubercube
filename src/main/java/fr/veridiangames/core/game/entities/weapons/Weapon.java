@@ -19,8 +19,10 @@
 
 package fr.veridiangames.core.game.entities.weapons;
 
+import fr.veridiangames.client.rendering.textures.Texture;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.loaders.TextureID;
 import fr.veridiangames.core.maths.*;
 import fr.veridiangames.core.network.NetworkableClient;
 
@@ -51,7 +53,12 @@ public abstract class Weapon
 	protected Vec3 		rotationFactor;
 	protected Player holder;
 	protected boolean zoomed;
-	
+	protected float zoomAmnt;
+	protected float currentZoom;
+	protected boolean zoomable;
+
+	private String crosshairTexture = TextureID.STD_CROSSHAIR;
+
 	protected int model;
 	protected int id;
 	
@@ -63,6 +70,8 @@ public abstract class Weapon
 		this.transform = new Transform();
 		this.positionChanged = false;
 		this.velocity = new Vec2();
+		this.zoomAmnt = 0;
+		this.zoomable = false;
 		this.id = id;
 	}
 
@@ -98,6 +107,10 @@ public abstract class Weapon
 		else if (currentPosition == 1)
 			setTransformSmoothly(zoomPosition, 0.4f);
 		rotationFactor.mul(0.7f);
+		if (zoomed && zoomable)
+			currentZoom += zoomAmnt * 0.1667f;
+		if (zoomable)
+			currentZoom *= 0.7f;
 		this.transform.setLocalRotation(Quat.euler(rotationFactor));
 	}
 	
@@ -180,6 +193,8 @@ public abstract class Weapon
 		this.hidePosition = hidePosition;
 	}
 
+	public void setZoomAmnt(float zoomAmnt) { this.zoomAmnt = zoomAmnt; this.zoomable = true; }
+
 	public Transform getRunPosition()
 	{
 		return runPosition;
@@ -251,5 +266,21 @@ public abstract class Weapon
 	public int getId()
 	{
 		return id;
+	}
+
+	public float getCurrentZoom() {
+		return currentZoom;
+	}
+
+	public boolean isZoomed() {
+		return zoomed && zoomable;
+	}
+
+	public String getCrosshairTexture() {
+		return crosshairTexture;
+	}
+
+	public void setCrosshairTexture(String crosshairTexture) {
+		this.crosshairTexture = crosshairTexture;
 	}
 }

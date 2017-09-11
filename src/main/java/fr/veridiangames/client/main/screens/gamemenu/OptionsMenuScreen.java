@@ -16,6 +16,7 @@ public class OptionsMenuScreen extends GuiCanvas
     private Display display;
 
     private GuiSlider mouseSpeed;
+    private GuiSlider mouseZoomedSpeed;
     private GuiSlider audioGain;
     private GuiCheckBox renderSnow;
     private GuiCheckBox enableVsync;
@@ -39,7 +40,7 @@ public class OptionsMenuScreen extends GuiCanvas
         title.setScreenParent(GuiComponent.GuiCorner.TC);
         super.add(title);
 
-        GuiLabel mouseSpeedText = new GuiLabel("Sensitivity", display.getWidth() / 2, 160, 24);
+        GuiLabel mouseSpeedText = new GuiLabel("Sensitivity (Normal and zoomed)", display.getWidth() / 2, 160, 24);
         mouseSpeedText.setDropShadow(2);
         mouseSpeedText.setColor(Color4f.WHITE);
         mouseSpeedText.setOrigin(GuiComponent.GuiOrigin.BC);
@@ -47,12 +48,20 @@ public class OptionsMenuScreen extends GuiCanvas
         super.add(mouseSpeedText);
 
         float currentMouseSpeed = Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().getSpeed();
-        mouseSpeed = new GuiSlider((int)(currentMouseSpeed * 100) + "", display.getWidth() / 2, 165, 480);
-        mouseSpeed.setOrigin(GuiComponent.GuiOrigin.TC);
+        mouseSpeed = new GuiSlider((int)(currentMouseSpeed * 100) + "", display.getWidth() / 2 - 5, 165, 235);
+        mouseSpeed.setOrigin(GuiComponent.GuiOrigin.B);
         mouseSpeed.setScreenParent(GuiComponent.GuiCorner.TC);
         mouseSpeed.getLabel().setOrigin(GuiComponent.GuiOrigin.CENTER);
         mouseSpeed.setValue(currentMouseSpeed);
         super.add(mouseSpeed);
+
+		float currentMouseZoomedSpeed = Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().getZoomedSpeed();
+		mouseZoomedSpeed = new GuiSlider((int)(currentMouseZoomedSpeed * 100) + "", display.getWidth() / 2 + 5, 165, 235);
+		mouseZoomedSpeed.setOrigin(GuiComponent.GuiOrigin.A);
+		mouseZoomedSpeed.setScreenParent(GuiComponent.GuiCorner.TC);
+		mouseZoomedSpeed.getLabel().setOrigin(GuiComponent.GuiOrigin.CENTER);
+		mouseZoomedSpeed.setValue(currentMouseZoomedSpeed);
+		super.add(mouseZoomedSpeed);
 
         GuiLabel audioGainText = new GuiLabel("Audio", display.getWidth() / 2, 230, 24);
         audioGainText.setDropShadow(2);
@@ -95,7 +104,10 @@ public class OptionsMenuScreen extends GuiCanvas
         super.update();
         float currentMouseSpeed = Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().getSpeed();
         mouseSpeed.getLabel().setText((int)(currentMouseSpeed * 100) + "");
+		float currentMouseZoomedSpeed = Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().getZoomedSpeed();
+		mouseZoomedSpeed.getLabel().setText((int)(currentMouseZoomedSpeed * 100) + "");
         Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().setSpeed(mouseSpeed.getValue());
+        Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().setZoomedSpeed(mouseZoomedSpeed.getValue());
         audioGain.getLabel().setText((int)(AudioSystem.getMainVolume() * 100) + "");
         AudioSystem.setMainVolume(audioGain.getValue());
         Ubercube.getInstance().getGameCore().getGame().getPlayer().setRenderSnow(renderSnow.triggered);

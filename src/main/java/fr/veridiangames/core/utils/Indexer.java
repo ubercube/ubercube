@@ -19,20 +19,21 @@
 
 package fr.veridiangames.core.utils;
 
+import fr.veridiangames.core.maths.Vec2i;
 import fr.veridiangames.core.maths.Vec3i;
 
 public class Indexer
 {
 	public static void main(String[] args)
 	{
-		int x = 1;
-		int y = 1;
+		int x = 255;
+		int y = 255;
 		int z = 1;
 		
-		int index = index3i(new Vec3i(x, y, z));
-		Vec3i solve = solve3i(index);
+		int index = index2i(x, y);
+		Vec2i solve = solve2i(index);
 		
-		System.out.println("Start: " + x + " " + y + " " + z);
+		System.out.println("Start: " + x + " " + y);
 		System.out.println("Index: " + index);
 		System.out.println("Solve: " + solve);
 
@@ -53,6 +54,11 @@ public class Indexer
 	{
 		return x << 16 | y << 8 | z;
 	}
+
+	public static int index2i(int x, int y)
+	{
+		return x << 16 | y;
+	}
 	
 	public static Vec3i solve3i(int index)
 	{
@@ -61,6 +67,14 @@ public class Indexer
 		int z = (index & 0xff);
 		
 		return new Vec3i(x, y, z);
+	}
+
+	public static Vec2i solve2i(int index)
+	{
+		int x = (index & 0xff0000) >> 16;
+		int y = (index & 0xff);
+
+		return new Vec2i(x, y);
 	}
 	
 	private static int currentIndex = 0;

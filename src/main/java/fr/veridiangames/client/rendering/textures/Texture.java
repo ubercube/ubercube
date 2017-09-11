@@ -19,6 +19,7 @@
 
 package fr.veridiangames.client.rendering.textures;
 
+import static fr.veridiangames.client.Resource.getResource;
 import static org.lwjgl.opengl.GL11.*;
 
 import fr.veridiangames.client.rendering.shaders.Shader;
@@ -28,6 +29,9 @@ import fr.veridiangames.client.rendering.shaders.Shader;
  */
 public class Texture
 {
+	public static final Texture STD_CROSSHAIR = TextureLoader.loadTexture(getResource("textures/std_crosshair.png"), GL_NEAREST, false);
+	public static final Texture AWP_CROSSHAIR = TextureLoader.loadTexture(getResource("textures/awp_crosshair.png"), GL_NEAREST, false);
+
 	private int	id;
 	private int	width, height;
 

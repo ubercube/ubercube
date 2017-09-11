@@ -40,9 +40,11 @@ public class FireWeapon extends Weapon
 	private Transform shootPoint;
 	private boolean shooting;
 	private boolean shot;
-	private float shootForce;
-	private float shootPecision;
-	
+	private float shootForce = 0.2f;
+	private float shootPecision = 0.5f;
+	private float shootPecisionIdle = 0.5f;
+	private float shootPecisionZoomed = 0.5f;
+
 	private int shootTimer = 0;
 
 	private int maxBullets;
@@ -54,11 +56,9 @@ public class FireWeapon extends Weapon
 	{
 		super(id, model);
 		this.shootPoint = new Transform();
-		this.setShootForce(2);
 		this.maxBullets = 30;
 		this.bulletsLeft = maxBullets;
 		this.runRotation = new Vec3(10f, -20f, 0);
-		this.shootPecision = 0.01f;
 		this.audioGain = 1.0f;
 	}
 	
@@ -107,13 +107,11 @@ public class FireWeapon extends Weapon
 	
 	private void shootBullet(GameCore core)
 	{
-		Vec3 shootPosition = this.holder.getEyePosition().copy().add(holder.getTransform().getForward());
 		Bullet bullet = new Bullet(Indexer.getUniqueID(), holder.getID(), "", this.shootPoint.getPosition(), this.transform.getRotation(), shootForce, GameCore.getInstance().getGame().getPlayer().getID());
 		net.send(new BulletShootPacket(holder.getID(), bullet), Protocol.UDP);
 		bullet.setNetwork(net);
 		core.getGame().spawn(bullet);
-
-		this.rotationFactor.add(-0.1f, 0, 0);
+		this.rotationFactor.add(-shootPecision * 4, 0, 0);
 	}
 	
 	public void onAction()
@@ -134,14 +132,18 @@ public class FireWeapon extends Weapon
 		shooting = true;
 		if (shot)
 			return;
+		if (zoomed)
+			shootPecision = shootPecisionZoomed;
+		else
+			shootPecision = shootPecisionIdle;
 
-		Vec3 shootVector = new Vec3(transform.getLocalPosition()).sub(transform.getLocalRotation().getForward().copy().mul(0, 0, 0.2f));
+		Vec3 shootVector = new Vec3(transform.getLocalPosition()).sub(transform.getLocalRotation().getForward().copy().mul(0, 0, shootPecision));
 		this.transform.setLocalPosition(shootVector);
 		this.removeBullet();
 		this.holder.getCore().getGame().spawn(new AudioSource(Sound.AK47_SHOOT, audioGain));
 		if (!zoomed)
 		{
-			this.rotationFactor.add(Mathf.random(-shootPecision, shootPecision), Mathf.random(-shootPecision, shootPecision), 0);
+			this.rotationFactor.add(Mathf.random(-shootPecisionIdle, shootPecisionIdle), Mathf.random(-shootPecisionIdle * 2, 0), 0);
 		}
 	}
 
@@ -155,6 +157,8 @@ public class FireWeapon extends Weapon
 			reloadBullets();
 		}
 	}
+
+	protected void setShootForce(float shootForce) { this.shootForce = shootForce; }
 
 	public void reloadBullets()
 	{
@@ -171,6 +175,14 @@ public class FireWeapon extends Weapon
 		this.fireFrequency = fireFrequency;
 	}
 
+	public void setShootPecisionIdle(float shootPecisionIdle) {
+		this.shootPecisionIdle = shootPecisionIdle;
+	}
+
+	public void setShootPecisionZoomed(float shootPecisionZoomed) {
+		this.shootPecisionZoomed = shootPecisionZoomed;
+	}
+
 	public Transform getShootPoint()
 	{
 		return shootPoint;
@@ -182,11 +194,6 @@ public class FireWeapon extends Weapon
 	}
 
 	public float getAudioGain() { return audioGain; }
-
-	public void setShootForce(float shootForce)
-	{
-		this.shootForce = shootForce;
-	}
 
 	public void setShootPoint(Transform shootPoint)
 	{
