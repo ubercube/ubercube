@@ -28,6 +28,7 @@ import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.components.GuiLabel;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
+import fr.veridiangames.client.rendering.textures.Texture;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.client.main.screens.gamemode.TDMHudScreen;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
@@ -50,8 +51,9 @@ public class PlayerHudScreen extends GuiCanvas
     private GuiLabel playerPosition;
     private GuiLabel audioStatus;
     private GuiPanel damageEffect;
-    private GuiCanvas gameMode;
     private ConsoleScreen consoleScreen;
+    private boolean showCrosshair;
+    private GuiPanel crosshair;
 
     private int health;
 
@@ -59,6 +61,7 @@ public class PlayerHudScreen extends GuiCanvas
     {
         super(parent);
         this.core = core;
+		this.showCrosshair = core.getGame().getPlayer().getWeaponComponent().getWeapon().getCrosshairTexture() != null;
 
         damageEffect = new GuiPanel(0, 0, Display.getInstance().getWidth(), Display.getInstance().getHeight());
         damageEffect.setColor(Color4f.RED);
@@ -97,16 +100,11 @@ public class PlayerHudScreen extends GuiCanvas
         weaponStats.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
         super.add(weaponStats);
 
-        GuiPanel crosshairBack = new GuiPanel(display.getWidth() / 2, display.getHeight() / 2, 4, 4);
-        crosshairBack.setOrigin(GuiComponent.GuiOrigin.CENTER);
-        crosshairBack.setScreenParent(GuiComponent.GuiCorner.CENTER);
-        crosshairBack.setColor(new Color4f(0, 0, 0, 0.5f));
-        super.add(crosshairBack);
-
-        GuiPanel crosshairFront = new GuiPanel(display.getWidth() / 2, display.getHeight() / 2, 2, 2);
-        crosshairFront.setOrigin(GuiComponent.GuiOrigin.CENTER);
-        crosshairFront.setScreenParent(GuiComponent.GuiCorner.CENTER);
-        super.add(crosshairFront);
+        crosshair = new GuiPanel(display.getWidth() / 2, display.getHeight() / 2, 100, 100);
+		crosshair.setOrigin(GuiComponent.GuiOrigin.CENTER);
+		crosshair.setScreenParent(GuiComponent.GuiCorner.CENTER);
+		crosshair.setTexture(Texture.STD_CROSSHAIR);
+        super.add(crosshair);
 
         GuiLabel gameVersionLabel = new GuiLabel(GameCore.GAME_NAME + " " + GameCore.GAME_VERSION_NAME, 10, 10, 20f);
         gameVersionLabel.setOrigin(GuiComponent.GuiOrigin.A);
@@ -168,6 +166,17 @@ public class PlayerHudScreen extends GuiCanvas
     {
         super.update();
 
+        Weapon weapon = core.getGame().getPlayer().getWeaponComponent().getWeapon();
+		this.showCrosshair = (weapon.getCrosshairTexture() != null && !(weapon instanceof FireWeapon)) ||
+							(weapon.getCrosshairTexture() != null && weapon.isZoomed() && weapon instanceof FireWeapon);
+		if (this.showCrosshair)
+		{
+			crosshair.setTexture(core.getGame().getPlayer().getWeaponComponent().getWeapon().getCrosshairTexture());
+			crosshair.setUseable(true);
+		}
+		else
+			crosshair.setUseable(false);
+
         Display display = Ubercube.getInstance().getDisplay();
         gameFpsLabel.setText(display.getFps() + " Fps");
 
@@ -179,7 +188,6 @@ public class PlayerHudScreen extends GuiCanvas
         float normalizedLife = (float) life / 100.0f;
         playerHealth.setW((int) (normalizedLife * 300));
 
-        Weapon weapon = player.getWeaponComponent().getWeapon();
         weaponStats.setUseable(false);
         if (weapon instanceof FireWeapon)
         {

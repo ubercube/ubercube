@@ -13,7 +13,7 @@ public class MinimapObject
 {
 	public enum MinimapObjectType
 	{
-		STATIC, RELATIVE
+		DYNAMIC, STATIC, RELATIVE
 	}
 
 	private MinimapHandler minimap;

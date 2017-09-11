@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.game.entities.weapons;
 
+import fr.veridiangames.client.rendering.textures.Texture;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.*;
@@ -54,6 +55,8 @@ public abstract class Weapon
 	protected float zoomAmnt;
 	protected float currentZoom;
 	protected boolean zoomable;
+
+	private Texture crosshairTexture = Texture.STD_CROSSHAIR;
 
 	protected int model;
 	protected int id;
@@ -270,5 +273,13 @@ public abstract class Weapon
 
 	public boolean isZoomed() {
 		return zoomed && zoomable;
+	}
+
+	public Texture getCrosshairTexture() {
+		return crosshairTexture;
+	}
+
+	public void setCrosshairTexture(Texture crosshairTexture) {
+		this.crosshairTexture = crosshairTexture;
 	}
 }

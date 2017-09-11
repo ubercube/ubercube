@@ -44,7 +44,6 @@ public class FireWeapon extends Weapon
 	private float shootPecision = 0.5f;
 	private float shootPecisionIdle = 0.5f;
 	private float shootPecisionZoomed = 0.5f;
-	private float shootSpeed;
 
 	private int shootTimer = 0;
 
@@ -108,16 +107,10 @@ public class FireWeapon extends Weapon
 	
 	private void shootBullet(GameCore core)
 	{
-		Vec3 shootPosition = this.holder.getEyePosition().copy().add(holder.getTransform().getForward());
 		Bullet bullet = new Bullet(Indexer.getUniqueID(), holder.getID(), "", this.shootPoint.getPosition(), this.transform.getRotation(), shootForce, GameCore.getInstance().getGame().getPlayer().getID());
 		net.send(new BulletShootPacket(holder.getID(), bullet), Protocol.UDP);
 		bullet.setNetwork(net);
 		core.getGame().spawn(bullet);
-		if (zoomed)
-			shootPecision = shootPecisionZoomed;
-		else
-			shootPecision = shootPecisionIdle;
-		this.rotationFactor.add(-shootPecision, 0, 0);
 	}
 	
 	public void onAction()
@@ -138,14 +131,19 @@ public class FireWeapon extends Weapon
 		shooting = true;
 		if (shot)
 			return;
+		if (zoomed)
+			shootPecision = shootPecisionZoomed;
+		else
+			shootPecision = shootPecisionIdle;
+		this.rotationFactor.add(-shootPecision * 4, 0, 0);
 
-		Vec3 shootVector = new Vec3(transform.getLocalPosition()).sub(transform.getLocalRotation().getForward().copy().mul(0, 0, 0.2f));
+		Vec3 shootVector = new Vec3(transform.getLocalPosition()).sub(transform.getLocalRotation().getForward().copy().mul(0, 0, shootPecision));
 		this.transform.setLocalPosition(shootVector);
 		this.removeBullet();
 		this.holder.getCore().getGame().spawn(new AudioSource(Sound.AK47_SHOOT, audioGain));
 		if (!zoomed)
 		{
-			this.rotationFactor.add(Mathf.random(-shootPecisionIdle, shootPecisionIdle), Mathf.random(-shootPecisionIdle, shootPecisionIdle), 0);
+			this.rotationFactor.add(Mathf.random(-shootPecisionIdle, shootPecisionIdle), Mathf.random(-shootPecisionIdle * 2, 0), 0);
 		}
 	}
 

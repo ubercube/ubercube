@@ -53,7 +53,7 @@ public class MinimapFramebuffer
 	{
 		glDisable(GL_DEPTH_TEST);
 		fbo.bind();
-		glClearColor(0.2f, 0.2f, 0.2f, 0.5f);
+		glClearColor(0.2f, 0.2f, 0.2f, 1f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		worldShader.bind();
 		worldShader.setProjectionMatrix(Mat4.orthographic(width, 0, 0, height, -1, 1));
@@ -84,7 +84,7 @@ public class MinimapFramebuffer
 			Display.getInstance().getHeight() - minimap.getPos().y - height / 2,0,
 			75,
 			75, 1);
-		for (MinimapObject obj : minimap.getStaticObjects())
+		for (MinimapObject obj : minimap.getMinimapObjects())
 		{
 			float rx = obj.getMinimapCorrectedPosition().x;
 			float ry = obj.getMinimapCorrectedPosition().y;
