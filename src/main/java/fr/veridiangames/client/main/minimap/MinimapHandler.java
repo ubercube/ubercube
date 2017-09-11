@@ -91,7 +91,6 @@ public class MinimapHandler
 
 	public void clearDynamics()
 	{
-		System.out.println(dynamicObjects.size());
 		for (int i = 0; i < dynamicObjects.size(); i++)
 		{
 			minimapObjects.remove(dynamicObjects.get(i));

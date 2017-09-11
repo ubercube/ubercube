@@ -56,11 +56,11 @@ public class MinimapFramebuffer
 		renderer.update();
 	}
 
-	public void render(GuiShader shader, float scale)
+	public void render(GuiShader shader, float scale, boolean drawClient)
 	{
 		glDisable(GL_DEPTH_TEST);
 		fbo.bind();
-		glClearColor(0.2f, 0.2f, 0.2f, 1f);
+		glClearColor(0.2f, 0.2f, 0.2f, 0.5f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		worldShader.bind();
 		worldShader.setProjectionMatrix(Mat4.orthographic(width, 0, 0, height, -1, 1));
@@ -78,8 +78,11 @@ public class MinimapFramebuffer
 		glDisable(GL_CULL_FACE);
 		glBindTexture(GL_TEXTURE_2D, fbo.getColorTextureID());
 		drawQuad(shader, x + width, y + height, -width, -height);
-		glBindTexture(GL_TEXTURE_2D, playerPosition.getId());
-		drawQuad(shader, x + width / 2 - 75, y + height / 2 - 75, 150, 150);
+		if (drawClient)
+		{
+			glBindTexture(GL_TEXTURE_2D, playerPosition.getId());
+			drawQuad(shader, x + width / 2 - 75, y + height / 2 - 75, 150, 150);
+		}
 		for (MinimapObject obj : minimap.getMinimapObjects())
 		{
 			float rx = obj.getMinimapCorrectedPosition().x;

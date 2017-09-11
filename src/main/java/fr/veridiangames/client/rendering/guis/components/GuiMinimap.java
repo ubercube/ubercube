@@ -11,6 +11,7 @@ public class GuiMinimap extends GuiComponent
 
 	private MinimapFramebuffer minimap;
 	private float scale;
+	private boolean drawClient;
 
 	public GuiMinimap(int x, int y, int w, int h)
 	{
@@ -18,6 +19,7 @@ public class GuiMinimap extends GuiComponent
 		setOrigin(GuiComponent.GuiOrigin.A);
 		this.minimap = new MinimapFramebuffer(x, y, w, h);
 		this.scale = -1;
+		this.drawClient = true;
 	}
 
 	public void update()
@@ -31,7 +33,7 @@ public class GuiMinimap extends GuiComponent
 	public void render(GuiShader shader)
 	{
 		shader.setColor(color);
-		this.minimap.render(shader, scale);
+		this.minimap.render(shader, scale, drawClient);
 	}
 
 	public void dispose()
@@ -39,11 +41,23 @@ public class GuiMinimap extends GuiComponent
 
 	}
 
-	public void setScale(float scale) {
+	public void setScale(float scale)
+	{
 		this.scale = scale;
 	}
 
-	public float getScale() {
+	public float getScale()
+	{
 		return scale;
+	}
+
+	public boolean isDrawClient()
+	{
+		return drawClient;
+	}
+
+	public void setDrawClient(boolean drawClient)
+	{
+		this.drawClient = drawClient;
 	}
 }

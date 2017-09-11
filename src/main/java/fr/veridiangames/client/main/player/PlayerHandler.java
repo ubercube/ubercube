@@ -28,6 +28,8 @@ import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBulletHit;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.weapons.meleeWeapon.WeaponShovel;
+import fr.veridiangames.core.game.world.Chunk;
+import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec2i;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
@@ -76,7 +78,11 @@ public class PlayerHandler
 		Ubercube.getInstance().getMinimapHandler().setSize(new Vec2i(Display.getInstance().getWidth() - 20, Display.getInstance().getHeight() - 20));
 
 		if (player.isDead())
+		{
+			player.setRotation(new Quat());
+			player.setPosition(new Vec3((core.getGame().getWorld().getWorldSize() * Chunk.SIZE) / 2, -10000, (core.getGame().getWorld().getWorldSize() * Chunk.SIZE) / 2));
 			return;
+		}
 
 		Ubercube.getInstance().getMinimapHandler().setSize(new Vec2i(300, 200));
 

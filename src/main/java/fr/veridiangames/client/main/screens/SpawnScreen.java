@@ -7,6 +7,7 @@ import fr.veridiangames.client.rendering.guis.components.GuiButton;
 import fr.veridiangames.client.rendering.guis.components.GuiMinimap;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
 import fr.veridiangames.client.rendering.guis.listeners.GuiActionListener;
+import fr.veridiangames.client.rendering.textures.TextureLoader;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.weapons.kits.AssaultKit;
@@ -15,6 +16,9 @@ import fr.veridiangames.core.game.entities.weapons.kits.SniperKit;
 import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.RespawnPacket;
 import fr.veridiangames.core.utils.Color4f;
+
+import static fr.veridiangames.client.Resource.getResource;
+import static org.lwjgl.opengl.GL11.GL_LINEAR;
 
 public class SpawnScreen extends GuiCanvas
 {
@@ -30,23 +34,21 @@ public class SpawnScreen extends GuiCanvas
 		this.centered = false;
 
 		GuiPanel bgPanel = new GuiPanel(0, 0, display.getWidth(), display.getHeight());
-		bgPanel.setColor(Color4f.BLACK);
+		bgPanel.setTexture(TextureLoader.loadTexture(getResource("textures/LoadingBG.png"), GL_LINEAR, false));
 		bgPanel.setOrigin(GuiComponent.GuiOrigin.A);
 		bgPanel.setScreenParent(GuiComponent.GuiCorner.SCALED);
-		bgPanel.getColor().setAlpha(0.5f);
 		super.add(bgPanel);
 
         /* Map */
-
 		GuiMinimap mapPanel = new GuiMinimap(display.getWidth() / 2, display.getHeight() / 2, 1920, 1080);
 		mapPanel.setColor(Color4f.RED);
 		mapPanel.setOrigin(GuiComponent.GuiOrigin.CENTER);
 		mapPanel.setScreenParent(GuiComponent.GuiCorner.CENTER);
-		mapPanel.setScale(12);
+		mapPanel.setScale(4);
+		mapPanel.setDrawClient(false);
 		super.add(mapPanel);
 
         /* End Map */
-
 		GuiButton sniperButton = new GuiButton("Sniper", display.getWidth() / 2 , display.getHeight() - 50, 150, new GuiActionListener() {
             @Override
             public void onAction()
@@ -62,8 +64,7 @@ public class SpawnScreen extends GuiCanvas
 		sniperButton.setOrigin(GuiComponent.GuiOrigin.CENTER);
 		sniperButton.setScreenParent(GuiComponent.GuiCorner.BC);
 
-
-		GuiButton assaultButton = new GuiButton("Assault", display.getWidth() / 2 - 400, display.getHeight() - 50, 150, new GuiActionListener() {
+		GuiButton assaultButton = new GuiButton("Assault", display.getWidth() / 2 - 300, display.getHeight() - 50, 150, new GuiActionListener() {
 			@Override
 			public void onAction()
 			{
@@ -78,8 +79,7 @@ public class SpawnScreen extends GuiCanvas
 		assaultButton.setOrigin(GuiComponent.GuiOrigin.CENTER);
 		assaultButton.setScreenParent(GuiComponent.GuiCorner.BC);
 
-
-		GuiButton builderButton = new GuiButton("Builder", display.getWidth() / 2 + 400, display.getHeight() - 50, 150, new GuiActionListener() {
+		GuiButton builderButton = new GuiButton("Builder", display.getWidth() / 2 + 300, display.getHeight() - 50, 150, new GuiActionListener() {
 			@Override
 			public void onAction()
 			{
