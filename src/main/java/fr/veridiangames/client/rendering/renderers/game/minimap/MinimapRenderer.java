@@ -9,9 +9,14 @@ import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Mat4;
 import fr.veridiangames.core.maths.Vec2;
 import fr.veridiangames.core.utils.Color4f;
+import fr.veridiangames.core.utils.Indexer;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL20;
 
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import static fr.veridiangames.core.maths.Mathf.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -29,6 +34,8 @@ public class MinimapRenderer
 	private FloatBuffer colorsBuffer;
 	private int vao, vbo, cbo;
 
+	private HashMap<Integer, MinimapChunkRenderer> chunks;
+
 	private MinimapHandler minimap;
 
 	public MinimapRenderer(int width, int height)
@@ -37,94 +44,32 @@ public class MinimapRenderer
 		this.width = width;
 		this.height = height;
 		this.minimap = Ubercube.getInstance().getMinimapHandler();
-		createBuffer();
+		this.chunks = new HashMap<>();
+		fillChunks();
 	}
 
-	public void createBuffer()
+	private void fillChunks()
 	{
-		positionsBuffer = BufferUtils.createFloatBuffer(world.getWorldSize() * Chunk.SIZE * world.getWorldSize() * Chunk.SIZE * 4 * 3);
-		colorsBuffer = BufferUtils.createFloatBuffer(world.getWorldSize() * Chunk.SIZE * world.getWorldSize() * Chunk.SIZE * 4 * 4);
-
-		for (int x = 0; x < world.getWorldSize() * Chunk.SIZE; x++)
+		for (int x = 0; x < world.getWorldSize(); x++)
 		{
-			for (int z = 0; z < world.getWorldSize() * Chunk.SIZE; z++)
+			for (int z = 0; z < world.getWorldSize(); z++)
 			{
-				int xx = x;
-				int zz = z;
-				int block = world.getHeighestBlockAt(xx, zz);
-
-				Color4f c = new Color4f(block);
-
-				positionsBuffer.put(x).put(z).put(0);
-				colorsBuffer.put(c.r).put(c.g).put(c.b).put(1f);
-
-				positionsBuffer.put(x + 1).put(z).put(0);
-				colorsBuffer.put(c.r).put(c.g).put(c.b).put(1f);
-
-				positionsBuffer.put(x + 1).put(z + 1).put(0);
-				colorsBuffer.put(c.r).put(c.g).put(c.b).put(1f);
-
-				positionsBuffer.put(x).put(z + 1).put(0);
-				colorsBuffer.put(c.r).put(c.g).put(c.b).put(1f);
+				int y = world.getHeighestPopulatedChunkIndexAt(x, z);
+				MinimapChunkRenderer c = new MinimapChunkRenderer(x, y, z);
+				chunks.put(Indexer.index3i(x, y, z), c);
 			}
 		}
-		positionsBuffer.flip();
-		colorsBuffer.flip();
-
-		vao = Buffers.createVertexArray();
-		vbo = Buffers.createVertexBuffer();
-		cbo = Buffers.createVertexBuffer();
-
-		glBindVertexArray(vao);
-
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, positionsBuffer, GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0L);
-
-		glBindBuffer(GL_ARRAY_BUFFER, cbo);
-		glBufferData(GL_ARRAY_BUFFER, colorsBuffer, GL_STATIC_DRAW);
-		glVertexAttribPointer(1, 4, GL_FLOAT, false, 0, 0L);
-
-		glBindVertexArray(0);
-
-		positionsBuffer.clear();
-		colorsBuffer.clear();
-		positionsBuffer = null;
-		colorsBuffer = null;
 	}
 
 	public void update()
 	{
-//		colorsBuffer = BufferUtils.createFloatBuffer((radius * 2) * (radius * 2) * 4 * 4);
-//
-//		Vec2 p = Ubercube.getInstance().getGameCore().getGame().getPlayer().getPosition().xz();
-//		int x0 = (int) round(p.x - radius);
-//		int z0 = (int) round(p.y - radius);
-//
-//		for (int x = 0; x < radius * 2; x++)
-//		{
-//			for (int z = 0; z < radius * 2; z++)
-//			{
-//				int xx = x + x0;
-//				int zz = z + z0;
-//				int block = world.getHeighestBlockAt(xx, zz);
-//				Color4f c = new Color4f(block);
-//				colorsBuffer.put(c.r).put(c.g).put(c.b).put(1f);
-//				colorsBuffer.put(c.r).put(c.g).put(c.b).put(1f);
-//				colorsBuffer.put(c.r).put(c.g).put(c.b).put(1f);
-//				colorsBuffer.put(c.r).put(c.g).put(c.b).put(1f);
-//			}
-//		}
-//		colorsBuffer.flip();
-//
-//		glBindBuffer(GL_ARRAY_BUFFER, cbo);
-//		glBufferData(GL_ARRAY_BUFFER, colorsBuffer, GL_STATIC_DRAW);
-//
-//		colorsBuffer.clear();
-//		colorsBuffer = null;
+		for (int index : world.getUpdateRequests())
+		{
+			MinimapChunkRenderer c = chunks.get(index);
+			if (c == null)
+				continue;
+			c.update();
+		}
 	}
 
 	public void render(MinimapShader shader, float scale)
@@ -134,8 +79,9 @@ public class MinimapRenderer
 		float yRot = toDegrees(atan2(dir.y, dir.x));
 
 		shader.setModelViewMatrix(Mat4.translate(width / 2, height / 2, 0).mul(Mat4.rotate(0, 0, -yRot - 90).mul(Mat4.translate(-p.x * scale, -p.y * scale, 0).mul(Mat4.scale(scale, scale, scale)))));
-		glBindVertexArray(vao);
-		glDrawArrays(GL_QUADS, 0, world.getWorldSize() * Chunk.SIZE * world.getWorldSize() * Chunk.SIZE * 4);
-		glBindVertexArray(0);
+		for (MinimapChunkRenderer c : chunks.values())
+		{
+			c.render(shader, scale);
+		}
 	}
 }
