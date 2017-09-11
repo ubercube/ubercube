@@ -116,9 +116,9 @@ public class FireWeapon extends Weapon
 
 		if (zoomed)
 		{
-			this.rotationFactor.add(recoilOnZoom, 0, 0);
+			this.rotationFactor.add(-recoilOnZoom, 0, 0);
 		}else{
-			this.rotationFactor.add(recoil, 0, 0);
+			this.rotationFactor.add(-recoil, 0, 0);
 		}
 	}
 	

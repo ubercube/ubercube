@@ -32,12 +32,12 @@ public class WeaponAWP extends FireWeapon
 	{
 		super(Weapon.AWP, Model.AWP);
 		this.transform.setLocalScale(new Vec3(0.65f, 0.65f, 0.65f));
-		this.setIdlePosition(new Transform(new Vec3(0.3f, 0f, -0.3f)));
-		this.setHidePosition(new Transform(new Vec3(0.3f, 0f - 1f, 1.5f)));
-		this.setZoomPosition(new Transform(new Vec3(0, 0, -0.4f)));
+		this.setIdlePosition(new Transform(new Vec3(0.2f, 0f, -0.3f)));
+		this.setHidePosition(new Transform(new Vec3(0.2f, 0f - 1f, 1.5f)));
+		this.setZoomPosition(new Transform(new Vec3(0, 0, 0.3f)));
 		this.setShootPoint(new Transform(new Vec3(0, -0.16f, 1.7f)));
 		this.setAudioGain(0.5f);
-		this.setZoomAmnt(120);
+		this.setZoomAmnt(150);
 		this.setShootForce(10.0f);
 		this.setShootPecisionIdle(0.025f);
 		this.setShootPecisionZoomed(0.001f);
@@ -45,7 +45,7 @@ public class WeaponAWP extends FireWeapon
 		this.setPosition(0);
 		this.setFireFrequency(1);
 		this.setMaxBullets(5);
-		this.setRecoil(0.3f);
-		this.setRecoilOnZoom(0.4f);
+		this.setRecoil(0.1f);
+		this.setRecoilOnZoom(0.05f);
 	}
 }
