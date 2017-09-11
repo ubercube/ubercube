@@ -86,7 +86,12 @@ public class DeathPacket extends Packet
 
 
         if (e != null || !(e instanceof Player))
-            client.console(((ECName)e.get(EComponent.NAME)).getName() + " has been killed by " + shooterName + " !");
+		{
+			if (playerId == shooterId)
+				client.console(((ECName)e.get(EComponent.NAME)).getName() + " killed himself... ");
+			else
+				client.console(((ECName)e.get(EComponent.NAME)).getName() + " has been killed by " + shooterName + " !");
+		}
         else
             return;
 		Player p = (Player) e;

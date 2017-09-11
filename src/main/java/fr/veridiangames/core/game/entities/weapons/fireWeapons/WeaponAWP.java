@@ -22,6 +22,7 @@ package fr.veridiangames.core.game.entities.weapons.fireWeapons;
 import fr.veridiangames.client.rendering.textures.Texture;
 import fr.veridiangames.core.game.entities.Model;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
+import fr.veridiangames.core.loaders.TextureID;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 
@@ -38,9 +39,9 @@ public class WeaponAWP extends FireWeapon
 		this.setAudioGain(0.5f);
 		this.setZoomAmnt(120);
 		this.setShootForce(10.0f);
-		this.setShootPecisionIdle(0.1f);
-		this.setShootPecisionZoomed(0.01f);
-		this.setCrosshairTexture(Texture.AWP_CROSSHAIR);
+		this.setShootPecisionIdle(0.025f);
+		this.setShootPecisionZoomed(0.001f);
+		this.setCrosshairTexture(TextureID.AWP_CROSSHAIR);
 		this.setPosition(0);
 	}
 }

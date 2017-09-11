@@ -77,8 +77,6 @@ public class GameRenderer
 
 	private boolean					drawColliders;
 
-	private MinimapFramebuffer		minimap;
-
 	public GameRenderer(Ubercube main, GameCore core)
 	{
 		this.core = core;
@@ -102,7 +100,6 @@ public class GameRenderer
 		this.worldRenderer = new WorldRenderer(core);
 		this.gui3DShader = new Gui3DShader();
 
-		this.minimap = new MinimapFramebuffer();
 
 		this.playerViewport = new PlayerViewport(main.getDisplay(), main);
 
@@ -116,7 +113,6 @@ public class GameRenderer
 	{
 		if (Display.getInstance().getInput().getKeyUp(Input.KEY_F2))
 			drawColliders = !drawColliders;
-		minimap.update();
 		playerViewport.update();
 		playerRenderer.updateInstances(
 			core.getGame().getEntityManager().getEntities(),
@@ -176,8 +172,6 @@ public class GameRenderer
 				Display.getInstance().getWidth() / 2,
 				-Display.getInstance().getHeight() / 2, 1);
 		glEnable(GL_CULL_FACE);
-
-		minimap.render();
 	}
 
 	public void bindEnvMap()
@@ -318,7 +312,7 @@ public class GameRenderer
 				camera
 		);
 	}
-	
+
 	public GameCore getGameCore()
 	{
 		return core;

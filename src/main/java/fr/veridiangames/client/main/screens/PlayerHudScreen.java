@@ -22,13 +22,17 @@ package fr.veridiangames.client.main.screens;
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.audio.AudioPlayer;
 import fr.veridiangames.client.inputs.Input;
+import fr.veridiangames.client.main.minimap.MinimapHandler;
 import fr.veridiangames.client.main.screens.gamemenu.GameMenuScreen;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
+import fr.veridiangames.client.rendering.guis.GuiManager;
 import fr.veridiangames.client.rendering.guis.components.GuiLabel;
+import fr.veridiangames.client.rendering.guis.components.GuiMinimap;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
 import fr.veridiangames.client.rendering.textures.Texture;
+import fr.veridiangames.client.rendering.textures.TextureLoader;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.client.main.screens.gamemode.TDMHudScreen;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
@@ -36,6 +40,9 @@ import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.explosiveWeapons.WeaponGrenade;
 import fr.veridiangames.core.game.entities.weapons.fireWeapons.FireWeapon;
 import fr.veridiangames.core.utils.Color4f;
+
+import static fr.veridiangames.client.Resource.getResource;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
 
 /**
  * Created by Marc on 23/06/2016.
@@ -54,6 +61,7 @@ public class PlayerHudScreen extends GuiCanvas
     private ConsoleScreen consoleScreen;
     private boolean showCrosshair;
     private GuiPanel crosshair;
+    private GuiMinimap minimap;
 
     private int health;
 
@@ -131,7 +139,6 @@ public class PlayerHudScreen extends GuiCanvas
         audioStatus.setUseable(AudioPlayer.muteAudio);
         super.add(audioStatus);
 
-
         playerPosition = new GuiLabel("0 - 0 - 0", display.getWidth() / 2, 10, 20f);
         playerPosition.setOrigin(GuiComponent.GuiOrigin.TC);
         playerPosition.setScreenParent(GuiComponent.GuiCorner.TC);
@@ -143,9 +150,26 @@ public class PlayerHudScreen extends GuiCanvas
         consoleScreen = new ConsoleScreen(this, display, core, 10, Display.getInstance().getHeight() - 130, 600, 450);
         super.addCanvas(consoleScreen);
 
-/*
-        PlayerListScreen playerListScreen = new PlayerListScreen(this, display, core, Display.getInstance().getWidth() / 2, Display.getInstance().getHeight() / 2);
-        super.addCanvas(playerListScreen);*/
+        MinimapHandler minimapHandler = Ubercube.getInstance().getMinimapHandler();
+
+		GuiPanel minimapShadow = new GuiPanel(
+			Display.getInstance().getWidth() - minimapHandler.getPos().x + 2,
+			Display.getInstance().getHeight() - minimapHandler.getPos().y + 3,
+			minimapHandler.getSize().x, minimapHandler.getSize().y);
+		minimapShadow.setOrigin(GuiComponent.GuiOrigin.C);
+		minimapShadow.setScreenParent(GuiComponent.GuiCorner.BR);
+		minimapShadow.setColor(new Color4f(0, 0, 0, 0.3f));
+		super.add(minimapShadow);
+
+        minimap = new GuiMinimap(
+        	Display.getInstance().getWidth() - minimapHandler.getPos().x,
+			Display.getInstance().getHeight() - minimapHandler.getPos().y,
+			minimapHandler.getSize().x, minimapHandler.getSize().y);
+		minimap.setOrigin(GuiComponent.GuiOrigin.C);
+		minimap.setScreenParent(GuiComponent.GuiCorner.BR);
+		minimap.setColor(new Color4f(1, 1, 1, 0.1f));
+		super.add(minimap);
+
         GuiCanvas gc = GameCore.getInstance().getGame().getGameMode().getPlayerListScreen(this);
         super.addCanvas(gc);
 
@@ -171,7 +195,7 @@ public class PlayerHudScreen extends GuiCanvas
 							(weapon.getCrosshairTexture() != null && weapon.isZoomed() && weapon instanceof FireWeapon);
 		if (this.showCrosshair)
 		{
-			crosshair.setTexture(core.getGame().getPlayer().getWeaponComponent().getWeapon().getCrosshairTexture());
+			crosshair.setTexture(TextureLoader.loadTexture(getResource(core.getGame().getPlayer().getWeaponComponent().getWeapon().getCrosshairTexture()), GL_NEAREST, false));
 			crosshair.setUseable(true);
 		}
 		else

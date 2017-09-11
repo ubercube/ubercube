@@ -111,6 +111,7 @@ public class FireWeapon extends Weapon
 		net.send(new BulletShootPacket(holder.getID(), bullet), Protocol.UDP);
 		bullet.setNetwork(net);
 		core.getGame().spawn(bullet);
+		this.rotationFactor.add(-shootPecision * 4, 0, 0);
 	}
 	
 	public void onAction()
@@ -135,7 +136,6 @@ public class FireWeapon extends Weapon
 			shootPecision = shootPecisionZoomed;
 		else
 			shootPecision = shootPecisionIdle;
-		this.rotationFactor.add(-shootPecision * 4, 0, 0);
 
 		Vec3 shootVector = new Vec3(transform.getLocalPosition()).sub(transform.getLocalRotation().getForward().copy().mul(0, 0, shootPecision));
 		this.transform.setLocalPosition(shootVector);

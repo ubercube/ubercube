@@ -21,12 +21,14 @@ package fr.veridiangames.client.main.player;
 
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.audio.AudioListener;
+import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBulletHit;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.weapons.meleeWeapon.WeaponShovel;
+import fr.veridiangames.core.maths.Vec2i;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.network.Protocol;
@@ -70,6 +72,13 @@ public class PlayerHandler
 
 		mouse.setDX(0);
 		mouse.setDY(0);
+
+		Ubercube.getInstance().getMinimapHandler().setSize(new Vec2i(Display.getInstance().getWidth() - 20, Display.getInstance().getHeight() - 20));
+
+		if (player.isDead())
+			return;
+
+		Ubercube.getInstance().getMinimapHandler().setSize(new Vec2i(300, 200));
 
 		if (Ubercube.getInstance().isInConsole() || Ubercube.getInstance().isInMenu())
 			return;
