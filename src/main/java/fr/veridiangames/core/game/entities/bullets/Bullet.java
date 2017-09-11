@@ -79,14 +79,15 @@ public class Bullet extends Entity
 		super.update(core);
 		if (destroyed)
 			return;
+
 		Vec3 position = getPosition();
 		Vec3 direction = getRotation().getForward();
 
 		int block = 0;
 		Vec3 blockPosition = new Vec3();
 		Entity e = null;
-		
-		int step = (int) (force * 30.0f);
+
+		int step = (int) (force * 10.0f);
 		for (int i = 0; i < step; i++)
 		{
 			Vec3 stepedPosition = new Vec3(position).add(direction.copy().mul(force / step));
@@ -137,6 +138,7 @@ public class Bullet extends Entity
 			this.net.send(new BulletHitPlayerPacket(player, shooterId), Protocol.TCP);
 			this.destroy();
 		}
+
 	}
 
 	public boolean isBulletOutOfMap(GameCore core)

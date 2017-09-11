@@ -38,6 +38,7 @@ public class Camera
 	
 	private float width, height;
 	private float fov, aspect, near, far;
+	private float currentFov;
 	
 	public Camera(Display display)
 	{
@@ -62,6 +63,7 @@ public class Camera
 		this.frustumCulling = new FrustumCulling();
 		
 		this.fov = 70.0f;
+		this.currentFov = fov;
 		this.aspect = (float) display.getWidth() / (float) display.getHeight();
 		this.near = 0.1f;
 		this.far = 1000.0f;
@@ -73,6 +75,7 @@ public class Camera
 	{
 		this.transform = new Transform();
 		this.fov = fov;
+		this.currentFov = fov;
 		this.aspect = width / height;
 		this.near = near;
 		this.far = far;
@@ -80,7 +83,7 @@ public class Camera
 	
 	public Mat4 getProjectionMatrix()
 	{
-		Mat4 projectionMatrix = Mat4.perspective(fov, aspect, near, far);
+		Mat4 projectionMatrix = Mat4.perspective(currentFov, aspect, near, far);
 		return projectionMatrix.mul(getViewMatrix());
 	}
 
@@ -133,9 +136,14 @@ public class Camera
 		return fov;
 	}
 
+	public float getCurrentFov()
+	{
+		return currentFov;
+	}
+
 	public void setFov(float fov)
 	{
-		this.fov = fov;
+		this.currentFov = fov;
 	}
 
 	public float getAspect()

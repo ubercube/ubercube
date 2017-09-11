@@ -55,7 +55,7 @@ public class MinimapObject
 		float rx = (x * sin(yRot) + y * cos(yRot));
 		float ry = (y * sin(yRot) - x * cos(yRot));
 
-		float padding = 10;
+		float padding = 5;
 		if (ry < -height / 2 + padding)
 		{
 			float a = -rx;

@@ -102,6 +102,8 @@ public class PlayerHandler
 		else
 			weapon.getWeapon().setPosition(0);
 
+		mouse.useZoomSpeed(weapon.getWeapon().isZoomed());
+
 //		if (input.getKeyDown(Input.KEY_F))
 //			key.setFly(!key.isFly());
 

@@ -35,6 +35,10 @@ public class WeaponAWP extends FireWeapon
 		this.setZoomPosition(new Transform(new Vec3(0, 0, -0.5f)));
 		this.setShootPoint(new Transform(new Vec3(0, -0.3f, 0f)));
 		this.setAudioGain(0.5f);
+		this.setZoomAmnt(120);
+		this.setShootForce(10.0f);
+		this.setShootPecisionIdle(0.1f);
+		this.setShootPecisionZoomed(0.01f);
 		this.setPosition(0);
 	}
 }

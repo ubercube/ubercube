@@ -204,6 +204,8 @@ public class World
 	{
 		return chunks.get(Indexer.index3i(x, y, z));
 	}
+
+	public Chunk getChunk(int index) { return chunks.get(index); }
 	
 	public void updateRequest(int x, int y, int z)
 	{

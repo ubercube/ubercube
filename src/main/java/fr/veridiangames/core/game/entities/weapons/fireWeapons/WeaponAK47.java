@@ -30,11 +30,15 @@ public class WeaponAK47 extends FireWeapon
 	{
 		super(Weapon.AK47, Model.AK47);
 		this.transform.setLocalScale(new Vec3(-0.35f, 0.35f, 0.35f));
-		this.setIdlePosition(new Transform(new Vec3(0.3f, -0.1f, -0.3f)));
-		this.setHidePosition(new Transform(new Vec3(0.3f, -0.05f - 1f, 0)));
-		this.setZoomPosition(new Transform(new Vec3(0, 0, -1.05f)));
+		this.setIdlePosition(new Transform(new Vec3(0.2f, -0.05f, -0.3f)));
+		this.setHidePosition(new Transform(new Vec3(0.2f, -0.05f - 1f, 0)));
+		this.setZoomPosition(new Transform(new Vec3(0, 0, -1f)));
 		this.setShootPoint(new Transform(new Vec3(0f, -0.25f, 1.0f)));
 		this.setAudioGain(0.5f);
+		this.setZoomAmnt(40);
+		this.setShootForce(5.0f);
+		this.setShootPecisionIdle(0.1f);
+		this.setShootPecisionZoomed(0.01f);
 		this.setPosition(0);
 	}
 }

@@ -215,6 +215,7 @@ public class GameRenderer
 	public void renderPlayer(Camera camera)
 	{
 		modelShader.bind();
+		camera.setNear(0.05f);
 		modelShader.setShaderBase(
 				camera.getProjectionMatrix(),
 				camera.getTransform().getPosition(),
@@ -226,6 +227,7 @@ public class GameRenderer
 				envCubemap.getCubemap(),
 				core.getGame().getEntityManager().getEntities()
 		);
+		camera.setNear(0.1f);
 	}
 
 	public void renderWorld(Camera camera)
