@@ -44,6 +44,8 @@ public class FireWeapon extends Weapon
 	private float shootPecision = 0.5f;
 	private float shootPecisionIdle = 0.5f;
 	private float shootPecisionZoomed = 0.5f;
+	private float recoil = 1f;
+	private float recoilOnZoom = 1f;
 
 	private int shootTimer = 0;
 
@@ -111,7 +113,13 @@ public class FireWeapon extends Weapon
 		net.send(new BulletShootPacket(holder.getID(), bullet), Protocol.UDP);
 		bullet.setNetwork(net);
 		core.getGame().spawn(bullet);
-		this.rotationFactor.add(-shootPecision * 4, 0, 0);
+
+		if (zoomed)
+		{
+			this.rotationFactor.add(recoilOnZoom, 0, 0);
+		}else{
+			this.rotationFactor.add(recoil, 0, 0);
+		}
 	}
 	
 	public void onAction()
@@ -222,4 +230,9 @@ public class FireWeapon extends Weapon
 	}
 
 	public void setAudioGain(float audioGain) { this.audioGain = audioGain; }
+
+	public void setRecoil(float f) { this.recoil = f; }
+
+	public void setRecoilOnZoom(float f) { this.recoilOnZoom = f; }
+
 }

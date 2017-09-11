@@ -44,5 +44,8 @@ public class WeaponAWP extends FireWeapon
 		this.setCrosshairTexture(TextureID.AWP_CROSSHAIR);
 		this.setPosition(0);
 		this.setFireFrequency(1);
+		this.setMaxBullets(5);
+		this.setRecoil(0.3f);
+		this.setRecoilOnZoom(0.4f);
 	}
 }
