@@ -41,5 +41,7 @@ public class WeaponAK47 extends FireWeapon
 		this.setShootPecisionZoomed(0.001f);
 		this.setCrosshairTexture(null);
 		this.setPosition(0);
+		this.setRecoil(0.15f);
+		this.setRecoilOnZoom(0.025f);
 	}
 }
