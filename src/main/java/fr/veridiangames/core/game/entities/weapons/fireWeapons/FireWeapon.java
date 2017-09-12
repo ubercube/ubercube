@@ -148,7 +148,7 @@ public class FireWeapon extends Weapon
 		Vec3 shootVector = new Vec3(transform.getLocalPosition()).sub(transform.getLocalRotation().getForward().copy().mul(0, 0, shootPecision));
 		this.transform.setLocalPosition(shootVector);
 		this.removeBullet();
-		this.holder.getCore().getGame().spawn(new AudioSource(Sound.AK47_SHOOT, audioGain));
+		this.holder.getCore().getGame().spawn(new AudioSource(this.fireSound, audioGain));
 		if (!zoomed)
 		{
 			this.rotationFactor.add(Mathf.random(-shootPecisionIdle, shootPecisionIdle), Mathf.random(-shootPecisionIdle * 2, 0), 0);

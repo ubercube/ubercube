@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.game.entities.weapons.fireWeapons;
 
+import fr.veridiangames.core.audio.Sound;
 import fr.veridiangames.core.game.entities.Model;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.maths.Transform;
@@ -43,5 +44,6 @@ public class WeaponAK47 extends FireWeapon
 		this.setPosition(0);
 		this.setRecoil(0.15f);
 		this.setRecoilOnZoom(0.025f);
+		this.setSound(Sound.AK47_SHOOT);
 	}
 }

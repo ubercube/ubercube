@@ -21,6 +21,7 @@ package fr.veridiangames.core.game.entities.weapons;
 
 import fr.veridiangames.client.rendering.textures.Texture;
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.audio.Sound;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.loaders.TextureID;
 import fr.veridiangames.core.maths.*;
@@ -61,7 +62,9 @@ public abstract class Weapon
 
 	protected int model;
 	protected int id;
-	
+
+	protected int fireSound;
+
 	public Weapon(int id, int model)
 	{
 		this.model = model;
@@ -283,4 +286,6 @@ public abstract class Weapon
 	public void setCrosshairTexture(String crosshairTexture) {
 		this.crosshairTexture = crosshairTexture;
 	}
+
+	public void setSound(int s) { this.fireSound = s; };
 }

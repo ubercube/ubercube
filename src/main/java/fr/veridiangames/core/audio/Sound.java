@@ -29,6 +29,7 @@ import static org.lwjgl.openal.AL10.alGenBuffers;
 public class Sound
 {
     public static final int AK47_SHOOT = loadWav(getResource("audio/AK47Shoot.wav"));
+	public static final int AWP_SHOOT = loadWav(getResource("audio/AWPShoot.wav"));
     public static final int EXPLODE = loadWav(getResource("audio/waterexplode.wav"));
     public static final int IMPACT = loadWav(getResource("audio/impact.wav"));
     public static final int BEEP = loadWav(getResource("audio/beep.wav"));

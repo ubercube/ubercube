@@ -20,6 +20,7 @@
 package fr.veridiangames.core.game.entities.weapons.fireWeapons;
 
 import fr.veridiangames.client.rendering.textures.Texture;
+import fr.veridiangames.core.audio.Sound;
 import fr.veridiangames.core.game.entities.Model;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.loaders.TextureID;
@@ -45,7 +46,8 @@ public class WeaponAWP extends FireWeapon
 		this.setPosition(0);
 		this.setFireFrequency(1);
 		this.setMaxBullets(5);
-		this.setRecoil(0.1f);
-		this.setRecoilOnZoom(0.05f);
+		this.setRecoil(0.3f);
+		this.setRecoilOnZoom(0.1f);
+		this.setSound(Sound.AWP_SHOOT);
 	}
 }
