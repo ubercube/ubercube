@@ -49,6 +49,9 @@ import fr.veridiangames.server.server.udp.NetworkServerUDP;
  */
 public class NetworkServer implements Runnable, NetworkableServer
 {
+
+	private static NetworkServer ns;
+
 	private int						port;
 
 	private NetworkServerTCP 		tcp;
@@ -60,6 +63,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 
 	public NetworkServer(int port, Scanner scanner, GameCore core)
 	{
+		ns = this;
 		this.port = port;
 		this.core = core;
 		this.scanner = scanner;
@@ -238,5 +242,9 @@ public class NetworkServer implements Runnable, NetworkableServer
 	public Map<String, Command> getCommands()
 	{
 		return commands;
+	}
+
+	public static NetworkServer getInstance(){
+		return ns;
 	}
 }

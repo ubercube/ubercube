@@ -20,7 +20,6 @@
 package fr.veridiangames.core.game.entities.weapons.fireWeapons;
 
 import fr.veridiangames.core.GameCore;
-import fr.veridiangames.core.audio.Sound;
 import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.game.entities.bullets.Bullet;
 import fr.veridiangames.core.game.entities.components.ECKeyMovement;

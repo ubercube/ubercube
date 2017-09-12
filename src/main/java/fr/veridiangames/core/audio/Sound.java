@@ -19,6 +19,9 @@
 
 package fr.veridiangames.core.audio;
 
+import fr.veridiangames.server.ServerMain;
+import fr.veridiangames.server.server.NetworkServer;
+
 import static fr.veridiangames.client.Resource.getResource;
 import static org.lwjgl.openal.AL10.alBufferData;
 import static org.lwjgl.openal.AL10.alGenBuffers;
@@ -43,6 +46,9 @@ public class Sound
 
     public static int loadWav(String file)
     {
+    	if(NetworkServer.getInstance()!= null)
+    		return 0;
+
         int buffer = alGenBuffers();
 
         AudioData audio = AudioData.create(file);

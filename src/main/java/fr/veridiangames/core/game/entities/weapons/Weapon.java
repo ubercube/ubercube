@@ -287,5 +287,7 @@ public abstract class Weapon
 		this.crosshairTexture = crosshairTexture;
 	}
 
-	public void setSound(int s) { this.fireSound = s; };
+	public void setSound(int s) {
+		this.fireSound = s;
+	};
 }
