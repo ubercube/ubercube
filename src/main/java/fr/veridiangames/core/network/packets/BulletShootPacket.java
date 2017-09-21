@@ -41,6 +41,7 @@ public class BulletShootPacket extends Packet
 	private Vec3 position;
 	private Quat rotation;
 	private float shootForce;
+	private int damage;
 	private int shooterId;
 
 	public BulletShootPacket()
@@ -68,6 +69,7 @@ public class BulletShootPacket extends Packet
 		data.put(bullet.getRotation().w);
 
 		data.put(bullet.getForce());
+		data.put(bullet.getDamage());
 
 		data.put(bullet.getShooterID());
 
@@ -93,6 +95,7 @@ public class BulletShootPacket extends Packet
 		data.put(packet.rotation.w);
 
 		data.put(packet.shootForce);
+		data.put(packet.damage);
 
 		data.put(packet.shooterId);
 
@@ -107,6 +110,7 @@ public class BulletShootPacket extends Packet
 		position = new Vec3(data.getFloat(), data.getFloat(), data.getFloat());
 		rotation = new Quat(data.getFloat(), data.getFloat(), data.getFloat(), data.getFloat());
 		shootForce = data.getFloat();
+		damage = data.getInt();
 		shooterId = data.getInt();
 	}
 
@@ -118,7 +122,7 @@ public class BulletShootPacket extends Packet
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
-		Bullet bullet = new Bullet(id, clientID, name, position, rotation, shootForce, shooterId);
+		Bullet bullet = new Bullet(id, clientID, name, position, rotation, shootForce, damage, shooterId);
 		bullet.setNetwork(client);
 
 		if (client.getID() != clientID)

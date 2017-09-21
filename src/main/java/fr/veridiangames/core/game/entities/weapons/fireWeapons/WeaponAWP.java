@@ -48,6 +48,7 @@ public class WeaponAWP extends FireWeapon
 		this.setMaxBullets(5);
 		this.setRecoil(0.3f);
 		this.setRecoilOnZoom(0.1f);
+		this.setDamage(70);
 		this.setSound(Sound.AWP_SHOOT);
 	}
 }

@@ -21,18 +21,13 @@ package fr.veridiangames.core.network.packets;
 
 import java.net.InetAddress;
 
-import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.audio.Sound;
 import fr.veridiangames.core.game.entities.audio.AudioSource;
-import fr.veridiangames.core.game.entities.components.ECName;
-import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
-
-import static javax.swing.text.html.HTML.Tag.HEAD;
 
 /**
  * Created by Marccspro on 26 f�vr. 2016.
@@ -40,6 +35,7 @@ import static javax.swing.text.html.HTML.Tag.HEAD;
 public class BulletHitPlayerPacket extends Packet
 {
     private int playerId;
+    private int damage;
     private int life;
     private boolean hitable;
     private int shooterId;
@@ -50,11 +46,12 @@ public class BulletHitPlayerPacket extends Packet
         super(BULLET_HIT_PLAYER);
     }
 
-    public BulletHitPlayerPacket(Player player, int shooterId)
+    public BulletHitPlayerPacket(Player player, int shooterId, int damage)
     {
         super(BULLET_HIT_PLAYER);
         data.put(player.getID());
         data.put(shooterId);
+        data.put(damage);
         data.put(0);
         data.put(player.isHitable() ? 1 : 0);
 
@@ -66,6 +63,7 @@ public class BulletHitPlayerPacket extends Packet
         super(BULLET_HIT_PLAYER);
         data.put(packet.playerId);
         data.put(packet.shooterId);
+        data.put(packet.damage);
         data.put(life);
         data.put(hitable ? 1 : 0);
 
@@ -76,6 +74,7 @@ public class BulletHitPlayerPacket extends Packet
     {
         playerId = data.getInt();
         shooterId = data.getInt();
+        damage = data.getInt();
         life = data.getInt();
         hitable = data.getInt() == 0 ? false : true;
     }
@@ -85,7 +84,7 @@ public class BulletHitPlayerPacket extends Packet
         ServerPlayer p = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId);
         if (p == null)
             return;
-        boolean dead = p.applyDamage(20, server, shooterId);
+        boolean dead = p.applyDamage(damage, server, shooterId);
         if(!dead)
             server.tcpSendToAll(new BulletHitPlayerPacket(this, p.isHitable(), p.getLife()));
     }
