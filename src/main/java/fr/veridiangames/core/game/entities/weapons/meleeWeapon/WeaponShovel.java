@@ -34,6 +34,7 @@ public class WeaponShovel extends MeleeWeapon
 		this.setHidePosition(new Transform(new Vec3(0.1f, -0.2f - 1f, 0.2f)));
 		this.setZoomPosition(new Transform(new Vec3(0.1f, -0.2f, 0.2f)));
 		this.setPosition(2);
+		this.setDamage(35);
 		this.start();
 	}
 }

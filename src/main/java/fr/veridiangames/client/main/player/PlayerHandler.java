@@ -23,10 +23,14 @@ import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.audio.AudioListener;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
+import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
 import fr.veridiangames.core.game.entities.particles.ParticlesBulletHit;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
+import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
+import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.meleeWeapon.WeaponShovel;
 import fr.veridiangames.core.game.world.Chunk;
 import fr.veridiangames.core.maths.Quat;
@@ -154,11 +158,11 @@ public class PlayerHandler
 		{
 			selection.setShow(true);
 			selection.update(ray.getHit());
-			applySelectionActions(ray, input);
+			applySelectionActions(ray, input, (WeaponShovel)weapon.getWeapon());
 		}
 	}
 	
-	private void applySelectionActions(ECRaycast ray, Input input)
+	private void applySelectionActions(ECRaycast ray, Input input, WeaponShovel weapon)
 	{
 		if (ray.getHit() != null)
 		{
@@ -173,6 +177,21 @@ public class PlayerHandler
 					GameCore.getInstance().getGame().spawn(hitParticles);
 				}else if (input.getMouse().getButtonDown(1)) {
 					placeBlock(hitPoint);
+				}
+			}
+			else if (ray.getHit().getEntity() != null)
+			{
+				Entity e = ray.getHit().getEntity();
+				if (e instanceof NetworkedPlayer && input.getMouse().getButtonDown(0))
+				{
+					Player p = (Player) e;
+					if (p.getID() == player.getID())
+						return;
+					ParticleSystem blood = new ParticlesBlood(Indexer.getUniqueID(), ray.getExactHitPoint().copy());
+					blood.setParticleVelocity(p.getRotation().getBack().copy().mul(0.02f));
+					blood.setNetwork(net);
+					int damage = weapon.getDamage();
+					this.net.send(new BulletHitPlayerPacket(p, player.getID(), damage), Protocol.TCP);
 				}
 			}
 		}
