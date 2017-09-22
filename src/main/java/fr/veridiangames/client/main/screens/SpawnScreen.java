@@ -12,6 +12,7 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.weapons.kits.AssaultKit;
 import fr.veridiangames.core.game.entities.weapons.kits.BuilderKit;
+import fr.veridiangames.core.game.entities.weapons.kits.MedicKit;
 import fr.veridiangames.core.game.entities.weapons.kits.SniperKit;
 import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.RespawnPacket;
@@ -64,7 +65,7 @@ public class SpawnScreen extends GuiCanvas
 		sniperButton.setOrigin(GuiComponent.GuiOrigin.CENTER);
 		sniperButton.setScreenParent(GuiComponent.GuiCorner.BC);
 
-		GuiButton assaultButton = new GuiButton("Assault", display.getWidth() / 2 - 300, display.getHeight() - 50, 150, new GuiActionListener() {
+		GuiButton assaultButton = new GuiButton("Assault", display.getWidth() / 2 - 400, display.getHeight() - 50, 150, new GuiActionListener() {
 			@Override
 			public void onAction()
 			{
@@ -79,7 +80,7 @@ public class SpawnScreen extends GuiCanvas
 		assaultButton.setOrigin(GuiComponent.GuiOrigin.CENTER);
 		assaultButton.setScreenParent(GuiComponent.GuiCorner.BC);
 
-		GuiButton builderButton = new GuiButton("Builder", display.getWidth() / 2 + 300, display.getHeight() - 50, 150, new GuiActionListener() {
+		GuiButton builderButton = new GuiButton("Builder", display.getWidth() / 2 + 200, display.getHeight() - 50, 150, new GuiActionListener() {
 			@Override
 			public void onAction()
 			{
@@ -94,9 +95,25 @@ public class SpawnScreen extends GuiCanvas
 		builderButton.setOrigin(GuiComponent.GuiOrigin.CENTER);
 		builderButton.setScreenParent(GuiComponent.GuiCorner.BC);
 
+		GuiButton medicButton = new GuiButton("Medic", display.getWidth() / 2 + 400, display.getHeight() - 50, 150, new GuiActionListener() {
+			@Override
+			public void onAction()
+			{
+				ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
+				p.getWeaponComponent().setKit(new MedicKit(p.getWeaponComponent().getWeaponManager()));
+				display.getInput().getMouse().setGrabbed(true);
+				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
+			}
+		});
+		medicButton.centerText();
+		medicButton.setClickable(true);
+		medicButton.setOrigin(GuiComponent.GuiOrigin.CENTER);
+		medicButton.setScreenParent(GuiComponent.GuiCorner.BC);
+
         super.add(assaultButton);
 		super.add(sniperButton);
 		super.add(builderButton);
+		super.add(medicButton);
 
         setRendered(false);
     }

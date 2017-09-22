@@ -111,6 +111,9 @@ public class EntityWeaponRenderer
 			case Model.GRENADE:
 				OBJModel.GRENADE_RENDERER.render();
 				break;
+			case Model.MEDICBAG:
+				OBJModel.MEDICBAG_RENDERER.render();
+				break;
 		}
 	}
 }

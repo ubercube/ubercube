@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.game.entities.weapons.fireWeapons;
 
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.game.entities.bullets.Bullet;
@@ -31,6 +32,7 @@ import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.BulletShootPacket;
 import fr.veridiangames.core.utils.Indexer;
+import fr.veridiangames.server.server.NetworkServer;
 
 public class FireWeapon extends Weapon
 {

@@ -27,6 +27,9 @@ import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBulletHit;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
+import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.game.entities.weapons.Weapon;
+import fr.veridiangames.core.game.entities.weapons.healthWeapon.WeaponMedicBag;
 import fr.veridiangames.core.game.entities.weapons.meleeWeapon.WeaponShovel;
 import fr.veridiangames.core.game.world.Chunk;
 import fr.veridiangames.core.maths.Quat;
@@ -150,7 +153,7 @@ public class PlayerHandler
 		}
 
 		selection.setShow(false);
-		if(weapon.getWeapon() instanceof WeaponShovel)
+		if(weapon.getWeapon() instanceof Weapon)
 		{
 			selection.setShow(true);
 			selection.update(ray.getHit());
@@ -162,7 +165,7 @@ public class PlayerHandler
 	{
 		if (ray.getHit() != null)
 		{
-			if (ray.getHit().getBlock() != 0)
+			if ((ray.getHit().getBlock() != 0) && (player.getWeaponComponent().getWeapon() instanceof WeaponShovel))
 			{
 				Vec3i blockPosition = ray.getHit().getBlockPosition();
 				Vec3  hitPoint = ray.getExactHitPoint();
@@ -173,6 +176,11 @@ public class PlayerHandler
 					GameCore.getInstance().getGame().spawn(hitParticles);
 				}else if (input.getMouse().getButtonDown(1)) {
 					placeBlock(hitPoint);
+				}
+			}else if((ray.getHit().getEntity() != null) && (player.getWeaponComponent().getWeapon() instanceof WeaponMedicBag) && (ray.getHit().getEntity() instanceof Player)){
+				if (input.getMouse().getButtonDown(0)) {
+					System.out.println("Healing");
+					net.send(new ApplyDamagePacket((Player) ray.getHit().getEntity(), -1), Protocol.TCP);
 				}
 			}
 		}

@@ -16,6 +16,7 @@ public class OBJModel {
 	public static final OBJModel AK47_RENDERER = ObjModelLoader.loadModel(getResource("weapons/ak47/AK47.obj"));
 	public static final OBJModel AWP_RENDERER = ObjModelLoader.loadModel(getResource("weapons/awp/AWP.obj"));
 	public static final OBJModel SHOVEL_RENDERER = ObjModelLoader.loadModel(getResource("weapons/SHOVEL.obj"));
+	public static final OBJModel MEDICBAG_RENDERER = ObjModelLoader.loadModel(getResource("weapons/medicbag/MEDICBAG.obj"));
 
 	private List<Vec3> verticesList = new ArrayList<Vec3>();
 	private List<Vec3> normalsList = new ArrayList<Vec3>();
