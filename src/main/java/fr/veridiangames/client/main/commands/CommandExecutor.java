@@ -17,6 +17,7 @@ public class CommandExecutor {
 			exit(0);
 		});
 	}
+
 	public boolean isCommand(String s)
 	{
 		if(s.startsWith("/"))

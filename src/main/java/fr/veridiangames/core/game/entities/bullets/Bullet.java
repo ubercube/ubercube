@@ -135,7 +135,7 @@ public class Bullet extends Entity
 			ParticleSystem blood = new ParticlesBlood(Indexer.getUniqueID(), getPosition().copy());
 			blood.setParticleVelocity(getRotation().getBack().copy().mul(0.02f));
 			blood.setNetwork(net);
-			this.net.send(new BulletHitPlayerPacket(player, shooterId), Protocol.TCP);
+			this.net.send(new BulletHitPlayerPacket(player, shooterId, position.y), Protocol.TCP);
 			this.destroy();
 		}
 

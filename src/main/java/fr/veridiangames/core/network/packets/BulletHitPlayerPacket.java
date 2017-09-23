@@ -40,9 +40,8 @@ import static javax.swing.text.html.HTML.Tag.HEAD;
 public class BulletHitPlayerPacket extends Packet
 {
     private int playerId;
-    private int life;
-    private boolean hitable;
     private int shooterId;
+    private float bulletHeight;
 
     public BulletHitPlayerPacket()
 
@@ -50,34 +49,22 @@ public class BulletHitPlayerPacket extends Packet
         super(BULLET_HIT_PLAYER);
     }
 
-    public BulletHitPlayerPacket(Player player, int shooterId)
+    public BulletHitPlayerPacket(Player player, int shooterId, float bulletHeight)
     {
         super(BULLET_HIT_PLAYER);
         data.put(player.getID());
         data.put(shooterId);
-        data.put(0);
-        data.put(player.isHitable() ? 1 : 0);
+        data.put(bulletHeight);
 
         data.flip();
     }
 
-    public BulletHitPlayerPacket(BulletHitPlayerPacket packet, boolean hitable, int life)
-    {
-        super(BULLET_HIT_PLAYER);
-        data.put(packet.playerId);
-        data.put(packet.shooterId);
-        data.put(life);
-        data.put(hitable ? 1 : 0);
-
-        data.flip();
-    }
 
     public void read(DataBuffer data)
     {
         playerId = data.getInt();
         shooterId = data.getInt();
-        life = data.getInt();
-        hitable = data.getInt() == 0 ? false : true;
+        bulletHeight = data.getFloat();
     }
 
     public void process(NetworkableServer server, InetAddress address, int port)
@@ -85,9 +72,15 @@ public class BulletHitPlayerPacket extends Packet
         ServerPlayer p = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId);
         if (p == null)
             return;
-        boolean dead = p.applyDamage(20, server, shooterId);
-        if(!dead)
-            server.tcpSendToAll(new BulletHitPlayerPacket(this, p.isHitable(), p.getLife()));
+
+		boolean dead;
+        if((bulletHeight- p.getPosition().y) >= 1){
+			dead = p.applyDamage(100, server, shooterId);
+		}
+		else
+		{
+			dead = p.applyDamage(20, server, shooterId);
+		}
     }
 
     public void process(NetworkableClient client, InetAddress address, int port)
