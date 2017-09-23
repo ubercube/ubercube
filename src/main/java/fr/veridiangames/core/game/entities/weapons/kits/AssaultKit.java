@@ -4,6 +4,9 @@ import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.WeaponManager;
 import fr.veridiangames.core.game.entities.weapons.explosiveWeapons.WeaponGrenade;
 
+/**
+ * Created by Tybau on 23/09/2017.
+ */
 public class AssaultKit extends Kit
 {
 	public AssaultKit(WeaponManager weaponManager)

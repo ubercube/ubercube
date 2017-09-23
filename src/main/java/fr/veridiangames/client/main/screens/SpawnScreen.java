@@ -6,14 +6,14 @@ import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.components.GuiButton;
 import fr.veridiangames.client.rendering.guis.components.GuiMinimap;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
-import fr.veridiangames.client.rendering.guis.components.GuiRotatingModel;
+import fr.veridiangames.client.rendering.guis.components.GuiRotatingWeapon;
 import fr.veridiangames.client.rendering.guis.listeners.GuiActionListener;
 import fr.veridiangames.client.rendering.renderers.models.OBJModel;
 import fr.veridiangames.client.rendering.textures.TextureLoader;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
+import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.kits.AssaultKit;
-import fr.veridiangames.core.game.entities.weapons.kits.BuilderKit;
 import fr.veridiangames.core.game.entities.weapons.kits.MedicKit;
 import fr.veridiangames.core.game.entities.weapons.kits.SniperKit;
 import fr.veridiangames.core.network.Protocol;
@@ -53,9 +53,9 @@ public class SpawnScreen extends GuiCanvas
 
 		/* Test weapon rotating */
 		int height = display.getHeight() - 265;
-		GuiRotatingModel rotatingMedic = new GuiRotatingModel(display.getWidth() / 2 + 300, height, 200, 200, Color4f.DARK_GRAY, OBJModel.MEDICBAG_RENDERER);
-		GuiRotatingModel rotatingAk47 = new GuiRotatingModel(display.getWidth() / 2 - 500, height, 200, 200, Color4f.DARK_GRAY, OBJModel.AK47_RENDERER);
-		GuiRotatingModel rotatingAwp = new GuiRotatingModel(display.getWidth() / 2 - 100, height, 200, 200, Color4f.DARK_GRAY, OBJModel.AWP_RENDERER);
+		GuiRotatingWeapon rotatingMedic = new GuiRotatingWeapon(display.getWidth() / 2 + 300, height, 200, 200, Color4f.DARK_GRAY, OBJModel.MEDICBAG_RENDERER, getWeapon(Weapon.MEDICBAG));
+		GuiRotatingWeapon rotatingAk47 = new GuiRotatingWeapon(display.getWidth() / 2 - 500, height, 200, 200, Color4f.DARK_GRAY, OBJModel.AK47_RENDERER, getWeapon(Weapon.AK47));
+		GuiRotatingWeapon rotatingAwp = new GuiRotatingWeapon(display.getWidth() / 2 - 100, height, 200, 200, Color4f.DARK_GRAY, OBJModel.AWP_RENDERER, getWeapon(Weapon.AWP));
 		super.add(rotatingMedic);
 		super.add(rotatingAk47);
 		super.add(rotatingAwp);
@@ -127,4 +127,9 @@ public class SpawnScreen extends GuiCanvas
             setRendered(false);
         }
     }
+
+    private Weapon getWeapon(int id)
+	{
+		return GameCore.getInstance().getGame().getPlayer().getWeaponComponent().getWeaponManager().get(id);
+	}
 }
