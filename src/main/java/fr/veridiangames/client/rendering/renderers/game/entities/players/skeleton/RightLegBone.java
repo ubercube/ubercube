@@ -25,7 +25,6 @@ public class RightLegBone extends Bone
 	{
 		time++;
 		float pvel = p.getMovementVelocity();
-		System.out.println("Machin: " + pvel);
 		float speed = (pvel > 0.7f ? 1 : 0.65f);
 		rotVelocity = (Mathf.cos(time * 0.15f * speed) * 40 + 40) * pvel;
 		this.transform.setLocalRotation(Quat.deuler(rotVelocity, 0, 0));

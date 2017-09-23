@@ -86,7 +86,9 @@ public class ECMouseLook extends EComponent
 		return dy;
 	}
 
-	public void setSpeed(float speed) { this.speed = speed; }
+	public void setSpeed(float speed) {
+		this.speed = speed;
+	}
 
 	public float getSpeed() { return this.speed; }
 
@@ -98,5 +100,5 @@ public class ECMouseLook extends EComponent
 		this.zoomedSpeed = zoomedSpeed;
 	}
 
-	public void useZoomSpeed(boolean trigger, float factor) { this.speed = trigger ? (zoomedSpeed * factor) : idleSpeed;}
+	public void useZoomSpeed(boolean trigger, float factor) { this.speed = trigger ? (zoomedSpeed * factor) : speed;}
 }
