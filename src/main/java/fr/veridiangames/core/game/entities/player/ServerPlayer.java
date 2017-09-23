@@ -84,6 +84,7 @@ public class ServerPlayer extends Player
 				server.tcpSendToAll(new DeathPacket(this.getID(), shooterId, 1));
 			else
 				server.tcpSendToAll(new DeathPacket(this.getID(), shooterId, 0));
+
 			/* GAME MODE */
 			server.getCore().getGame().getGameMode().onPlayerDeath(id, shooterId, server);
 

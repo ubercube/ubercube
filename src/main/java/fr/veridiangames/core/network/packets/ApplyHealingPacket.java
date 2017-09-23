@@ -54,15 +54,29 @@ public class ApplyHealingPacket extends Packet
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
 		ServerPlayer p = (ServerPlayer) GameCore.getInstance().getGame().getEntityManager().getEntities().get(id);
-		p.setLife(p.getLife() + 10);
-		server.tcpSendToAll(new ApplyHealingPacket(id, 10));
+		int l = p.getLife();
+		if(p.getLife() < 100)
+		{
+			if((100-p.getLife()) < 10)
+			{
+				p.setLife(100);
+				l = 100;
+			}
+			else
+			{
+				p.setLife(p.getLife() + 10);
+				l = p.getLife();
+			}
+		}
+
+		server.tcpSendToAll(new ApplyHealingPacket(id, l));
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
 		ClientPlayer p = client.getCore().getGame().getPlayer();
 		if(p.getID() == id){
-			p.setLife(p.getLife() + this.heal);
+			p.setLife(this.heal);
 		}
 	}
 }
