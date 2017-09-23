@@ -6,7 +6,9 @@ import fr.veridiangames.client.rendering.guis.GuiComponent;
 import fr.veridiangames.client.rendering.guis.components.GuiButton;
 import fr.veridiangames.client.rendering.guis.components.GuiMinimap;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
+import fr.veridiangames.client.rendering.guis.components.GuiRotatingModel;
 import fr.veridiangames.client.rendering.guis.listeners.GuiActionListener;
+import fr.veridiangames.client.rendering.renderers.models.OBJModel;
 import fr.veridiangames.client.rendering.textures.TextureLoader;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
@@ -49,8 +51,18 @@ public class SpawnScreen extends GuiCanvas
 		mapPanel.setDrawClient(false);
 		super.add(mapPanel);
 
+		/* Test weapon rotating */
+		int height = display.getHeight() - 265;
+		GuiRotatingModel rotatingMedic = new GuiRotatingModel(display.getWidth() / 2 + 300, height, 200, 200, Color4f.DARK_GRAY, OBJModel.MEDICBAG_RENDERER);
+		GuiRotatingModel rotatingAk47 = new GuiRotatingModel(display.getWidth() / 2 - 500, height, 200, 200, Color4f.DARK_GRAY, OBJModel.AK47_RENDERER);
+		GuiRotatingModel rotatingAwp = new GuiRotatingModel(display.getWidth() / 2 - 100, height, 200, 200, Color4f.DARK_GRAY, OBJModel.AWP_RENDERER);
+		super.add(rotatingMedic);
+		super.add(rotatingAk47);
+		super.add(rotatingAwp);
+
+
         /* End Map */
-		GuiButton sniperButton = new GuiButton("Sniper", display.getWidth() / 2 , display.getHeight() - 50, 150, new GuiActionListener() {
+		GuiButton sniperButton = new GuiButton("Sniper", display.getWidth() / 2 , display.getHeight() - 50, 200, new GuiActionListener() {
             @Override
             public void onAction()
             {
@@ -65,7 +77,7 @@ public class SpawnScreen extends GuiCanvas
 		sniperButton.setOrigin(GuiComponent.GuiOrigin.CENTER);
 		sniperButton.setScreenParent(GuiComponent.GuiCorner.BC);
 
-		GuiButton assaultButton = new GuiButton("Assault", display.getWidth() / 2 - 400, display.getHeight() - 50, 150, new GuiActionListener() {
+		GuiButton assaultButton = new GuiButton("Assault", display.getWidth() / 2 - 400, display.getHeight() - 50, 200, new GuiActionListener() {
 			@Override
 			public void onAction()
 			{
@@ -80,22 +92,7 @@ public class SpawnScreen extends GuiCanvas
 		assaultButton.setOrigin(GuiComponent.GuiOrigin.CENTER);
 		assaultButton.setScreenParent(GuiComponent.GuiCorner.BC);
 
-		GuiButton builderButton = new GuiButton("Builder", display.getWidth() / 2 + 200, display.getHeight() - 50, 150, new GuiActionListener() {
-			@Override
-			public void onAction()
-			{
-				ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
-				p.getWeaponComponent().setKit(new BuilderKit(p.getWeaponComponent().getWeaponManager()));
-				display.getInput().getMouse().setGrabbed(true);
-				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
-			}
-		});
-		builderButton.centerText();
-		builderButton.setClickable(true);
-		builderButton.setOrigin(GuiComponent.GuiOrigin.CENTER);
-		builderButton.setScreenParent(GuiComponent.GuiCorner.BC);
-
-		GuiButton medicButton = new GuiButton("Medic", display.getWidth() / 2 + 400, display.getHeight() - 50, 150, new GuiActionListener() {
+		GuiButton medicButton = new GuiButton("Medic", display.getWidth() / 2 + 400, display.getHeight() - 50, 200, new GuiActionListener() {
 			@Override
 			public void onAction()
 			{
@@ -112,7 +109,6 @@ public class SpawnScreen extends GuiCanvas
 
         super.add(assaultButton);
 		super.add(sniperButton);
-		super.add(builderButton);
 		super.add(medicButton);
 
         setRendered(false);
