@@ -19,22 +19,7 @@
 
 package fr.veridiangames.client.rendering.renderers.game.entities.players;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL31.*;
-import static org.lwjgl.opengl.GL33.*;
-
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.util.List;
-import java.util.Map;
-
-import fr.veridiangames.client.rendering.renderers.game.entities.players.skeleton.Bone;
-import fr.veridiangames.client.rendering.renderers.game.entities.players.skeleton.PlayerSkeleton;
-import org.lwjgl.BufferUtils;
-
+import fr.veridiangames.client.rendering.buffers.Buffers;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
@@ -42,34 +27,43 @@ import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.maths.Mat4;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.utils.Color4f;
-import fr.veridiangames.client.rendering.buffers.Buffers;
+import org.lwjgl.BufferUtils;
+
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.util.List;
+import java.util.Map;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL31.glDrawElementsInstanced;
+import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
 
 /**
  * Created by Marccspro on 8 f�vr. 2016.
  */
-public class PlayerRenderer
+public class PlayerRendererOld
 {
-	public static final int ENTITY_COMPLEXITY = 10;
+	public static final int ENTITY_COMPLEXITY = 2;
 	public static final int MAX_ENTITIES = 2000;
-	
+
 	private FloatBuffer instanceBuffer;
 	private int vao, vbo, cbo, vio, ibo;
-	
+
 	private int renderCount;
 
-	private PlayerSkeleton skeleton;
-
-	public PlayerRenderer()
+	public PlayerRendererOld()
 	{
-		this.skeleton = new PlayerSkeleton();
 		this.instanceBuffer = BufferUtils.createFloatBuffer(MAX_ENTITIES * 20 * ENTITY_COMPLEXITY);
 		for (int i = 0; i < MAX_ENTITIES; i++)
 		{
-			for (int j = 0; j < ENTITY_COMPLEXITY; j++)
-			{
-				instanceBuffer.put(Mat4.identity().getComponents());
-				instanceBuffer.put(Color4f.BLACK.toArray());
-			}
+			instanceBuffer.put(Mat4.identity().getComponents());
+			instanceBuffer.put(Color4f.BLACK.toArray());
+			instanceBuffer.put(Mat4.identity().getComponents());
+			instanceBuffer.put(Color4f.BLACK.toArray());
 		}
 		instanceBuffer.flip();
 		
@@ -133,20 +127,11 @@ public class PlayerRenderer
 				continue;
 			renderCount++;
 			Transform transform = ((ECRender) e.get(EComponent.RENDER)).getTransform();
-
-			skeleton.setParentTransform(transform);
-			skeleton.setBufferData(instanceBuffer);
-
-//			for (Bone bone : skeleton.getChilds())
-//			{
-//				bone.setBufferData(instanceBuffer);
-//			}
-
-//			instanceBuffer.put(Mat4.translate(transform.getPosition()).mul(Mat4.scale(0.35f, 1.0f, 0.35f)).getComponents());
-//			instanceBuffer.put(Color4f.GRAY.toArray());
-//
-//			instanceBuffer.put(Mat4.translate(transform.getPosition().copy().add(0, 2.5f / 2.0f, 0)).mul(transform.getRotation().toMatrix()).mul(Mat4.scale(0.4f, 0.4f, 0.4f)).getComponents());
-//			instanceBuffer.put(Color4f.DARK_GRAY.toArray());
+			
+			instanceBuffer.put(Mat4.translate(transform.getPosition()).mul(Mat4.scale(0.35f, 1.0f, 0.35f)).getComponents());
+			instanceBuffer.put(Color4f.GRAY.toArray());
+			instanceBuffer.put(Mat4.translate(transform.getPosition().copy().add(0, 2.5f / 2.0f, 0)).mul(transform.getRotation().toMatrix()).mul(Mat4.scale(0.4f, 0.4f, 0.4f)).getComponents());
+			instanceBuffer.put(Color4f.DARK_GRAY.toArray());
 		}
 		instanceBuffer.flip();
 		glBindBuffer(GL_ARRAY_BUFFER, vio);
@@ -164,15 +149,15 @@ public class PlayerRenderer
 	{
 		return new float[] 
 		{
-			-0.5f, 0, -0.5f,
-			0.5f, 0, -0.5f,
-			0.5f, 0, 0.5f,
-			-0.5f, 0, 0.5f,
+			-1, -1, -1,
+			1, -1, -1,
+			1, -1, 1,
+			-1, -1, 1,
 
-			-0.5f, 1, -0.5f,
-			0.5f, 1, -0.5f,
-			0.5f, 1, 0.5f,
-			-0.5f, 1, 0.5f
+			-1, 1, -1,
+			1, 1, -1,
+			1, 1, 1,
+			-1, 1, 1
 		};
 	}
 	

@@ -155,11 +155,7 @@ public class PlayerHandler
 
 		selection.setShow(false);
 		if(weapon.getWeapon() instanceof WeaponShovel)
-		{
-			selection.setShow(true);
-			selection.update(ray.getHit());
 			applySelectionActions(ray, input, (WeaponShovel)weapon.getWeapon());
-		}
 	}
 	
 	private void applySelectionActions(ECRaycast ray, Input input, WeaponShovel weapon)
@@ -168,6 +164,8 @@ public class PlayerHandler
 		{
 			if (ray.getHit().getBlock() != 0)
 			{
+				selection.setShow(true);
+				selection.update(ray.getHit());
 				Vec3i blockPosition = ray.getHit().getBlockPosition();
 				Vec3  hitPoint = ray.getExactHitPoint();
 				if (input.getMouse().getButtonDown(0)) {
@@ -179,7 +177,7 @@ public class PlayerHandler
 					placeBlock(hitPoint);
 				}
 			}
-			else if (ray.getHit().getEntity() != null)
+			else if (ray.getHit().getEntity() != null && ray.getDistance() < 2)
 			{
 				Entity e = ray.getHit().getEntity();
 				if (e instanceof NetworkedPlayer && input.getMouse().getButtonDown(0))
@@ -188,7 +186,7 @@ public class PlayerHandler
 					if (p.getID() == player.getID())
 						return;
 					ParticleSystem blood = new ParticlesBlood(Indexer.getUniqueID(), ray.getExactHitPoint().copy());
-					blood.setParticleVelocity(p.getRotation().getBack().copy().mul(0.02f));
+					blood.setParticleVelocity(player.getRotation().getBack().copy().mul(0.02f));
 					blood.setNetwork(net);
 					int damage = weapon.getDamage();
 					this.net.send(new BulletHitPlayerPacket(p, player.getID(), damage), Protocol.TCP);

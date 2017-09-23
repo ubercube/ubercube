@@ -75,7 +75,12 @@ public class Quat {
 		z = c1 * s2 * c3 - s1 * c2 * s3;
 		w = c1c2 * c3 - s1s2 * s3;
 	}
-	
+
+	public static Quat deuler(float yaw, float pitch, float roll)
+	{
+		return euler(Mathf.toRadians(yaw), Mathf.toRadians(pitch), Mathf.toRadians(roll));
+	}
+
 	public static Quat euler(float yaw, float pitch, float roll)
 	{
         float angle;

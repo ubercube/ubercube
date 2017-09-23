@@ -43,7 +43,7 @@ public class Transform {
 	public Transform(Vec3 pos, Vec3 scale) {
 		this.pos = pos;
 		this.rot = new Quat();
-		this.scale = new Vec3(1);
+		this.scale = scale;
 	}
 	
 	public Transform(Vec3 pos, Quat rot) {

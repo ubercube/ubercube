@@ -36,6 +36,7 @@ public class ECRaycast extends EComponent
 	private List<String> ignore;
 
 	private float		dist;
+	private float		hitDist;
 	private float		precision;
 	private Vec3		position;
 	private Vec3		direction;
@@ -68,7 +69,7 @@ public class ECRaycast extends EComponent
 			Vec3 point = new Vec3(position.copy().add(direction.copy().mul(i)));
 			int block = core.getGame().getWorld().getBlockAt(point);
 			Entity e = core.getGame().getEntityManager().getEntityAt(point);
-
+			hitDist = i;
 			if (block != 0)
 			{
 				hit = new RaycastHit(null, block, point.getInts());
@@ -152,5 +153,9 @@ public class ECRaycast extends EComponent
 		{
 			return e;
 		}
+	}
+
+	public float getDistance() {
+		return hitDist;
 	}
 }
