@@ -175,7 +175,9 @@ public class PlayerHandler
 					ParticleSystem hitParticles = new ParticlesBulletHit(Indexer.getUniqueID(), ray.getExactHitPoint(), new Color4f(ray.getHit().getBlock()));
 					hitParticles.useCollision(false);
 					GameCore.getInstance().getGame().spawn(hitParticles);
-				}else if (input.getMouse().getButtonDown(1)) {
+				}
+				else if (input.getMouse().getButtonDown(1))
+				{
 					placeBlock(hitPoint);
 				}
 			}
@@ -185,7 +187,6 @@ public class PlayerHandler
 				{
 					if (input.getMouse().getButtonDown(0))
 					{
-						System.out.println(" We are Healing " + ((Player) ray.getHit().getEntity()).getName());
 						net.send(new ApplyHealingPacket((NetworkedPlayer) ray.getHit().getEntity(), 10), Protocol.TCP);
 					}
 				}
