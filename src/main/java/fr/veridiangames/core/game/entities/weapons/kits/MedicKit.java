@@ -9,6 +9,7 @@ import fr.veridiangames.core.game.entities.weapons.WeaponManager;
 public class MedicKit extends Kit {
 	public MedicKit(WeaponManager weaponManager) {
 		super("Medic", weaponManager);
+		this.addWeapon(Weapon.AK47);
 		this.addWeapon(Weapon.MEDICBAG);
 	}
 

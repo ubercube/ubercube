@@ -17,7 +17,7 @@
  *     along with Ubercube.  If not, see http://www.gnu.org/licenses/.
  */
 
-package fr.veridiangames.client.main.console;
+package fr.veridiangames.client.main.commands;
 
 import static org.lwjgl.opengl.GL11.*;
 

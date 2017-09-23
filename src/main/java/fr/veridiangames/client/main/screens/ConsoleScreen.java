@@ -22,6 +22,7 @@ package fr.veridiangames.client.main.screens;
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.guis.TrueTypeFont;
 import fr.veridiangames.client.inputs.Input;
+import fr.veridiangames.client.main.commands.CommandExecutor;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
@@ -57,6 +58,7 @@ public class ConsoleScreen extends GuiCanvas
     private int x, y;
     private int w, h;
     private float yScroll;
+    private CommandExecutor ce = new CommandExecutor();
 
     public ConsoleScreen(GuiCanvas parent, Display display, GameCore core, int x, int y, int w, int h)
     {
@@ -103,7 +105,15 @@ public class ConsoleScreen extends GuiCanvas
 
         if (Display.getInstance().getInput().getKeyDown(Input.KEY_ENTER) && console && write.getText().length() > 0)
         {
-            Ubercube.getInstance().getNet().send(new TchatMsgPacket(core.getGame().getPlayer().getName() + ": " + write.getText()), Protocol.TCP);
+			if(ce.isCommand(write.getText()))
+			{
+				ce.exec(write.getText());
+			}
+			else
+			{
+				Ubercube.getInstance().getNet().send(new TchatMsgPacket(core.getGame().getPlayer().getName() + ": " + write.getText()), Protocol.TCP);
+			}
+
             console = false;
             Display.getInstance().getInput().getMouse().setGrabbed(true);
             write.clear();
