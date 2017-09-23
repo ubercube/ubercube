@@ -25,6 +25,12 @@ import java.util.Map;
 import fr.veridiangames.client.rendering.renderers.models.OBJModel;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Model;
+import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
+import fr.veridiangames.core.game.entities.player.Player;
+import fr.veridiangames.core.game.entities.weapons.fireWeapons.WeaponAK47;
+import fr.veridiangames.core.game.entities.weapons.fireWeapons.WeaponAWP;
+import fr.veridiangames.core.maths.Transform;
+import fr.veridiangames.core.maths.Vec3;
 import org.lwjgl.opengl.GL11;
 
 import fr.veridiangames.core.game.entities.Entity;
@@ -90,8 +96,33 @@ public class EntityWeaponRenderer
 			return;
 
 		int weapon = weaponComp.getWeapon().getModel();
-		shader.setModelViewMatrix(weaponComp.getWeapon().getTransform().toMatrix().mul(Mat4.scale(1f/16f, 1f/16f, 1f/16f)));
-		
+		if (e instanceof NetworkedPlayer)
+		{
+			Player p = (Player) e;
+			Vec3 rh = p.getRightHandPosition();
+			Vec3 lh = p.getLeftHandPosition();
+			if (p.getWeaponComponent().getWeapon() instanceof WeaponAK47)
+			{
+				Transform transform = new Transform(rh, new Vec3(0.02f));
+				transform.lookAt(rh, lh, Vec3.UP);
+				shader.setModelViewMatrix(transform.toMatrix().mul(Mat4.translate(0, 10f, -34f)));
+			}
+			else if (p.getWeaponComponent().getWeapon() instanceof WeaponAWP)
+			{
+				Transform transform = new Transform(rh, new Vec3(0.04f));
+				transform.lookAt(rh, lh, Vec3.UP);
+				shader.setModelViewMatrix(transform.toMatrix().mul(Mat4.translate(0, 5f, -17)));
+			}
+			else
+			{
+				Transform transform = new Transform(rh, new Vec3(0.08f));
+				shader.setModelViewMatrix(transform.toMatrix().mul(Mat4.translate(0, -5f, 0)));
+			}
+		}
+		else
+		{
+			shader.setModelViewMatrix(weaponComp.getWeapon().getTransform().toMatrix().mul(Mat4.scale(1f/16f, 1f/16f, 1f/16f)));
+		}
 		renderWeapon(weapon);
 	}
 	

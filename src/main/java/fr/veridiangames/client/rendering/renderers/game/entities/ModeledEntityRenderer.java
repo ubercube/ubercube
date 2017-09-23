@@ -80,10 +80,11 @@ public class ModeledEntityRenderer
             if (!(e.contains(EComponent.RENDER) && e.contains(EComponent.MODEL)))
                 continue;
 
+            Player p = (Player) e;
             int model = ((ECModel) e.get(EComponent.MODEL)).getModel();
             Transform transform = ((ECRender) e.get(EComponent.RENDER)).getTransform();
             shader.setModelViewMatrix(transform.toMatrix().mul(Mat4.scale(1f/16f, 1f/16f, 1f/16f)));
-            renderModel(model);
+            //renderModel(model);
         }
 
         Renderer.bindTextureCube(0);

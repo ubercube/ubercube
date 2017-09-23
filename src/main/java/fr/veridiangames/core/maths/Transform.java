@@ -108,6 +108,11 @@ public class Transform {
 		rot.set(Quat.lookAt(source, look));
 	}
 
+	public void lookAt(Vec3 source, Vec3 look, Vec3 up)
+	{
+		rot.set(Quat.lookAt(source, look));
+	}
+
 	public Vec3 getLocalPosition() {
 		return pos;
 	}

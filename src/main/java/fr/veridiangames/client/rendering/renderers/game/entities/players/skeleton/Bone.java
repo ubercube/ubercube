@@ -1,5 +1,6 @@
 package fr.veridiangames.client.rendering.renderers.game.entities.players.skeleton;
 
+import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.maths.Mat4;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Transform;
@@ -26,14 +27,16 @@ public abstract class Bone
 		this.color = Color4f.WHITE.copy();
 	}
 
-	protected abstract void update();
+	protected abstract void update(NetworkedPlayer p);
 
-	public void updateChilds()
+	public void updateChilds(NetworkedPlayer p)
 	{
+		update(p);
+		if (childs == null)
+			return;
 		for (Bone bone : this.getChilds())
 		{
-			bone.update();
-			bone.updateChilds();
+			bone.updateChilds(p);
 		}
 	}
 

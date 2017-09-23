@@ -125,7 +125,7 @@ public class Quat {
 
 		if (Mathf.abs(dot - (-1.0f)) < 0.000001f)
 		{
-			return new Quat(Vec3.UP.x, Vec3.UP.y, Vec3.UP.z, Mathf.PI);
+			return new Quat(0, 1, 0, Mathf.PI);
 		}
 		if (Mathf.abs(dot - (1.0f)) < 0.000001f)
 		{

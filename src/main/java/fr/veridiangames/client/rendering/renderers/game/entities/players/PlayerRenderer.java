@@ -33,6 +33,7 @@ import java.util.Map;
 
 import fr.veridiangames.client.rendering.renderers.game.entities.players.skeleton.Bone;
 import fr.veridiangames.client.rendering.renderers.game.entities.players.skeleton.PlayerSkeleton;
+import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import org.lwjgl.BufferUtils;
 
 import fr.veridiangames.core.game.entities.Entity;
@@ -134,19 +135,9 @@ public class PlayerRenderer
 			renderCount++;
 			Transform transform = ((ECRender) e.get(EComponent.RENDER)).getTransform();
 
+			skeleton.updateChilds((NetworkedPlayer) e);
 			skeleton.setParentTransform(transform);
 			skeleton.setBufferData(instanceBuffer);
-
-//			for (Bone bone : skeleton.getChilds())
-//			{
-//				bone.setBufferData(instanceBuffer);
-//			}
-
-//			instanceBuffer.put(Mat4.translate(transform.getPosition()).mul(Mat4.scale(0.35f, 1.0f, 0.35f)).getComponents());
-//			instanceBuffer.put(Color4f.GRAY.toArray());
-//
-//			instanceBuffer.put(Mat4.translate(transform.getPosition().copy().add(0, 2.5f / 2.0f, 0)).mul(transform.getRotation().toMatrix()).mul(Mat4.scale(0.4f, 0.4f, 0.4f)).getComponents());
-//			instanceBuffer.put(Color4f.DARK_GRAY.toArray());
 		}
 		instanceBuffer.flip();
 		glBindBuffer(GL_ARRAY_BUFFER, vio);
