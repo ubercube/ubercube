@@ -27,6 +27,7 @@ import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBulletHit;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
+import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.healthWeapon.WeaponMedicBag;
@@ -177,10 +178,16 @@ public class PlayerHandler
 				}else if (input.getMouse().getButtonDown(1)) {
 					placeBlock(hitPoint);
 				}
-			}else if((ray.getHit().getEntity() != null) && (player.getWeaponComponent().getWeapon() instanceof WeaponMedicBag) && (ray.getHit().getEntity() instanceof Player)){
-				if (input.getMouse().getButtonDown(0)) {
-					System.out.println("Healing");
-					net.send(new ApplyDamagePacket((Player) ray.getHit().getEntity(), -1), Protocol.TCP);
+			}
+			if((ray.getHit().getEntity() != null) && (player.getWeaponComponent().getWeapon() instanceof WeaponMedicBag))
+			{
+				if((ray.getHit().getEntity() instanceof NetworkedPlayer))
+				{
+					if (input.getMouse().getButtonDown(0))
+					{
+						System.out.println(" We are Healing " + ((Player) ray.getHit().getEntity()).getName());
+						net.send(new ApplyHealingPacket((NetworkedPlayer) ray.getHit().getEntity(), 10), Protocol.TCP);
+					}
 				}
 			}
 		}
