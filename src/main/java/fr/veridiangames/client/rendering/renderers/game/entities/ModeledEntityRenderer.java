@@ -19,7 +19,6 @@
 
 package fr.veridiangames.client.rendering.renderers.game.entities;
 
-import fr.veridiangames.client.rendering.buffers.Buffers;
 import fr.veridiangames.client.rendering.renderers.Renderer;
 import fr.veridiangames.client.rendering.renderers.models.OBJModel;
 import fr.veridiangames.client.rendering.shaders.Shader;
@@ -29,30 +28,14 @@ import fr.veridiangames.core.game.entities.Model;
 import fr.veridiangames.core.game.entities.components.ECModel;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.EComponent;
-import fr.veridiangames.core.game.entities.particles.ParticleSystem;
-import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.maths.Mat4;
 import fr.veridiangames.core.maths.Transform;
-import fr.veridiangames.core.maths.Vec3;
-import fr.veridiangames.core.utils.Color4f;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.List;
 import java.util.Map;
 
-import static fr.veridiangames.client.rendering.renderers.models.ModelVoxRenderer.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
-import static org.lwjgl.opengl.GL31.glDrawElementsInstanced;
-import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
 
 /**
  * Created by Marc on 11/07/2016.
@@ -80,11 +63,10 @@ public class ModeledEntityRenderer
             if (!(e.contains(EComponent.RENDER) && e.contains(EComponent.MODEL)))
                 continue;
 
-            Player p = (Player) e;
             int model = ((ECModel) e.get(EComponent.MODEL)).getModel();
             Transform transform = ((ECRender) e.get(EComponent.RENDER)).getTransform();
             shader.setModelViewMatrix(transform.toMatrix().mul(Mat4.scale(1f/16f, 1f/16f, 1f/16f)));
-            //renderModel(model);
+            renderModel(model);
         }
 
         Renderer.bindTextureCube(0);
