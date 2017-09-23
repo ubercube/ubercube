@@ -6,6 +6,9 @@ import fr.veridiangames.core.game.entities.weapons.WeaponManager;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by Tybau on 23/09/2017.
+ */
 public abstract class Kit
 {
 	protected List<Weapon> weapons;

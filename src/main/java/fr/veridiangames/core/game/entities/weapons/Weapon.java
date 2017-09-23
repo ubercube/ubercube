@@ -48,8 +48,12 @@ public abstract class Weapon
 	protected Transform idlePosition;
 	protected Transform zoomPosition;
 	protected Transform hidePosition;
+	protected Transform centerPosition;
 	protected Transform runPosition;
 	protected Vec3 		runRotation;
+
+	protected Vec3		previewScale;
+	protected int		previewDistance;
 	
 	protected Transform transform;
 	protected Vec3 		rotationFactor;
@@ -72,6 +76,9 @@ public abstract class Weapon
 		this.drawed = true;
 		this.rotationFactor = new Vec3(0, 0, 0);
 		this.transform = new Transform();
+		this.centerPosition = new Transform();
+		this.previewScale = new Vec3(1, 1, 1);
+		this.previewDistance = 5;
 		this.positionChanged = false;
 		this.velocity = new Vec2();
 		this.zoomAmnt = 0;
@@ -170,6 +177,36 @@ public abstract class Weapon
 	public Transform getIdlePosition()
 	{
 		return idlePosition;
+	}
+
+	public void setCenterPosition(Transform centerPosition)
+	{
+		this.centerPosition = centerPosition;
+	}
+
+	public Transform getCenterPosition()
+	{
+		return centerPosition;
+	}
+
+	public void setPreviewScale(Vec3 previewScale)
+	{
+		this.previewScale = previewScale;
+	}
+
+	public Vec3 getPreviewScale()
+	{
+		return previewScale;
+	}
+
+	public void setPreviewDistance(int previewDistance)
+	{
+		this.previewDistance = previewDistance;
+	}
+
+	public int getPreviewDistance()
+	{
+		return previewDistance;
 	}
 
 	public void setIdlePosition(Transform idlePosition)
