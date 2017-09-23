@@ -78,6 +78,8 @@ public class Ubercube
 	private Profiler			physicsProfiler;
 	private Profiler			sleepProfiler;
 
+	private PlayerHudScreen 	playerHudScreen;
+
 	public Ubercube()
 	{
 		Log.println("Starting " + GameCore.GAME_NAME + " " + GameCore.GAME_VERSION_NAME + " v" + GameCore.GAME_SUB_VERSION);
@@ -101,9 +103,9 @@ public class Ubercube
 		this.guiManager.add(gameLoading);
 
 		/* *** PLAYER HUD GUI *** */
-		PlayerHudScreen playerHudGui = new PlayerHudScreen(null, display, core);
-		this.console = playerHudGui.getConsoleScreen();
-		this.guiManager.add(playerHudGui);
+		this.playerHudScreen = new PlayerHudScreen(null, display, core);
+		this.console = playerHudScreen.getConsoleScreen();
+		this.guiManager.add(playerHudScreen);
 
 		/* *** PROFILER *** */
 		this.renderProfiler = new Profiler("render", new Color4f(0.57f, 0.75f, 0.91f, 1f));
@@ -383,5 +385,10 @@ public class Ubercube
 	public MinimapHandler getMinimapHandler()
 	{
 		return minimapHandler;
+	}
+
+	public PlayerHudScreen getPlayerHudScreen()
+	{
+		return playerHudScreen;
 	}
 }

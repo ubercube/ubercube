@@ -27,7 +27,6 @@ import fr.veridiangames.client.main.screens.gamemenu.GameMenuScreen;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.client.rendering.guis.GuiComponent;
-import fr.veridiangames.client.rendering.guis.GuiManager;
 import fr.veridiangames.client.rendering.guis.components.GuiLabel;
 import fr.veridiangames.client.rendering.guis.components.GuiMinimap;
 import fr.veridiangames.client.rendering.guis.components.GuiPanel;
@@ -58,10 +57,13 @@ public class PlayerHudScreen extends GuiCanvas
     private GuiLabel playerPosition;
     private GuiLabel audioStatus;
     private GuiPanel damageEffect;
+    private GuiLabel headshotLabel;
     private ConsoleScreen consoleScreen;
     private boolean showCrosshair;
     private GuiPanel crosshair;
     private GuiMinimap minimap;
+
+    private int headshotTimer = 0;
 
     private int health;
 
@@ -70,6 +72,14 @@ public class PlayerHudScreen extends GuiCanvas
         super(parent);
         this.core = core;
 		this.showCrosshair = core.getGame().getPlayer().getWeaponComponent().getWeapon().getCrosshairTexture() != null;
+
+		headshotLabel = new GuiLabel("HEADSHOT", Display.getInstance().getWidth()/2, display.getHeight()/2/2*3, 25f);
+		headshotLabel.setOrigin(GuiComponent.GuiOrigin.CENTER);
+		headshotLabel.setScreenParent(GuiComponent.GuiCorner.BL);
+		headshotLabel.setColor(Color4f.WHITE);
+		headshotLabel.setDropShadow(3);
+		headshotLabel.setDropShadowColor(new Color4f(0, 0, 0, 0.5f));
+		super.add(headshotLabel);
 
         damageEffect = new GuiPanel(0, 0, Display.getInstance().getWidth(), Display.getInstance().getHeight());
         damageEffect.setColor(Color4f.RED);
@@ -246,10 +256,24 @@ public class PlayerHudScreen extends GuiCanvas
         int py = (int) player.getPosition().y;
         int pz = (int) player.getPosition().z;
         playerPosition.setText(px + " - " + py + " - " + pz);
+
+        if(headshotTimer > 0){
+        	headshotLabel.setUseable(true);
+        	headshotTimer--;
+		}
+		else
+		{
+			headshotLabel.setUseable(false);
+		}
     }
 
     public ConsoleScreen getConsoleScreen()
     {
         return consoleScreen;
     }
+
+    public void fireHeadshotHint()
+	{
+		headshotTimer = 60*3;
+	}
 }

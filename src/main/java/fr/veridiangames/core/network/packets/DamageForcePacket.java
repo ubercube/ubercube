@@ -96,7 +96,7 @@ public class DamageForcePacket extends Packet
 
 				float len = this.position.copy().sub(p.getPosition()).magnitude();
 				if(len <= 10.0f)
-					p.applyDamage((int)((10 - len) * 10), server, authorID);
+					p.applyDamage((int)((10 - len) * 10), server, authorID, false);
 			}
 		}
 	}

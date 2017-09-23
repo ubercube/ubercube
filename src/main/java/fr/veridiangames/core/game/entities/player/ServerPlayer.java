@@ -80,7 +80,8 @@ public class ServerPlayer extends Player
 
 		if(this.life <= 0 && !this.isDead())
 		{
-			server.tcpSendToAll(new DeathPacket(this.getID(), shooterId));
+			if(headshot)
+				server.tcpSendToAll(new DeathPacket(this.getID(), shooterId, 1));
 
 			/* GAME MODE */
 			server.getCore().getGame().getGameMode().onPlayerDeath(id, shooterId, server);

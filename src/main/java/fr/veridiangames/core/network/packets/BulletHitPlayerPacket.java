@@ -75,11 +75,11 @@ public class BulletHitPlayerPacket extends Packet
 
 		boolean dead;
         if((bulletHeight- p.getPosition().y) >= 1){
-			dead = p.applyDamage(100, server, shooterId);
+			dead = p.applyDamage(100, server, shooterId, true);
 		}
 		else
 		{
-			dead = p.applyDamage(20, server, shooterId);
+			dead = p.applyDamage(20, server, shooterId, false);
 		}
     }
 
