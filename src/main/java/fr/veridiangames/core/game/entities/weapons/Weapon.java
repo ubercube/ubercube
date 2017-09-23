@@ -33,7 +33,7 @@ public abstract class Weapon
 	public static final int SHOVEL = 1;
 	public static final int GRENADE = 2;
 	public static final int AWP = 3;
-	public static final int MEDICBAG = 3;
+	public static final int MEDICBAG = 4;
 
 	protected NetworkableClient	net;
 
