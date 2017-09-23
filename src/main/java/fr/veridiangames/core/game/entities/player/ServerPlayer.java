@@ -66,10 +66,10 @@ public class ServerPlayer extends Player
 
 	public boolean applyDamage (int damage, NetworkableServer server)
 	{
-		return applyDamage(damage, server, 0);
+		return applyDamage(damage, server, 0, false);
 	}
 
-	public boolean applyDamage (int damage, NetworkableServer server, int shooterId)
+	public boolean applyDamage (int damage, NetworkableServer server, int shooterId, boolean headshot)
 	{
 	    if (this.isDead()) return true;
 		if (timeSinceSpawn <= 1) return false;

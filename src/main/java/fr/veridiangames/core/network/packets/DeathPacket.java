@@ -42,6 +42,7 @@ public class DeathPacket extends Packet
 {
     private int playerId;
 	private int shooterId;
+	private byte headshot;
 
     public DeathPacket()
     {
@@ -55,11 +56,12 @@ public class DeathPacket extends Packet
         data.flip();
     }
 
-	public DeathPacket(int playerId, int shooterId)
+	public DeathPacket(int playerId, int shooterId, byte headshot)
 	{
 		super(DEATH);
 		data.put(playerId);
 		data.put(shooterId);
+		data.put(headshot);
 		data.flip();
 	}
 
@@ -67,6 +69,7 @@ public class DeathPacket extends Packet
     {
         this.playerId = buffer.getInt();
         this.shooterId = buffer.getInt();
+        headshot = buffer.getByte();
     }
 
     public void process(NetworkableServer server, InetAddress address, int port)
@@ -90,16 +93,30 @@ public class DeathPacket extends Packet
 			if (playerId == shooterId)
 				client.console(((ECName)e.get(EComponent.NAME)).getName() + " killed himself... ");
 			else
-				client.console(((ECName)e.get(EComponent.NAME)).getName() + " has been killed by " + shooterName + " !");
+				if(headshot != 0)
+					client.console(((ECName)e.get(EComponent.NAME)).getName() + " has been killed by " + shooterName + " !");
+				else
+					client.console(((ECName)e.get(EComponent.NAME)).getName() + " has been headshooted by " + shooterName + " !");
+
 		}
         else
             return;
 		Player p = (Player) e;
         if(client.getCore().getGame().getPlayer().getID() != this.playerId)
-            client.log(((ECName)e.get(EComponent.NAME)).getName() + " has been killed by " + shooterName + " !");
+        {
+			if (headshot != 0) {
+				client.log(((ECName) e.get(EComponent.NAME)).getName() + " has been killed by " + shooterName + " !");
+			} else {
+				client.log(((ECName) e.get(EComponent.NAME)).getName() + " has been shooted by " + shooterName + " !");
+			}
+		}
         else
         {
-            client.log("You died by " + shooterName + " !");
+			if (headshot != 0) {
+				client.log("Headshooted by " + shooterName + " !");
+			} else {
+				client.log("You died by " + shooterName + " !");
+			}
             client.getCore().getGame().getPlayer().setDead(true);
             //client.send(new RespawnPacket(GameCore.getInstance().getGame().getPlayer().getID()), Protocol.TCP);
         }
