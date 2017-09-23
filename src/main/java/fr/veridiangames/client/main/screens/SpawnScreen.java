@@ -18,6 +18,8 @@ import fr.veridiangames.core.game.entities.weapons.kits.MedicKit;
 import fr.veridiangames.core.game.entities.weapons.kits.SniperKit;
 import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.RespawnPacket;
+import fr.veridiangames.core.network.packets.WeaponChangePacket;
+import fr.veridiangames.core.network.packets.WeaponPositionPacket;
 import fr.veridiangames.core.utils.Color4f;
 
 import static fr.veridiangames.client.Resource.getResource;
@@ -69,6 +71,8 @@ public class SpawnScreen extends GuiCanvas
 				ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
 				p.getWeaponComponent().setKit(new SniperKit(p.getWeaponComponent().getWeaponManager()));
 				display.getInput().getMouse().setGrabbed(true);
+				p.getNet().send(new WeaponChangePacket(p), Protocol.UDP);
+				p.getNet().send(new WeaponPositionPacket(p.getID(), p.getWeaponComponent().getWeaponIndex()), Protocol.UDP);
 				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
             }
         });
@@ -84,6 +88,8 @@ public class SpawnScreen extends GuiCanvas
 				ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
 				p.getWeaponComponent().setKit(new AssaultKit(p.getWeaponComponent().getWeaponManager()));
 				display.getInput().getMouse().setGrabbed(true);
+				p.getNet().send(new WeaponChangePacket(p), Protocol.UDP);
+				p.getNet().send(new WeaponPositionPacket(p.getID(), p.getWeaponComponent().getWeaponIndex()), Protocol.UDP);
 				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
 			}
 		});
@@ -99,6 +105,8 @@ public class SpawnScreen extends GuiCanvas
 				ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
 				p.getWeaponComponent().setKit(new MedicKit(p.getWeaponComponent().getWeaponManager()));
 				display.getInput().getMouse().setGrabbed(true);
+				p.getNet().send(new WeaponChangePacket(p), Protocol.UDP);
+				p.getNet().send(new WeaponPositionPacket(p.getID(), p.getWeaponComponent().getWeaponIndex()), Protocol.UDP);
 				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
 			}
 		});

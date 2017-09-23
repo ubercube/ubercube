@@ -21,18 +21,13 @@ package fr.veridiangames.core.network.packets;
 
 import java.net.InetAddress;
 
-import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.audio.Sound;
 import fr.veridiangames.core.game.entities.audio.AudioSource;
-import fr.veridiangames.core.game.entities.components.ECName;
-import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
-
-import static javax.swing.text.html.HTML.Tag.HEAD;
 
 /**
  * Created by Marccspro on 26 f�vr. 2016.
@@ -40,6 +35,9 @@ import static javax.swing.text.html.HTML.Tag.HEAD;
 public class BulletHitPlayerPacket extends Packet
 {
     private int playerId;
+    private int damage;
+    private int life;
+    private boolean hitable;
     private int shooterId;
     private float bulletHeight;
 
@@ -49,22 +47,39 @@ public class BulletHitPlayerPacket extends Packet
         super(BULLET_HIT_PLAYER);
     }
 
-    public BulletHitPlayerPacket(Player player, int shooterId, float bulletHeight)
+    public BulletHitPlayerPacket(Player player, int shooterId, float bulletHeight, int damage)
     {
         super(BULLET_HIT_PLAYER);
         data.put(player.getID());
         data.put(shooterId);
         data.put(bulletHeight);
+        data.put(damage);
+        data.put(0);
+        data.put(player.isHitable() ? 1 : 0);
 
         data.flip();
     }
 
+    public BulletHitPlayerPacket(BulletHitPlayerPacket packet, boolean hitable, int life)
+    {
+        super(BULLET_HIT_PLAYER);
+        data.put(packet.playerId);
+        data.put(packet.shooterId);
+        data.put(packet.damage);
+        data.put(life);
+        data.put(hitable ? 1 : 0);
+
+        data.flip();
+    }
 
     public void read(DataBuffer data)
     {
         playerId = data.getInt();
         shooterId = data.getInt();
         bulletHeight = data.getFloat();
+        damage = data.getInt();
+        life = data.getInt();
+        hitable = data.getInt() == 0 ? false : true;
     }
 
     public void process(NetworkableServer server, InetAddress address, int port)
@@ -79,8 +94,10 @@ public class BulletHitPlayerPacket extends Packet
 		}
 		else
 		{
-			dead = p.applyDamage(20, server, shooterId, false);
+			dead = p.applyDamage(damage, server, shooterId, false);
 		}
+        if(!dead)
+            server.tcpSendToAll(new BulletHitPlayerPacket(this, p.isHitable(), p.getLife()));
     }
 
     public void process(NetworkableClient client, InetAddress address, int port)

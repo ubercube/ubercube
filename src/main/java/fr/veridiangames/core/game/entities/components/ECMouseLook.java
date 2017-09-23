@@ -36,6 +36,8 @@ public class ECMouseLook extends EComponent
 	private float	idleSpeed;
 	private float	zoomedSpeed;
 
+	private float yaw, pitch, roll;
+
 	public ECMouseLook(float idleSpeed, float zoomedSpeed)
 	{
 		super(MOUSE_LOOK);
@@ -44,30 +46,24 @@ public class ECMouseLook extends EComponent
 		this.zoomedSpeed = zoomedSpeed;
 		this.speed = this.idleSpeed;
 		this.rotAmnt = 0;
+		this.yaw = 0;
+		this.pitch = 0;
+		this.roll = 0;
 	}
 
 	public void update(GameCore core)
 	{
 		Transform transform = ((ECRender) parent.get(EComponent.RENDER)).getTransform();
 
-		float DY = dy * speed;
+		roll += dx * speed;
+		yaw += dy * speed;
 
-		if (rotAmnt + DY > 89)
-		{
-			DY = 89 - rotAmnt;
-			rotAmnt = 89;
+		if (yaw < -89)
+			yaw = -89;
+		if (yaw > 89)
+			yaw = 89;
 
-		}
-		else if (rotAmnt + DY < -89)
-		{
-			DY = -89 - rotAmnt;
-			rotAmnt = -89;
-		}
-		else
-			rotAmnt += DY;
-
-		transform.rotate(Vec3.UP, dx * speed);
-		transform.rotate(transform.getRight(), DY);
+		transform.setLocalRotation(Quat.deuler(yaw, pitch, roll));
 	}
 
 	public void setDX(float dx)
@@ -102,5 +98,5 @@ public class ECMouseLook extends EComponent
 		this.zoomedSpeed = zoomedSpeed;
 	}
 
-	public void useZoomSpeed(boolean trigger) { this.speed = trigger ? zoomedSpeed : idleSpeed;}
+	public void useZoomSpeed(boolean trigger, float factor) { this.speed = trigger ? (zoomedSpeed * factor) : idleSpeed;}
 }

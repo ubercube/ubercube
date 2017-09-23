@@ -34,6 +34,7 @@ public class MeleeWeapon extends Weapon
 	private Vec3 attackRotation;
 	private Vec3 runRotation;
 	private int attackTime;
+	private int damage;
 
 	public MeleeWeapon(int model, int id)
     {
@@ -41,6 +42,7 @@ public class MeleeWeapon extends Weapon
         this.attackRotation = new Vec3(90, -40, -40);
         this.runRotation = new Vec3(-5, 0, -5);
         this.attackTime = 0;
+        this.damage = 0;
     }
 
     public void update(GameCore core)
@@ -88,5 +90,13 @@ public class MeleeWeapon extends Weapon
 	{
 		System.out.println("LOL");
 		attack = true;
+	}
+
+	public void setDamage(int damage) {
+		this.damage = damage;
+	}
+
+	public int getDamage() {
+		return damage;
 	}
 }

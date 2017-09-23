@@ -62,6 +62,7 @@ public abstract class Weapon
 	protected float zoomAmnt;
 	protected float currentZoom;
 	protected boolean zoomable;
+	protected float mouseSpeedOnZoom = 0.5f;
 
 	private String crosshairTexture = TextureID.STD_CROSSHAIR;
 
@@ -328,4 +329,12 @@ public abstract class Weapon
 	public void setSound(int s) {
 		this.fireSound = s;
 	};
+
+	public void setMouseSpeedOnZoom(float mouseSpeedOnZoom) {
+		this.mouseSpeedOnZoom = mouseSpeedOnZoom;
+	}
+
+	public float getMouseSpeedOnZoom() {
+		return mouseSpeedOnZoom;
+	}
 }

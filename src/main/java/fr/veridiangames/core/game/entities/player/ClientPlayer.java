@@ -110,7 +110,7 @@ public class ClientPlayer extends Player
 		((AABoxCollider)this.getRigidBody().getBody().getCollider()).setSize(new Vec3(0.3f, 2.8f * 0.5f, 0.3f));
 
 		movementTime++;
-		if (movementTime % 60 == 10)
+		if (movementTime % 60 == 5)
 		{
 			net.send(new EntityMovementPacket(this), Protocol.UDP);
 			movementTime = 0;
