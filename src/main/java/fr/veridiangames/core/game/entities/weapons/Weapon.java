@@ -53,7 +53,6 @@ public abstract class Weapon
 	protected Vec3 		runRotation;
 
 	protected Vec3		previewScale;
-	protected int		previewDistance;
 	
 	protected Transform transform;
 	protected Vec3 		rotationFactor;
@@ -78,7 +77,6 @@ public abstract class Weapon
 		this.transform = new Transform();
 		this.centerPosition = new Transform();
 		this.previewScale = new Vec3(1, 1, 1);
-		this.previewDistance = 5;
 		this.positionChanged = false;
 		this.velocity = new Vec2();
 		this.zoomAmnt = 0;
@@ -197,16 +195,6 @@ public abstract class Weapon
 	public Vec3 getPreviewScale()
 	{
 		return previewScale;
-	}
-
-	public void setPreviewDistance(int previewDistance)
-	{
-		this.previewDistance = previewDistance;
-	}
-
-	public int getPreviewDistance()
-	{
-		return previewDistance;
 	}
 
 	public void setIdlePosition(Transform idlePosition)

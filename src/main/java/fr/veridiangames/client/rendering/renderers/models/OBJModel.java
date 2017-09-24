@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import fr.veridiangames.core.game.entities.Model;
 import fr.veridiangames.core.maths.Vec2;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.utils.Color4f;
@@ -17,6 +18,24 @@ public class OBJModel {
 	public static final OBJModel AWP_RENDERER = ObjModelLoader.loadModel(getResource("weapons/awp/AWP.obj"));
 	public static final OBJModel SHOVEL_RENDERER = ObjModelLoader.loadModel(getResource("weapons/SHOVEL.obj"));
 	public static final OBJModel MEDICBAG_RENDERER = ObjModelLoader.loadModel(getResource("weapons/medicbag/MEDICBAG.obj"));
+
+	public static OBJModel getModel(int id)
+	{
+		switch (id)
+		{
+			case Model.AK47:
+				return AK47_RENDERER;
+			case Model.AWP:
+				return AWP_RENDERER;
+			case Model.GRENADE:
+				return GRENADE_RENDERER;
+			case Model.MEDICBAG:
+				return MEDICBAG_RENDERER;
+			case Model.SHOVEL:
+				return SHOVEL_RENDERER;
+		}
+		return null;
+	}
 
 	private List<Vec3> verticesList = new ArrayList<Vec3>();
 	private List<Vec3> normalsList = new ArrayList<Vec3>();

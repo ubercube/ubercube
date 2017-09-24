@@ -33,14 +33,15 @@ public class GuiRotatingWeapon extends GuiComponent
 
 	private float rotate;
 
-	public GuiRotatingWeapon(int x, int y, int w, int h, Color4f color, OBJModel model, Weapon weapon)
+	public GuiRotatingWeapon(int x, int y, int w, int h, Color4f color, Weapon weapon)
 	{
 		super(x, y, w, h, color);
 
-		this.model = model;
 		this.weapon = weapon;
 		this.modelFbo = new FrameBuffer(w, h);
 		this.weaponShader = new WeaponShader();
+
+		this.model = OBJModel.getModel(this.weapon.getModel());
 	}
 
 	@Override
@@ -77,8 +78,8 @@ public class GuiRotatingWeapon extends GuiComponent
 		Mat4 r = Mat4.rotate(0, rotate, 0).mul(weapon.getCenterPosition().toMatrix());
 
 		weaponShader.bind();
-		weaponShader.setShaderBase(Mat4.perspective(70.0f, w / h, 0.1f, 100.0f), new Vec3(0, 0, 0), 100.0f);
-		weaponShader.setModelViewMatrix(Mat4.scale(weapon.getPreviewScale()).mul(Mat4.translate(0, 0, weapon.getPreviewDistance()).mul(r)));
+		weaponShader.setShaderBase(Mat4.perspective(50.0f, w / h, 0.1f, 100.0f), new Vec3(0, 0, 0), 100.0f);
+		weaponShader.setModelViewMatrix(Mat4.translate(0, 0, 5).mul(Mat4.scale(weapon.getPreviewScale()).mul(r)));
 
 		Renderer.bindTextureCube(512);
 		glDisable(GL11.GL_CULL_FACE);

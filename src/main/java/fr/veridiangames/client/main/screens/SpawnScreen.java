@@ -14,6 +14,7 @@ import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.kits.AssaultKit;
+import fr.veridiangames.core.game.entities.weapons.kits.Kit;
 import fr.veridiangames.core.game.entities.weapons.kits.MedicKit;
 import fr.veridiangames.core.game.entities.weapons.kits.SniperKit;
 import fr.veridiangames.core.network.Protocol;
@@ -51,65 +52,11 @@ public class SpawnScreen extends GuiCanvas
 		mapPanel.setDrawClient(false);
 		super.add(mapPanel);
 
-		/* Test weapon rotating */
-		int height = display.getHeight() - 265;
-		GuiRotatingWeapon rotatingMedic = new GuiRotatingWeapon(display.getWidth() / 2 + 300, height, 200, 200, Color4f.DARK_GRAY, OBJModel.MEDICBAG_RENDERER, getWeapon(Weapon.MEDICBAG));
-		GuiRotatingWeapon rotatingAk47 = new GuiRotatingWeapon(display.getWidth() / 2 - 500, height, 200, 200, Color4f.DARK_GRAY, OBJModel.AK47_RENDERER, getWeapon(Weapon.AK47));
-		GuiRotatingWeapon rotatingAwp = new GuiRotatingWeapon(display.getWidth() / 2 - 100, height, 200, 200, Color4f.DARK_GRAY, OBJModel.AWP_RENDERER, getWeapon(Weapon.AWP));
-		super.add(rotatingMedic);
-		super.add(rotatingAk47);
-		super.add(rotatingAwp);
-
-
-        /* End Map */
-		GuiButton sniperButton = new GuiButton("Sniper", display.getWidth() / 2 , display.getHeight() - 50, 200, new GuiActionListener() {
-            @Override
-            public void onAction()
-            {
-				ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
-				p.getWeaponComponent().setKit(new SniperKit(p.getWeaponComponent().getWeaponManager()));
-				display.getInput().getMouse().setGrabbed(true);
-				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
-            }
-        });
-		sniperButton.centerText();
-		sniperButton.setClickable(true);
-		sniperButton.setOrigin(GuiComponent.GuiOrigin.CENTER);
-		sniperButton.setScreenParent(GuiComponent.GuiCorner.BC);
-
-		GuiButton assaultButton = new GuiButton("Assault", display.getWidth() / 2 - 400, display.getHeight() - 50, 200, new GuiActionListener() {
-			@Override
-			public void onAction()
-			{
-				ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
-				p.getWeaponComponent().setKit(new AssaultKit(p.getWeaponComponent().getWeaponManager()));
-				display.getInput().getMouse().setGrabbed(true);
-				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
-			}
-		});
-		assaultButton.centerText();
-		assaultButton.setClickable(true);
-		assaultButton.setOrigin(GuiComponent.GuiOrigin.CENTER);
-		assaultButton.setScreenParent(GuiComponent.GuiCorner.BC);
-
-		GuiButton medicButton = new GuiButton("Medic", display.getWidth() / 2 + 400, display.getHeight() - 50, 200, new GuiActionListener() {
-			@Override
-			public void onAction()
-			{
-				ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
-				p.getWeaponComponent().setKit(new MedicKit(p.getWeaponComponent().getWeaponManager()));
-				display.getInput().getMouse().setGrabbed(true);
-				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
-			}
-		});
-		medicButton.centerText();
-		medicButton.setClickable(true);
-		medicButton.setOrigin(GuiComponent.GuiOrigin.CENTER);
-		medicButton.setScreenParent(GuiComponent.GuiCorner.BC);
-
-        super.add(assaultButton);
-		super.add(sniperButton);
-		super.add(medicButton);
+		/* Kits */
+		ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
+		displayKit(new AssaultKit(p.getWeaponComponent().getWeaponManager()), display.getWidth() / 2 - 400, display.getHeight() - 50);
+		displayKit(new SniperKit(p.getWeaponComponent().getWeaponManager()), display.getWidth() / 2, display.getHeight() - 50);
+		displayKit(new MedicKit(p.getWeaponComponent().getWeaponManager()), display.getWidth() / 2 + 400, display.getHeight() - 50);
 
         setRendered(false);
     }
@@ -131,5 +78,28 @@ public class SpawnScreen extends GuiCanvas
     private Weapon getWeapon(int id)
 	{
 		return GameCore.getInstance().getGame().getPlayer().getWeaponComponent().getWeaponManager().get(id);
+	}
+
+	private void displayKit(Kit kit, int x, int y)
+	{
+		GuiRotatingWeapon rotating = new GuiRotatingWeapon(x - 100, y - 200, 200, 200, Color4f.DARK_GRAY, kit.getWeapons().get(0));
+
+		GuiButton button = new GuiButton(kit.getName(), x, y, 200, new GuiActionListener() {
+			@Override
+			public void onAction()
+			{
+				ClientPlayer p = GameCore.getInstance().getGame().getPlayer();
+				p.getWeaponComponent().setKit(kit);
+				display.getInput().getMouse().setGrabbed(true);
+				p.getNet().send(new RespawnPacket(p), Protocol.TCP);
+			}
+		});
+		button.centerText();
+		button.setClickable(true);
+		button.setOrigin(GuiComponent.GuiOrigin.CENTER);
+		button.setScreenParent(GuiComponent.GuiCorner.BC);
+
+		super.add(rotating);
+		super.add(button);
 	}
 }

@@ -11,8 +11,8 @@ public class MedicKit extends Kit {
 	public MedicKit(WeaponManager weaponManager)
 	{
 		super("Medic", weaponManager);
-		this.addWeapon(Weapon.AK47);
 		this.addWeapon(Weapon.MEDICBAG);
+		this.addWeapon(Weapon.AK47);
 		this.addWeapon(Weapon.GRENADE);
 		this.addWeapon(Weapon.SHOVEL);
 	}
