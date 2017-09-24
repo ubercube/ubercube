@@ -47,7 +47,7 @@ public class WeaponAK47 extends FireWeapon
 		this.setMouseSpeedOnZoom(0.9f);
 		this.setSound(Sound.AK47_SHOOT);
 
-		this.setCenterPosition(new Transform(new Vec3(0, 5, -50)));
-		this.setPreviewScale(new Vec3(0.04f, -0.04f, 0.04f));
+		this.setCenterPosition(new Transform(new Vec3(0, 2.5f, -50)));
+		this.setPreviewScale(new Vec3(0.03f, -0.03f, 0.03f));
 	}
 }

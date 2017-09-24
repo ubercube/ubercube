@@ -52,7 +52,7 @@ public class AudioSystem
 
     public static void init()
     {
-        mainGain = 0.05f;
+        mainGain = 0.5f;
 
         device = alcOpenDevice((ByteBuffer)null);
         ALCCapabilities deviceCaps = ALC.createCapabilities(device);

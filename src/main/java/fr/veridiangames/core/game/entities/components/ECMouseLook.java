@@ -55,8 +55,8 @@ public class ECMouseLook extends EComponent
 	{
 		Transform transform = ((ECRender) parent.get(EComponent.RENDER)).getTransform();
 
-		roll += dx * speed;
-		yaw += dy * speed;
+		roll += dx * speed * 0.5f;
+		yaw += dy * speed * 0.5f;
 
 		if (yaw < -89)
 			yaw = -89;
@@ -92,6 +92,14 @@ public class ECMouseLook extends EComponent
 
 	public float getSpeed() { return this.speed; }
 
+	public float getIdleSpeed() {
+		return idleSpeed;
+	}
+
+	public void setIdleSpeed(float idleSpeed) {
+		this.idleSpeed = idleSpeed;
+	}
+
 	public float getZoomedSpeed() {
 		return zoomedSpeed;
 	}
@@ -100,5 +108,5 @@ public class ECMouseLook extends EComponent
 		this.zoomedSpeed = zoomedSpeed;
 	}
 
-	public void useZoomSpeed(boolean trigger, float factor) { this.speed = trigger ? (zoomedSpeed * factor) : speed;}
+	public void useZoomSpeed(boolean trigger, float factor) { this.speed = trigger ? (zoomedSpeed * factor) : idleSpeed;}
 }

@@ -32,7 +32,7 @@ public class GuiSlider extends GuiComponent
 {
 	public Color4f bgColor;
 	public Color4f bgColorIdle, bgColorHover;
-	private int xSlider = 0;
+	private float xSlider = 0;
 	private GuiLabel label;
 	
 	private float value = 0; 
@@ -86,7 +86,7 @@ public class GuiSlider extends GuiComponent
 		if (xSlider < -w/2 + 10) xSlider = -w/2 + 10;
 		if (xSlider > w/2 - 10) xSlider = w/2 - 10;
 		
-		value = ((float) (xSlider + w/2) - 10) / (w - 20);
+		value = ((xSlider + w/2)) / (w);
 		
 		if (mouseIn || mouseButtonPressed) {
 			color = bgColorHover;
@@ -118,7 +118,7 @@ public class GuiSlider extends GuiComponent
 	}
 	
 	public void setValue(float value) {
-		xSlider = (int) (value * (float)w - (float) w / 2.0f);		
+		xSlider = (value * (float)w - (float) w / 2.0f);
 	}
 	
 	public void centerText() {

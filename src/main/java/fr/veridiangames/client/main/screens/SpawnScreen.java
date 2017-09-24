@@ -42,7 +42,7 @@ public class SpawnScreen extends GuiCanvas
 		GuiPanel bgPanel = new GuiPanel(0, 0, display.getWidth(), display.getHeight());
 		bgPanel.setTexture(TextureLoader.loadTexture(getResource("textures/LoadingBG.png"), GL_LINEAR, false));
 		bgPanel.setOrigin(GuiComponent.GuiOrigin.A);
-		bgPanel.setScreenParent(GuiComponent.GuiCorner.SCALED);
+		bgPanel.setScaleParent(GuiComponent.GuiScale.SCALED);
 		super.add(bgPanel);
 
         /* Map */
@@ -84,7 +84,7 @@ public class SpawnScreen extends GuiCanvas
 
 	private void displayKit(Kit kit, int x, int y)
 	{
-		GuiRotatingWeapon rotating = new GuiRotatingWeapon(x, y - 115, 200, 200, Color4f.DARK_GRAY, kit.getWeapons().get(0));
+		GuiRotatingWeapon rotating = new GuiRotatingWeapon(x, y - 115, 400, 300, new Color4f(0, 0, 0, 0), kit.getWeapons().get(0));
 		rotating.setOrigin(GuiComponent.GuiOrigin.CENTER);
 		rotating.setScreenParent(GuiComponent.GuiCorner.BC);
 

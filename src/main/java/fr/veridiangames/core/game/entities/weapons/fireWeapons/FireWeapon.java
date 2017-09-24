@@ -73,8 +73,8 @@ public class FireWeapon extends Weapon
 		if (holder.getID() == player.getID() && !zoomed)
 		{
 			ECKeyMovement movement = player.getKeyComponent();
-			float dx = player.getMouseComponent().getDx();
-			float dy = player.getMouseComponent().getDy();
+			float dx = player.getMouseComponent().getDx() * player.getMouseComponent().getSpeed() * 2.0f;
+			float dy = player.getMouseComponent().getDy() * player.getMouseComponent().getSpeed() * 2.0f;
 			Vec3 movementVelocity = new Vec3(movement.getVelocity(1)).mul(1, 0, 1);
 			if (movement.isRun())
 			{

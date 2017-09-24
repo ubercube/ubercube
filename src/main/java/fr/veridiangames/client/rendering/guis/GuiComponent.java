@@ -26,7 +26,6 @@ import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.shaders.GuiShader;
 import fr.veridiangames.core.utils.Color4f;
 
-
 public abstract class GuiComponent
 {
 	public enum GuiOrigin
@@ -36,7 +35,12 @@ public abstract class GuiComponent
 
 	public enum GuiCorner
 	{
-		BL, BR, TL, TR, BC, TC, LC, RC, CENTER, SCALED
+		LOCAL, BL, BR, TL, TR, BC, TC, LC, RC, CENTER
+	}
+
+	public enum GuiScale
+	{
+		LOCAL, SCALED, WS, HS
 	}
 
 	protected boolean useable = true;
@@ -56,7 +60,9 @@ public abstract class GuiComponent
 	protected int xOrigin, yOrigin;
 	protected GuiOrigin origin;
 	protected GuiCorner corner;
+	protected GuiScale scaling;
 	protected int xScreen, yScreen;
+	protected int xScreen2, yScreen2;
 	protected GuiCanvas canvas;
 
 	protected GuiComponent parent;
@@ -72,9 +78,12 @@ public abstract class GuiComponent
 		this.h = h;
 		this.color = color;
 		this.origin = GuiOrigin.A;
-		this.corner = GuiCorner.CENTER;
+		this.corner = GuiCorner.LOCAL;
+		this.scaling = GuiScale.LOCAL;
 		xScreen = Display.getInstance().getWidth();
 		yScreen = Display.getInstance().getHeight();
+		xScreen2 = Display.getInstance().getWidth();
+		yScreen2 = Display.getInstance().getHeight();
 		this.nodes = new ArrayList<GuiComponent>();
 
 		processOrigin();
@@ -90,6 +99,12 @@ public abstract class GuiComponent
 	{
 		this.corner = corner;
 		processCornerParent();
+	}
+
+	public void setScaleParent(GuiScale scaling)
+	{
+		this.scaling = scaling;
+		processScaleParent();
 	}
 
 	public void setParent(GuiComponent parent)
@@ -184,16 +199,34 @@ public abstract class GuiComponent
 			y += (display.getHeight() - yScreen) / 2;
 
 			break;
-
-		case SCALED:
-			w += (display.getWidth() - xScreen) + 1;
-			h += (display.getHeight() - yScreen) + 1;
-
-			break;
 		}
 
 		xScreen = display.getWidth();
 		yScreen = display.getHeight();
+	}
+
+	protected void processScaleParent()
+	{
+		Display display = Display.getInstance();
+		switch (scaling)
+		{
+			case SCALED:
+				w += (display.getWidth() - xScreen2) + 1;
+				h += (display.getHeight() - yScreen2) + 1;
+
+				break;
+			case WS:
+				w += (display.getWidth() - xScreen2) + 1;
+
+				break;
+			case HS:
+				h += (display.getHeight() - yScreen2) + 1;
+
+				break;
+		}
+
+		xScreen2 = display.getWidth();
+		yScreen2 = display.getHeight();
 	}
 
 	protected void processParent()
@@ -213,6 +246,7 @@ public abstract class GuiComponent
 		if (xScreen != display.getWidth() || yScreen != display.getHeight())
 		{
 			processCornerParent();
+			processScaleParent();
 		}
 
 		if (display.getInput().getMouse().getX() >= x

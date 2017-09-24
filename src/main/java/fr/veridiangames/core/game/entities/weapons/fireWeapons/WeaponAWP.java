@@ -52,7 +52,7 @@ public class WeaponAWP extends FireWeapon
 		this.setMouseSpeedOnZoom(0.3f);
 		this.setSound(Sound.AWP_SHOOT);
 
-		this.setCenterPosition(new Transform(new Vec3(0, 5, -32)));
+		this.setCenterPosition(new Transform(new Vec3(0, 0, -32)));
 		this.setPreviewScale(new Vec3(0.06f, -0.06f, 0.06f));
 	}
 }

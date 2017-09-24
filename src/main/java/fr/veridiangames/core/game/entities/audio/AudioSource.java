@@ -59,6 +59,12 @@ public class AudioSource extends Entity
         this(source, position, null, false);
     }
 
+	public AudioSource(int source, Vec3 position, float gain)
+	{
+		this(source, position, null, false);
+		this.gain = gain;
+	}
+
     public AudioSource(int source, Vec3 position, boolean loop)
     {
         this(source, position, null, loop);

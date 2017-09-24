@@ -72,13 +72,13 @@ public class GuiRotatingWeapon extends GuiComponent
 	{
 		this.modelFbo.bind();
 		glEnable(GL_DEPTH_TEST);
-		glClearColor(color.r, color.g, color.b, 0.7f);
+		glClearColor(color.r, color.g, color.b, color.a);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		Mat4 r = Mat4.rotate(0, rotate, 0).mul(weapon.getCenterPosition().toMatrix());
 
 		weaponShader.bind();
-		weaponShader.setShaderBase(Mat4.perspective(50.0f, w / h, 0.1f, 100.0f), new Vec3(0, 0, 0), 100.0f);
+		weaponShader.setShaderBase(Mat4.perspective(45.0f, (float)w / (float)h, 0.1f, 100.0f), new Vec3(0, 0, 0), 100.0f);
 		weaponShader.setModelViewMatrix(Mat4.translate(0, 0, 5).mul(Mat4.scale(weapon.getPreviewScale()).mul(r)));
 
 		Renderer.bindTextureCube(512);

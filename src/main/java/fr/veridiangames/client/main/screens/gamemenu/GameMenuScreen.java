@@ -27,7 +27,7 @@ public class GameMenuScreen extends GuiCanvas
         GuiPanel bgPanel = new GuiPanel(0, 0, Display.getInstance().getWidth(), Display.getInstance().getHeight());
         bgPanel.setColor(Color4f.BLACK);
         bgPanel.setOrigin(GuiComponent.GuiOrigin.A);
-        bgPanel.setScreenParent(GuiComponent.GuiCorner.SCALED);
+        bgPanel.setScaleParent(GuiComponent.GuiScale.SCALED);
         bgPanel.getColor().setAlpha(0.5f);
         super.add(bgPanel);
 

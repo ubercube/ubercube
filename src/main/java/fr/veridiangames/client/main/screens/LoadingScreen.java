@@ -57,7 +57,7 @@ public class LoadingScreen extends GuiCanvas
         GuiPanel bg = new GuiPanel(0, 0, display.getWidth(), display.getHeight());
         bg.setTexture(TextureLoader.loadTexture(getResource("textures/LoadingBG.png"), GL_LINEAR, false));
         bg.setOrigin(GuiComponent.GuiOrigin.A);
-        bg.setScreenParent(GuiComponent.GuiCorner.SCALED);
+        bg.setScaleParent(GuiComponent.GuiScale.SCALED);
         super.add(bg);
 
         loadingInfo = new GuiLabel("Connecting...", display.getWidth() / 2, display.getHeight() - 80, 20f);

@@ -47,8 +47,8 @@ public class OptionsMenuScreen extends GuiCanvas
         mouseSpeedText.setScreenParent(GuiComponent.GuiCorner.TC);
         super.add(mouseSpeedText);
 
-        float currentMouseSpeed = Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().getSpeed();
-        mouseSpeed = new GuiSlider((int)(currentMouseSpeed * 100) + "", display.getWidth() / 2 - 5, 165, 235);
+        float currentMouseSpeed = Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().getIdleSpeed();
+        mouseSpeed = new GuiSlider((int)Math.ceil(currentMouseSpeed * 100) + "", display.getWidth() / 2 - 5, 165, 235);
         mouseSpeed.setOrigin(GuiComponent.GuiOrigin.B);
         mouseSpeed.setScreenParent(GuiComponent.GuiCorner.TC);
         mouseSpeed.getLabel().setOrigin(GuiComponent.GuiOrigin.CENTER);
@@ -56,7 +56,7 @@ public class OptionsMenuScreen extends GuiCanvas
         super.add(mouseSpeed);
 
 		float currentMouseZoomedSpeed = Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().getZoomedSpeed();
-		mouseZoomedSpeed = new GuiSlider((int)(currentMouseZoomedSpeed * 100) + "", display.getWidth() / 2 + 5, 165, 235);
+		mouseZoomedSpeed = new GuiSlider((int)Math.ceil(currentMouseZoomedSpeed * 100) + "", display.getWidth() / 2 + 5, 165, 235);
 		mouseZoomedSpeed.setOrigin(GuiComponent.GuiOrigin.A);
 		mouseZoomedSpeed.setScreenParent(GuiComponent.GuiCorner.TC);
 		mouseZoomedSpeed.getLabel().setOrigin(GuiComponent.GuiOrigin.CENTER);
@@ -103,11 +103,11 @@ public class OptionsMenuScreen extends GuiCanvas
 
 		super.update();
 
-		float currentMouseSpeed = Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().getSpeed();
-		mouseSpeed.getLabel().setText((int)(currentMouseSpeed * 100) + "");
+		float currentMouseSpeed = Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().getIdleSpeed();
+		mouseSpeed.getLabel().setText((int)Math.ceil(currentMouseSpeed * 100) + "");
 		float currentMouseZoomedSpeed = Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().getZoomedSpeed();
-		mouseZoomedSpeed.getLabel().setText((int)(currentMouseZoomedSpeed * 100) + "");
-        Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().setSpeed(mouseSpeed.getValue());
+		mouseZoomedSpeed.getLabel().setText((int)Math.ceil(currentMouseZoomedSpeed * 100) + "");
+        Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().setIdleSpeed(mouseSpeed.getValue());
         Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().setZoomedSpeed(mouseZoomedSpeed.getValue());
         audioGain.getLabel().setText((int)(AudioSystem.getMainVolume() * 100) + "");
         AudioSystem.setMainVolume(audioGain.getValue());

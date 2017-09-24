@@ -84,7 +84,7 @@ public class PlayerHudScreen extends GuiCanvas
         damageEffect = new GuiPanel(0, 0, Display.getInstance().getWidth(), Display.getInstance().getHeight());
         damageEffect.setColor(Color4f.RED);
         damageEffect.setOrigin(GuiComponent.GuiOrigin.A);
-        damageEffect.setScreenParent(GuiComponent.GuiCorner.SCALED);
+        damageEffect.setScaleParent(GuiComponent.GuiScale.SCALED);
         damageEffect.getColor().setAlpha(0);
         super.add(damageEffect);
 

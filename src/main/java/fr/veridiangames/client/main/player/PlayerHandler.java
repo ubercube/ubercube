@@ -23,7 +23,9 @@ import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.audio.AudioListener;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.audio.Sound;
 import fr.veridiangames.core.game.entities.Entity;
+import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
 import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
@@ -35,10 +37,7 @@ import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.healthWeapon.WeaponMedicBag;
 import fr.veridiangames.core.game.entities.weapons.meleeWeapon.WeaponShovel;
 import fr.veridiangames.core.game.world.Chunk;
-import fr.veridiangames.core.maths.Quat;
-import fr.veridiangames.core.maths.Vec2i;
-import fr.veridiangames.core.maths.Vec3;
-import fr.veridiangames.core.maths.Vec3i;
+import fr.veridiangames.core.maths.*;
 import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.*;
 import fr.veridiangames.client.inputs.Input;
@@ -186,6 +185,8 @@ public class PlayerHandler
 					ParticleSystem hitParticles = new ParticlesBulletHit(Indexer.getUniqueID(), ray.getExactHitPoint(), new Color4f(ray.getHit().getBlock()));
 					hitParticles.useCollision(false);
 					GameCore.getInstance().getGame().spawn(hitParticles);
+					core.getGame().spawn(new AudioSource(Sound.DIGGING, ray.getExactHitPoint()));
+					net.send(new SoundPacket(player.getID(), new AudioSource(Sound.DIGGING, ray.getExactHitPoint())), Protocol.UDP);
 				}
 				else if (input.getMouse().getButtonDown(1))
 				{
@@ -235,7 +236,13 @@ public class PlayerHandler
 		int yp = (int) check.y;
 		int zp = (int) check.z;
 
+		if (core.getGame().getWorld().getBlock(x + xp, y + yp, z + zp) != 0)
+			return;
+
 		net.send(new BlockActionPacket(core.getGame().getPlayer().getID(), 1, x + xp, y + yp, z + zp, 0x7f555555), Protocol.TCP);
+		Vec3 pos = new Vec3(x + xp, y + yp, z + zp);
+		core.getGame().spawn(new AudioSource(Sound.PLACE, pos, 1.5f));
+		net.send(new SoundPacket(player.getID(), new AudioSource(Sound.PLACE, pos)), Protocol.UDP);
 	}
 	
 	public PlayerSelection getSelection()

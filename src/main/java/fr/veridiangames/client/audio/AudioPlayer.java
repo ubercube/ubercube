@@ -108,7 +108,7 @@ public class AudioPlayer
         if (muteAudio)
             return;
         alSourcei(source, AL_BUFFER, sound);
-        alSourcef(source, AL_GAIN, gain * mainGain);
+        alSourcef(source, AL_GAIN, gain * mainGain * 0.5f);
         alSourcePlay(source);
     }
 

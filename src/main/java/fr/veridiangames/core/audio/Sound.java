@@ -35,6 +35,8 @@ public class Sound
 	public static final int AWP_SHOOT = loadWav(getResource("audio/AWPShoot.wav"));
     public static final int EXPLODE = loadWav(getResource("audio/waterexplode.wav"));
     public static final int IMPACT = loadWav(getResource("audio/impact.wav"));
+    public static final int DIGGING = loadWav(getResource("audio/dig.wav"));
+    public static final int PLACE = loadWav(getResource("audio/place.wav"));
     public static final int BEEP = loadWav(getResource("audio/beep.wav"));
     public static final int JUMP = loadWav(getResource("audio/jump.wav"));
     public static final int LAND = loadWav(getResource("audio/land.wav"));
