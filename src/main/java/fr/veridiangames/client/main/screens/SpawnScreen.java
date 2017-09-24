@@ -84,7 +84,9 @@ public class SpawnScreen extends GuiCanvas
 
 	private void displayKit(Kit kit, int x, int y)
 	{
-		GuiRotatingWeapon rotating = new GuiRotatingWeapon(x - 100, y - 200, 200, 200, Color4f.DARK_GRAY, kit.getWeapons().get(0));
+		GuiRotatingWeapon rotating = new GuiRotatingWeapon(x, y - 115, 200, 200, Color4f.DARK_GRAY, kit.getWeapons().get(0));
+		rotating.setOrigin(GuiComponent.GuiOrigin.CENTER);
+		rotating.setScreenParent(GuiComponent.GuiCorner.BC);
 
 		GuiButton button = new GuiButton(kit.getName(), x, y, 200, new GuiActionListener() {
 			@Override
