@@ -47,6 +47,7 @@ public class FireWeapon extends Weapon
 	private float shootPecisionZoomed = 0.5f;
 	private float recoil = 1f;
 	private float recoilOnZoom = 1f;
+	private int damage = 20;
 
 	private int shootTimer = 0;
 
@@ -110,7 +111,7 @@ public class FireWeapon extends Weapon
 	
 	private void shootBullet(GameCore core)
 	{
-		Bullet bullet = new Bullet(Indexer.getUniqueID(), holder.getID(), "", this.shootPoint.getPosition(), this.transform.getRotation(), shootForce, GameCore.getInstance().getGame().getPlayer().getID());
+		Bullet bullet = new Bullet(Indexer.getUniqueID(), holder.getID(), "", this.shootPoint.getPosition(), this.transform.getRotation(), shootForce, damage, GameCore.getInstance().getGame().getPlayer().getID());
 		net.send(new BulletShootPacket(holder.getID(), bullet), Protocol.UDP);
 		bullet.setNetwork(net);
 		core.getGame().spawn(bullet);
@@ -236,4 +237,11 @@ public class FireWeapon extends Weapon
 
 	public void setRecoilOnZoom(float f) { this.recoilOnZoom = f; }
 
+	public void setDamage(int damage) {
+		this.damage = damage;
+	}
+
+	public int getDamage() {
+		return damage;
+	}
 }

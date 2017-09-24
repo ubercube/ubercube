@@ -155,7 +155,7 @@ public class Mat4 {
 		
 		return m;
 	}
-	
+
 	public static Mat4 scale(float x, float y, float z) {
 		Mat4 result = identity();
 		

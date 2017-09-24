@@ -23,8 +23,10 @@ import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.audio.AudioListener;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.entities.particles.ParticleSystem;
+import fr.veridiangames.core.game.entities.particles.ParticlesBlood;
 import fr.veridiangames.core.game.entities.particles.ParticlesBulletHit;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
@@ -121,7 +123,7 @@ public class PlayerHandler
 		else
 			weapon.getWeapon().setPosition(0);
 
-		mouse.useZoomSpeed(weapon.getWeapon().isZoomed());
+		mouse.useZoomSpeed(weapon.getWeapon().isZoomed(), weapon.getWeapon().getMouseSpeedOnZoom());
 
 //		if (input.getKeyDown(Input.KEY_F))
 //			key.setFly(!key.isFly());
@@ -154,20 +156,29 @@ public class PlayerHandler
 		}
 
 		selection.setShow(false);
-		if(weapon.getWeapon() instanceof Weapon)
+		if(weapon.getWeapon() instanceof WeaponShovel)
+			applySelectionActions(ray, input, (WeaponShovel)weapon.getWeapon());
+
+		if (ray.getHit() != null)
 		{
-			selection.setShow(true);
-			selection.update(ray.getHit());
-			applySelectionActions(ray, input);
+			if((ray.getHit().getEntity() != null) && (player.getWeaponComponent().getWeapon() instanceof WeaponMedicBag)) {
+				if ((ray.getHit().getEntity() instanceof NetworkedPlayer)) {
+					if (input.getMouse().getButtonDown(0)) {
+						net.send(new ApplyHealingPacket((NetworkedPlayer) ray.getHit().getEntity(), 10), Protocol.TCP);
+					}
+				}
+			}
 		}
 	}
 	
-	private void applySelectionActions(ECRaycast ray, Input input)
+	private void applySelectionActions(ECRaycast ray, Input input, WeaponShovel weapon)
 	{
 		if (ray.getHit() != null)
 		{
 			if ((ray.getHit().getBlock() != 0) && (player.getWeaponComponent().getWeapon() instanceof WeaponShovel))
 			{
+				selection.setShow(true);
+				selection.update(ray.getHit());
 				Vec3i blockPosition = ray.getHit().getBlockPosition();
 				Vec3  hitPoint = ray.getExactHitPoint();
 				if (input.getMouse().getButtonDown(0)) {
@@ -181,14 +192,20 @@ public class PlayerHandler
 					placeBlock(hitPoint);
 				}
 			}
-			if((ray.getHit().getEntity() != null) && (player.getWeaponComponent().getWeapon() instanceof WeaponMedicBag))
+			else if (ray.getHit().getEntity() != null && ray.getDistance() < 2)
 			{
-				if((ray.getHit().getEntity() instanceof NetworkedPlayer))
+				Entity e = ray.getHit().getEntity();
+				if (e instanceof NetworkedPlayer && input.getMouse().getButtonDown(0))
 				{
-					if (input.getMouse().getButtonDown(0))
-					{
-						net.send(new ApplyHealingPacket((NetworkedPlayer) ray.getHit().getEntity(), 10), Protocol.TCP);
-					}
+					Player p = (Player) e;
+					if (p.getID() == player.getID())
+						return;
+					ParticleSystem blood = new ParticlesBlood(Indexer.getUniqueID(), ray.getExactHitPoint().copy());
+					blood.setParticleVelocity(player.getRotation().getBack().copy().mul(0.02f));
+					blood.setNetwork(net);
+					int damage = weapon.getDamage();
+					float height = ray.getExactHitPoint().y;
+					this.net.send(new BulletHitPlayerPacket(p, player.getID(), height, damage), Protocol.TCP);
 				}
 			}
 		}

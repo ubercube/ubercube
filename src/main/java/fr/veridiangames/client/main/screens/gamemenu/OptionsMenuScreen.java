@@ -101,9 +101,10 @@ public class OptionsMenuScreen extends GuiCanvas
         if (!isRendered())
             return;
 
-        super.update();
-        float currentMouseSpeed = Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().getSpeed();
-        mouseSpeed.getLabel().setText((int)(currentMouseSpeed * 100) + "");
+		super.update();
+
+		float currentMouseSpeed = Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().getSpeed();
+		mouseSpeed.getLabel().setText((int)(currentMouseSpeed * 100) + "");
 		float currentMouseZoomedSpeed = Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().getZoomedSpeed();
 		mouseZoomedSpeed.getLabel().setText((int)(currentMouseZoomedSpeed * 100) + "");
         Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().setSpeed(mouseSpeed.getValue());

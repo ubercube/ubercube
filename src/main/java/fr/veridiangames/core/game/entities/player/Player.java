@@ -39,7 +39,11 @@ public abstract class Player extends Entity
 	private boolean dead;
 	private boolean hitable;
 	private int ping;
-	
+	private float movementVelocity = 0;
+
+	private Vec3 rightHandPosition = new Vec3();
+	private Vec3 leftHandPosition = new Vec3();
+
 	public Player(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
 		super(id);
@@ -102,6 +106,8 @@ public abstract class Player extends Entity
 	
 	public void setPositionSmoothly(Vec3 position)
 	{
+		if (newPosition != null)
+			movementVelocity = newPosition.xz().sub(position.xz()).magnitude();
 		newPosition = position;
 	}
 	
@@ -185,5 +191,25 @@ public abstract class Player extends Entity
 	public void setPing(int ping)
 	{
 		this.ping = ping;
+	}
+
+	public float getMovementVelocity() {
+		return movementVelocity * 1.5f;
+	}
+
+	public Vec3 getLeftHandPosition() {
+		return leftHandPosition;
+	}
+
+	public Vec3 getRightHandPosition() {
+		return rightHandPosition;
+	}
+
+	public void setLeftHandPosition(Vec3 leftHandPosition) {
+		this.leftHandPosition = leftHandPosition;
+	}
+
+	public void setRightHandPosition(Vec3 rightHandPosition) {
+		this.rightHandPosition = rightHandPosition;
 	}
 }

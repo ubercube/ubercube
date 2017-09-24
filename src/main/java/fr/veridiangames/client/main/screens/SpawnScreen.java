@@ -19,6 +19,8 @@ import fr.veridiangames.core.game.entities.weapons.kits.MedicKit;
 import fr.veridiangames.core.game.entities.weapons.kits.SniperKit;
 import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.RespawnPacket;
+import fr.veridiangames.core.network.packets.WeaponChangePacket;
+import fr.veridiangames.core.network.packets.WeaponPositionPacket;
 import fr.veridiangames.core.utils.Color4f;
 
 import static fr.veridiangames.client.Resource.getResource;

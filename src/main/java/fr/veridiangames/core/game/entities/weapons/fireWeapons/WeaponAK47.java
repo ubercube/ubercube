@@ -43,7 +43,8 @@ public class WeaponAK47 extends FireWeapon
 		this.setCrosshairTexture(null);
 		this.setPosition(0);
 		this.setRecoil(0.15f);
-		this.setRecoilOnZoom(0.025f);
+		this.setRecoilOnZoom(0.01f);
+		this.setMouseSpeedOnZoom(0.9f);
 		this.setSound(Sound.AK47_SHOOT);
 
 		this.setCenterPosition(new Transform(new Vec3(0, 5, -50)));

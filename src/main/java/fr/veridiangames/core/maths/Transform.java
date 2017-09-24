@@ -43,7 +43,7 @@ public class Transform {
 	public Transform(Vec3 pos, Vec3 scale) {
 		this.pos = pos;
 		this.rot = new Quat();
-		this.scale = new Vec3(1);
+		this.scale = scale;
 	}
 	
 	public Transform(Vec3 pos, Quat rot) {
@@ -104,6 +104,11 @@ public class Transform {
 	}
 
 	public void lookAt(Vec3 source, Vec3 look)
+	{
+		rot.set(Quat.lookAt(source, look));
+	}
+
+	public void lookAt(Vec3 source, Vec3 look, Vec3 up)
 	{
 		rot.set(Quat.lookAt(source, look));
 	}

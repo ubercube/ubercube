@@ -48,11 +48,12 @@ public class Bullet extends Entity
 {
 	private int holderID;
 	private float				force;
+	private int					damage;
 	private NetworkableClient	net;
 	private Vec3 startPosition = new Vec3();
 	private int shooterId;
 
-	public Bullet(int id, int holderID, String name, Vec3 spawnPoint, Quat orientation, float force, int shooterId)
+	public Bullet(int id, int holderID, String name, Vec3 spawnPoint, Quat orientation, float force, int damage, int shooterId)
 	{
 		super(id);
 		super.add(new ECName(name));
@@ -71,6 +72,7 @@ public class Bullet extends Entity
 		startPosition.set(this.getPosition());
 
 		this.force = force;
+		this.damage = damage;
 		this.shooterId = shooterId;
 	}
 
@@ -120,7 +122,7 @@ public class Bullet extends Entity
 			Vec3 normal = new Vec3(impactPosition).gtNorm(position);
 
 			if(this.holderID == GameCore.getInstance().getGame().getPlayer().getID())
-				this.net.send(new BulletHitBlockPacket(holderID, new Vec3i(blockPosition), 0.1f, block), Protocol.TCP);
+				this.net.send(new BulletHitBlockPacket(holderID, new Vec3i(blockPosition), (float) damage / 200.0f, block), Protocol.TCP);
 
 			ParticleSystem hitParticles = new ParticlesBulletHit(Indexer.getUniqueID(), getPosition().copy(), new Color4f(block));
 			GameCore.getInstance().getGame().spawn(hitParticles);
@@ -135,10 +137,9 @@ public class Bullet extends Entity
 			ParticleSystem blood = new ParticlesBlood(Indexer.getUniqueID(), getPosition().copy());
 			blood.setParticleVelocity(getRotation().getBack().copy().mul(0.02f));
 			blood.setNetwork(net);
-			this.net.send(new BulletHitPlayerPacket(player, shooterId, position.y), Protocol.TCP);
+			this.net.send(new BulletHitPlayerPacket(player, shooterId, position.y, damage), Protocol.TCP);
 			this.destroy();
 		}
-
 	}
 
 	public boolean isBulletOutOfMap(GameCore core)
@@ -183,6 +184,10 @@ public class Bullet extends Entity
 	public float getForce()
 	{
 		return force;
+	}
+
+	public int getDamage() {
+		return damage;
 	}
 
 	public int getShooterID(){
