@@ -60,7 +60,7 @@ public class RemoteClient
             this.socket.setTrafficClass(0x10);
             this.socket.setKeepAlive(true);
             this.socket.setReuseAddress(false);
-            this.socket.setSoTimeout(60000);
+            this.socket.setSoTimeout(0);
             this.socket.setSoLinger(false,0);
 			this.server = server;
 

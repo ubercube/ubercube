@@ -37,6 +37,16 @@ public class FileManager
 {
 	//UFS = Ubercube File System
 	
+	public static boolean shouldLoadMinecraftWorld()
+	{
+		return FileUtils.fileExist("save/r.0.0.mca");
+	}
+	
+	public static boolean shouldLoadUbercubeWorld()
+	{
+		return FileUtils.fileExist("save/world.ucw");
+	}
+	
 	public static void init()
 	{
 		setWorldFolder();

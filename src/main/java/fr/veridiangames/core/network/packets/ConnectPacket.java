@@ -19,27 +19,23 @@
 
 package fr.veridiangames.core.network.packets;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.Arrays;
 
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
-import fr.veridiangames.core.game.entities.components.ECName;
-import fr.veridiangames.core.game.entities.components.ECNetwork;
-import fr.veridiangames.core.game.entities.components.EComponent;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
-import fr.veridiangames.core.maths.Mathf;
+import fr.veridiangames.core.game.modes.GameMode;
+import fr.veridiangames.core.game.world.save.UbercubeSave;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Vec3;
-import fr.veridiangames.core.maths.Vec4i;
 import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.utils.DataBuffer;
-import fr.veridiangames.core.game.modes.GameMode;
 
 /**
  * Created by Marccspro on 26 f�vr. 2016.
@@ -116,7 +112,8 @@ public class ConnectPacket extends Packet
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
 		seed = server.getCore().getGame().getData().getWorldGen().getSeed();
-		server.getCore().getGame().spawn(new ServerPlayer(id, name, position, rotation, address.getHostName(), port));
+		ServerPlayer player = new ServerPlayer(id, name, position, rotation, address.getHostName(), port);
+		server.getCore().getGame().spawn(player);
 
 		server.getTcp().getClient(address, port).setID(id);
 
@@ -124,16 +121,36 @@ public class ConnectPacket extends Packet
 		server.tcpSendToAll(new ConnectPacket(this));
 
 		/* SENDING MULTIPLE PACKETS TO AVOID READ OVERFLOW OF 512 */
-		int modifiedBlocksSize = server.getCore().getGame().getWorld().getModifiedBlocks().size();
+		/*int modifiedBlocksSize = server.getCore().getGame().getWorld().getModifiedBlocks().size();
 		int packetCount = (int) ((float) (modifiedBlocksSize * 16) / (Packet.MAX_SIZE - 50)) + 2;
 		List<Vec4i> currentData = GameCore.getInstance().getGame().getWorld().getModifiedBlocks();
-		int count = (int) ((float) modifiedBlocksSize / (float) packetCount);
+		int count = (int) ((float) modifiedBlocksSize / (float) packetCount);*/
 
-//		System.out.println("Modified block size: " + modifiedBlocksSize);
-//		System.out.println("Modified block size(Bytes): " + modifiedBlocksSize * 4 * 4);
-//		System.out.println("Packet max size: " + Packet.MAX_SIZE);
-//		System.out.println("Num packets: " + packetCount);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		UbercubeSave.writeWorldToStreamAndClose(server.getCore().getGame(), baos);
+		byte[] world = baos.toByteArray();
+		
+		server.tcpSend(new WorldFileSizePacket(world.length), address, port);
 
+		int index = 0;
+		while (index < world.length)
+		{
+			//Choosing the least between max packet size(-4 for array size -4 for packet id) or length until the end of the array
+			byte[] cutData = new byte[Math.min(Packet.MAX_SIZE - 4 - 4, world.length-index)];
+			System.out.println(cutData.length);
+			System.arraycopy(world, index, cutData, 0, cutData.length);
+			server.tcpSend(new WorldFileDataPacket(cutData), address, port);
+			//We've wrote the amount of data
+			index += cutData.length;
+		}
+		
+		//System.out.println("Modified block size: " + modifiedBlocksSize);
+		//System.out.println("Modified block size(Bytes): " + modifiedBlocksSize * 4 * 4);
+		//System.out.println("Packet max size: " + Packet.MAX_SIZE);
+		//System.out.println("Num packets: " + packetCount);
+
+		/*server.tcpSend(new WorldFileSizePacket(modifiedBlocksSize), address, port);
+		
 		boolean finished = false;
 		for (int i = 0; i < packetCount + 16; i++)
 		{
@@ -155,7 +172,7 @@ public class ConnectPacket extends Packet
 			server.tcpSend(new SyncBlocksPacket(dataToSend), address, port);
 			if (finished)
 				break;
-		}
+		}*/
 
 		for (int i = 0; i < server.getCore().getGame().getEntityManager().getNetworkableEntites().size(); i++)
 		{

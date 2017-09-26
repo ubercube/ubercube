@@ -37,10 +37,12 @@ import fr.veridiangames.core.maths.Mathf;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.maths.Vec3i;
 import fr.veridiangames.core.maths.Vec4i;
+import fr.veridiangames.core.network.packets.WorldFileSizePacket;
 import fr.veridiangames.core.physics.colliders.AABoxCollider;
 import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.core.utils.Indexer;
 import fr.veridiangames.core.utils.Log;
+import fr.veridiangames.server.FileManager;
 
 public class World
 {
@@ -65,9 +67,15 @@ public class World
 		this.modifiedBlocks = new ArrayList<Vec4i>();
 		this.generated = false;
 
-		//this.readMinecraftData();
-		this.readWorldData();
-		//this.initWorldData(seed);
+		if (seed != -1)
+		{
+			if (FileManager.shouldLoadMinecraftWorld())
+				this.readMinecraftData();
+			else if (FileManager.shouldLoadUbercubeWorld())
+				this.readUbercubeSaveFile();
+			else
+				this.initWorldData(seed);
+		}
 	}
 
 	private void readMinecraftData()
@@ -108,8 +116,7 @@ public class World
 							}
 							catch(Exception e1)
 							{
-								if (!(e1 instanceof EOFException))
-									e1.printStackTrace(); //Probably end of stream
+								// e1.printStackTrace(); //Probably end of stream
 							}
 						}
 						dis.close();
@@ -125,13 +132,27 @@ public class World
 		catch(IOException e){e.printStackTrace();}
 		generated = true;
 	}
+	private void readUbercubeSaveFile()
+	{
+		try 
+		{
+			readWorldData(new DataInputStream(new FileInputStream(new File("save/world.ucw"))));
+		} 
+		catch (FileNotFoundException e) {e.printStackTrace();}
+	}
+	/**
+	 * Client side only
+	 */
+	public void readServerWorld()
+	{
+		readWorldData(new DataInputStream(new ByteArrayInputStream(WorldFileSizePacket.completeDatas)));
+	}
 	
-	private void readWorldData()
+	private void readWorldData(DataInputStream dis)
 	{
 		Log.println("Reading world data");
 		try
 		{
-			DataInputStream dis = new DataInputStream(new FileInputStream(new File("save/world.ucw")));
 			try
 			{
 				boolean seeded = dis.read() == 1;
@@ -184,6 +205,9 @@ public class World
 								for (int i=0;i<number;i++)
 								{
 									int total = blocksRed + i;
+									int bx = (total>>0)&0b1111;
+									int by = (total>>8)&0b1111;
+									int bz = (total>>4)&0b1111;
 									c.blocks[total&0b1111][(total >> 8)&0b1111][(total >> 4)&0b1111] = blockType;
 								}
 								blocksRed += number;
@@ -713,6 +737,11 @@ public class World
 
 	public int getWorldSize() {
 		return data.getWorldSize();
+	}
+	
+	public void setGenerated()
+	{
+		generated = true;
 	}
 }
 /*

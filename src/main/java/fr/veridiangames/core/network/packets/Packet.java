@@ -32,7 +32,7 @@ import fr.veridiangames.core.utils.DataBuffer;
  */
 public abstract class Packet
 {
-	public static final int MAX_SIZE = 512;
+	public static final int MAX_SIZE = 40960;
 
 	public static final int	DISCONNECT			= 0;
 	public static final int	CONNECT				= 1;
@@ -58,6 +58,8 @@ public abstract class Packet
 	public static final int GRENADE_SPAWN		= 21;
 	public static final int APPLY_DAMAGE		= 22;
 	public static final int CURRENT_BLOCK		= 23;
+	public static final int WORLD_FILE_SIZE		= 24;
+	public static final int WORLD_FILE_DATA		= 25;
 
 	/* GAME MODES  [500-600[ */
 	public static final int GAMEMODE_TDM_SPAWN = 501;

@@ -61,7 +61,7 @@ public class NetworkClientTCP
             this.socket.setTrafficClass(0x10);
             this.socket.setKeepAlive(false);
             this.socket.setReuseAddress(false);
-            this.socket.setSoTimeout(60000);
+            this.socket.setSoTimeout(0);
             this.socket.setSoLinger(false,0);
 
             this.in = new DataInputStream(socket.getInputStream());

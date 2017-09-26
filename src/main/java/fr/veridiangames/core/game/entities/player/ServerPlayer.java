@@ -45,6 +45,8 @@ public class ServerPlayer extends Player
 
 	private int maxGrenades;
 	private int grenadeCount;
+	
+	private boolean loading;
 
 	private Vec3 onlineVelocity;
 
@@ -54,6 +56,7 @@ public class ServerPlayer extends Player
 		this.life = 100;
 		this.timeOutTests = 0;
 		this.pingTime = 0;
+		this.loading = true;
 		this.pinged = false;
 
 		this.falling = false;
@@ -62,6 +65,16 @@ public class ServerPlayer extends Player
 		this.maxGrenades = 10;
 		this.grenadeCount = maxGrenades;
 		this.timeSinceSpawn = 0;
+	}
+
+	public boolean isLoading() 
+	{
+		return loading;
+	}
+
+	public void setLoading(boolean loading) 
+	{
+		this.loading = loading;
 	}
 
 	public boolean applyDamage (int damage, NetworkableServer server)

@@ -1,8 +1,6 @@
 package fr.veridiangames.core.game.world.save;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.ByteBuffer;
 
 import fr.veridiangames.core.game.Game;
@@ -12,14 +10,10 @@ import fr.veridiangames.core.utils.FileUtils;
 
 public class UbercubeSave 
 {
-	public static void saveGame(Game game)
+	public static void writeWorldToStreamAndClose(Game game, OutputStream fos)
 	{
-		if (!FileUtils.fileExist("save"))
-			FileUtils.newFile("save");
-		
 		try
 		{
-			FileOutputStream fos = new FileOutputStream(new File("save/world.ucw"));
 			try
 			{
 				ByteBuffer dataBuffer = ByteBuffer.wrap(new byte[9]);// Max world size (320*320*80*4) + (4*320*320)
@@ -118,5 +112,16 @@ public class UbercubeSave
 			finally{fos.close();}
 		}
 		catch(IOException e){e.printStackTrace();}
+	}
+	public static void saveGame(Game game)
+	{
+		if (!FileUtils.fileExist("save"))
+			FileUtils.newFile("save");
+		try 
+		{
+			FileOutputStream fos = new FileOutputStream(new File("save/world.ucw"));
+			writeWorldToStreamAndClose(game, fos);
+		} 
+		catch (FileNotFoundException e) {e.printStackTrace();}
 	}
 }

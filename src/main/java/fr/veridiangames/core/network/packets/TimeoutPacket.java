@@ -67,7 +67,6 @@ public class TimeoutPacket extends Packet
 	{
 		if (!client.getCore().getGame().getEntityManager().getEntities().containsKey(id))
 			return;
-
 		String name = ((ECName) GameCore.getInstance().getGame().getEntityManager().get(id).get(EComponent.NAME)).getName();
 		client.getCore().getGame().remove(id);
 		client.log(name + " timed out...");
