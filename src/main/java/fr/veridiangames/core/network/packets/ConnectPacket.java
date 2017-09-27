@@ -137,7 +137,6 @@ public class ConnectPacket extends Packet
 		{
 			//Choosing the least between max packet size(-4 for array size -4 for packet id) or length until the end of the array
 			byte[] cutData = new byte[Math.min(Packet.MAX_SIZE - 4 - 4, world.length-index)];
-			System.out.println(cutData.length);
 			System.arraycopy(world, index, cutData, 0, cutData.length);
 			server.tcpSend(new WorldFileDataPacket(cutData), address, port);
 			//We've wrote the amount of data

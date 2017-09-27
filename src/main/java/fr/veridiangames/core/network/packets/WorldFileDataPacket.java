@@ -72,8 +72,6 @@ public class WorldFileDataPacket extends Packet
     {
     	System.arraycopy(worldDatas, 0, WorldFileSizePacket.completeDatas, WorldFileSizePacket.writtenDatas, worldDatas.length);
     	WorldFileSizePacket.writtenDatas += worldDatas.length;
-    	System.out.println("Written : "+WorldFileSizePacket.writtenDatas);
-    	System.out.println("Complete : "+WorldFileSizePacket.completeDatas.length);
     	if (WorldFileSizePacket.writtenDatas >= WorldFileSizePacket.completeDatas.length)
     		client.getCore().getGame().getWorld().readServerWorld();
     }

@@ -111,14 +111,10 @@ public class NetworkServer implements Runnable, NetworkableServer
 			{
 				int key = core.getGame().getEntityManager().getPlayerEntites().get(i);
 				ServerPlayer player = (ServerPlayer) core.getGame().getEntityManager().getEntities().get(key);
-				if (player.isLoading())
-					continue;
-
 				player.setPinged(false);
 				player.setTimeOutTests(player.getTimeOutTests() + 1);
 				if (player.getTimeOutTests() > 5)
 				{
-					System.out.println("MDRRRRRRRRR : "+player.getTimeOutTests());
 					tcpSendToAll(new TimeoutPacket(key));
 					tcp.disconnectClient(player.getNetwork().getAddress(), player.getNetwork().getPort());
 					core.getGame().remove(key);
