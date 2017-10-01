@@ -18,6 +18,7 @@ public class OBJModel {
 	public static final OBJModel AWP_RENDERER = ObjModelLoader.loadModel(getResource("weapons/awp/AWP.obj"));
 	public static final OBJModel SHOVEL_RENDERER = ObjModelLoader.loadModel(getResource("weapons/SHOVEL.obj"));
 	public static final OBJModel MEDICBAG_RENDERER = ObjModelLoader.loadModel(getResource("weapons/medicbag/MEDICBAG.obj"));
+	public static final OBJModel FPS_ARM_RENDERER = ObjModelLoader.loadModel(getResource("weapons/arm.obj"));
 
 	public static OBJModel getModel(int id)
 	{

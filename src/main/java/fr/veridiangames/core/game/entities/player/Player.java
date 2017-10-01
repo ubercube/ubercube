@@ -19,13 +19,18 @@
 
 package fr.veridiangames.core.game.entities.player;
 
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.*;
 import fr.veridiangames.core.game.gamemodes.Team;
 import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Transform;
+import fr.veridiangames.core.maths.Vec2;
 import fr.veridiangames.core.maths.Vec3;
+
+import static fr.veridiangames.core.maths.Mathf.atan2;
+import static fr.veridiangames.core.maths.Mathf.toDegrees;
 
 /**
  * Created by Marccspro on 26 f�vr. 2016.
@@ -171,6 +176,26 @@ public abstract class Player extends Entity
 			hitable = false;
 		}
 		this.dead = dead;
+	}
+
+	public Vec3 getEyeRotation()
+	{
+		Vec3 result = new Vec3();
+
+		Vec2 xz = getRotation().getForward().xz().normalize();
+		Vec2 yz = getRotation().getForward().yz().normalize();
+		Vec2 xy = getRotation().getRight().xy().normalize();
+
+		result.x = toDegrees(atan2(xz.y, xz.x));
+		result.y = toDegrees(atan2(yz.y, yz.x));
+		result.z = toDegrees(atan2(xy.y, xy.x));
+
+		return result;
+	}
+
+	public float getXRotation()
+	{
+		return (getRotation().getForward().y * 0.5f + 0.5f) * 180;
 	}
 
 	public Team getTeam()

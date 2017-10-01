@@ -62,6 +62,7 @@ public abstract class Weapon
 	protected float currentZoom;
 	protected boolean zoomable;
 	protected float mouseSpeedOnZoom = 0.5f;
+	protected float previewRotation = 0;
 
 	private String crosshairTexture = TextureID.STD_CROSSHAIR;
 
@@ -196,6 +197,14 @@ public abstract class Weapon
 	public Vec3 getPreviewScale()
 	{
 		return previewScale;
+	}
+
+	public float getPreviewRotation() {
+		return previewRotation;
+	}
+
+	public void setPreviewRotation(float previewRotation) {
+		this.previewRotation = previewRotation;
 	}
 
 	public void setIdlePosition(Transform idlePosition)

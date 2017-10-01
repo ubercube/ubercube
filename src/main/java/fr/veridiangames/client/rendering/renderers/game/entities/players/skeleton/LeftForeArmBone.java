@@ -31,7 +31,11 @@ public class LeftForeArmBone extends Bone
 			rotVelocity = new Vec3((-Mathf.sin(time * 0.1f) * 10) * pvel - 60, 0, 0);
 		else
 			rotVelocity = new Vec3((-Mathf.sin(time * 0.1f) * 10) * pvel - 10, 0, 0);
-		this.transform.setLocalRotation(Quat.deuler(rotVelocity.x, rotVelocity.y, rotVelocity.z));
+		Vec3 zoomRot = new Vec3();
+		if (p.getWeaponComponent().getWeapon().isZoomed())
+			zoomRot.set(10, 0, 70);
+		this.transform.setLocalRotation(Quat.deuler(rotVelocity.x - zoomRot.x, rotVelocity.y - zoomRot.y, rotVelocity.z - zoomRot.z));
+
 		Transform leftHandPosition = new Transform(new Vec3(0, 0.5f, 0));
 		leftHandPosition.setParent(this.getTransform());
 		p.setLeftHandPosition(leftHandPosition.getPosition());

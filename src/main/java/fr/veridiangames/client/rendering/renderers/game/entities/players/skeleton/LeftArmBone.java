@@ -30,6 +30,11 @@ public class LeftArmBone extends Bone
 			rotVelocity = new Vec3((Mathf.sin(time * 0.1f) * 10) * pvel - 20 + 180, 0, 20);
 		else
 			rotVelocity = new Vec3((Mathf.sin(time * 0.1f) * 10) * pvel + 5 + 180, -5, 0);
-		this.transform.setLocalRotation(Quat.deuler(rotVelocity.x, rotVelocity.y, rotVelocity.z));
+		float zoomed = p.getWeaponComponent().getWeapon().isZoomed() ? 1 : 0.4f;
+		float view = (p.getXRotation() - 90) * zoomed;
+		Vec3 zoomRot = new Vec3();
+		if (p.getWeaponComponent().getWeapon().isZoomed())
+			zoomRot.set(72.5f, 0, 30);
+		this.transform.setLocalRotation(Quat.deuler(rotVelocity.x - view - zoomRot.x, rotVelocity.y - zoomRot.y, rotVelocity.z - zoomRot.z));
 	}
 }

@@ -32,7 +32,10 @@ public class RightForeArmBone extends Bone
 		else
 			rotVelocity = (Mathf.sin(time * 0.1f) * 10) * pvel - 90;
 
-		this.transform.setLocalRotation(Quat.deuler(rotVelocity, 0, 0));
+		Vec3 zoomRot = new Vec3();
+		if (p.getWeaponComponent().getWeapon().isZoomed())
+			zoomRot.set(-40, 0, -50);
+		this.transform.setLocalRotation(Quat.deuler(rotVelocity - zoomRot.x, -zoomRot.y, -zoomRot.z));
 		Transform rightHandPosition = new Transform(new Vec3(0, 0.5f, 0));
 		rightHandPosition.setParent(this.getTransform());
 		p.setRightHandPosition(rightHandPosition.getPosition());

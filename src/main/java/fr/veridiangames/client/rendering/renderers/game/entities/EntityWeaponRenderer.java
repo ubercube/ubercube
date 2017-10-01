@@ -22,9 +22,12 @@ package fr.veridiangames.client.rendering.renderers.game.entities;
 import java.util.List;
 import java.util.Map;
 
+import fr.veridiangames.client.rendering.guis.primitives.StaticPrimitive;
 import fr.veridiangames.client.rendering.renderers.models.OBJModel;
+import fr.veridiangames.client.rendering.shaders.Shader;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Model;
+import fr.veridiangames.core.game.entities.player.ClientPlayer;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.fireWeapons.WeaponAK47;
@@ -119,13 +122,21 @@ public class EntityWeaponRenderer
 				shader.setModelViewMatrix(transform.toMatrix().mul(Mat4.translate(0, -5f, 0)));
 			}
 		}
-		else
+		else if (e instanceof ClientPlayer)
 		{
+			ClientPlayer p = (ClientPlayer) e;
+			renderArm(weapon, shader, p);
 			shader.setModelViewMatrix(weaponComp.getWeapon().getTransform().toMatrix().mul(Mat4.scale(1f/16f, 1f/16f, 1f/16f)));
 		}
 		renderWeapon(weapon);
 	}
-	
+
+	private void renderArm(int weapon, Shader shader, ClientPlayer p)
+	{
+		shader.setModelViewMatrix(p.getEyeTransform().toMatrix());
+		OBJModel.FPS_ARM_RENDERER.render();
+	}
+
 	private void renderWeapon(int weapon) 
 	{
 		switch (weapon)

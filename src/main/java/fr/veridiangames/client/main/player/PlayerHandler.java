@@ -222,6 +222,7 @@ public class PlayerHandler
 		int x = (int) point.x;
 		int y = (int) point.y;
 		int z = (int) point.z;
+
 		float rx = point.x;
 		float ry = point.y;
 		float rz = point.z;

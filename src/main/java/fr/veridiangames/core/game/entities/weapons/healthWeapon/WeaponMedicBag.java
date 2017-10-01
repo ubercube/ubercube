@@ -18,7 +18,9 @@ public class WeaponMedicBag extends Weapon {
 		this.setHidePosition(new Transform(new Vec3(0f, 0f, 0)));
 		this.setZoomPosition(new Transform(new Vec3(0, 0, 0f)));
 
-		this.setPreviewScale(new Vec3(0.4f, 0.4f, 0.4f));
+		this.setPreviewScale(new Vec3(0.3f, 0.3f, 0.3f));
+		this.setCenterPosition(new Transform(new Vec3(0, 0.5f, 0)));
+		this.setPreviewRotation(-90);
 	}
 
 	void heal(){

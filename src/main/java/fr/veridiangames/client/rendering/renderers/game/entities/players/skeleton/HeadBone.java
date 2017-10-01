@@ -1,6 +1,7 @@
 package fr.veridiangames.client.rendering.renderers.game.entities.players.skeleton;
 
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
+import fr.veridiangames.core.maths.Quat;
 import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.utils.Color4f;
@@ -17,6 +18,7 @@ public class HeadBone extends Bone
 
 	public void update(NetworkedPlayer p)
 	{
-
+		float view = p.getXRotation() - 90;
+		this.transform.setLocalRotation(Quat.deuler(-view, 0, 0));
 	}
 }
