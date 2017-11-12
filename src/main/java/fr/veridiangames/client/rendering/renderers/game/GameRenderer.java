@@ -83,13 +83,10 @@ public class GameRenderer
 
 	private boolean					drawColliders;
 
-	private int						samples;
-
-	public GameRenderer(Ubercube main, GameCore core, int samples)
+	public GameRenderer(Ubercube main, GameCore core)
 	{
 		this.core = core;
 
-		this.samples = samples;
 		this.playerShader = new PlayerShader();
 		this.entityShader = new EntityShader();
 		this.worldShader = new WorldShader();
@@ -150,72 +147,7 @@ public class GameRenderer
 		}
 	}
 
-	public void render()
-	{
-		if (framebuffer == null || Display.getInstance().wasResized())
-		{
-			if (framebuffer != null)
-			{
-				this.framebuffer.destroy();
-				this.framebuffer = null;
-			}
-			this.framebuffer = new FrameBuffer(Display.getInstance().getWidth() * samples, Display.getInstance().getHeight() * samples);
-		}
-
-		framebuffer.bind();
-		glEnable(GL_DEPTH_TEST);
-		glClearColor(221f / 255f, 232f / 255f, 255f / 255f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		renderWorld(playerViewport.getCamera());
-		glDisable(GL_DEPTH_TEST);
-		framebuffer.unbind();
-
-		framebufferShader.bind();
-		framebufferShader.setProjectionMatrix(Mat4.orthographic(Display.getInstance().getWidth(), 0, 0, Display.getInstance().getHeight(), -1, 1));
-
-		glBindTexture(GL_TEXTURE_2D, framebuffer.getColorTextureID());
-		glDisable(GL_CULL_FACE);
-		StaticPrimitive.quadPrimitive().render(framebufferShader,
-			Display.getInstance().getWidth() / 2,
-			Display.getInstance().getHeight() / 2,0,
-			Display.getInstance().getWidth() / 2,
-			-Display.getInstance().getHeight() / 2, 0);
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-
-
-		if (weaponFbo == null || Display.getInstance().wasResized())
-		{
-			if (weaponFbo != null)
-			{
-				this.weaponFbo.destroy();
-				this.weaponFbo = null;
-			}
-			this.weaponFbo = new FrameBuffer(Display.getInstance().getWidth() * samples, Display.getInstance().getHeight() * samples);
-		}
-
-		weaponFbo.bind();
-		glEnable(GL_DEPTH_TEST);
-		glClearColor(0, 0, 0, 0);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		renderPlayer(playerViewport.getCamera());
-		glDisable(GL_DEPTH_TEST);
-		weaponFbo.unbind();
-
-		weaponFboShader.bind();
-		weaponFboShader.setProjectionMatrix(Mat4.orthographic(Display.getInstance().getWidth(), 0, 0, Display.getInstance().getHeight(), -1, 1));
-
-		glBindTexture(GL_TEXTURE_2D, weaponFbo.getColorTextureID());
-		glDisable(GL_CULL_FACE);
-		StaticPrimitive.quadPrimitive().render(weaponFboShader,
-				Display.getInstance().getWidth() / 2,
-				Display.getInstance().getHeight() / 2,0,
-				Display.getInstance().getWidth() / 2,
-				-Display.getInstance().getHeight() / 2, 0);
-		glEnable(GL_CULL_FACE);
-	}
-
-	public void renderPlayer(Camera camera)
+	public void renderClientView(Camera camera)
 	{
 		modelShader.bind();
 		camera.setNear(0.05f);
@@ -325,5 +257,10 @@ public class GameRenderer
 	public GameCore getGameCore()
 	{
 		return core;
+	}
+
+	public PlayerViewport getPlayerViewport()
+	{
+		return playerViewport;
 	}
 }

@@ -15,6 +15,9 @@ in vec3 worldPosition;
 
 void main(void)
 {
+	if (v_color.a < 0.1)
+		discard;
+
 	float dist = distance(cameraPosition, worldPosition) / fogDistance * 2 - 0.8;
 	if (dist > 1)
 		dist = 1;

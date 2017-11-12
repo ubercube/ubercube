@@ -302,6 +302,18 @@ public class Ubercube
 		exitGame();
 	}
 
+	public void openConnection(int clientID, String name, String address, int port)
+	{
+		net = new NetworkClient(clientID, address, port, this);
+
+		float midWorld = core.getGame().getData().getWorldSize() / 2 * 16;
+		ClientPlayer player = new ClientPlayer(clientID, name, new Vec3(midWorld, 30, midWorld), new Quat(), address, port);
+		player.setNetwork(net);
+
+		core.getGame().setPlayer(player);
+		net.send(new ConnectPacket(player), Protocol.TCP);
+	}
+
 	public GameCore getGameCore()
 	{
 		return core;
@@ -322,18 +334,6 @@ public class Ubercube
 		this.display = display;
 	}
 	
-	public void openConnection(int clientID, String name, String address, int port)
-	{
-		net = new NetworkClient(clientID, address, port, this);
-
-		float midWorld = core.getGame().getData().getWorldSize() / 2 * 16;
-		ClientPlayer player = new ClientPlayer(clientID, name, new Vec3(midWorld, 30, midWorld), new Quat(), address, port);
-		player.setNetwork(net);
-		
-		core.getGame().setPlayer(player);
-		net.send(new ConnectPacket(player), Protocol.TCP);
-	}
-
 	public PlayerHandler getPlayerHandler()
 	{
 		return playerHandler;
@@ -393,5 +393,10 @@ public class Ubercube
 	public PlayerHudScreen getPlayerHudScreen()
 	{
 		return playerHudScreen;
+	}
+
+	public MainRenderer getMainRenderer()
+	{
+		return mainRenderer;
 	}
 }

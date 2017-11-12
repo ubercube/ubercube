@@ -9,5 +9,8 @@ in vec2 v_coords;
 
 void main(void)
 {
-	fragColor = texture(tex, v_coords);
+	vec4 color = texture(tex, v_coords);
+	if (color.a < 0.1)
+		discard;
+	fragColor = color;
 }

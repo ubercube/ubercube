@@ -161,6 +161,7 @@ public class Display
 		if (resized)
 		{
 			GL11.glViewport(0, 0, width, height);
+			height = (int) ((float)height * 1.02f);
 		}
 	}
 

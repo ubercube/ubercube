@@ -47,11 +47,15 @@ public class GameMenuScreen extends GuiCanvas
         super.add(returnButton);
 
         OptionsMenuScreen optionsMenuScreen = new OptionsMenuScreen(this, display);
-        super.addCanvas(optionsMenuScreen);
+		super.addCanvas(optionsMenuScreen);
+		GraphicsMenuScreen graphicsMenuScreen = new GraphicsMenuScreen(this, display);
+		super.addCanvas(graphicsMenuScreen);
+
         GuiButton optionsButton = new GuiButton("options", 50, 90, 150, new GuiActionListener() {
             @Override
             public void onAction() {
-                optionsMenuScreen.setRendered(true);
+				optionsMenuScreen.setRendered(true);
+				graphicsMenuScreen.setRendered(false);
             }
         });
         optionsButton.centerText();
@@ -63,7 +67,8 @@ public class GameMenuScreen extends GuiCanvas
         GuiButton graphicsButton = new GuiButton("graphics", 50, 130, 150, new GuiActionListener() {
             @Override
             public void onAction() {
-                optionsMenuScreen.setRendered(false);
+				graphicsMenuScreen.setRendered(true);
+				optionsMenuScreen.setRendered(false);
             }
         });
         graphicsButton.centerText();

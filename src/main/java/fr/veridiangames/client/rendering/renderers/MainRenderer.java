@@ -20,6 +20,7 @@
 package fr.veridiangames.client.rendering.renderers;
 
 import fr.veridiangames.client.rendering.guis.primitives.StaticPrimitive;
+import fr.veridiangames.client.rendering.renderers.game.GameBufferRenderer;
 import fr.veridiangames.client.rendering.shaders.FramebufferShader;
 import fr.veridiangames.client.rendering.textures.FrameBuffer;
 import fr.veridiangames.core.GameCore;
@@ -38,36 +39,28 @@ import static org.lwjgl.opengl.GL11.glEnable;
 public class MainRenderer
 {
 	private Renderer			renderer;
-	private GameRenderer		gameRenderer;
+	private GameBufferRenderer	gameBufferRenderer;
 
 	public MainRenderer(Ubercube main, GameCore core)
 	{
 		this.renderer = new Renderer();
-		this.gameRenderer = new GameRenderer(main, core, 2);
+		this.gameBufferRenderer = new GameBufferRenderer(main, core, 2);
 	}
 
 	public void update()
 	{
-		gameRenderer.update();
+		gameBufferRenderer.update();
 	}
 	
 	public void renderAll(Display display)
 	{
 		renderer.start();
 		renderer.prepare3D();
-		render();
-
-		renderer.prepare2D();
-		renderGui(display);
+		gameBufferRenderer.render();
 	}
 
-	private void render()
+	public GameBufferRenderer getGameBufferRenderer()
 	{
-		gameRenderer.render();
-	}
-
-	private void renderGui(Display display)
-	{
-
+		return gameBufferRenderer;
 	}
 }
