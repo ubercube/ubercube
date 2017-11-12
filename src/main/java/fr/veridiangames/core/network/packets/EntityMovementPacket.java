@@ -87,10 +87,16 @@ public class EntityMovementPacket extends Packet
 	public void process(NetworkableServer server, InetAddress address, int port)
 	{
 		ServerPlayer player = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(id);
-		if (player == null) 
+		if (player == null)
+		{
+			server.log("== [SEVER] == Player is null !");
 			return;
+		}
 		if (player.isDead())
+		{
+			server.log("== Player is dead ! ==");
 			return;
+		}
 
 		Vec3 vel = player.getPosition().copy().sub(position);
 		player.setOnlineVelocity(vel);

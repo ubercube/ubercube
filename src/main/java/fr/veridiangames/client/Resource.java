@@ -29,7 +29,7 @@ public class Resource
     {
         String fullPath = GameCore.RESOURCES_PATH + path;
         if (!fileExist(fullPath))
-            throw new RuntimeException("Unknown resource: " + path);
+            throw new RuntimeException("Unknown resource: " + fullPath);
         return (fullPath);
     }
 }
