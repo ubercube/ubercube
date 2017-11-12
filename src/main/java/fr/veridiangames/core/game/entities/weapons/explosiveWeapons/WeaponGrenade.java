@@ -41,10 +41,10 @@ public class WeaponGrenade extends ExplosiveWeapon
     public WeaponGrenade(int num)
     {
         super(Weapon.GRENADE, Model.GRENADE);
-        this.transform.setLocalScale(new Vec3(1, 1, -1));
-        this.setIdlePosition(new Transform(new Vec3(0.4f, -0.5f, 1)));
+        this.transform.setLocalScale(new Vec3(1, 1, 1));
+        this.setIdlePosition(new Transform(new Vec3(0.4f, -0.3f, 1)));
         this.setHidePosition(new Transform(new Vec3(0.3f, -0.05f - 1f, 0)));
-        this.setZoomPosition(new Transform(new Vec3(0.4f, -0.5f, 1)));
+        this.setZoomPosition(new Transform(new Vec3(0.4f, -0.3f, 1)));
         this.setPosition(0);
         this.maxGrenade = num;
         this.grenadeCount = maxGrenade;

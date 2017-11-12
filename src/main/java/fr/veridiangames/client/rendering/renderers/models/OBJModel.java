@@ -13,10 +13,10 @@ import org.lwjgl.opengl.GL11;
 import static fr.veridiangames.client.Resource.getResource;
 
 public class OBJModel {
-	public static final OBJModel GRENADE_RENDERER = ObjModelLoader.loadModel(getResource("weapons/GRENADE.obj"));
+	public static final OBJModel GRENADE_RENDERER = ObjModelLoader.loadModel(getResource("weapons/grenade/GRENADE.obj"));
 	public static final OBJModel AK47_RENDERER = ObjModelLoader.loadModel(getResource("weapons/ak47/AK47.obj"));
 	public static final OBJModel AWP_RENDERER = ObjModelLoader.loadModel(getResource("weapons/awp/AWP.obj"));
-	public static final OBJModel SHOVEL_RENDERER = ObjModelLoader.loadModel(getResource("weapons/SHOVEL.obj"));
+	public static final OBJModel SHOVEL_RENDERER = ObjModelLoader.loadModel(getResource("weapons/shovel/SHOVEL.obj"));
 	public static final OBJModel MEDICBAG_RENDERER = ObjModelLoader.loadModel(getResource("weapons/medicbag/MEDICBAG.obj"));
 	public static final OBJModel FPS_ARM_RENDERER = ObjModelLoader.loadModel(getResource("weapons/arm.obj"));
 
