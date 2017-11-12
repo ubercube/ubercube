@@ -123,7 +123,7 @@ public class EntityMovementPacket extends Packet
 		if (position.y < 0 && !player.isDead())
 			player.kill(server);
 
-		server.udpSendToAll(new EntityMovementPacket(this));
+		server.udpSendToAny(new EntityMovementPacket(this), id);
 	}
 
 	public void process(NetworkableClient client, InetAddress address, int port)

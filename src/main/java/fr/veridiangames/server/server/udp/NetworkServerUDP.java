@@ -19,11 +19,13 @@
 
 package fr.veridiangames.server.server.udp;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.network.NetworkPacket;
 import fr.veridiangames.core.utils.Log;
+import fr.veridiangames.core.utils.Time;
 import fr.veridiangames.server.server.NetworkServer;
 
 import java.io.IOException;
@@ -80,6 +82,8 @@ public class NetworkServerUDP implements Runnable
                 DataBuffer data = new DataBuffer(receive.getData());
                 int packetID = data.getInt();
                 Packet packet = PacketManager.getPacket(packetID);
+				if (GameCore.isDisplayNetworkDebug())
+					server.log("UDP: " + Time.getTime() + " [IN]-> received: " + packet);
                 if (packet == null)
                     continue;
                 packet.read(data);

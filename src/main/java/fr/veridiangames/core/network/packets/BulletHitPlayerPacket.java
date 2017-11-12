@@ -90,7 +90,6 @@ public class BulletHitPlayerPacket extends Packet
             return;
 
 		boolean dead;
-		System.out.println(bulletHeight - p.getPosition().y);
         if((bulletHeight - p.getPosition().y) >= 0.813)
 		{
 			dead = p.applyDamage(100, server, shooterId, true);

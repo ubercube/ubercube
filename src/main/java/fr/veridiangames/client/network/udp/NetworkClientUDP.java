@@ -20,10 +20,12 @@
 package fr.veridiangames.client.network.udp;
 
 import fr.veridiangames.client.network.NetworkClient;
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.network.PacketManager;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataBuffer;
 import fr.veridiangames.core.utils.Log;
+import fr.veridiangames.core.utils.Time;
 
 import java.io.IOException;
 import java.net.*;
@@ -68,7 +70,9 @@ public class NetworkClientUDP implements Runnable
                 DataBuffer data = new DataBuffer(receive.getData());
                 int packetID = data.getInt();
                 Packet packet = PacketManager.getPacket(packetID);
-                if (packet == null)
+				if (GameCore.isDisplayNetworkDebug())
+					client.log("UDP: " + Time.getTime() + " [IN]-> received: " + packet);
+				if (packet == null)
                     continue;
                 packet.read(data);
                 packet.process(client, receive.getAddress(), receive.getPort());
@@ -78,13 +82,16 @@ public class NetworkClientUDP implements Runnable
                 Log.exception(e);
             }
         }
+		client.log("UDP stopped !");
     }
 
-    public void send(byte[] bytes)
+    public void send(Packet p)
     {
 		try
 		{
-			DatagramPacket packet = new DatagramPacket(bytes, bytes.length, address, port);
+			if (GameCore.isDisplayNetworkDebug())
+				client.log("UDP: " + Time.getTime() + " [OUT]-> sending: " + p);
+			DatagramPacket packet = new DatagramPacket(p.getData().getData(), p.getData().getData().length, address, port);
 			socket.send(packet);
 		}
 		catch (IOException e)

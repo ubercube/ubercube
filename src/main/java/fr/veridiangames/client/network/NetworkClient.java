@@ -72,7 +72,7 @@ public class NetworkClient implements NetworkableClient
 		if (protocol == Protocol.TCP)
 			tcp.send(packet);
 		else if (protocol == Protocol.UDP)
-			udp.send(packet.getData().getData());
+			udp.send(packet);
 		else
 			throw new RuntimeException("Invalide protocole !");
 	}

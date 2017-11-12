@@ -45,7 +45,7 @@ public class ObjModelLoader {
 	}
 
 	public static OBJModel loadModel(String modelFile) {
-		Log.println("Loading model: [" + modelFile + "]");
+		Log.print("Loading model [" + modelFile + "]: ");
 		
 		List<Vec3> position = new ArrayList<Vec3>();
 		List<OBJIndex> indices = new ArrayList<OBJIndex>();
@@ -113,7 +113,7 @@ public class ObjModelLoader {
 		indices.clear();
 		normals.clear();
 		
-		Log.println("Model loaded !");
+		Log.println("Done !");
 		return model;
 	}
 }
