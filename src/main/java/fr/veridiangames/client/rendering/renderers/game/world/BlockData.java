@@ -26,7 +26,7 @@ public class BlockData
 	public static final float UP_SHADING = 1.0f;
 	public static final float BOTTOM_SHADING = 0.6f;
 	public static final float X_SHADING = 0.7f;
-	public static final float Z_UP_SHADING = 0.8f;
+	public static final float Z_SHADING = 0.8f;
 
 	public static float[] blockDataFront(float x, float y, float z, float brightness, float[] shading, Color4f color) {
 		float s0 = shading[0] * brightness;
@@ -40,13 +40,13 @@ public class BlockData
 		
 		float s = 1;
 		return new float[] {
-			x + s, y, z,				r * Z_UP_SHADING * s1, g * Z_UP_SHADING * s1, b * Z_UP_SHADING * s1, 1,			0, 0, 1,	//1
-			x, y, z,					r * Z_UP_SHADING * s0, g * Z_UP_SHADING * s0, b * Z_UP_SHADING * s0, 1,			0, 0, 1,	//0
-			x + s, y + s, z,			r * Z_UP_SHADING * s2, g * Z_UP_SHADING * s2, b * Z_UP_SHADING * s2, 1,			0, 0, 1,	//2
+			x + s, y, z,				r * Z_SHADING * s1, g * Z_SHADING * s1, b * Z_SHADING * s1, 1,			0, 0, 1,	//1
+			x, y, z,					r * Z_SHADING * s0, g * Z_SHADING * s0, b * Z_SHADING * s0, 1,			0, 0, 1,	//0
+			x + s, y + s, z,			r * Z_SHADING * s2, g * Z_SHADING * s2, b * Z_SHADING * s2, 1,			0, 0, 1,	//2
 
-			x, y, z,					r * Z_UP_SHADING * s0, g * Z_UP_SHADING * s0, b * Z_UP_SHADING * s0, 1,			0, 0, 1,	//0
-			x, y + s, z,				r * Z_UP_SHADING * s3, g * Z_UP_SHADING * s3, b * Z_UP_SHADING * s3, 1,			0, 0, 1,	//3
-			x + s, y + s, z,			r * Z_UP_SHADING * s2, g * Z_UP_SHADING * s2, b * Z_UP_SHADING * s2, 1,			0, 0, 1	//2
+			x, y, z,					r * Z_SHADING * s0, g * Z_SHADING * s0, b * Z_SHADING * s0, 1,			0, 0, 1,	//0
+			x, y + s, z,				r * Z_SHADING * s3, g * Z_SHADING * s3, b * Z_SHADING * s3, 1,			0, 0, 1,	//3
+			x + s, y + s, z,			r * Z_SHADING * s2, g * Z_SHADING * s2, b * Z_SHADING * s2, 1,			0, 0, 1	//2
 		};
 	}
 	
@@ -62,13 +62,13 @@ public class BlockData
 		
 		float s = 1;
 		return new float[] {
-			x, y, z + s,				r * Z_UP_SHADING * s1, g * Z_UP_SHADING * s1, b * Z_UP_SHADING * s1, 1,			0, 0, -1,	 //5
-			x + s, y, z + s,			r * Z_UP_SHADING * s0, g * Z_UP_SHADING * s0, b * Z_UP_SHADING * s0, 1,			0, 0, -1,	 //4
-			x, y + s, z + s,			r * Z_UP_SHADING * s2, g * Z_UP_SHADING * s2, b * Z_UP_SHADING * s2, 1,			0, 0, -1,		//6
+			x, y, z + s,				r * Z_SHADING * s1, g * Z_SHADING * s1, b * Z_SHADING * s1, 1,			0, 0, -1,	 //5
+			x + s, y, z + s,			r * Z_SHADING * s0, g * Z_SHADING * s0, b * Z_SHADING * s0, 1,			0, 0, -1,	 //4
+			x, y + s, z + s,			r * Z_SHADING * s2, g * Z_SHADING * s2, b * Z_SHADING * s2, 1,			0, 0, -1,		//6
 
-			x + s, y, z + s,			r * Z_UP_SHADING * s0, g * Z_UP_SHADING * s0, b * Z_UP_SHADING * s0, 1,			0, 0, -1,	 //4
-			x + s, y + s, z + s,		r * Z_UP_SHADING * s3, g * Z_UP_SHADING * s3, b * Z_UP_SHADING * s3, 1,			0, 0, -1,		//7
-			x, y + s, z + s,			r * Z_UP_SHADING * s2, g * Z_UP_SHADING * s2, b * Z_UP_SHADING * s2, 1,			0, 0, -1		//6
+			x + s, y, z + s,			r * Z_SHADING * s0, g * Z_SHADING * s0, b * Z_SHADING * s0, 1,			0, 0, -1,	 //4
+			x + s, y + s, z + s,		r * Z_SHADING * s3, g * Z_SHADING * s3, b * Z_SHADING * s3, 1,			0, 0, -1,		//7
+			x, y + s, z + s,			r * Z_SHADING * s2, g * Z_SHADING * s2, b * Z_SHADING * s2, 1,			0, 0, -1		//6
 		};
 	}
 	

@@ -19,6 +19,7 @@
 
 package fr.veridiangames.client.rendering.renderers.game.entities.players;
 
+import static javafx.scene.input.KeyCode.L;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
@@ -27,12 +28,11 @@ import static org.lwjgl.opengl.GL31.*;
 import static org.lwjgl.opengl.GL33.*;
 
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.List;
 import java.util.Map;
 
-import fr.veridiangames.client.rendering.renderers.game.entities.players.skeleton.Bone;
 import fr.veridiangames.client.rendering.renderers.game.entities.players.skeleton.PlayerSkeleton;
+import fr.veridiangames.client.rendering.renderers.game.world.BlockData;
 import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import org.lwjgl.BufferUtils;
 
@@ -54,7 +54,7 @@ public class PlayerRenderer
 	public static final int MAX_ENTITIES = 2000;
 	
 	private FloatBuffer instanceBuffer;
-	private int vao, vbo, cbo, vio, ibo;
+	private int vao, vbo, vio;
 	
 	private int renderCount;
 
@@ -77,15 +77,10 @@ public class PlayerRenderer
 		FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(cubeVertices().length);
 		verticesBuffer.put(cubeVertices());
 		verticesBuffer.flip();
-		
-		IntBuffer indicesBuffer = BufferUtils.createIntBuffer(cubeIndices().length);
-		indicesBuffer.put(cubeIndices());
-		indicesBuffer.flip();
-		
+
 		vao = Buffers.createVertexArray();
 		vbo = Buffers.createVertexBuffer();
 		vio = Buffers.createVertexBuffer();
-		ibo = Buffers.createVertexBuffer();
 
 		glBindVertexArray(vao);
 		
@@ -94,11 +89,13 @@ public class PlayerRenderer
 		glEnableVertexAttribArray(3);
 		glEnableVertexAttribArray(4);
 		glEnableVertexAttribArray(5);
+		glEnableVertexAttribArray(6);
 		glEnableVertexAttribArray(1);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, false, 3 * 4, 0L);
+		glVertexAttribPointer(0, 3, GL_FLOAT, false, 4 * 4, 0L);
+		glVertexAttribPointer(6, 1, GL_FLOAT, false, 4 * 4, 12L);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, vio);
 		glBufferData(GL_ARRAY_BUFFER, instanceBuffer, GL_DYNAMIC_DRAW);
@@ -107,11 +104,9 @@ public class PlayerRenderer
 		glVertexAttribPointer(4, 4, GL_FLOAT, false, 20 * 4, 32L);
 		glVertexAttribPointer(5, 4, GL_FLOAT, false, 20 * 4, 48L);
 		glVertexAttribPointer(1, 4, GL_FLOAT, false, 20 * 4, 64L);
-		
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
-		
+
 		glVertexAttribDivisor(0, 0);
+		glVertexAttribDivisor(6, 0);
 		glVertexAttribDivisor(2, 1);
 		glVertexAttribDivisor(3, 1);
 		glVertexAttribDivisor(4, 1);
@@ -147,7 +142,7 @@ public class PlayerRenderer
 	public void render()
 	{
 		glBindVertexArray(vao);
-		glDrawElementsInstanced(GL_TRIANGLES, cubeIndices().length, GL_UNSIGNED_INT, 0L, renderCount * ENTITY_COMPLEXITY);
+		glDrawArraysInstanced(GL_TRIANGLES, 0, 36, renderCount * ENTITY_COMPLEXITY);
 		glBindVertexArray(0);
 	}
 
@@ -155,28 +150,47 @@ public class PlayerRenderer
 	{
 		return new float[] 
 		{
-			-0.5f, 0, -0.5f,
-			0.5f, 0, -0.5f,
-			0.5f, 0, 0.5f,
-			-0.5f, 0, 0.5f,
+			-0.5f, 0, -0.5f, BlockData.BOTTOM_SHADING,
+			0.5f, 0, -0.5f, BlockData.BOTTOM_SHADING,
+			-0.5f, 0, 0.5f, BlockData.BOTTOM_SHADING,
+			0.5f, 0, -0.5f, BlockData.BOTTOM_SHADING,
+			0.5f, 0, 0.5f, BlockData.BOTTOM_SHADING,
+			-0.5f, 0, 0.5f, BlockData.BOTTOM_SHADING,
 
-			-0.5f, 1, -0.5f,
-			0.5f, 1, -0.5f,
-			0.5f, 1, 0.5f,
-			-0.5f, 1, 0.5f
-		};
-	}
-	
-	private int[] cubeIndices()
-	{
-		return new int[]
-		{
-			0, 1, 2, 0, 2, 3,
-			1, 5, 6, 1, 6, 2,
-			5, 4, 7, 5, 7, 6,
-			4, 0, 3, 4, 3, 7,
-			1, 0, 4, 1, 4, 5,
-			3, 2, 6, 3, 6, 7
+			-0.5f, 1, -0.5f, BlockData.UP_SHADING,
+			-0.5f, 1, 0.5f, BlockData.UP_SHADING,
+			0.5f, 1, -0.5f, BlockData.UP_SHADING,
+			0.5f, 1, -0.5f, BlockData.UP_SHADING,
+			-0.5f, 1, 0.5f, BlockData.UP_SHADING,
+			0.5f, 1, 0.5f, BlockData.UP_SHADING,
+
+			0.5f, 0, -0.5f, BlockData.X_SHADING,
+			0.5f, 1, -0.5f, BlockData.X_SHADING,
+			0.5f, 0, 0.5f, BlockData.X_SHADING,
+			0.5f, 1, -0.5f, BlockData.X_SHADING,
+			0.5f, 1, 0.5f, BlockData.X_SHADING,
+			0.5f, 0, 0.5f, BlockData.X_SHADING,
+
+			-0.5f, 0, -0.5f, BlockData.X_SHADING,
+			-0.5f, 0, 0.5f, BlockData.X_SHADING,
+			-0.5f, 1, -0.5f, BlockData.X_SHADING,
+			-0.5f, 1, -0.5f, BlockData.X_SHADING,
+			-0.5f, 0, 0.5f, BlockData.X_SHADING,
+			-0.5f, 1, 0.5f, BlockData.X_SHADING,
+
+			-0.5f, 0, 0.5f, BlockData.Z_SHADING,
+			0.5f, 0, 0.5f, BlockData.Z_SHADING,
+			-0.5f, 1, 0.5f, BlockData.Z_SHADING,
+			0.5f, 0, 0.5f, BlockData.Z_SHADING,
+			0.5f, 1, 0.5f, BlockData.Z_SHADING,
+			-0.5f, 1, 0.5f, BlockData.Z_SHADING,
+
+			-0.5f, 0, -0.5f, BlockData.Z_SHADING,
+			-0.5f, 1, -0.5f, BlockData.Z_SHADING,
+			0.5f, 0, -0.5f, BlockData.Z_SHADING,
+			0.5f, 0, -0.5f, BlockData.Z_SHADING,
+			-0.5f, 1, -0.5f, BlockData.Z_SHADING,
+			0.5f, 1, -0.5f, BlockData.Z_SHADING
 		};
 	}
 }

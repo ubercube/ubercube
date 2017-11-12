@@ -9,6 +9,7 @@ uniform float fogDistance;
 uniform vec4 in_color;
 
 in vec4 v_color;
+in float v_shading;
 in vec3 worldPosition;
 
 void main(void)
@@ -19,5 +20,5 @@ void main(void)
 	if (dist < 0)
 		dist = 0;
 
-	fragColor = mix(v_color, FOG_COLOR, dist);
+	fragColor = mix(vec4(v_color.rgb * v_shading, 1.0), FOG_COLOR, dist);
 }

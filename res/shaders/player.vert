@@ -7,16 +7,19 @@ layout (location = 2) in vec4 in_transform0;
 layout (location = 3) in vec4 in_transform1;
 layout (location = 4) in vec4 in_transform2;
 layout (location = 5) in vec4 in_transform3;
+layout (location = 6) in float in_shading;
 
 uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
 
 out vec4 v_color;
 out vec3 worldPosition;
+out float v_shading;
 
 void main(void)
 {
 	v_color = in_color;
+	v_shading = in_shading;
 	mat4 transform = mat4(in_transform0, in_transform1, in_transform2, in_transform3);
     vec4 modelViewTransform = transform * vec4(in_position, 1.0);
 	worldPosition = (modelViewTransform).xyz;
