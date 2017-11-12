@@ -19,6 +19,7 @@
 
 package fr.veridiangames.client.rendering.renderers.game;
 
+import fr.veridiangames.client.Resource;
 import fr.veridiangames.client.inputs.Input;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.guis.primitives.StaticPrimitive;
@@ -29,6 +30,8 @@ import fr.veridiangames.client.rendering.renderers.game.minimap.MinimapFramebuff
 import fr.veridiangames.client.rendering.renderers.game.physics.ColliderRenderer;
 import fr.veridiangames.client.rendering.shaders.*;
 import fr.veridiangames.client.rendering.textures.FrameBuffer;
+import fr.veridiangames.client.rendering.textures.Texture;
+import fr.veridiangames.client.rendering.textures.TextureLoader;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.maths.Mat4;
 import fr.veridiangames.core.maths.Quat;
@@ -42,6 +45,7 @@ import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerS
 import fr.veridiangames.client.rendering.renderers.game.world.WorldRenderer;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
 /**
  * Created by Marccspro on 3 f�vr. 2016.
@@ -53,13 +57,15 @@ public class GameRenderer
 	private PlayerShader			playerShader;
 	private EntityShader			entityShader;
 	private WorldShader				worldShader;
-	private WeaponShader modelShader;
+	private WeaponShader			modelShader;
 	private EnvSphereShader			envSphereShader;
 	private WeaponFboShader			weaponFboShader;
+	private FramebufferShader		framebufferShader;
+
 	private FrameBuffer				weaponFbo;
+	private FrameBuffer				framebuffer;
 
 	private Gui3DShader 			gui3DShader;
-
 	private PlayerRenderer			playerRenderer;
 	private EntityRenderer			entityRenderer;
 	private ParticleRenderer 		particleRenderer;
@@ -77,16 +83,20 @@ public class GameRenderer
 
 	private boolean					drawColliders;
 
-	public GameRenderer(Ubercube main, GameCore core)
+	private int						samples;
+
+	public GameRenderer(Ubercube main, GameCore core, int samples)
 	{
 		this.core = core;
 
+		this.samples = samples;
 		this.playerShader = new PlayerShader();
 		this.entityShader = new EntityShader();
 		this.worldShader = new WorldShader();
 		this.modelShader = new WeaponShader();
 		this.envSphereShader = new EnvSphereShader();
 		this.weaponFboShader = new WeaponFboShader();
+		this.framebufferShader = new FramebufferShader();
 
 		this.playerRenderer = new PlayerRenderer();
 		this.entityRenderer = new EntityRenderer();
@@ -99,7 +109,6 @@ public class GameRenderer
 
 		this.worldRenderer = new WorldRenderer(core);
 		this.gui3DShader = new Gui3DShader();
-
 
 		this.playerViewport = new PlayerViewport(main.getDisplay(), main);
 
@@ -143,7 +152,37 @@ public class GameRenderer
 
 	public void render()
 	{
+		if (framebuffer == null || Display.getInstance().wasResized())
+		{
+			if (framebuffer != null)
+			{
+				this.framebuffer.destroy();
+				this.framebuffer = null;
+			}
+			this.framebuffer = new FrameBuffer(Display.getInstance().getWidth() * samples, Display.getInstance().getHeight() * samples);
+		}
+
+		framebuffer.bind();
+		glEnable(GL_DEPTH_TEST);
+		glClearColor(221f / 255f, 232f / 255f, 255f / 255f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		renderWorld(playerViewport.getCamera());
+		glDisable(GL_DEPTH_TEST);
+		framebuffer.unbind();
+
+		framebufferShader.bind();
+		framebufferShader.setProjectionMatrix(Mat4.orthographic(Display.getInstance().getWidth(), 0, 0, Display.getInstance().getHeight(), -1, 1));
+
+		glBindTexture(GL_TEXTURE_2D, framebuffer.getColorTextureID());
+		glDisable(GL_CULL_FACE);
+		StaticPrimitive.quadPrimitive().render(framebufferShader,
+			Display.getInstance().getWidth() / 2,
+			Display.getInstance().getHeight() / 2,0,
+			Display.getInstance().getWidth() / 2,
+			-Display.getInstance().getHeight() / 2, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+
 
 		if (weaponFbo == null || Display.getInstance().wasResized())
 		{
@@ -152,13 +191,15 @@ public class GameRenderer
 				this.weaponFbo.destroy();
 				this.weaponFbo = null;
 			}
-			this.weaponFbo = new FrameBuffer(Display.getInstance().getWidth(), Display.getInstance().getHeight());
+			this.weaponFbo = new FrameBuffer(Display.getInstance().getWidth() * samples, Display.getInstance().getHeight() * samples);
 		}
 
 		weaponFbo.bind();
+		glEnable(GL_DEPTH_TEST);
 		glClearColor(0, 0, 0, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		renderPlayer(playerViewport.getCamera());
+		glDisable(GL_DEPTH_TEST);
 		weaponFbo.unbind();
 
 		weaponFboShader.bind();
@@ -170,40 +211,8 @@ public class GameRenderer
 				Display.getInstance().getWidth() / 2,
 				Display.getInstance().getHeight() / 2,0,
 				Display.getInstance().getWidth() / 2,
-				-Display.getInstance().getHeight() / 2, 1);
+				-Display.getInstance().getHeight() / 2, 0);
 		glEnable(GL_CULL_FACE);
-	}
-
-	public void bindEnvMap()
-	{
-		envCubemap.bind();
-		envCamera.getTransform().setLocalPosition(playerViewport.getPlayerHandler().getEnvSpherePos());
-
-		envCubemap.bindSide(0);
-		envCamera.getTransform().setLocalRotation(new Quat(0, 1, 0, 1));
-		renderWorld(envCamera);
-
-		envCubemap.bindSide(1);
-		envCamera.getTransform().setLocalRotation(new Quat(0, -1, 0, 1));
-		renderWorld(envCamera);
-
-		envCubemap.bindSide(2);
-		envCamera.getTransform().setLocalRotation(new Quat(1, 0, 0, 1));
-		renderWorld(envCamera);
-
-		envCubemap.bindSide(3);
-		envCamera.getTransform().setLocalRotation(new Quat(-1, 0, 0, 1));
-		renderWorld(envCamera);
-
-		envCubemap.bindSide(4);
-		envCamera.getTransform().setLocalRotation(new Quat(0, 0, 0, 1));
-		renderWorld(envCamera);
-
-		envCubemap.bindSide(5);
-		envCamera.getTransform().setLocalRotation(new Quat(0, 1, 0, 0));
-		renderWorld(envCamera);
-
-		envCubemap.unbind();
 	}
 
 	public void renderPlayer(Camera camera)

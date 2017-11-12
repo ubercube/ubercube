@@ -21,6 +21,7 @@ package fr.veridiangames.client.rendering;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 import static org.lwjgl.system.MemoryUtil.*;
 
 import java.nio.ByteBuffer;
@@ -77,17 +78,20 @@ public class Display
 			throw new IllegalStateException("Unable to initialize GLFW");
 
 		glfwDefaultWindowHints();
-		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
-		if (SystemUtils.isMac()) {
+		if (SystemUtils.isMac())
+		{
 			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		}
 
-		glfwWindowHint(GLFW_SAMPLES, 4);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_SAMPLES, 1);
 
 		Log.println("glfwCreateWindow...");
 		window = glfwCreateWindow(width, height, title, NULL, NULL);
@@ -121,7 +125,7 @@ public class Display
 
 		Log.println("GL.createCapabilities()...");
 		GL.createCapabilities();
-		
+
 		Renderer.setDX11();
 	}
 
@@ -134,7 +138,7 @@ public class Display
 			destroy();
 			return;
 		}
-		
+
 		glfwPollEvents();
 		glfwSwapBuffers(window);
 
@@ -153,13 +157,13 @@ public class Display
 			aspect = (float)width / (float)height;
 			resized = true;
 		}
-		
+
 		if (resized)
 		{
 			GL11.glViewport(0, 0, width, height);
 		}
 	}
-	
+
 	private void destroy()
 	{
 		glfwDestroyWindow(window);
@@ -223,12 +227,12 @@ public class Display
 	{
 		return title;
 	}
-	
+
 	public void setTitle(String title)
 	{
 		this.title = title;
 	}
-	
+
 	public void displayTitle(String title)
 	{
 		glfwSetWindowTitle(window, title);
@@ -243,12 +247,12 @@ public class Display
 	{
 		return height;
 	}
-	
+
 	public float getAspect()
 	{
 		return aspect;
 	}
-	
+
 	public Input getInput()
 	{
 		return input;

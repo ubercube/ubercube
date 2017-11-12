@@ -32,15 +32,13 @@ import fr.veridiangames.core.game.entities.player.NetworkedPlayer;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.weapons.fireWeapons.WeaponAK47;
 import fr.veridiangames.core.game.entities.weapons.fireWeapons.WeaponAWP;
-import fr.veridiangames.core.maths.Transform;
-import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.maths.*;
 import org.lwjgl.opengl.GL11;
 
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.components.ECRender;
 import fr.veridiangames.core.game.entities.components.ECWeapon;
 import fr.veridiangames.core.game.entities.components.EComponent;
-import fr.veridiangames.core.maths.Mat4;
 import fr.veridiangames.client.rendering.renderers.Renderer;
 import fr.veridiangames.client.rendering.shaders.WeaponShader;
 
@@ -133,7 +131,9 @@ public class EntityWeaponRenderer
 
 	private void renderArm(int weapon, Shader shader, ClientPlayer p)
 	{
-		shader.setModelViewMatrix(p.getEyeTransform().toMatrix());
+		if (p.getWeaponComponent().getWeapon().getArmPosition() == null)
+			return;
+		shader.setModelViewMatrix(p.getWeaponComponent().getWeapon().getArmPosition().toMatrix());
 		OBJModel.FPS_ARM_RENDERER.render();
 	}
 

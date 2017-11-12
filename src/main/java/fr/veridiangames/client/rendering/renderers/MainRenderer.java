@@ -19,23 +19,31 @@
 
 package fr.veridiangames.client.rendering.renderers;
 
+import fr.veridiangames.client.rendering.guis.primitives.StaticPrimitive;
+import fr.veridiangames.client.rendering.shaders.FramebufferShader;
+import fr.veridiangames.client.rendering.textures.FrameBuffer;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.rendering.Display;
 import fr.veridiangames.client.rendering.renderers.game.GameRenderer;
+import fr.veridiangames.core.maths.Mat4;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL11.glEnable;
 
 /**
  * Created by Marccspro on 3 févr. 2016.
  */
 public class MainRenderer
 {
-	private Renderer		renderer;
-	private GameRenderer	gameRenderer;
+	private Renderer			renderer;
+	private GameRenderer		gameRenderer;
 
 	public MainRenderer(Ubercube main, GameCore core)
 	{
 		this.renderer = new Renderer();
-		this.gameRenderer = new GameRenderer(main, core);
+		this.gameRenderer = new GameRenderer(main, core, 2);
 	}
 
 	public void update()
@@ -46,7 +54,6 @@ public class MainRenderer
 	public void renderAll(Display display)
 	{
 		renderer.start();
-		
 		renderer.prepare3D();
 		render();
 

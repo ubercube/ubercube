@@ -27,6 +27,6 @@ void main(void)
 	vec3 eyeDirection = normalize(cameraPosition - worldPosition);
 	vec3 reflectDirection = reflect(-eyeDirection, v_normal);
 	vec4 reflectionColor = textureCube(map, reflectDirection);
-	vec4 finalColor = mix(color, reflectionColor, 0);
+	vec4 finalColor = mix(color, reflectionColor, 0) * 1.2f;
 	fragColor = mix(finalColor, FOG_COLOR, dist);
 }

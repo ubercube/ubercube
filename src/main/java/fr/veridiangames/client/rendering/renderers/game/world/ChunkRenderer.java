@@ -20,6 +20,7 @@
 package fr.veridiangames.client.rendering.renderers.game.world;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
@@ -36,7 +37,7 @@ import fr.veridiangames.client.rendering.buffers.Buffers;
 
 public class ChunkRenderer
 {
-	public static final int	BLOCK_SIZE	= 6 * 4 * (3 + 4 + 3);
+	public static final int	BLOCK_SIZE	= 6 * 6 * (3 + 4 + 3);
 	public static final int	CHUNK_SIZE	= Chunk.SIZE * Chunk.SIZE * Chunk.SIZE;
 
 	private static final int	VERTEX_LOCATION	= 0;
@@ -121,7 +122,7 @@ public class ChunkRenderer
 					float brightness = 1;
 					int size = calcBlock(vertexBuffer, xx, yy, zz, block, brightness, up, down, left, right, front, back);
 					
-					bufferSize += size * 4;
+					bufferSize += size * 6;
 				}
 			}
 		}
@@ -163,9 +164,8 @@ public class ChunkRenderer
 			return;
 		if (!isInViewFrustum)
 			return;
-
 		glBindVertexArray(vao);
-		glDrawArrays(GL_QUADS, 0, bufferSize);
+		glDrawArrays(GL_TRIANGLES, 0, bufferSize);
 		glBindVertexArray(0);
 	}
 
@@ -178,7 +178,8 @@ public class ChunkRenderer
 
 	private int calcBlock(FloatBuffer buffer, int xx, int yy, int zz, int block, float brightness, boolean up, boolean down, boolean left, boolean right, boolean front, boolean back)
 	{
-		float ao = 0.92f;
+		float ao = 0.87f;
+
 		Color4f color = Color4f.getColorFromARGB(block);
 		int size = 0;
 		if (up)

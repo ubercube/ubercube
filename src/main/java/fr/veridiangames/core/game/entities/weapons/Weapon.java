@@ -64,6 +64,8 @@ public abstract class Weapon
 	protected float mouseSpeedOnZoom = 0.5f;
 	protected float previewRotation = 0;
 
+	protected Transform armPosition;
+
 	private String crosshairTexture = TextureID.STD_CROSSHAIR;
 
 	protected int model;
@@ -326,6 +328,16 @@ public abstract class Weapon
 	public void setSound(int s) {
 		this.fireSound = s;
 	};
+
+	public void setArmPosition(Transform armPosition)
+	{
+		this.armPosition = armPosition;
+	}
+
+	public Transform getArmPosition()
+	{
+		return armPosition;
+	}
 
 	public void setMouseSpeedOnZoom(float mouseSpeedOnZoom) {
 		this.mouseSpeedOnZoom = mouseSpeedOnZoom;

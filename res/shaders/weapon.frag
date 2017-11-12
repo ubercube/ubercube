@@ -26,6 +26,6 @@ void main(void)
 	vec4 reflectionColor = textureCube(map, reflectDirection);
 	vec4 weaponColor = v_color;
 	float lightDot = clamp(dot(v_normal, normalize(vec3(1, 1, 1))) + 0.8, 0.8, 1.0);
-	vec4 finalColor = mix(weaponColor, reflectionColor, 0.03) * vec4(lightDot, lightDot, lightDot, 1.0);
-	fragColor = mix(finalColor, FOG_COLOR, dist) * vec4(lightDot, lightDot, lightDot, 1.0) * 1.5;
+	vec4 finalColor = mix(weaponColor, reflectionColor, 0.02) * vec4(lightDot, lightDot, lightDot, 1.0);
+	fragColor = mix(finalColor * 2.0, FOG_COLOR, dist) * vec4(lightDot, lightDot, lightDot, 1.0);
 }

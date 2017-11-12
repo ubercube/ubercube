@@ -42,8 +42,8 @@ public class MinimapChunkRenderer
 
 	public void createBuffer()
 	{
-		positionsBuffer = BufferUtils.createFloatBuffer(Chunk.SIZE * Chunk.SIZE * 4 * 3);
-		colorsBuffer = BufferUtils.createFloatBuffer(Chunk.SIZE * Chunk.SIZE * 4 * 4);
+		positionsBuffer = BufferUtils.createFloatBuffer(Chunk.SIZE * Chunk.SIZE * 6 * 3);
+		colorsBuffer = BufferUtils.createFloatBuffer(Chunk.SIZE * Chunk.SIZE * 6 * 4);
 
 		for (int x = 0; x < Chunk.SIZE; x++)
 		{
@@ -56,6 +56,12 @@ public class MinimapChunkRenderer
 				Color4f c = new Color4f(block);
 
 				positionsBuffer.put(xx).put(zz).put(0);
+				colorsBuffer.put(c.r).put(c.g).put(c.b).put(1f);
+
+				positionsBuffer.put(xx + 1).put(zz).put(0);
+				colorsBuffer.put(c.r).put(c.g).put(c.b).put(1f);
+
+				positionsBuffer.put(xx).put(zz + 1).put(0);
 				colorsBuffer.put(c.r).put(c.g).put(c.b).put(1f);
 
 				positionsBuffer.put(xx + 1).put(zz).put(0);
@@ -99,8 +105,7 @@ public class MinimapChunkRenderer
 
 	public void update()
 	{
-		System.out.println("Updating");
-		colorsBuffer = BufferUtils.createFloatBuffer(Chunk.SIZE * Chunk.SIZE * 4 * 4);
+		colorsBuffer = BufferUtils.createFloatBuffer(Chunk.SIZE * Chunk.SIZE * 6 * 4);
 
 		for (int x = 0; x < Chunk.SIZE; x++)
 		{
@@ -112,6 +117,8 @@ public class MinimapChunkRenderer
 
 				Color4f c = new Color4f(block);
 
+				colorsBuffer.put(c.r).put(c.g).put(c.b).put(1f);
+				colorsBuffer.put(c.r).put(c.g).put(c.b).put(1f);
 				colorsBuffer.put(c.r).put(c.g).put(c.b).put(1f);
 				colorsBuffer.put(c.r).put(c.g).put(c.b).put(1f);
 				colorsBuffer.put(c.r).put(c.g).put(c.b).put(1f);
@@ -131,7 +138,7 @@ public class MinimapChunkRenderer
 	public void render(MinimapShader shader, float scale)
 	{
 		glBindVertexArray(vao);
-		glDrawArrays(GL_QUADS, 0, Chunk.SIZE * Chunk.SIZE * 4);
+		glDrawArrays(GL_TRIANGLES, 0, Chunk.SIZE * Chunk.SIZE * 6);
 		glBindVertexArray(0);
 	}
 }

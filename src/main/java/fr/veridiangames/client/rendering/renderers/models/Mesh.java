@@ -3,6 +3,7 @@ package fr.veridiangames.client.rendering.renderers.models;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -12,7 +13,7 @@ import org.lwjgl.BufferUtils;
 
 public class Mesh {
 	
-	private int vbo, ibo;
+	private int vao, vbo, ibo;
 	
 	private int verticesSize;
 	private int indicesSize;
@@ -25,15 +26,27 @@ public class Mesh {
 		this.verticesSize = verts.length;
 
 		createBuffers(verts, indices);
-		
+
+		vao = Buffers.createVertexArray();
 		vbo = Buffers.createVertexBuffer();
 		ibo = Buffers.createVertexBuffer();
-		
+
+		glBindVertexArray(vao);
+
+		glEnableVertexAttribArray(0); // position
+		glEnableVertexAttribArray(1); // position
+		glEnableVertexAttribArray(2); // normal
+
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, this.vertices, GL_STATIC_DRAW);
+		glVertexAttribPointer(0, 3, GL_FLOAT, false, Vertex.BUFFER_SIZE * 4, 0);
+		glVertexAttribPointer(1, 4, GL_FLOAT, false, Vertex.BUFFER_SIZE * 4, 12);
+		glVertexAttribPointer(2, 3, GL_FLOAT, false, Vertex.BUFFER_SIZE * 4, 28);
 		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, this.indices, GL_STATIC_DRAW);
+
+		glBindVertexArray(0);
 	}
 	
 	public void createBuffers(Vertex[] verts, int[] indices) {
@@ -62,21 +75,9 @@ public class Mesh {
 	}
 	
 	public void render() {
-		glEnableVertexAttribArray(0); // position
-		glEnableVertexAttribArray(1); // position
-		glEnableVertexAttribArray(2); // normal
-
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glVertexAttribPointer(0, 3, GL_FLOAT, false, Vertex.BUFFER_SIZE * 4, 0);
-		glVertexAttribPointer(1, 4, GL_FLOAT, false, Vertex.BUFFER_SIZE * 4, 12);
-		glVertexAttribPointer(2, 3, GL_FLOAT, false, Vertex.BUFFER_SIZE * 4, 28);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+		glBindVertexArray(vao);
 		glDrawElements(GL_TRIANGLES, indicesSize, GL_UNSIGNED_INT, 0);
-		
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
+		glBindVertexArray(0);
 	}
 
 	public int getVerticesSize() {

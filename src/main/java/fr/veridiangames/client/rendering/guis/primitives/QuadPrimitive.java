@@ -63,7 +63,10 @@ public class QuadPrimitive {
 		ibo = glGenBuffers();
 		
 		glBindVertexArray(vao);
-		
+
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, 5 * 4, 0);
@@ -79,13 +82,7 @@ public class QuadPrimitive {
 		shader.setModelViewMatrix(Mat4.translate((int)x, (int)y, (int)z).mul(Mat4.scale((int)xScale, (int)yScale, (int)zScale)));
 
 		glBindVertexArray(vao);
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);			
-				
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 		
 		shader.setModelViewMatrix(Mat4.identity());

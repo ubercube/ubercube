@@ -43,7 +43,7 @@ public class MinimapFramebuffer
 		this.y = y;
 		this.width = w;
 		this.height = h;
-		this.fbo = new FrameBuffer(width, height);
+		this.fbo = new FrameBuffer(width * 2, height * 2);
 		this.fboShader = new MinimapFboShader();
 		this.renderer = new MinimapRenderer(width, height);
 		this.worldShader = new MinimapShader();

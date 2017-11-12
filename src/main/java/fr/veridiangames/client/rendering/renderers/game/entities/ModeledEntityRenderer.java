@@ -68,7 +68,6 @@ public class ModeledEntityRenderer
             shader.setModelViewMatrix(transform.toMatrix().mul(Mat4.scale(1f/16f, 1f/16f, 1f/16f)));
             renderModel(model);
         }
-
         Renderer.bindTextureCube(0);
         glEnable(GL11.GL_CULL_FACE);
     }

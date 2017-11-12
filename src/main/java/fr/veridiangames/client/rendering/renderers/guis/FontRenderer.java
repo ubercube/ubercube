@@ -22,6 +22,7 @@ package fr.veridiangames.client.rendering.renderers.guis;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import java.nio.FloatBuffer;
 
@@ -37,7 +38,7 @@ import fr.veridiangames.client.rendering.shaders.GuiShader;
 import fr.veridiangames.client.rendering.textures.Texture;
 
 public class FontRenderer {
-	private int vbo;
+	private int vao, vbo;
 	private FloatBuffer buffer;
 	private int size;
 	
@@ -52,13 +53,14 @@ public class FontRenderer {
 		this.y = y;
 		this.text = new String(text);
 		
-		size = text.length() * 20;
+		size = text.length() * 6 * 5;
+		vao = Buffers.createVertexArray();
 		vbo = Buffers.createVertexBuffer();
 		createBuffer();
 	}
 	
 	public void setText(String text) {
-		this.size = text.length() * 20;	
+		this.size = text.length() * 6 * 5;
 		if (this.text.length() != text.length()) {
 			this.text = text; 
 			createBuffer();			
@@ -115,10 +117,19 @@ public class FontRenderer {
 		
 		line = 0;
 		buffer.flip();
-		
+
+		glBindVertexArray(vao);
+
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
-		
+		glVertexAttribPointer(0, 3, GL_FLOAT, false, 5*4, 0);
+		glVertexAttribPointer(1, 2, GL_FLOAT, false, 5*4, 12);
+
+		glBindVertexArray(0);
+
 		buffer.clear();
 	}
 	
@@ -134,6 +145,9 @@ public class FontRenderer {
 		
 		float[] data = new float[] {
 			drawX, drawY, 0, TextureSrcX, TextureSrcY,
+			drawX + DrawWidth, drawY, 0, TextureSrcX + RenderWidth, TextureSrcY,
+			drawX, drawY + DrawHeight, 0, TextureSrcX, TextureSrcY + RenderHeight,
+
 			drawX + DrawWidth, drawY, 0, TextureSrcX + RenderWidth, TextureSrcY,
 			drawX + DrawWidth, drawY + DrawHeight, 0, TextureSrcX + RenderWidth, TextureSrcY + RenderHeight,
 			drawX, drawY + DrawHeight, 0, TextureSrcX, TextureSrcY + RenderHeight
@@ -189,43 +203,41 @@ public class FontRenderer {
 		
 		line = 0;
 		buffer.flip();
-		
+
+		glBindVertexArray(vao);
+
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
-		
+		glVertexAttribPointer(0, 3, GL_FLOAT, false, 5*4, 0);
+		glVertexAttribPointer(1, 2, GL_FLOAT, false, 5*4, 12);
+
+		glBindVertexArray(0);
+
 		buffer.clear();
 	}
 	
 	public void render(GuiShader shader, Color4f color, float dropShadow) {
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		font.fontTexture.bind(shader);
-		
+
 		if (dropShadow != 0)
 		{
 			shader.setModelViewMatrix(Mat4.translate(x + dropShadow, y + dropShadow, 0));
 			shader.setColor(0, 0, 0, 0.8f * color.getAlpha());
-			glEnableVertexAttribArray(0);
-			glEnableVertexAttribArray(1);
-			glBindBuffer(GL_ARRAY_BUFFER, vbo);
-			glVertexAttribPointer(0, 3, GL_FLOAT, false, 5*4, 0);
-			glVertexAttribPointer(1, 2, GL_FLOAT, false, 5*4, 12);
-			glDrawArrays(GL_QUADS, 0, text.length() * 4);
-			glEnableVertexAttribArray(1);
-			glEnableVertexAttribArray(0);
+			glBindVertexArray(vao);
+			glDrawArrays(GL_TRIANGLES, 0, text.length() * 6);
+			glBindVertexArray(0);
 		}
 
 		shader.setModelViewMatrix(Mat4.translate(x, y, 0));
 		shader.setColor(color);
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glVertexAttribPointer(0, 3, GL_FLOAT, false, 5*4, 0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, false, 5*4, 12);
-		glDrawArrays(GL_QUADS, 0, text.length() * 4);
-		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(0);
+		glBindVertexArray(vao);
+		glDrawArrays(GL_TRIANGLES, 0, text.length() * 6);
+		glBindVertexArray(0);
 
-		
 		Texture.unbind(shader);
 	}
 	

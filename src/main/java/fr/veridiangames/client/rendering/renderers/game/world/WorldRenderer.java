@@ -80,13 +80,9 @@ public class WorldRenderer
 
 	public void render()
 	{
-		//glBindTexture(GL_TEXTURE_CUBE_MAP, CubeMap.DEFAULT_CUBEMAP.getTexture());
 		for (ChunkRenderer e : chunkRenderers.values())
 		{
 			e.render();
 		}
-		//glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-		
-		//chunkDebug.render(chunks);
 	}
 }

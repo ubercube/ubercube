@@ -23,6 +23,11 @@ import fr.veridiangames.core.utils.Color4f;
 
 public class BlockData
 {
+	public static final float UP_SHADING = 1.0f;
+	public static final float BOTTOM_SHADING = 0.6f;
+	public static final float X_SHADING = 0.7f;
+	public static final float Z_UP_SHADING = 0.8f;
+
 	public static float[] blockDataFront(float x, float y, float z, float brightness, float[] shading, Color4f color) {
 		float s0 = shading[0] * brightness;
 		float s1 = shading[1] * brightness;
@@ -35,10 +40,13 @@ public class BlockData
 		
 		float s = 1;
 		return new float[] {
-			x + s, y, z,				r * 0.9f * s1, g * 0.9f * s1, b * 0.9f * s1, 1,			0, 0, 1,	//1
-			x, y, z,					r * 0.9f * s0, g * 0.9f * s0, b * 0.9f * s0, 1,			0, 0, 1,	//0
-			x, y + s, z,				r * 0.9f * s3, g * 0.9f * s3, b * 0.9f * s3, 1,			0, 0, 1,	//3
-			x + s, y + s, z,			r * 0.9f * s2, g * 0.9f * s2, b * 0.9f * s2, 1,			0, 0, 1	//2
+			x + s, y, z,				r * Z_UP_SHADING * s1, g * Z_UP_SHADING * s1, b * Z_UP_SHADING * s1, 1,			0, 0, 1,	//1
+			x, y, z,					r * Z_UP_SHADING * s0, g * Z_UP_SHADING * s0, b * Z_UP_SHADING * s0, 1,			0, 0, 1,	//0
+			x + s, y + s, z,			r * Z_UP_SHADING * s2, g * Z_UP_SHADING * s2, b * Z_UP_SHADING * s2, 1,			0, 0, 1,	//2
+
+			x, y, z,					r * Z_UP_SHADING * s0, g * Z_UP_SHADING * s0, b * Z_UP_SHADING * s0, 1,			0, 0, 1,	//0
+			x, y + s, z,				r * Z_UP_SHADING * s3, g * Z_UP_SHADING * s3, b * Z_UP_SHADING * s3, 1,			0, 0, 1,	//3
+			x + s, y + s, z,			r * Z_UP_SHADING * s2, g * Z_UP_SHADING * s2, b * Z_UP_SHADING * s2, 1,			0, 0, 1	//2
 		};
 	}
 	
@@ -54,10 +62,13 @@ public class BlockData
 		
 		float s = 1;
 		return new float[] {
-			x, y, z + s,				r * 0.9f * s1, g * 0.9f * s1, b * 0.9f * s1, 1,			0, 0, -1,	 //5
-			x + s, y, z + s,			r * 0.9f * s0, g * 0.9f * s0, b * 0.9f * s0, 1,			0, 0, -1,	 //4	
-			x + s, y + s, z + s,		r * 0.9f * s3, g * 0.9f * s3, b * 0.9f * s3, 1,			0, 0, -1,		//7
-			x, y + s, z + s,			r * 0.9f * s2, g * 0.9f * s2, b * 0.9f * s2, 1,			0, 0, -1		//6
+			x, y, z + s,				r * Z_UP_SHADING * s1, g * Z_UP_SHADING * s1, b * Z_UP_SHADING * s1, 1,			0, 0, -1,	 //5
+			x + s, y, z + s,			r * Z_UP_SHADING * s0, g * Z_UP_SHADING * s0, b * Z_UP_SHADING * s0, 1,			0, 0, -1,	 //4
+			x, y + s, z + s,			r * Z_UP_SHADING * s2, g * Z_UP_SHADING * s2, b * Z_UP_SHADING * s2, 1,			0, 0, -1,		//6
+
+			x + s, y, z + s,			r * Z_UP_SHADING * s0, g * Z_UP_SHADING * s0, b * Z_UP_SHADING * s0, 1,			0, 0, -1,	 //4
+			x + s, y + s, z + s,		r * Z_UP_SHADING * s3, g * Z_UP_SHADING * s3, b * Z_UP_SHADING * s3, 1,			0, 0, -1,		//7
+			x, y + s, z + s,			r * Z_UP_SHADING * s2, g * Z_UP_SHADING * s2, b * Z_UP_SHADING * s2, 1,			0, 0, -1		//6
 		};
 	}
 	
@@ -73,10 +84,13 @@ public class BlockData
 		
 		float s = 1;
 		return new float[] {
-			x, y + s, z,				r * 0.8f * s1, g * 0.8f * s1, b * 0.8f * s1, 1,			-1, 0, 0,		//3
-			x, y, z,					r * 0.8f * s0, g * 0.8f * s0, b * 0.8f * s0, 1,			-1, 0, 0,		//0
-			x, y, z + s,				r * 0.8f * s3, g * 0.8f * s3, b * 0.8f * s3, 1,			-1, 0, 0,		//5
-			x, y + s, z + s,			r * 0.8f * s2, g * 0.8f * s2, b * 0.8f * s2, 1,			-1, 0, 0		//6
+			x, y + s, z,				r * X_SHADING * s1, g * X_SHADING * s1, b * X_SHADING * s1, 1,			-1, 0, 0,		//3
+			x, y, z,					r * X_SHADING * s0, g * X_SHADING * s0, b * X_SHADING * s0, 1,			-1, 0, 0,		//0
+			x, y + s, z + s,			r * X_SHADING * s2, g * X_SHADING * s2, b * X_SHADING * s2, 1,			-1, 0, 0,		//6
+
+			x, y, z,					r * X_SHADING * s0, g * X_SHADING * s0, b * X_SHADING * s0, 1,			-1, 0, 0,		//0
+			x, y, z + s,				r * X_SHADING * s3, g * X_SHADING * s3, b * X_SHADING * s3, 1,			-1, 0, 0,		//5
+			x, y + s, z + s,			r * X_SHADING * s2, g * X_SHADING * s2, b * X_SHADING * s2, 1,			-1, 0, 0		//6
 		};
 	}
 	
@@ -92,10 +106,13 @@ public class BlockData
 		
 		float s = 1;
 		return new float[] {
-			x + s, y, z,				r * 0.8f * s1, g * 0.8f * s1, b * 0.8f * s1, 1,			1, 0, 0,		//1
-			x + s, y + s, z,			r * 0.8f * s0, g * 0.8f * s0, b * 0.8f * s0, 1,			1, 0, 0,	 //2	
-			x + s, y + s, z + s,		r * 0.8f * s3, g * 0.8f * s3, b * 0.8f * s3, 1,			1, 0, 0,		//7
-			x + s, y, z + s,			r * 0.8f * s2, g * 0.8f * s2, b * 0.8f * s2, 1,			1, 0, 0		//4
+			x + s, y, z,				r * X_SHADING * s1, g * X_SHADING * s1, b * X_SHADING * s1, 1,			1, 0, 0,		//1
+			x + s, y + s, z,			r * X_SHADING * s0, g * X_SHADING * s0, b * X_SHADING * s0, 1,			1, 0, 0,	 //2
+			x + s, y, z + s,			r * X_SHADING * s2, g * X_SHADING * s2, b * X_SHADING * s2, 1,			1, 0, 0,		//4
+
+			x + s, y + s, z,			r * X_SHADING * s0, g * X_SHADING * s0, b * X_SHADING * s0, 1,			1, 0, 0,	 //2
+			x + s, y + s, z + s,		r * X_SHADING * s3, g * X_SHADING * s3, b * X_SHADING * s3, 1,			1, 0, 0,		//7
+			x + s, y, z + s,			r * X_SHADING * s2, g * X_SHADING * s2, b * X_SHADING * s2, 1,			1, 0, 0		//4
 		};
 	}
 	
@@ -111,10 +128,13 @@ public class BlockData
 		
 		float s = 1;
 		return new float[] {
-			x, y, z,					r * 0.7f * s1, g * 0.7f * s1, b * 0.7f * s1, 1,			0, -1, 0,		//0
-			x + s, y, z,				r * 0.7f * s0, g * 0.7f * s0, b * 0.7f * s0, 1,			0, -1, 0,	 //1
-			x + s, y, z + s,			r * 0.7f * s3, g * 0.7f * s3, b * 0.7f * s3, 1,			0, -1, 0,	 //4
-			x, y, z + s,				r * 0.7f * s2, g * 0.7f * s2, b * 0.7f * s2, 1,			0, -1, 0	 //5
+			x, y, z,					r * BOTTOM_SHADING * s1, g * BOTTOM_SHADING * s1, b * BOTTOM_SHADING * s1, 1,			0, -1, 0,		//0
+			x + s, y, z,				r * BOTTOM_SHADING * s0, g * BOTTOM_SHADING * s0, b * BOTTOM_SHADING * s0, 1,			0, -1, 0,	 //1
+			x, y, z + s,				r * BOTTOM_SHADING * s2, g * BOTTOM_SHADING * s2, b * BOTTOM_SHADING * s2, 1,			0, -1, 0,	 //5
+
+			x + s, y, z,				r * BOTTOM_SHADING * s0, g * BOTTOM_SHADING * s0, b * BOTTOM_SHADING * s0, 1,			0, -1, 0,	 //1
+			x + s, y, z + s,			r * BOTTOM_SHADING * s3, g * BOTTOM_SHADING * s3, b * BOTTOM_SHADING * s3, 1,			0, -1, 0,	 //4
+			x, y, z + s,				r * BOTTOM_SHADING * s2, g * BOTTOM_SHADING * s2, b * BOTTOM_SHADING * s2, 1,			0, -1, 0	 //5
 		};
 	}
 	
@@ -130,10 +150,13 @@ public class BlockData
 		
 		float s = 1;
 		return new float[] {
-			x + s, y + s, z,			r * 1f * s1, g * 1f * s1, b * 1f * s1, 1,			0, 1, 0,	 //2
-			x, y + s, z,				r * 1f * s0, g * 1f * s0, b * 1f * s0, 1,			0, 1, 0,	 //3
-			x, y + s, z + s, 			r * 1f * s3, g * 1f * s3, b * 1f * s3, 1,			0, 1, 0,	 //6
-			x + s, y + s, z + s,		r * 1f * s2, g * 1f * s2, b * 1f * s2, 1,			0, 1, 0	 //7
+			x + s, y + s, z,			r * UP_SHADING * s1, g * UP_SHADING * s1, b * UP_SHADING * s1, 1,			0, 1, 0,	 //2
+			x, y + s, z,				r * UP_SHADING * s0, g * UP_SHADING * s0, b * UP_SHADING * s0, 1,			0, 1, 0,	 //3
+			x + s, y + s, z + s,		r * UP_SHADING * s2, g * UP_SHADING * s2, b * UP_SHADING * s2, 1,			0, 1, 0,	 //7
+
+			x, y + s, z,				r * UP_SHADING * s0, g * UP_SHADING * s0, b * UP_SHADING * s0, 1,			0, 1, 0,	 //3
+			x, y + s, z + s, 			r * UP_SHADING * s3, g * UP_SHADING * s3, b * UP_SHADING * s3, 1,			0, 1, 0,	 //6
+			x + s, y + s, z + s,		r * UP_SHADING * s2, g * UP_SHADING * s2, b * UP_SHADING * s2, 1,			0, 1, 0	 //7
 		};
 	}
 }

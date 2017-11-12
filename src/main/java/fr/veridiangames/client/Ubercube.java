@@ -45,6 +45,9 @@ import fr.veridiangames.core.utils.Log;
 
 import javax.swing.*;
 
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
+
 /**
  * Created by Marccspro on 28 janv. 2016.
  */

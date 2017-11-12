@@ -38,7 +38,7 @@ public class GuiRotatingWeapon extends GuiComponent
 		super(x, y, w, h, color);
 
 		this.weapon = weapon;
-		this.modelFbo = new FrameBuffer(w, h);
+		this.modelFbo = new FrameBuffer(w * 2, h * 2);
 		this.weaponShader = new WeaponShader();
 
 		this.model = OBJModel.getModel(this.weapon.getModel());

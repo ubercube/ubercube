@@ -19,6 +19,7 @@
 
 package fr.veridiangames.client.main.screens;
 
+import fr.veridiangames.client.Resource;
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.audio.AudioPlayer;
 import fr.veridiangames.client.inputs.Input;
@@ -39,6 +40,7 @@ import fr.veridiangames.core.game.entities.weapons.Weapon;
 import fr.veridiangames.core.game.entities.weapons.explosiveWeapons.WeaponGrenade;
 import fr.veridiangames.core.game.entities.weapons.fireWeapons.FireWeapon;
 import fr.veridiangames.core.utils.Color4f;
+import org.lwjgl.opengl.GL11;
 
 import static fr.veridiangames.client.Resource.getResource;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
@@ -72,6 +74,12 @@ public class PlayerHudScreen extends GuiCanvas
         super(parent);
         this.core = core;
 		this.showCrosshair = core.getGame().getPlayer().getWeaponComponent().getWeapon().getCrosshairTexture() != null;
+
+		GuiPanel vignette = new GuiPanel(0, 0, Display.getInstance().getWidth(), display.getHeight());
+		vignette.setTexture(TextureLoader.loadTexture(Resource.getResource("textures/vignette.png"), GL11.GL_LINEAR, false));
+		vignette.setOrigin(GuiComponent.GuiOrigin.A);
+		vignette.setScaleParent(GuiComponent.GuiScale.SCALED);
+		super.add(vignette);
 
 		headshotLabel = new GuiLabel("HEADSHOT", Display.getInstance().getWidth()/2, display.getHeight()/2/2*3, 25f);
 		headshotLabel.setOrigin(GuiComponent.GuiOrigin.CENTER);
