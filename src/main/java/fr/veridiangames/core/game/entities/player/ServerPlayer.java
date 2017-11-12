@@ -46,6 +46,8 @@ public class ServerPlayer extends Player
 	private int maxGrenades;
 	private int grenadeCount;
 
+	private int currentWeapon;
+
 	private Vec3 onlineVelocity;
 
 	public ServerPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
@@ -62,6 +64,7 @@ public class ServerPlayer extends Player
 		this.maxGrenades = 10;
 		this.grenadeCount = maxGrenades;
 		this.timeSinceSpawn = 0;
+		this.currentWeapon = -1;
 	}
 
 	public boolean applyDamage (int damage, NetworkableServer server)
@@ -218,5 +221,15 @@ public class ServerPlayer extends Player
 	public void setTimeSinceSpawn(int timeSinceSpawn)
 	{
 		this.timeSinceSpawn = timeSinceSpawn;
+	}
+
+	public void setCurrentWeapon(int currentWeapon)
+	{
+		this.currentWeapon = currentWeapon;
+	}
+
+	public int getCurrentWeapon()
+	{
+		return currentWeapon;
 	}
 }

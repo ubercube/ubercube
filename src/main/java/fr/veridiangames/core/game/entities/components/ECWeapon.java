@@ -74,7 +74,7 @@ public class ECWeapon extends EComponent
 		if(this.parent instanceof ClientPlayer)
 			this.weapon.setNet(((ClientPlayer)this.parent).getNet());
 	}
-	
+
 	public void update(GameCore core)
 	{
 		profiler.start();
@@ -108,6 +108,7 @@ public class ECWeapon extends EComponent
 
 	public void setWeaponByID(int weaponId)
 	{
+		System.out.println("Weapon: " + weaponId + "    " + weapon);
 		this.weaponIndex = weaponId;
 		this.weapon.onChange();
 		this.weapon = this.getWeaponManager().get(weaponId);

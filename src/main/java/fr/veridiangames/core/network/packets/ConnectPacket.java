@@ -163,7 +163,7 @@ public class ConnectPacket extends Packet
 				continue;
 			Entity e = server.getCore().getGame().getEntityManager().getEntities().get(id);
 			if (e instanceof Player)
-				server.tcpSend(new EntitySyncPacket((Player) e), address, port);
+				server.tcpSend(new EntitySyncPacket((Player) e, ((ServerPlayer) e).getCurrentWeapon()), address, port);
 		}
 
 		/* Game Mode managment */

@@ -54,6 +54,7 @@ public class TCPSenderThread extends Thread
 				} catch (IOException e) {
 					Log.exception(e);
 					client.close();
+					return;
 				}
 			}
 		}

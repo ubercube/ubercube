@@ -65,6 +65,7 @@ public class BulletHitPlayerPacket extends Packet
         super(BULLET_HIT_PLAYER);
         data.put(packet.playerId);
         data.put(packet.shooterId);
+		data.put(packet.bulletHeight);
         data.put(packet.damage);
         data.put(life);
         data.put(hitable ? 1 : 0);
@@ -89,7 +90,9 @@ public class BulletHitPlayerPacket extends Packet
             return;
 
 		boolean dead;
-        if((bulletHeight- p.getPosition().y) >= 1){
+		System.out.println(bulletHeight - p.getPosition().y);
+        if((bulletHeight - p.getPosition().y) >= 0.813)
+		{
 			dead = p.applyDamage(100, server, shooterId, true);
 		}
 		else

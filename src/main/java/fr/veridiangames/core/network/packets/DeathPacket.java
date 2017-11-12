@@ -70,7 +70,7 @@ public class DeathPacket extends Packet
     {
         this.playerId = buffer.getInt();
         this.shooterId = buffer.getInt();
-        headshot = buffer.getInt();
+        this.headshot = buffer.getInt();
     }
 
     public void process(NetworkableServer server, InetAddress address, int port)
@@ -98,7 +98,6 @@ public class DeathPacket extends Packet
 					client.console(((ECName)e.get(EComponent.NAME)).getName() + " has been killed by " + shooterName + " !");
 				else
 					client.console(((ECName)e.get(EComponent.NAME)).getName() + " has been headshooted by " + shooterName + " !");
-
 		}
         else
             return;
@@ -108,12 +107,12 @@ public class DeathPacket extends Packet
 			if (headshot == 0) {
 				client.log(((ECName) e.get(EComponent.NAME)).getName() + " has been killed by " + shooterName + " !");
 			} else {
-				client.log(((ECName) e.get(EComponent.NAME)).getName() + " has been shooted by " + shooterName + " !");
+				client.log(((ECName) e.get(EComponent.NAME)).getName() + " has been headshooted by " + shooterName + " !");
 			}
 		}
         else
         {
-			if (headshot == 0) {
+			if (headshot != 0) {
 				client.log("Headshooted by " + shooterName + " !");
 			} else {
 				client.log("You died by " + shooterName + " !");
@@ -124,7 +123,7 @@ public class DeathPacket extends Packet
         if (client.getCore().getGame().getEntityManager().getEntities().get(playerId) == null)
             return;
 
-        if(client.getCore().getGame().getPlayer().getID() == shooterId)
+        if(client.getCore().getGame().getPlayer().getID() == shooterId && headshot != 0)
 		{
 			Ubercube.getInstance().getPlayerHudScreen().fireHeadshotHint();
 		}

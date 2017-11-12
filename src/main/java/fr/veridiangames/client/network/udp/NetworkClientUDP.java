@@ -49,15 +49,11 @@ public class NetworkClientUDP implements Runnable
             log("UDP: Connected !");
             new Thread(this, "udp-thread").start();
         }
-        catch (SocketException e)
+        catch (SocketException | UnknownHostException e)
         {
             Log.exception(e);
         }
-        catch (UnknownHostException e)
-        {
-            Log.exception(e);
-        }
-    }
+	}
 
     public void run()
     {

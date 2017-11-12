@@ -42,6 +42,7 @@ public class RemoteClientSender extends Thread
 				} catch (IOException e) {
 					Log.exception(e);
 					client.stop();
+					return;
 				}
 			}
 		}

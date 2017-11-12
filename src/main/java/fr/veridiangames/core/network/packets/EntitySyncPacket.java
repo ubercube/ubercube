@@ -39,13 +39,14 @@ public class EntitySyncPacket extends Packet
 	private String name;
 	private Vec3 position;
 	private Quat rotation;
-	
+	private int weaponID;
+
 	public EntitySyncPacket()
 	{
 		super(ENTITY_SYNC);
 	}
 	
-	public EntitySyncPacket(Player player)
+	public EntitySyncPacket(Player player, int weaponID)
 	{
 		super(ENTITY_SYNC);
 		data.put(player.getID());
@@ -59,6 +60,8 @@ public class EntitySyncPacket extends Packet
 		data.put(player.getRotation().y);
 		data.put(player.getRotation().z);
 		data.put(player.getRotation().w);
+
+		data.put(weaponID);
 		
 		data.flip();
 	}
@@ -77,6 +80,8 @@ public class EntitySyncPacket extends Packet
 		data.put(packet.rotation.y);
 		data.put(packet.rotation.z);
 		data.put(packet.rotation.w);
+
+		data.put(packet.weaponID);
 		
 		data.flip();
 	}
@@ -87,6 +92,7 @@ public class EntitySyncPacket extends Packet
 		name = data.getString();
 		position = new Vec3(data.getFloat(), data.getFloat(), data.getFloat());
 		rotation = new Quat(data.getFloat(), data.getFloat(), data.getFloat(), data.getFloat());
+		weaponID = data.getInt();
 	}
 
 	public void process(NetworkableServer server, InetAddress address, int port)
@@ -96,6 +102,12 @@ public class EntitySyncPacket extends Packet
 	public void process(NetworkableClient client, InetAddress address, int port)
 	{
 		if (client.getCore().getGame().getPlayer().getID() != id)
-			client.getCore().getGame().spawn(new NetworkedPlayer(id, name, position, rotation, address.getHostName(), port));
+		{
+			NetworkedPlayer p = new NetworkedPlayer(id, name, position, rotation, address.getHostName(), port);
+			p.init(client.getCore());
+			p.getWeaponComponent().setWeaponByID(weaponID);
+
+			client.getCore().getGame().spawn(p);
+		}
 	}
 }
