@@ -4,6 +4,7 @@
 
 out vec4 fragColor;
 uniform samplerCube map;
+uniform sampler2D shadowMap;
 uniform vec3 cameraPosition;
 uniform float fogDistance;
 uniform vec4 in_color;
@@ -11,6 +12,19 @@ uniform vec4 in_color;
 in vec3 v_color;
 in vec3 v_normal;
 in vec3 worldPosition;
+in vec4 lightPosition;
+
+float calcShadowFactor(vec4 lightPosition)
+{
+    vec3 projCoords = lightPosition.xyz / lightPosition.w;
+    projCoords = projCoords * 0.5 + 0.5;
+    float closestDepth = texture(shadowMap, projCoords.xy).r;
+    float currentDepth = projCoords.z;
+
+    if (currentDepth - 0.00001 > closestDepth)
+    	return 0.5;
+    return 1.0;
+}
 
 void main(void)
 {
@@ -27,6 +41,7 @@ void main(void)
 	vec3 eyeDirection = normalize(cameraPosition - worldPosition);
 	vec3 reflectDirection = reflect(-eyeDirection, v_normal);
 	vec4 reflectionColor = textureCube(map, reflectDirection);
-	vec4 finalColor = mix(color, reflectionColor, 0) * 1.2f;
+	float shadowFactor = calcShadowFactor(lightPosition);
+	vec4 finalColor = mix(color, reflectionColor, 0) * 1.2f * vec4(shadowFactor, shadowFactor, shadowFactor, 1.0);
 	fragColor = mix(finalColor, FOG_COLOR, dist);
 }

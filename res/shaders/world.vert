@@ -7,10 +7,12 @@ layout (location = 2) in vec3 in_normal;
 
 uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
+uniform mat4 lightMatrix;
 
 out vec3 v_color;
 out vec3 v_normal;
 out vec3 worldPosition;
+out vec4 lightPosition;
 
 void main(void)
 {
@@ -18,5 +20,6 @@ void main(void)
 	v_normal = in_normal;
     vec4 modelViewTransform = modelViewMatrix * vec4(in_position, 1.0);
 	worldPosition = (modelViewTransform).xyz;
+	lightPosition = lightMatrix * modelViewTransform;
 	gl_Position = projectionMatrix * modelViewTransform;
 }

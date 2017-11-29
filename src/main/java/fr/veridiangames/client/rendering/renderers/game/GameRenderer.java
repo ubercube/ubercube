@@ -28,6 +28,7 @@ import fr.veridiangames.client.rendering.renderers.game.entities.particles.Parti
 import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerNameRenderer;
 import fr.veridiangames.client.rendering.renderers.game.minimap.MinimapFramebuffer;
 import fr.veridiangames.client.rendering.renderers.game.physics.ColliderRenderer;
+import fr.veridiangames.client.rendering.renderers.game.sun.SunShadowMap;
 import fr.veridiangames.client.rendering.shaders.*;
 import fr.veridiangames.client.rendering.textures.FrameBuffer;
 import fr.veridiangames.client.rendering.textures.Texture;
@@ -43,9 +44,10 @@ import fr.veridiangames.client.rendering.renderers.game.entities.EntityWeaponRen
 import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerRenderer;
 import fr.veridiangames.client.rendering.renderers.game.entities.players.PlayerSelectionRenderer;
 import fr.veridiangames.client.rendering.renderers.game.world.WorldRenderer;
+import fr.veridiangames.core.maths.Vec3;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
+import static org.lwjgl.opengl.GL13.*;
 
 /**
  * Created by Marccspro on 3 f�vr. 2016.
@@ -61,6 +63,7 @@ public class GameRenderer
 	private EnvSphereShader			envSphereShader;
 	private WeaponFboShader			weaponFboShader;
 	private FramebufferShader		framebufferShader;
+	private ShadowShader			shadowShader;
 
 	private FrameBuffer				weaponFbo;
 	private FrameBuffer				framebuffer;
@@ -94,6 +97,7 @@ public class GameRenderer
 		this.envSphereShader = new EnvSphereShader();
 		this.weaponFboShader = new WeaponFboShader();
 		this.framebufferShader = new FramebufferShader();
+		this.shadowShader = new ShadowShader();
 
 		this.playerRenderer = new PlayerRenderer();
 		this.entityRenderer = new EntityRenderer();
@@ -165,7 +169,7 @@ public class GameRenderer
 		camera.setNear(0.1f);
 	}
 
-	public void renderWorld(Camera camera)
+	public void renderWorld(Camera camera, SunShadowMap sun, int shadowMap)
 	{
 		/* ***** RENDERING PLAYER ENTITIES ***** */
 		playerShader.bind();
@@ -238,10 +242,15 @@ public class GameRenderer
 		worldShader.setShaderBase(
 				camera.getProjectionMatrix(),
 				camera.getTransform().getPosition(),
-				core.getGame().getData().getViewDistance()
+				core.getGame().getData().getViewDistance(),
+				sun.getSun().getLightMatrix()
 		);
 		worldShader.setModelViewMatrix(Mat4.identity());
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, shadowMap);
 		worldRenderer.render();
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glActiveTexture(GL_TEXTURE0);
 		playerSelectionRenderer.render(worldShader);
 
 		/* ***** RENDERING BILLBOARDED TEXT ***** */
@@ -252,6 +261,31 @@ public class GameRenderer
 				gui3DShader,
 				camera
 		);
+	}
+
+	public void renderShadowMap(Mat4 projectionMatrix)
+	{
+		/* ***** RENDERING PLAYER ENTITIES ***** */
+		shadowShader.bind();
+		shadowShader.setProjectionMatrix(projectionMatrix);
+		shadowShader.setModelViewMatrix(Mat4.identity());
+		playerRenderer.render();
+
+		/* ***** RENDERING WEAPONS AND MODELS ***** */
+		shadowShader.bind();
+		shadowShader.setProjectionMatrix(projectionMatrix);
+		modeledEntityRenderer.render(
+			shadowShader,
+			envCubemap.getCubemap(),
+			core.getGame().getEntityManager().getEntities(),
+			core.getGame().getEntityManager().getRenderableEntites()
+		);
+
+		/* ***** RENDERING THE WORLD ***** */
+		shadowShader.bind();
+		shadowShader.setProjectionMatrix(projectionMatrix);
+		shadowShader.setModelViewMatrix(Mat4.identity());
+		worldRenderer.render();
 	}
 
 	public GameCore getGameCore()

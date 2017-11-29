@@ -25,25 +25,23 @@ import fr.veridiangames.core.maths.Vec3;
 /**
  * Created by Marccspro on 8 f�vr. 2016.
  */
-public class WorldShader extends Shader
+public class ShadowShader extends Shader
 {
-	public static final String VERTEX_PATH = "/world.vert";
-	public static final String FRAGMENT_PATH = "/world.frag";
+	public static final String VERTEX_PATH = "/shadow.vert";
+	public static final String FRAGMENT_PATH = "/shadow.frag";
 
 	private int projectionMatrixLocation;
 	private int modelViewMatrixLocation;
 	private int cameraPositionLocation;
 	private int colorLocation;
 	private int fogDistanceLocation;
-	private int shadowMapLocation;
-	private int sunMatrixLocation;
 
-	public WorldShader()
+	public ShadowShader()
 	{
 		super(VERTEX_PATH, FRAGMENT_PATH);
 	}
-	
-	public WorldShader(String vertexPath, String fragmentPath)
+
+	public ShadowShader(String vertexPath, String fragmentPath)
 	{
 		super(vertexPath, fragmentPath);
 	}
@@ -55,8 +53,6 @@ public class WorldShader extends Shader
 		cameraPositionLocation = super.getUniformLocation("cameraPosition");
 		colorLocation = super.getUniformLocation("in_color");
 		fogDistanceLocation = super.getUniformLocation("fogDistance");
-		shadowMapLocation = super.getUniformLocation("shadowMap");
-		sunMatrixLocation = super.getUniformLocation("lightMatrix");
 	}
 
 	protected void bindAttributeLocations()
@@ -66,15 +62,12 @@ public class WorldShader extends Shader
 		super.bindAttribLocation(2, "in_normal");
 	}
 
-	public void setShaderBase(Mat4 projectionMatrix, Vec3 cameraPosition, float fogDistance, Mat4 sunMatrix)
+	public void setShaderBase(Mat4 projectionMatrix, Vec3 cameraPosition, float fogDistance)
 	{
 		this.setProjectionMatrix(projectionMatrix);
 		this.setCameraPosition(cameraPosition);
 		this.setFogDistance(fogDistance);
-		this.loadMat4(sunMatrixLocation, sunMatrix);
-		this.loadInt(shadowMapLocation, 1);
 		this.setColor(-1, -1, -1, -1);
-
 	}
 
 	public void setProjectionMatrix(Mat4 projectionMatrix)
