@@ -13,6 +13,7 @@ in vec3 v_color;
 in vec3 v_normal;
 in vec3 worldPosition;
 in vec4 lightPosition;
+in float shadowDist;
 
 float calcShadowFactor(vec4 lightPosition)
 {
@@ -21,8 +22,8 @@ float calcShadowFactor(vec4 lightPosition)
     float closestDepth = texture(shadowMap, projCoords.xy).r;
     float currentDepth = projCoords.z;
 
-    if (currentDepth - 0.00001 > closestDepth)
-    	return 0.5;
+    if (currentDepth - 0.0001 > closestDepth)
+    	return 1.0 - shadowDist * 0.5;
     return 1.0;
 }
 
@@ -42,6 +43,7 @@ void main(void)
 	vec3 reflectDirection = reflect(-eyeDirection, v_normal);
 	vec4 reflectionColor = textureCube(map, reflectDirection);
 	float shadowFactor = calcShadowFactor(lightPosition);
-	vec4 finalColor = mix(color, reflectionColor, 0) * 1.2f * vec4(shadowFactor, shadowFactor, shadowFactor, 1.0);
+	vec4 shadow = vec4(shadowFactor, shadowFactor, shadowFactor, 1.0);
+	vec4 finalColor = mix(color, reflectionColor, 0) * 1.2f * shadow;
 	fragColor = mix(finalColor, FOG_COLOR, dist);
 }

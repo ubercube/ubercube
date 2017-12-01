@@ -1,5 +1,6 @@
 package fr.veridiangames.client.rendering.renderers.game.sun;
 
+import fr.veridiangames.client.rendering.player.PlayerViewport;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.player.Player;
 
@@ -14,10 +15,9 @@ public class SunShadowMap
 		this.sun = new SunViewport(core);
 	}
 
-	public void update()
+	public void update(PlayerViewport playerViewport)
 	{
-		Player player = core.getGame().getPlayer();
-		sun.update(player);
+		sun.update(playerViewport);
 	}
 
 	public void render()

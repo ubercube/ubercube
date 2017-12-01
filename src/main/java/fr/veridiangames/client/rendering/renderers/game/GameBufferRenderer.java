@@ -49,7 +49,7 @@ public class GameBufferRenderer
 	public void update()
 	{
 		gameRenderer.update();
-		sunShadowMap.update();
+		sunShadowMap.update(gameRenderer.getPlayerViewport());
 	}
 
 	public void render()
@@ -113,19 +113,6 @@ public class GameBufferRenderer
 		gameRenderer.renderShadowMap(sunShadowMap.getSun().getLightMatrix());
 		glDisable(GL_DEPTH_TEST);
 		shadowFbo.unbind();
-
-		framebufferShader.bind();
-		framebufferShader.setProjectionMatrix(Mat4.orthographic(Display.getInstance().getWidth(), 0, 0, Display.getInstance().getHeight(), -1, 1));
-		framebufferShader.setColor(Color4f.WHITE);
-
-		glBindTexture(GL_TEXTURE_2D, shadowFbo.getDepthTextureID());
-		glDisable(GL_CULL_FACE);
-		StaticPrimitive.quadPrimitive().render(framebufferShader,
-			400 / 2,
-			400 / 2,0,
-			400 / 2,
-			-400 / 2, 0);
-		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	private void renderClientView()
@@ -149,6 +136,19 @@ public class GameBufferRenderer
 			Display.getInstance().getWidth() / 2,
 			-Display.getInstance().getHeight() / 2, 0);
 		glEnable(GL_CULL_FACE);
+
+//		framebufferShader.bind();
+//		framebufferShader.setProjectionMatrix(Mat4.orthographic(Display.getInstance().getWidth(), 0, 0, Display.getInstance().getHeight(), -1, 1));
+//		framebufferShader.setColor(Color4f.WHITE);
+//
+//		glBindTexture(GL_TEXTURE_2D, shadowFbo.getDepthTextureID());
+//		glDisable(GL_CULL_FACE);
+//		StaticPrimitive.quadPrimitive().render(framebufferShader,
+//			400 / 2,
+//			400 / 2,0,
+//			400 / 2,
+//			-400 / 2, 0);
+//		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	public void setSamples(int samples)
