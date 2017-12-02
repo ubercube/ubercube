@@ -169,7 +169,7 @@ public class GameRenderer
 		camera.setNear(0.1f);
 	}
 
-	public void renderWorld(Camera camera, SunShadowMap sun, int shadowMap)
+	public void renderWorld(Camera camera, SunShadowMap sun)
 	{
 		/* ***** RENDERING PLAYER ENTITIES ***** */
 		playerShader.bind();
@@ -242,12 +242,11 @@ public class GameRenderer
 		worldShader.setShaderBase(
 				camera.getProjectionMatrix(),
 				camera.getTransform().getPosition(),
-				core.getGame().getData().getViewDistance(),
-				sun.getSun().getLightMatrix()
+				core.getGame().getData().getViewDistance()
+//				sun.getSun().getLightMatrix()
 		);
+		worldShader.setShadowMapData(sun);
 		worldShader.setModelViewMatrix(Mat4.identity());
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, shadowMap);
 		worldRenderer.render();
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glActiveTexture(GL_TEXTURE0);

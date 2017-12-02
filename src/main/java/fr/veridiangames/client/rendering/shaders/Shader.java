@@ -68,42 +68,42 @@ public abstract class Shader
 
 	protected void bindAttribLocation(int loc, String name) { glBindAttribLocation(program, loc, name); }
 
-	protected void loadInt(int location, int v)
+	public void loadInt(int location, int v)
 	{
 		glUniform1i(location, v);
 	}
 
-	protected void loadFloat(int location, float v)
+	public void loadFloat(int location, float v)
 	{
 		glUniform1f(location, v);
 	}
 
-	protected void loadVec2(int location, Vec2 v)
+	public void loadVec2(int location, Vec2 v)
 	{
 		glUniform2f(location, v.x, v.y);
 	}
 
-	protected void loadVec3(int location, Vec3 v)
+	public void loadVec3(int location, Vec3 v)
 	{
 		glUniform3f(location, v.x, v.y, v.z);
 	}
 
-	protected void load2f(int location, float x, float y)
+	public void load2f(int location, float x, float y)
 	{
 		glUniform2f(location, x, y);
 	}
 
-	protected void load3f(int location, float x, float y, float z)
+	public void load3f(int location, float x, float y, float z)
 	{
 		glUniform3f(location, x, y, z);
 	}
 
-	protected void load4f(int location, float x, float y, float z, float w)
+	public void load4f(int location, float x, float y, float z, float w)
 	{
 		glUniform4f(location, x, y, z, w);
 	}
 
-	protected void loadMat4(int location, Mat4 v)
+	public void loadMat4(int location, Mat4 v)
 	{
 		glUniformMatrix4fv(location, true, BufferUtil.toMatrixBuffer(v));
 	}

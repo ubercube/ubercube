@@ -19,8 +19,14 @@
 
 package fr.veridiangames.client.rendering.shaders;
 
+import fr.veridiangames.client.rendering.renderers.game.sun.SunShadowMap;
 import fr.veridiangames.core.maths.Mat4;
 import fr.veridiangames.core.maths.Vec3;
+
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 /**
  * Created by Marccspro on 8 f�vr. 2016.
@@ -37,6 +43,7 @@ public class WorldShader extends Shader
 	private int fogDistanceLocation;
 	private int shadowMapLocation;
 	private int sunMatrixLocation;
+	private int shadowCascadeDistancesLocation;
 
 	public WorldShader()
 	{
@@ -57,6 +64,7 @@ public class WorldShader extends Shader
 		fogDistanceLocation = super.getUniformLocation("fogDistance");
 		shadowMapLocation = super.getUniformLocation("shadowMap");
 		sunMatrixLocation = super.getUniformLocation("lightMatrix");
+		shadowCascadeDistancesLocation = super.getUniformLocation("shadowCascadeDistances");
 	}
 
 	protected void bindAttributeLocations()
@@ -66,15 +74,32 @@ public class WorldShader extends Shader
 		super.bindAttribLocation(2, "in_normal");
 	}
 
-	public void setShaderBase(Mat4 projectionMatrix, Vec3 cameraPosition, float fogDistance, Mat4 sunMatrix)
+	public void setShaderBase(Mat4 projectionMatrix, Vec3 cameraPosition, float fogDistance)
 	{
 		this.setProjectionMatrix(projectionMatrix);
 		this.setCameraPosition(cameraPosition);
 		this.setFogDistance(fogDistance);
-		this.loadMat4(sunMatrixLocation, sunMatrix);
 		this.loadInt(shadowMapLocation, 1);
 		this.setColor(-1, -1, -1, -1);
 
+	}
+
+	public void setShadowMapData(SunShadowMap shadow)
+	{
+		int i = 0;
+		while (i < shadow.getSun().getCascadesCount())
+		{
+			super.loadMat4(super.getUniformLocation("lightMatrix[" + i + "]"), shadow.getSun().getLightMatrix()[i]);
+			super.loadFloat(super.getUniformLocation("shadowCascadeDistances[" + i + "]"), shadow.getSun().getShadowSascadeDistances()[i]);
+			super.loadInt(super.getUniformLocation("shadowMap[" + i + "]"), i + 1);
+			i++;
+		}
+		super.loadFloat(super.getUniformLocation("shadowCascadeDistances[" + i + "]"), shadow.getSun().getShadowSascadeDistances()[i]);
+		for (i = 0; i < shadow.getSun().getCascadesCount(); i++)
+		{
+			glActiveTexture(GL_TEXTURE1 + i);
+			glBindTexture(GL_TEXTURE_2D, shadow.getShadowMaps()[i].getDepthTextureID());
+		}
 	}
 
 	public void setProjectionMatrix(Mat4 projectionMatrix)
@@ -103,7 +128,5 @@ public class WorldShader extends Shader
 	}
 
 	public void setUseTexture(boolean useTexture)
-	{
-		
-	}
+	{}
 }

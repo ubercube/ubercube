@@ -63,7 +63,7 @@ public class World
 		this.chunks = new HashMap<Integer, Chunk>();
 		this.chunkGarbage = new ArrayList<Integer>();
 		this.modifiedBlocks = new ArrayList<Vec4i>();
-		this.sunDirection = new Vec3(1, 1, 1).normalize();
+		this.sunDirection = new Vec3(1, -1.5f, 1f).normalize();
 		this.generated = false;
 
 		this.initWorldData();
