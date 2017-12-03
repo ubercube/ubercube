@@ -280,6 +280,16 @@ public class GameRenderer
 			core.getGame().getEntityManager().getRenderableEntites()
 		);
 
+		/* ***** RENDERING PARTICLES ***** */
+		entityShader.bind();
+		entityShader.setProjectionMatrix(projectionMatrix);
+		entityShader.setModelViewMatrix(Mat4.identity());
+		particleRenderer.render(
+			entityShader,
+			core.getGame().getEntityManager().getEntities(),
+			core.getGame().getEntityManager().getParticleEntities()
+		);
+
 		/* ***** RENDERING THE WORLD ***** */
 		shadowShader.bind();
 		shadowShader.setProjectionMatrix(projectionMatrix);

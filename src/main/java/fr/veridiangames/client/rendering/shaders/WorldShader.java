@@ -19,6 +19,7 @@
 
 package fr.veridiangames.client.rendering.shaders;
 
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.rendering.renderers.game.sun.SunShadowMap;
 import fr.veridiangames.core.maths.Mat4;
 import fr.veridiangames.core.maths.Vec3;
@@ -86,6 +87,10 @@ public class WorldShader extends Shader
 
 	public void setShadowMapData(SunShadowMap shadow)
 	{
+		boolean renderShadows = Ubercube.getInstance().getMainRenderer().getGameBufferRenderer().isRenderShadows();
+		super.loadInt(super.getUniformLocation("isShadows"), renderShadows ? 1 : 0);
+		if (!renderShadows)
+			return;
 		int i = 0;
 		while (i < shadow.getSun().getCascadesCount())
 		{

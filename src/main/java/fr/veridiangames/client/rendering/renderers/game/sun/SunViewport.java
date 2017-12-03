@@ -39,7 +39,7 @@ public class SunViewport
 		Camera playerCam = playerViewport.getCamera();
 
 		Mat4 camViewMatrix = playerCam.getViewMatrix();
-		Mat4 camInversedViewMatrix = Mat4.invert(camViewMatrix, new Mat4());
+		Mat4 camInversedViewMatrix = Mat4.invert(camViewMatrix, null);
 
 		rotation = Mat4.rotate(direction, new Vec3(0, 1, 0));
 
@@ -92,12 +92,12 @@ public class SunViewport
 			}
 
 			Mat4 projection = Mat4.orthographic(
-				maxX,
-				minX,
-				maxY,
-				minY,
-				maxZ + 20,
-				minZ - 20);
+				maxX + 2,
+				minX - 2,
+				maxY + 2,
+				minY - 2,
+				maxZ + 10,
+				minZ - 10);
 
 			lightMatrix[i] = projection.mul(rotation);
 		}

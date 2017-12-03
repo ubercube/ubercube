@@ -35,6 +35,8 @@ public class GameBufferRenderer
 	private int						samples;
 	private int						lastSamples;
 
+	private boolean					renderShadows;
+
 	public GameBufferRenderer(Ubercube main, GameCore core, int samples)
 	{
 		this.samples = samples;
@@ -42,6 +44,7 @@ public class GameBufferRenderer
 		this.weaponFboShader = new WeaponFboShader();
 		this.framebufferShader = new FramebufferShader();
 		this.sunShadowMap = new SunShadowMap(core);
+		this.renderShadows = true;
 	}
 
 	public void update()
@@ -53,7 +56,8 @@ public class GameBufferRenderer
 	public void render()
 	{
 		updatedFramebuffers();
-		renderShadows();
+		if (renderShadows)
+			renderShadows();
 		renderWorld();
 		renderClientView();
 	}
@@ -130,29 +134,21 @@ public class GameBufferRenderer
 			-Display.getInstance().getHeight() / 2, 0);
 		glEnable(GL_CULL_FACE);
 
-
-
-		framebufferShader.bind();
-		framebufferShader.setProjectionMatrix(Mat4.orthographic(Display.getInstance().getWidth(), 0, 0, Display.getInstance().getHeight(), -1, 1));
-		framebufferShader.setColor(Color4f.WHITE);
-
-		glBindTexture(GL_TEXTURE_2D, sunShadowMap.getShadowMaps()[0].getDepthTextureID());
-		glDisable(GL_CULL_FACE);
-		StaticPrimitive.quadPrimitive().render(framebufferShader,
-			200 / 2,
-			200 / 2,0,
-			200 / 2,
-			-200 / 2, 0);
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		glBindTexture(GL_TEXTURE_2D, sunShadowMap.getShadowMaps()[1].getDepthTextureID());
-		glDisable(GL_CULL_FACE);
-		StaticPrimitive.quadPrimitive().render(framebufferShader,
-			200 / 2,
-			200 / 2 + 200,0,
-			200 / 2,
-			-200 / 2, 0);
-		glBindTexture(GL_TEXTURE_2D, 0);
+//		framebufferShader.bind();
+//		framebufferShader.setProjectionMatrix(Mat4.orthographic(Display.getInstance().getWidth(), 0, 0, Display.getInstance().getHeight(), -1, 1));
+//		framebufferShader.setColor(Color4f.WHITE);
+//		if (renderShadows)
+//			for (int i = 0; i < sunShadowMap.getSun().getCascadesCount(); i++)
+//			{
+//				glBindTexture(GL_TEXTURE_2D, sunShadowMap.getShadowMaps()[i].getDepthTextureID());
+//				glDisable(GL_CULL_FACE);
+//				StaticPrimitive.quadPrimitive().render(framebufferShader,
+//					200 / 2,
+//					200 / 2 + 200 * i,0,
+//					200 / 2,
+//					-200 / 2, 0);
+//				glBindTexture(GL_TEXTURE_2D, 0);
+//			}
 	}
 
 	public void setSamples(int samples)
@@ -163,5 +159,13 @@ public class GameBufferRenderer
 	public int getSamples()
 	{
 		return samples;
+	}
+
+	public boolean isRenderShadows() {
+		return renderShadows;
+	}
+
+	public void setRenderShadows(boolean renderShadows) {
+		this.renderShadows = renderShadows;
 	}
 }

@@ -4,7 +4,6 @@
 #define SHADOW_CASCADE_COUNT 3
 
 out vec4 fragColor;
-uniform samplerCube map;
 uniform sampler2D shadowMap[SHADOW_CASCADE_COUNT];
 uniform vec3 cameraPosition;
 uniform float fogDistance;
@@ -14,9 +13,10 @@ uniform float shadowCascadeDistances[SHADOW_CASCADE_COUNT + 1];
 in vec3 v_color;
 in vec3 v_normal;
 in vec3 worldPosition;
-in vec4 lightPosition[SHADOW_CASCADE_COUNT];
+in vec4 lightPositions[SHADOW_CASCADE_COUNT];
 in float shadowDist;
 in float zDist;
+in flat int renderShadows;
 
 int getShadowCascadeID(float[SHADOW_CASCADE_COUNT + 1] cascadDistances, float dist)
 {
@@ -28,14 +28,14 @@ int getShadowCascadeID(float[SHADOW_CASCADE_COUNT + 1] cascadDistances, float di
 	return SHADOW_CASCADE_COUNT - 1;
 }
 
-float calcShadowFactor(vec4[SHADOW_CASCADE_COUNT] lightPositions, float[SHADOW_CASCADE_COUNT + 1] cascadDistances, float dist)
+float calcShadowFactor(vec4[SHADOW_CASCADE_COUNT] lightPos, float[SHADOW_CASCADE_COUNT + 1] cascadDistances, float dist)
 {
 	int shadowMapID = getShadowCascadeID(cascadDistances, dist);
-
-	vec4 lightPosition = lightPositions[shadowMapID];
+	vec4 lightPosition = lightPos[shadowMapID];
 
     vec3 projCoords = lightPosition.xyz / lightPosition.w;
     projCoords = projCoords * 0.5 + 0.5;
+
     float closestDepth = texture(shadowMap[shadowMapID], projCoords.xy).r;
     float currentDepth = projCoords.z;
 
@@ -59,11 +59,12 @@ void main(void)
 	if (in_color != vec4(-1, -1, -1, -1))
 		color = in_color;
 
-	vec3 eyeDirection = normalize(cameraPosition - worldPosition);
-	vec3 reflectDirection = reflect(-eyeDirection, v_normal);
-	vec4 reflectionColor = textureCube(map, reflectDirection);
-	float shadowFactor = calcShadowFactor(lightPosition, shadowCascadeDistances, zDist);
-	vec4 shadow = vec4(shadowFactor, shadowFactor, shadowFactor, 1.0);
-	vec4 finalColor = mix(color, reflectionColor, 0) * 1.2f * shadow;
+	vec4 shadow = vec4(1, 1, 1, 1);
+	if (renderShadows == 1)
+	{
+		float shadowFactor = calcShadowFactor(lightPositions, shadowCascadeDistances, zDist);
+		shadow = vec4(shadowFactor, shadowFactor, shadowFactor, 1.0);
+	}
+	vec4 finalColor = color * 1.2f * shadow;
 	fragColor = mix(finalColor, FOG_COLOR, dist);
 }
