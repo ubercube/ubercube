@@ -18,7 +18,7 @@ out vec3 worldPosition;
 out vec4 lightPositions[SHADOW_CASCADE_COUNT];
 out float shadowDist;
 out float zDist;
-out int renderShadows;
+out float renderShadows;
 
 void main(void)
 {
@@ -26,7 +26,7 @@ void main(void)
 	v_normal = in_normal;
     vec4 modelViewTransform = modelViewMatrix * vec4(in_position, 1.0);
 	worldPosition = (modelViewTransform).xyz;
-	renderShadows = isShadows;
+	renderShadows = isShadows == 1 ? 10 : 0;
 
 	if (isShadows == 1)
 		for (int i = 0; i < SHADOW_CASCADE_COUNT; i++)

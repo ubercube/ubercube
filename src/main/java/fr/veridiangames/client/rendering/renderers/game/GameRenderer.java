@@ -265,9 +265,9 @@ public class GameRenderer
 	public void renderShadowMap(Mat4 projectionMatrix)
 	{
 		/* ***** RENDERING PLAYER ENTITIES ***** */
-		shadowShader.bind();
-		shadowShader.setProjectionMatrix(projectionMatrix);
-		shadowShader.setModelViewMatrix(Mat4.identity());
+		playerShader.bind();
+		playerShader.setProjectionMatrix(projectionMatrix);
+		playerShader.setModelViewMatrix(Mat4.identity());
 		playerRenderer.render();
 
 		/* ***** RENDERING WEAPONS AND MODELS ***** */

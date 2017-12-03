@@ -16,7 +16,7 @@ in vec3 worldPosition;
 in vec4 lightPositions[SHADOW_CASCADE_COUNT];
 in float shadowDist;
 in float zDist;
-in flat int renderShadows;
+in float renderShadows;
 
 int getShadowCascadeID(float[SHADOW_CASCADE_COUNT + 1] cascadDistances, float dist)
 {
@@ -60,7 +60,7 @@ void main(void)
 		color = in_color;
 
 	vec4 shadow = vec4(1, 1, 1, 1);
-	if (renderShadows == 1)
+	if (renderShadows > 5)
 	{
 		float shadowFactor = calcShadowFactor(lightPositions, shadowCascadeDistances, zDist);
 		shadow = vec4(shadowFactor, shadowFactor, shadowFactor, 1.0);
