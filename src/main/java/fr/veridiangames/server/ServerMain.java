@@ -49,11 +49,22 @@ public class ServerMain
 		this.server = new NetworkServer(port, scanner, core);
 	}
 
+	public ServerMain(int port, String filePath)
+	{
+		this.scanner = new Scanner(System.in);
+		this.core = new GameCore();
+		this.core.getGame().loadWorld(filePath);
+
+		this.server = new NetworkServer(port, scanner, core);
+	}
+
 	public static void main(String[] args)
 	{
-		if (args.length != 1)
-			System.out.println("Usage: ./ubercube_server port");
-		else
+		if ( args.length == 1)
 			new ServerMain(Integer.parseInt(args[0]));
+		else if ( args.length == 2)
+			new ServerMain(Integer.parseInt(args[0]), args[1]);
+		else if (args.length != 1)
+			System.out.println("Usage: ./ubercube_server port");
 	}
 }

@@ -69,6 +69,21 @@ public class World
 		this.initWorldData();
 	}
 
+	public World(GameCore core, List<Vec4i> predefinedBlocks)
+	{
+		this.core = core;
+		this.gameData = core.getGame().getData();
+		this.generatingChunks = new HashMap<Integer, Chunk>();
+		this.updateRequests = new ArrayList<Integer>();
+		this.chunks = new HashMap<Integer, Chunk>();
+		this.chunkGarbage = new ArrayList<Integer>();
+		this.modifiedBlocks = predefinedBlocks;
+		this.sunDirection = new Vec3(1, -1.5f, 1f).normalize();
+		this.generated = false;
+
+		this.initWorldData();
+	}
+
 	private void initWorldData()
 	{
 		worldSize = gameData.getWorldSize();
