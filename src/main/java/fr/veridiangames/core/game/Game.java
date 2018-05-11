@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.game;
 
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.data.GameData;
 import fr.veridiangames.core.game.data.world.WorldGen;
@@ -26,12 +27,14 @@ import fr.veridiangames.core.game.data.world.WorldType;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.EntityManager;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
+import fr.veridiangames.core.game.gamemodes.QGGameMode;
+import fr.veridiangames.core.game.gamemodes.TDMGameMode;
 import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Vec4i;
 import fr.veridiangames.core.physics.PhysicsEngine;
 import fr.veridiangames.core.game.gamemodes.GameMode;
-import fr.veridiangames.core.game.gamemodes.TDMGameMode;
 import fr.veridiangames.core.utils.Log;
+import fr.veridiangames.server.ServerMain;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -124,11 +127,16 @@ public class Game
 	public void update()
 	{
 		if (clientPlayer == null)
-			return;
-
-		entityManager.update(core);
-//		world.update();
-		gameMode.update();
+		{
+			gameMode.serverUpdate(ServerMain.getInstance().getNet());
+			Log.println("server");
+		}
+		else
+		{
+			entityManager.update(core);
+			//		world.clientUpdate();
+			gameMode.clientUpdate(Ubercube.getInstance().getNet());
+		}
 	}
 
 	public void updatePhysics()

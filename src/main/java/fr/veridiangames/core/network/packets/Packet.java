@@ -64,6 +64,12 @@ public abstract class Packet
 	public static final int GAMEMODE_TDM_TEAM = 503;
 	public static final int GAMEMODE_TDM_STATS = 504;
 
+	public static final int GAMEMODE_QG_SCORE = 600;
+	public static final int GAMEMODE_QG_SPAWN = 601;
+	public static final int GAMEMODE_QG_TEAM = 602;
+	public static final int GAMEMODE_QG_STATS = 603;
+
+
 	protected DataBuffer data;
 
 	public Packet(int packetID)

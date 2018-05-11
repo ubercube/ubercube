@@ -22,6 +22,7 @@ package fr.veridiangames.core.game.gamemodes;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 
 import java.util.HashMap;
@@ -32,12 +33,14 @@ import java.util.List;
  */
 public interface GameMode
 {
-    void update();
+    void clientUpdate(NetworkableClient client);
+    void serverUpdate(NetworkableServer server);
 
     Vec3 getPlayerSpawn(int id);
     Team getPlayerTeam(int id);
     List<Team> getTeams();
     GuiCanvas getPlayerListScreen(GuiCanvas parent);
+	GuiCanvas getHudScreen(GuiCanvas parent);
     PlayerStats getPlayerStats();
 
 

@@ -161,7 +161,7 @@ public class World
 //			{
 //				chunkGarbage.add(Indexer.index3i(c.getPosition()));
 //			}
-//			c.update();
+//			c.clientUpdate();
 //		}
 //	}
 //

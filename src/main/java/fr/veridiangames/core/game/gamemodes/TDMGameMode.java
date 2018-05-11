@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.game.gamemodes;
 
+import fr.veridiangames.client.main.screens.gamemode.TDMHudScreen;
 import fr.veridiangames.client.main.screens.gamemode.TDMPlayerListScreen;
 import fr.veridiangames.client.rendering.guis.GuiCanvas;
 import fr.veridiangames.core.GameCore;
@@ -27,6 +28,7 @@ import fr.veridiangames.core.game.world.Block;
 import fr.veridiangames.core.game.world.Chunk;
 import fr.veridiangames.core.game.world.World;
 import fr.veridiangames.core.maths.Vec3;
+import fr.veridiangames.core.network.NetworkableClient;
 import fr.veridiangames.core.network.NetworkableServer;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMPlayerStatsPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMScorePacket;
@@ -83,13 +85,20 @@ public class TDMGameMode implements GameMode
 
     private PlayerStats stats = new PlayerStats();
 
-    @Override
-    public void update()
-    {
 
-    }
+	@Override
+	public void clientUpdate(NetworkableClient client)
+	{
 
-    @Override
+	}
+
+	@Override
+	public void serverUpdate(NetworkableServer server)
+	{
+
+	}
+
+	@Override
     public Vec3 getPlayerSpawn(int id) {
     	Vec3 sp = new Vec3();
     	Vec3 offset = new Vec3();
@@ -135,6 +144,12 @@ public class TDMGameMode implements GameMode
 	@Override
 	public GuiCanvas getPlayerListScreen(GuiCanvas parent) {
 		return new TDMPlayerListScreen(parent);
+	}
+
+	@Override
+	public GuiCanvas getHudScreen(GuiCanvas parent)
+	{
+		return new TDMHudScreen(parent);
 	}
 
 	@Override

@@ -112,7 +112,7 @@ public class Ubercube
 
 		/* *** PROFILER *** */
 		this.renderProfiler = new Profiler("render", new Color4f(0.57f, 0.75f, 0.91f, 1f));
-		this.updateProfiler = new Profiler("update", new Color4f(0.75f, 0.57f, 0.91f, 1f));
+		this.updateProfiler = new Profiler("clientUpdate", new Color4f(0.75f, 0.57f, 0.91f, 1f));
 		this.physicsProfiler = new Profiler("physics", new Color4f(0.73f, 0.77f, 0.55f, 1f));
 		this.audioProfiler = new Profiler("audio", true);
 		this.guiProfiler = new Profiler("gui", true);

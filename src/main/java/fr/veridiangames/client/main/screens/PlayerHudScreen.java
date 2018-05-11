@@ -194,7 +194,7 @@ public class PlayerHudScreen extends GuiCanvas
         ProfilerScreen profilerScreen = new ProfilerScreen(this, display, core);
         super.addCanvas(profilerScreen);
 
-        TDMHudScreen gameMode = new TDMHudScreen(this);
+        GuiCanvas gameMode = GameCore.getInstance().getGame().getGameMode().getHudScreen(this);
         super.addCanvas(gameMode);
 
         GameMenuScreen gameMenuGui = new GameMenuScreen(this, display, core);

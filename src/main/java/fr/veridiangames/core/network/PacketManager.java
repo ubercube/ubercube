@@ -24,6 +24,10 @@ import java.util.Map;
 
 import fr.veridiangames.core.network.packets.*;
 import fr.veridiangames.core.network.packets.GrenadeSpawnPacket;
+import fr.veridiangames.core.network.packets.gamemode.qg.QGPlayerStatsPacket;
+import fr.veridiangames.core.network.packets.gamemode.qg.QGScorePacket;
+import fr.veridiangames.core.network.packets.gamemode.qg.QGSpawnPacket;
+import fr.veridiangames.core.network.packets.gamemode.qg.QGTeamPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMPlayerStatsPacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMScorePacket;
 import fr.veridiangames.core.network.packets.gamemode.tdm.TDMSpawnPacket;
@@ -71,6 +75,11 @@ public class PacketManager
 		packets.put(Packet.GAMEMODE_TDM_SCORE, TDMScorePacket.class);
 		packets.put(Packet.GAMEMODE_TDM_TEAM, TDMTeamPacket.class);
 		packets.put(Packet.GAMEMODE_TDM_STATS, TDMPlayerStatsPacket.class);
+
+		packets.put(Packet.GAMEMODE_QG_SPAWN, QGSpawnPacket.class);
+		packets.put(Packet.GAMEMODE_QG_SCORE, QGScorePacket.class);
+		packets.put(Packet.GAMEMODE_QG_TEAM, QGTeamPacket.class);
+		packets.put(Packet.GAMEMODE_QG_STATS, QGPlayerStatsPacket.class);
 	}
 	
 	public static Packet getPacket(int packet)
