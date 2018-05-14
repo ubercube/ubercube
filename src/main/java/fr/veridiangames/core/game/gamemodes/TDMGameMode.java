@@ -192,6 +192,7 @@ public class TDMGameMode implements GameMode
         }
 		if (victimId != shooterId)
 			stats.set(shooterId, PlayerStats.Stats.KILLS, (int)stats.get(shooterId).get(PlayerStats.Stats.KILLS)+1);
+
 		stats.set(victimId, PlayerStats.Stats.DEATHS, (int)stats.get(victimId).get(PlayerStats.Stats.DEATHS)+1);
 
         server.tcpSendToAll(new TDMScorePacket(redScore, blueScore));

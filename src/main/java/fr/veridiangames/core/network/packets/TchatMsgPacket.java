@@ -41,7 +41,7 @@ public class TchatMsgPacket extends Packet
     public TchatMsgPacket(String msg)
     {
         super(TCHAT_MSG);
-        data.put(msg);
+		data.put(msg);
         data.flip();
     }
 

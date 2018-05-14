@@ -126,8 +126,8 @@ public class EntityMovementPacket extends Packet
 		player.setPosition(position);
 		player.setRotation(rotation);
 
-		if (position.y < 0 && !player.isDead())
-			player.kill(server);
+		/*if (position.y < 0 && !player.isDead())
+			player.kill(server);*/
 
 		server.udpSendToAny(new EntityMovementPacket(this), id);
 	}
