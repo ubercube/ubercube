@@ -210,6 +210,101 @@ public class Mat4 {
 			m.matrix[2][0] * v.x + m.matrix[2][1] * v.y + m.matrix[2][2] * v.z + m.matrix[2][3]
 		);
 	}
+
+/*
+ *	determinant function from the legacy lwjgl Matrix4f class
+ */
+	public float determinant() {
+		float f =
+			matrix[0][0]
+				* ((matrix[1][1] * matrix[2][2] * matrix[3][3] + matrix[1][2] * matrix[2][3] * matrix[3][1] + matrix[1][3] * matrix[2][1] * matrix[3][2])
+				- matrix[1][3] * matrix[2][2] * matrix[3][1]
+				- matrix[1][1] * matrix[2][3] * matrix[3][2]
+				- matrix[1][2] * matrix[2][1] * matrix[3][3]);
+		f -= matrix[0][1]
+			* ((matrix[1][0] * matrix[2][2] * matrix[3][3] + matrix[1][2] * matrix[2][3] * matrix[3][0] + matrix[1][3] * matrix[2][0] * matrix[3][2])
+			- matrix[1][3] * matrix[2][2] * matrix[3][0]
+			- matrix[1][0] * matrix[2][3] * matrix[3][2]
+			- matrix[1][2] * matrix[2][0] * matrix[3][3]);
+		f += matrix[0][2]
+			* ((matrix[1][0] * matrix[2][1] * matrix[3][3] + matrix[1][1] * matrix[2][3] * matrix[3][0] + matrix[1][3] * matrix[2][0] * matrix[3][1])
+			- matrix[1][3] * matrix[2][1] * matrix[3][0]
+			- matrix[1][0] * matrix[2][3] * matrix[3][1]
+			- matrix[1][1] * matrix[2][0] * matrix[3][3]);
+		f -= matrix[0][3]
+			* ((matrix[1][0] * matrix[2][1] * matrix[3][2] + matrix[1][1] * matrix[2][2] * matrix[3][0] + matrix[1][2] * matrix[2][0] * matrix[3][1])
+			- matrix[1][2] * matrix[2][1] * matrix[3][0]
+			- matrix[1][0] * matrix[2][2] * matrix[3][1]
+			- matrix[1][1] * matrix[2][0] * matrix[3][2]);
+		return f;
+	}
+
+/*
+ *	determinant3x3 function from the legacy lwjgl Matrix4f class
+ */
+	private static float determinant3x3(float t00, float t01, float t02,
+										float t10, float t11, float t12,
+										float t20, float t21, float t22)
+	{
+		return   t00 * (t11 * t22 - t12 * t21)
+			+ t01 * (t12 * t20 - t10 * t22)
+			+ t02 * (t10 * t21 - t11 * t20);
+	}
+
+/*
+ *	invert function from the legacy lwjgl Matrix4f class
+ */
+	public static Mat4 invert(Mat4 src, Mat4 dest)
+	{
+		float determinant = src.determinant();
+
+		if (determinant != 0) {
+			if (dest == null)
+				dest = new Mat4();
+			float determinant_inv = 1f / determinant;
+
+			// first row
+			float t00 =  determinant3x3(src.matrix[1][1], src.matrix[1][2], src.matrix[1][3], src.matrix[2][1], src.matrix[2][2], src.matrix[2][3], src.matrix[3][1], src.matrix[3][2], src.matrix[3][3]);
+			float t01 = -determinant3x3(src.matrix[1][0], src.matrix[1][2], src.matrix[1][3], src.matrix[2][0], src.matrix[2][2], src.matrix[2][3], src.matrix[3][0], src.matrix[3][2], src.matrix[3][3]);
+			float t02 =  determinant3x3(src.matrix[1][0], src.matrix[1][1], src.matrix[1][3], src.matrix[2][0], src.matrix[2][1], src.matrix[2][3], src.matrix[3][0], src.matrix[3][1], src.matrix[3][3]);
+			float t03 = -determinant3x3(src.matrix[1][0], src.matrix[1][1], src.matrix[1][2], src.matrix[2][0], src.matrix[2][1], src.matrix[2][2], src.matrix[3][0], src.matrix[3][1], src.matrix[3][2]);
+			// second row
+			float t10 = -determinant3x3(src.matrix[0][1], src.matrix[0][2], src.matrix[0][3], src.matrix[2][1], src.matrix[2][2], src.matrix[2][3], src.matrix[3][1], src.matrix[3][2], src.matrix[3][3]);
+			float t11 =  determinant3x3(src.matrix[0][0], src.matrix[0][2], src.matrix[0][3], src.matrix[2][0], src.matrix[2][2], src.matrix[2][3], src.matrix[3][0], src.matrix[3][2], src.matrix[3][3]);
+			float t12 = -determinant3x3(src.matrix[0][0], src.matrix[0][1], src.matrix[0][3], src.matrix[2][0], src.matrix[2][1], src.matrix[2][3], src.matrix[3][0], src.matrix[3][1], src.matrix[3][3]);
+			float t13 =  determinant3x3(src.matrix[0][0], src.matrix[0][1], src.matrix[0][2], src.matrix[2][0], src.matrix[2][1], src.matrix[2][2], src.matrix[3][0], src.matrix[3][1], src.matrix[3][2]);
+			// third row
+			float t20 =  determinant3x3(src.matrix[0][1], src.matrix[0][2], src.matrix[0][3], src.matrix[1][1], src.matrix[1][2], src.matrix[1][3], src.matrix[3][1], src.matrix[3][2], src.matrix[3][3]);
+			float t21 = -determinant3x3(src.matrix[0][0], src.matrix[0][2], src.matrix[0][3], src.matrix[1][0], src.matrix[1][2], src.matrix[1][3], src.matrix[3][0], src.matrix[3][2], src.matrix[3][3]);
+			float t22 =  determinant3x3(src.matrix[0][0], src.matrix[0][1], src.matrix[0][3], src.matrix[1][0], src.matrix[1][1], src.matrix[1][3], src.matrix[3][0], src.matrix[3][1], src.matrix[3][3]);
+			float t23 = -determinant3x3(src.matrix[0][0], src.matrix[0][1], src.matrix[0][2], src.matrix[1][0], src.matrix[1][1], src.matrix[1][2], src.matrix[3][0], src.matrix[3][1], src.matrix[3][2]);
+			// fourth row
+			float t30 = -determinant3x3(src.matrix[0][1], src.matrix[0][2], src.matrix[0][3], src.matrix[1][1], src.matrix[1][2], src.matrix[1][3], src.matrix[2][1], src.matrix[2][2], src.matrix[2][3]);
+			float t31 =  determinant3x3(src.matrix[0][0], src.matrix[0][2], src.matrix[0][3], src.matrix[1][0], src.matrix[1][2], src.matrix[1][3], src.matrix[2][0], src.matrix[2][2], src.matrix[2][3]);
+			float t32 = -determinant3x3(src.matrix[0][0], src.matrix[0][1], src.matrix[0][3], src.matrix[1][0], src.matrix[1][1], src.matrix[1][3], src.matrix[2][0], src.matrix[2][1], src.matrix[2][3]);
+			float t33 =  determinant3x3(src.matrix[0][0], src.matrix[0][1], src.matrix[0][2], src.matrix[1][0], src.matrix[1][1], src.matrix[1][2], src.matrix[2][0], src.matrix[2][1], src.matrix[2][2]);
+
+			// transpose and divide by the determinant
+			dest.matrix[0][0] = t00*determinant_inv;
+			dest.matrix[1][1] = t11*determinant_inv;
+			dest.matrix[2][2] = t22*determinant_inv;
+			dest.matrix[3][3] = t33*determinant_inv;
+			dest.matrix[0][1] = t10*determinant_inv;
+			dest.matrix[1][0] = t01*determinant_inv;
+			dest.matrix[2][0] = t02*determinant_inv;
+			dest.matrix[0][2] = t20*determinant_inv;
+			dest.matrix[1][2] = t21*determinant_inv;
+			dest.matrix[2][1] = t12*determinant_inv;
+			dest.matrix[0][3] = t30*determinant_inv;
+			dest.matrix[3][0] = t03*determinant_inv;
+			dest.matrix[1][3] = t31*determinant_inv;
+			dest.matrix[3][1] = t13*determinant_inv;
+			dest.matrix[3][2] = t23*determinant_inv;
+			dest.matrix[2][3] = t32*determinant_inv;
+			return dest;
+		} else
+			return null;
+	}
 	
 	public float[] getComponents()
 	{

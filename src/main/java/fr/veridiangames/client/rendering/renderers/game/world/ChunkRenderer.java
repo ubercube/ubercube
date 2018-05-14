@@ -152,7 +152,7 @@ public class ChunkRenderer
 	public void updateCulling(Camera camera)
 	{
 		isInViewDistance = camera.isInViewDistance(chunk.centerPosition, 48);
-		isInViewFrustum = camera.isInViewFrustum(chunk.centerPosition, 16);
+		isInViewFrustum = camera.isInViewFrustum(chunk.centerPosition, 48);
 	}
 
 	public void render()

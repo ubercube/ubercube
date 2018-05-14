@@ -52,6 +52,7 @@ public class World
 	private int			worldSize;
 	private WorldType	worldType;
 	private boolean 	generated;
+	private Vec3		sunDirection;
 
 	public World(GameCore core)
 	{
@@ -62,6 +63,22 @@ public class World
 		this.chunks = new HashMap<Integer, Chunk>();
 		this.chunkGarbage = new ArrayList<Integer>();
 		this.modifiedBlocks = new ArrayList<Vec4i>();
+		this.sunDirection = new Vec3(1, -1.5f, 1f).normalize();
+		this.generated = false;
+
+		this.initWorldData();
+	}
+
+	public World(GameCore core, List<Vec4i> predefinedBlocks)
+	{
+		this.core = core;
+		this.gameData = core.getGame().getData();
+		this.generatingChunks = new HashMap<Integer, Chunk>();
+		this.updateRequests = new ArrayList<Integer>();
+		this.chunks = new HashMap<Integer, Chunk>();
+		this.chunkGarbage = new ArrayList<Integer>();
+		this.modifiedBlocks = predefinedBlocks;
+		this.sunDirection = new Vec3(1, -1.5f, 1f).normalize();
 		this.generated = false;
 
 		this.initWorldData();
@@ -144,7 +161,7 @@ public class World
 //			{
 //				chunkGarbage.add(Indexer.index3i(c.getPosition()));
 //			}
-//			c.update();
+//			c.clientUpdate();
 //		}
 //	}
 //
@@ -608,6 +625,10 @@ public class World
 
 	public int getWorldSize() {
 		return worldSize;
+	}
+
+	public Vec3 getSunDirection() {
+		return sunDirection;
 	}
 }
 /*

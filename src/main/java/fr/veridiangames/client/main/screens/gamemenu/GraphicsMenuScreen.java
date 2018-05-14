@@ -18,6 +18,7 @@ public class GraphicsMenuScreen extends GuiCanvas
     private GuiCheckBox renderSnow;
     private GuiCheckBox enableVsync;
 	private GuiCheckBox enableSSAA;
+	private GuiCheckBox enableShadows;
 
     public GraphicsMenuScreen(GuiCanvas parent, Display display)
     {
@@ -62,6 +63,14 @@ public class GraphicsMenuScreen extends GuiCanvas
 		enableSSAA.triggered = true;
 		super.add(enableSSAA);
 
+		enableShadows = new GuiCheckBox("Enable Shadows", display.getWidth() / 2, 220, true);
+		enableShadows.setOrigin(GuiComponent.GuiOrigin.A);
+		enableShadows.setScreenParent(GuiComponent.GuiCorner.TC);
+		enableShadows.getLabel().setColor(Color4f.WHITE);
+		enableShadows.getLabel().setDropShadow(2);
+		enableShadows.triggered = true;
+		super.add(enableShadows);
+
         setRendered(false);
     }
 
@@ -74,5 +83,6 @@ public class GraphicsMenuScreen extends GuiCanvas
         Ubercube.getInstance().getGameCore().getGame().getPlayer().setRenderSnow(renderSnow.triggered);
         Display.getInstance().setVsync(enableVsync.triggered);
 		Ubercube.getInstance().getMainRenderer().getGameBufferRenderer().setSamples(enableSSAA.triggered ? 2 : 1);
+		Ubercube.getInstance().getMainRenderer().getGameBufferRenderer().setRenderShadows(enableShadows.triggered);
     }
 }

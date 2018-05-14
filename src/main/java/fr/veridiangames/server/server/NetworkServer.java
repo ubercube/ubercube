@@ -36,10 +36,7 @@ import fr.veridiangames.core.network.packets.PingPacket;
 import fr.veridiangames.core.network.packets.TimeoutPacket;
 import fr.veridiangames.core.utils.*;
 import fr.veridiangames.server.FileManager;
-import fr.veridiangames.server.server.commands.CmdHelp;
-import fr.veridiangames.server.server.commands.CmdKick;
-import fr.veridiangames.server.server.commands.CmdStop;
-import fr.veridiangames.server.server.commands.Command;
+import fr.veridiangames.server.server.commands.*;
 import fr.veridiangames.server.server.tcp.NetworkServerTCP;
 import fr.veridiangames.server.server.udp.NetworkServerUDP;
 
@@ -71,7 +68,8 @@ public class NetworkServer implements Runnable, NetworkableServer
 		this.commands.put("help", new CmdHelp());
 		this.commands.put("stop", new CmdStop());
 		this.commands.put("kick", new CmdKick());
-		
+		this.commands.put("save", new CmdSave());
+
 		log("Requesting server start on the " + SystemUtils.getDate());
 		log("Starting server for " + GameCore.GAME_NAME + " " + GameCore.GAME_VERSION_NAME + " v" + GameCore.GAME_SUB_VERSION);
 		long seed = core.getGame().getData().getWorldGen().getSeed();
@@ -122,6 +120,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 					tcp.disconnectClient(player.getNetwork().getAddress(), player.getNetwork().getPort());
 					core.getGame().remove(key);
 					log(player.getName() + " timed out !");
+					GameCore.getInstance().getGame().getGameMode().onPlayerDisconnect(key, this);
 				}
 				tcpSendToAll(new PingPacket(player.getID(), System.currentTimeMillis(), player.getPing()));
 			}

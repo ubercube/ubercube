@@ -1,5 +1,7 @@
 package fr.veridiangames.client.main.commands;
 
+import fr.veridiangames.client.Ubercube;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +16,7 @@ public class CommandExecutor {
 	public CommandExecutor()
 	{
 		commands.put("exit", () -> {
-			exit(0);
+			Ubercube.getInstance().disconnectAndExit();
 		});
 	}
 

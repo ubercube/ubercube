@@ -111,7 +111,19 @@ public class Vec4 {
 		
 		return new Vec4(x, y, z, w);
 	}
-	
+
+	public Vec4 mul(Mat4 mat)
+	{
+		Vec4 result = new Vec4();
+
+		result.x = mat.matrix[0][0] * x + mat.matrix[0][1] * y + mat.matrix[0][2] * z + mat.matrix[0][3] * w;
+		result.y = mat.matrix[1][0] * x + mat.matrix[1][1] * y + mat.matrix[1][2] * z + mat.matrix[1][3] * w;
+		result.z = mat.matrix[2][0] * x + mat.matrix[2][1] * y + mat.matrix[2][2] * z + mat.matrix[2][3] * w;
+		result.w = mat.matrix[3][0] * x + mat.matrix[3][1] * y + mat.matrix[3][2] * z + mat.matrix[3][3] * w;
+
+		return result;
+	}
+
 	public Vec4 negate() {
 		x = -x;
 		y = -y;

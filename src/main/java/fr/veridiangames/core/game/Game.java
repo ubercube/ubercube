@@ -19,6 +19,7 @@
 
 package fr.veridiangames.core.game;
 
+import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.data.GameData;
 import fr.veridiangames.core.game.data.world.WorldGen;
@@ -26,11 +27,21 @@ import fr.veridiangames.core.game.data.world.WorldType;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.EntityManager;
 import fr.veridiangames.core.game.entities.player.ClientPlayer;
+import fr.veridiangames.core.game.gamemodes.QGGameMode;
+import fr.veridiangames.core.game.gamemodes.TDMGameMode;
 import fr.veridiangames.core.game.world.World;
+import fr.veridiangames.core.maths.Vec4i;
 import fr.veridiangames.core.physics.PhysicsEngine;
 import fr.veridiangames.core.game.gamemodes.GameMode;
-import fr.veridiangames.core.game.gamemodes.TDMGameMode;
 import fr.veridiangames.core.utils.Log;
+import fr.veridiangames.server.ServerMain;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import static java.lang.Math.abs;
 
 /**
  * Created by Marccspro on 28 janv. 2016.
@@ -62,14 +73,70 @@ public class Game
 		this.world = new World(core);
 	}
 
+	public void loadWorld(String filePath)
+	{
+
+		try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath)))
+		{
+			long seed = ois.readLong();
+			List<Vec4i> mb = new ArrayList<Vec4i>();
+			long bn = ois.readLong();
+
+			for(int i = 0; i<bn; i++)
+			{
+				mb.add(new Vec4i(ois.readInt(), ois.readInt(), ois.readInt(), ois.readInt()));
+			}
+
+			Log.println("Loading world " + filePath);
+			this.data.createWorld(new WorldGen(seed, data.getWorldSize()), WorldType.NORMAL);//(seed % 2 == 0) ? WorldType.SNOWY : WorldType.NORMAL);
+			this.world = new World(core, mb);
+		}
+		catch(Exception e)
+		{
+			Log.println("Can't load the world in " + filePath);
+			createWorld(abs(new Random().nextInt()));
+		}
+	}
+
+	public void saveWorld(String filePath)
+	{
+		try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath)))
+		{
+			oos.writeLong(world.getWorldGen().getSeed());
+			oos.writeLong(world.getModifiedBlocks().size());
+
+			Vec4i v;
+			for(int i = 0; i<world.getModifiedBlocks().size(); i++)
+			{
+				v = world.getModifiedBlocks().get(i);
+				oos.writeInt(v.x);
+				oos.writeInt(v.y);
+				oos.writeInt(v.z);
+				oos.writeInt(v.w);
+			}
+
+			Log.println("World saved in " + filePath);
+		}
+		catch(Exception e)
+		{
+			Log.exception(e);
+			Log.println("Can't save the world in " + filePath);
+		}
+	}
+
 	public void update()
 	{
 		if (clientPlayer == null)
-			return;
-
-		entityManager.update(core);
-//		world.update();
-		gameMode.update();
+		{
+			gameMode.serverUpdate(ServerMain.getInstance().getNet());
+			Log.println("server");
+		}
+		else
+		{
+			entityManager.update(core);
+			//		world.clientUpdate();
+			gameMode.clientUpdate(Ubercube.getInstance().getNet());
+		}
 	}
 
 	public void updatePhysics()

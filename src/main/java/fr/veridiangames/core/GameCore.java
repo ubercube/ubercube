@@ -32,7 +32,7 @@ public class GameCore
 	public static final String GAME_SUB_VERSION = FileUtils.getGitCommitsCount();
 	public static final String RESOURCES_PATH = "res/";
 
-	private static boolean displayNetworkDebug = true;
+	private static boolean displayNetworkDebug = false;
 
 	private static GameCore instance;
 

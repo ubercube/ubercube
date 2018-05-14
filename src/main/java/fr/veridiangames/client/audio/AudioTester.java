@@ -47,7 +47,7 @@ public class AudioTester
 //
 //        source.setPlaying(true);
 //
-//        source.update();
+//        source.clientUpdate();
 //
 //        Scanner sc = new Scanner(System.in);
 //        String next = "";
