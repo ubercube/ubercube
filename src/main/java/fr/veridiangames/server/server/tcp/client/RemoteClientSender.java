@@ -1,5 +1,6 @@
 package fr.veridiangames.server.server.tcp.client;
 
+import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.network.packets.Packet;
 import fr.veridiangames.core.utils.DataStream;
 import fr.veridiangames.core.utils.Log;
@@ -41,6 +42,7 @@ public class RemoteClientSender extends Thread
 					client.getOut().flush();
 				} catch (IOException e) {
 					Log.exception(e);
+					GameCore.getInstance().getGame().getGameMode().onPlayerDisconnect(client.getId(), client.getServer());
 					client.stop();
 					return;
 				}

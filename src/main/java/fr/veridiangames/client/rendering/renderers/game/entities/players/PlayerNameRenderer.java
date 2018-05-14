@@ -30,6 +30,7 @@ import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.gamemodes.Team;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.utils.Color4f;
+import fr.veridiangames.core.utils.Log;
 
 import java.util.*;
 import java.util.List;
@@ -62,18 +63,18 @@ public class PlayerNameRenderer
             String name = ((Player) e).getName();
             Team team = ((Player) e).getTeam();
             Vec3 position = ((Player) e).getPosition();
-            Font3DRenderer renderer = new Font3DRenderer(font, name, position.copy().add(0, 2.3f, 0));
-            if (team != null)
-                renderer.setColor(team.getColor());
+            Font3DRenderer renderer = new Font3DRenderer(font, name, position.copy().add(0, 3f, 0));
+			renderer.setColor(team.getColor());
             playerFontRenderers.add(renderer);
         }
+
     }
 
     public void render(Gui3DShader shader, Camera camera)
     {
         for (int i = 0; i < playerFontRenderers.size(); i++)
         {
-            Color4f color = playerFontRenderers.get(i).getColor();
+        	Color4f color = playerFontRenderers.get(i).getColor();
             playerFontRenderers.get(i).render(shader, camera, color, 4);
         }
     }

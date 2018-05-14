@@ -38,16 +38,16 @@ import static fr.veridiangames.core.maths.Mathf.toDegrees;
 public abstract class Player extends Entity
 {
 	public static final int MAX_LIFE = 100;
-	public static final float HEIGHT = 2.5f;
+	public static final float HEIGHT = 2f;
 
-	private Vec3 newPosition;
-	private boolean dead;
-	private boolean hitable;
-	private int ping;
-	private float movementVelocity = 0;
+	protected int life;
+	protected Vec3 newPosition;
+	protected boolean dead;
+	protected int ping;
+	protected float movementVelocity = 0;
 
-	private Vec3 rightHandPosition = new Vec3();
-	private Vec3 leftHandPosition = new Vec3();
+	protected Vec3 rightHandPosition = new Vec3();
+	protected Vec3 leftHandPosition = new Vec3();
 
 	public Player(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
@@ -59,17 +59,12 @@ public abstract class Player extends Entity
 		super.add(new ECAudioSource());
 
 		this.dead = false;
-		this.hitable = false;
 		this.ping = 0;
 	}
 
-	int time = 0;
 	public void update(GameCore core)
 	{
 		super.update(core);
-		time++;
-		if (time > 60 * 5)
-			hitable = true;
 
 		if (newPosition != null)
 		{
@@ -170,11 +165,6 @@ public abstract class Player extends Entity
 
 	public void setDead(boolean dead)
 	{
-		if (dead)
-		{
-			time = 0;
-			hitable = false;
-		}
 		this.dead = dead;
 	}
 
@@ -201,11 +191,6 @@ public abstract class Player extends Entity
 	public Team getTeam()
 	{
 		return GameCore.getInstance().getGame().getGameMode().getPlayerTeam(this.id);
-	}
-
-	public boolean isHitable()
-	{
-		return hitable;
 	}
 
 	public int getPing()
@@ -236,5 +221,15 @@ public abstract class Player extends Entity
 
 	public void setRightHandPosition(Vec3 rightHandPosition) {
 		this.rightHandPosition = rightHandPosition;
+	}
+
+	public int getLife()
+	{
+		return life;
+	}
+
+	public void setLife(int life)
+	{
+		this.life = life;
 	}
 }

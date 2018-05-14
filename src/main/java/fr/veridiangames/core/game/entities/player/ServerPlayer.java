@@ -33,11 +33,9 @@ import fr.veridiangames.core.network.packets.Packet;
  */
 public class ServerPlayer extends Player
 {
-	private int life;
 	private int timeOutTests;
 	private long pingTime;
 	private boolean pinged;
-	private boolean hitable;
 	private int timeSinceSpawn;
 
 	private float high;
@@ -53,7 +51,7 @@ public class ServerPlayer extends Player
 	public ServerPlayer(int id, String name, Vec3 position, Quat rotation, String address, int port)
 	{
 		super(id, name, position, rotation, address, port);
-		this.life = 100;
+		this.life = MAX_LIFE;
 		this.timeOutTests = 0;
 		this.pingTime = 0;
 		this.pinged = false;
@@ -74,7 +72,32 @@ public class ServerPlayer extends Player
 
 	public boolean applyDamage (int damage, NetworkableServer server, int shooterId, boolean headshot)
 	{
-	    if (this.isDead()) return true;
+		/* OLD */
+	    /*if (this.isDead()) return true;
+		if (timeSinceSpawn <= 1) return false;
+
+		this.life -= damage;
+
+		this.sendTCP(new ApplyDamagePacket(this, damage), server);
+
+		if(this.life <= 0 && !this.isDead())
+		{
+			if(headshot)
+				server.tcpSendToAll(new DeathPacket(this.getID(), shooterId, 1));
+			else
+				server.tcpSendToAll(new DeathPacket(this.getID(), shooterId, 0));
+
+			*//* GAME MODE *//*
+			server.getCore().getGame().getGameMode().onPlayerDeath(id, shooterId, server);
+
+			this.setDead(true);
+			String name = ((ECName) this.get(EComponent.NAME)).getName();
+			server.log(name + " was killed !");
+			return true;
+		}
+		return false;*/
+
+		/* DEATH PIPELINE REWORK */
 		if (timeSinceSpawn <= 1) return false;
 
 		this.life -= damage;
@@ -112,16 +135,6 @@ public class ServerPlayer extends Player
 		server.tcpSend(packet, this.getNetwork().getAddress(), this.getNetwork().getPort());
 	}
 
-	public int getLife()
-	{
-		return life;
-	}
-
-	public void setLife(int life)
-	{
-		this.life = life;
-	}
-
 	public int getTimeOutTests()
 	{
 		return timeOutTests;
@@ -150,17 +163,6 @@ public class ServerPlayer extends Player
 	public void setPinged(boolean pinged)
 	{
 		this.pinged = pinged;
-	}
-
-	@Override
-	public boolean isHitable()
-	{
-		return hitable;
-	}
-
-	public void setHitable(boolean hitable)
-	{
-		this.hitable = hitable;
 	}
 
 	public void setOnlineVelocity(Vec3 onlineVelocity)

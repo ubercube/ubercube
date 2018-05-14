@@ -48,7 +48,6 @@ public class ClientPlayer extends Player
 {
 	private NetworkableClient net;
 
-	private int life;
 	private int timeoutTime;
 	private boolean timedOut;
 	private boolean kicked;
@@ -232,15 +231,7 @@ public class ClientPlayer extends Player
 		this.net = net;
 	}
 
-	public int getLife()
-	{
-		return life;
-	}
 
-	public void setLife(int life)
-	{
-		this.life = life;
-	}
 
 	public int getTimeoutTime()
 	{

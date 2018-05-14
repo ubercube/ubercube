@@ -108,19 +108,23 @@ public class ECWeapon extends EComponent
 
 	public void setWeaponByID(int weaponId)
 	{
-		System.out.println("Weapon: " + weaponId + "    " + weapon);
-		this.weaponIndex = weaponId;
-		this.weapon.onChange();
-		this.weapon = this.getWeaponManager().get(weaponId);
-		this.weapon.setHolder((Player) parent);
-		this.weapon.init();
-		Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
-		this.weapon.getTransform().setParent(parentTransform);
+		try
+		{
+			this.weaponIndex = weaponId;
+			this.weapon.onChange();
+			this.weapon = this.getWeaponManager().get(weaponId);
+			this.weapon.setHolder((Player) parent);
+			this.weapon.init();
+			Transform parentTransform = ((ECRender) this.parent.get(RENDER)).getEyeTransform();
+			this.weapon.getTransform().setParent(parentTransform);
 
-		System.out.println(weapon);
+			System.out.println(weapon);
 
-		if(this.parent instanceof ClientPlayer)
-			this.weapon.setNet(((ClientPlayer)this.parent).getNet());
+			if (this.parent instanceof ClientPlayer)
+				this.weapon.setNet(((ClientPlayer) this.parent).getNet());
+		}catch(Exception e){
+			//e.printStackTrace();
+		}
 	}
 
 	public Kit getKit()

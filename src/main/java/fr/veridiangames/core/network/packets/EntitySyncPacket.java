@@ -105,7 +105,8 @@ public class EntitySyncPacket extends Packet
 		{
 			NetworkedPlayer p = new NetworkedPlayer(id, name, position, rotation, address.getHostName(), port);
 			p.init(client.getCore());
-			p.getWeaponComponent().setWeaponByID(weaponID);
+			if(!p.isDead())
+				p.getWeaponComponent().setWeaponByID(weaponID);
 
 			client.getCore().getGame().spawn(p);
 		}

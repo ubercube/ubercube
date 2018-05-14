@@ -186,11 +186,13 @@ public class PlayerHandler
 					hitParticles.useCollision(false);
 					GameCore.getInstance().getGame().spawn(hitParticles);
 					core.getGame().spawn(new AudioSource(Sound.DIGGING, ray.getExactHitPoint()));
-					net.send(new SoundPacket(player.getID(), new AudioSource(Sound.DIGGING, ray.getExactHitPoint())), Protocol.UDP);
+					net.send(new SoundPacket(player.getID(), new AudioSource(Sound.DIGGING, ray.getExactHitPoint())), Protocol.TCP);
 				}
 				else if (input.getMouse().getButtonDown(1))
 				{
 					placeBlock(hitPoint);
+					core.getGame().spawn(new AudioSource(Sound.PLACE, ray.getExactHitPoint(), 1.5f));
+					net.send(new SoundPacket(player.getID(), new AudioSource(Sound.PLACE, ray.getExactHitPoint())), Protocol.TCP);
 				}
 			}
 			else if (ray.getHit().getEntity() != null && ray.getDistance() < 2)
@@ -241,9 +243,9 @@ public class PlayerHandler
 			return;
 
 		net.send(new BlockActionPacket(core.getGame().getPlayer().getID(), 1, x + xp, y + yp, z + zp, 0x7f555555), Protocol.TCP);
-		Vec3 pos = new Vec3(x + xp, y + yp, z + zp);
-		core.getGame().spawn(new AudioSource(Sound.PLACE, pos, 1.5f));
-		net.send(new SoundPacket(player.getID(), new AudioSource(Sound.PLACE, pos)), Protocol.UDP);
+		/*Vec3 pos = new Vec3(x + xp, y + yp, z + zp);
+		core.getGame().spawn(new AudioSource(Sound.PLACE, point, 1.5f));
+		net.send(new SoundPacket(player.getID(), new AudioSource(Sound.PLACE, point)), Protocol.TCP);*/
 	}
 	
 	public PlayerSelection getSelection()

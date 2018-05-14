@@ -21,6 +21,7 @@ package fr.veridiangames.core.game.entities.weapons.fireWeapons;
 
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.core.GameCore;
+import fr.veridiangames.core.audio.Sound;
 import fr.veridiangames.core.game.entities.audio.AudioSource;
 import fr.veridiangames.core.game.entities.bullets.Bullet;
 import fr.veridiangames.core.game.entities.components.ECKeyMovement;
@@ -31,6 +32,7 @@ import fr.veridiangames.core.maths.Transform;
 import fr.veridiangames.core.maths.Vec3;
 import fr.veridiangames.core.network.Protocol;
 import fr.veridiangames.core.network.packets.BulletShootPacket;
+import fr.veridiangames.core.network.packets.SoundPacket;
 import fr.veridiangames.core.utils.Indexer;
 import fr.veridiangames.server.server.NetworkServer;
 
@@ -113,6 +115,7 @@ public class FireWeapon extends Weapon
 	{
 		Bullet bullet = new Bullet(Indexer.getUniqueID(), holder.getID(), "", this.shootPoint.getPosition(), this.transform.getRotation(), shootForce, damage, GameCore.getInstance().getGame().getPlayer().getID());
 		net.send(new BulletShootPacket(holder.getID(), bullet), Protocol.UDP);
+		net.send(new SoundPacket(holder.getID(), new AudioSource(fireSound, this.shootPoint.getPosition())), Protocol.TCP);
 		bullet.setNetwork(net);
 		core.getGame().spawn(bullet);
 

@@ -45,7 +45,7 @@ public class RemoteClientReceiver extends Thread
 				packet.read(data);
 				packet.process(client.getServer(), client.getSocket().getInetAddress(), client.getSocket().getPort());
 			} catch (IOException e) {
-				//Log.exception(e);
+				GameCore.getInstance().getGame().getGameMode().onPlayerDisconnect(client.getId(), client.getServer());
 				client.stop();
 			}
 		}

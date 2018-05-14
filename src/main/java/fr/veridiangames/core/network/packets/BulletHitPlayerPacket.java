@@ -37,7 +37,6 @@ public class BulletHitPlayerPacket extends Packet
     private int playerId;
     private int damage;
     private int life;
-    private boolean hitable;
     private int shooterId;
     private float bulletHeight;
 
@@ -55,12 +54,11 @@ public class BulletHitPlayerPacket extends Packet
         data.put(bulletHeight);
         data.put(damage);
         data.put(0);
-        data.put(player.isHitable() ? 1 : 0);
 
         data.flip();
     }
 
-    public BulletHitPlayerPacket(BulletHitPlayerPacket packet, boolean hitable, int life)
+    public BulletHitPlayerPacket(BulletHitPlayerPacket packet, int life)
     {
         super(BULLET_HIT_PLAYER);
         data.put(packet.playerId);
@@ -68,7 +66,6 @@ public class BulletHitPlayerPacket extends Packet
 		data.put(packet.bulletHeight);
         data.put(packet.damage);
         data.put(life);
-        data.put(hitable ? 1 : 0);
 
         data.flip();
     }
@@ -80,12 +77,12 @@ public class BulletHitPlayerPacket extends Packet
         bulletHeight = data.getFloat();
         damage = data.getInt();
         life = data.getInt();
-        hitable = data.getInt() == 0 ? false : true;
     }
 
     public void process(NetworkableServer server, InetAddress address, int port)
     {
-        ServerPlayer p = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId);
+    	/* OLD */
+        /*ServerPlayer p = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId);
         if (p == null)
             return;
 
@@ -99,7 +96,21 @@ public class BulletHitPlayerPacket extends Packet
 			dead = p.applyDamage(damage, server, shooterId, false);
 		}
         if(!dead)
-            server.tcpSendToAll(new BulletHitPlayerPacket(this, p.isHitable(), p.getLife()));
+            server.tcpSendToAll(new BulletHitPlayerPacket(this, p.isHitable(), p.getLife()));*/
+
+        /* DEATH PIPELINE REWORK */
+		ServerPlayer p = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(playerId);
+
+		server.tcpSendToAll(new BulletHitPlayerPacket(this, p.getLife()));
+
+		if((bulletHeight - p.getPosition().y) >= 0.813)
+		{
+			p.applyDamage(100, server, shooterId, true);
+		}
+		else
+		{
+			p.applyDamage(damage, server, shooterId, false);
+		}
     }
 
     public void process(NetworkableClient client, InetAddress address, int port)

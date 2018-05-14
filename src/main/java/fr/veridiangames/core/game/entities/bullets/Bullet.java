@@ -131,14 +131,23 @@ public class Bullet extends Entity
 		}
 		if (e != null)
 		{
+			/* DEATH PIPELINE REWORK */
 			Player player = (Player) e;
+			ParticleSystem blood = new ParticlesBlood(Indexer.getUniqueID(), getPosition().copy());
+			blood.setParticleVelocity(getRotation().getBack().copy().mul(0.02f));
+			blood.setNetwork(net);
+			this.net.send(new BulletHitPlayerPacket(player, shooterId, position.y, damage), Protocol.TCP);
+			this.destroy();
+
+			/* OLD */
+			/*Player player = (Player) e;
 			if (((Player) e).isDead())
 				return;
 			ParticleSystem blood = new ParticlesBlood(Indexer.getUniqueID(), getPosition().copy());
 			blood.setParticleVelocity(getRotation().getBack().copy().mul(0.02f));
 			blood.setNetwork(net);
 			this.net.send(new BulletHitPlayerPacket(player, shooterId, position.y, damage), Protocol.TCP);
-			this.destroy();
+			this.destroy();*/
 		}
 	}
 

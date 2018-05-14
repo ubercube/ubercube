@@ -89,12 +89,10 @@ public class EntityMovementPacket extends Packet
 		ServerPlayer player = (ServerPlayer) server.getCore().getGame().getEntityManager().getEntities().get(id);
 		if (player == null)
 		{
-			server.log("== [SEVER] == Player is null !");
 			return;
 		}
 		if (player.isDead())
 		{
-			server.log("== Player is dead ! ==");
 			return;
 		}
 
