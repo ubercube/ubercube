@@ -257,8 +257,8 @@ public class GameRenderer
 		gui3DShader.setProjectionMatrix(camera.getProjectionMatrix());
 		gui3DShader.setModelViewMatrix(Mat4.identity());
 		playerNameRenderer.render(
-				gui3DShader,
-				camera
+			gui3DShader,
+			camera
 		);
 	}
 

@@ -31,6 +31,8 @@ import fr.veridiangames.core.utils.Color4f;
 import fr.veridiangames.client.rendering.textures.Texture;
 import fr.veridiangames.client.rendering.textures.TextureLoader;
 
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
+
 public class TrueTypeFont {
 
 	public IntObject[] charArray = new IntObject[256];
@@ -157,7 +159,7 @@ public class TrueTypeFont {
 			fontImage = null;
 		}
 
-		fontTexture = TextureLoader.getTexture(font.toString(), imgTemp);
+		fontTexture = TextureLoader.getTexture(font.toString(), imgTemp, GL_NEAREST);
 	}
 
 	public int getWidth(String whatchars) {

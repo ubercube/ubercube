@@ -63,7 +63,7 @@ public class PlayerNameRenderer
             String name = ((Player) e).getName();
             Team team = ((Player) e).getTeam();
             Vec3 position = ((Player) e).getPosition();
-            Font3DRenderer renderer = new Font3DRenderer(font, name, position.copy().add(0, 3f, 0));
+            Font3DRenderer renderer = new Font3DRenderer(font, name, position.copy().add(0, 2.5f, 0));
 			renderer.setColor(team.getColor());
             playerFontRenderers.add(renderer);
         }

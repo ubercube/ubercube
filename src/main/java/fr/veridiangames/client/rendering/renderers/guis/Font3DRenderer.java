@@ -23,6 +23,7 @@ import fr.veridiangames.client.guis.TrueTypeFont;
 import fr.veridiangames.client.guis.TrueTypeFont.IntObject;
 import fr.veridiangames.client.rendering.Camera;
 import fr.veridiangames.client.rendering.buffers.Buffers;
+import fr.veridiangames.client.rendering.guis.primitives.StaticPrimitive;
 import fr.veridiangames.client.rendering.shaders.Gui3DShader;
 import fr.veridiangames.client.rendering.textures.Texture;
 import fr.veridiangames.core.maths.*;
@@ -228,6 +229,7 @@ public class Font3DRenderer
 		}
 
 		shader.setModelViewMatrix(transform.toMatrix().mul(Mat4.translate(-w / 2, -h / 2, 0)));
+
 		shader.setColor(color);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);

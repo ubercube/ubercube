@@ -109,6 +109,32 @@ public class TextureLoader
 		return finalTexture;
 	}
 
+	public static Texture getTexture(String path, BufferedImage image, int filter)
+	{
+		TextureData data = decode(image);
+
+		int id = data.getID();
+		int width = data.getWidth();
+		int height = data.getHeight();
+		IntBuffer buffer = data.getBuffer();
+
+		glBindTexture(GL_TEXTURE_2D, id);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		Texture finalTexture = new Texture(id, width, height);
+
+		return finalTexture;
+	}
+
 	public static Texture getTexture(String path, BufferedImage image)
 	{
 		TextureData data = decode(image);
