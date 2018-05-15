@@ -63,7 +63,7 @@ public class PlayerHudScreen extends GuiCanvas
     private ConsoleScreen consoleScreen;
     private boolean showCrosshair;
     private GuiPanel crosshair;
-    private GuiMinimap minimap;
+    public GuiMinimap minimap;
 
     private int headshotTimer = 0;
 

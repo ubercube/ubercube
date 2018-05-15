@@ -50,6 +50,9 @@ public class MinimapRenderer
 
 	private void fillChunks()
 	{
+		if(world == null)
+			return;
+
 		for (int x = 0; x < world.getWorldSize(); x++)
 		{
 			for (int z = 0; z < world.getWorldSize(); z++)
@@ -62,6 +65,8 @@ public class MinimapRenderer
 
 	public synchronized void update()
 	{
+		if(world == null)
+			return;
 		synchronized (world.getUpdateRequests())
 		{
 			for (int i = 0; i < world.getUpdateRequests().size(); i++)

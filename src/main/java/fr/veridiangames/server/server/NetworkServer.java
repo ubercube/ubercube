@@ -58,6 +58,8 @@ public class NetworkServer implements Runnable, NetworkableServer
 	private Scanner					scanner;
 	private Map<String, Command>	commands;
 
+	private static int DELAY = 0;
+
 	public NetworkServer(int port, Scanner scanner, GameCore core)
 	{
 		ns = this;
@@ -129,7 +131,13 @@ public class NetworkServer implements Runnable, NetworkableServer
 
 	public void tcpSend(Packet packet, InetAddress address, int port)
 	{
-		tcp.send(packet, address, port);
+		try {
+			if(DELAY != 0)
+				Thread.sleep(DELAY);
+			tcp.send(packet, address, port);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void tcpSendToAll(Packet packet)
@@ -167,7 +175,13 @@ public class NetworkServer implements Runnable, NetworkableServer
 
 	public void udpSend(Packet packet, InetAddress address, int port)
 	{
-		udp.send(packet.getData().getData(), address, port);
+		try {
+			if(DELAY != 0)
+				Thread.sleep(DELAY);
+			udp.send(packet.getData().getData(), address, port);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void udpSendToAll(Packet packet)
