@@ -75,7 +75,7 @@ public class GuiSlider extends GuiComponent
 		label.setPosition(x + w/2 - textWidth, y + h/2 - label.getTextHeight() / 2);
 		
 		if (mouseButtonPressed) {
-			xSlider = Display.getInstance().getInput().getMouse().getX() - x - w /2;
+			xSlider = Display.getInstance().getInput().getMouse().getX() - x;
 			mouseInUse = true;
 			inUse = true;
 		}else {
@@ -83,10 +83,10 @@ public class GuiSlider extends GuiComponent
 			mouseInUse = false;			
 		}
 		
-		if (xSlider < -w/2 + 10) xSlider = -w/2 + 10;
-		if (xSlider > w/2 - 10) xSlider = w/2 - 10;
+		if (xSlider < 0) xSlider = 0;
+		if (xSlider > w) xSlider = w;
 		
-		value = ((xSlider + w/2)) / (w);
+		value = xSlider / w;
 		
 		if (mouseIn || mouseButtonPressed) {
 			color = bgColorHover;
@@ -102,7 +102,7 @@ public class GuiSlider extends GuiComponent
 		label.render(shader);
 		
 		shader.setColor(color);
-		StaticPrimitive.quadPrimitive().render(shader, x + w/2 + xSlider, y + h/2, 0, 6, h/2 - 4, 0);
+		StaticPrimitive.quadPrimitive().render(shader, x + 10 + (xSlider * (w - 20) / w), y + h/2, 0, 6, h/2 - 4, 0);
 	}
 
 	public void dispose() {
@@ -118,7 +118,7 @@ public class GuiSlider extends GuiComponent
 	}
 	
 	public void setValue(float value) {
-		xSlider = (value * (float)w - (float) w / 2.0f);
+		xSlider = (value * (float)w);
 	}
 	
 	public void centerText() {
