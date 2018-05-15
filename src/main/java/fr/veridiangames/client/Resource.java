@@ -30,7 +30,6 @@ public class Resource
     public static String getResource(String path)
     {
         String fullPath = GameCore.RESOURCES_PATH + path;
-        System.out.println(new File(fullPath).getAbsolutePath());
         if (!fileExist(fullPath))
             throw new RuntimeException("Unknown resource: " + fullPath);
         return (fullPath);

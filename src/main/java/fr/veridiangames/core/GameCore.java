@@ -30,7 +30,7 @@ public class GameCore
 	public static final String GAME_NAME = "Ubercube";
 	public static final String GAME_VERSION_NAME = "Alpha 1";
 	public static final String GAME_SUB_VERSION = FileUtils.getGitCommitsCount();
-	public static final String RESOURCES_PATH = "/res";
+	public static final String RESOURCES_PATH = "/res/";
 
 	private static boolean displayNetworkDebug = false;
 
