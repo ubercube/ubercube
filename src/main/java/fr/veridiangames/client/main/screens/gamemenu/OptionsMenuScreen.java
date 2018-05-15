@@ -93,6 +93,7 @@ public class OptionsMenuScreen extends GuiCanvas
 		mouseZoomedSpeed.getLabel().setText((int)Math.ceil(currentMouseZoomedSpeed * 100) + "");
         Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().setIdleSpeed(mouseSpeed.getValue());
         Ubercube.getInstance().getGameCore().getGame().getPlayer().getMouseComponent().setZoomedSpeed(mouseZoomedSpeed.getValue());
+        AudioSystem.setMainVolume(audioGain.getValue());
         audioGain.getLabel().setText((int)(AudioSystem.getMainVolume() * 100) + "");
     }
 }
