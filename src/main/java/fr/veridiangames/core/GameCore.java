@@ -22,6 +22,8 @@ package fr.veridiangames.core;
 import fr.veridiangames.core.game.Game;
 import fr.veridiangames.core.utils.FileUtils;
 
+import java.io.File;
+
 /**
  * Created by Marccspro on 29 janv. 2016.
  */
