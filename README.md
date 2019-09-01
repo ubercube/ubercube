@@ -10,7 +10,7 @@ The game is in development, for more information on it we have french updates an
 
 Ubercube is fully open source and licensed under the [GNU 3.0 License](http://www.gnu.org/licenses/) and available in source code form at [GitHub](https://github.com/TeamUbercube/ubercube)
 
-![Ubercube](http://i.imgur.com/D7qmGQP.png "Ubercube")
+![Ubercube](https://cdn.pgmp.dev/photos/ubercube.png "Ubercube")
 
 ## The Team
 - **[mploux/Marccspro](https://github.com/mploux)** - Lead Programmer
@@ -27,6 +27,8 @@ You can compile the game yourself by following the steps described in the **How 
 you can download the game directly and play either on are own servers for free or on your own custom servers at this link: https://ubercube.github.io/
 
 Either ways, have fun !
+
+![Ubercube](http://i.imgur.com/D7qmGQP.png "Ubercube")
 
 ## How to report a bug ?
 If you encounter any bugs, you can submit an [issue](https://github.com/ubercube/ubercube/issues) and we will do are best to fix it. If you understand French you can also join are discord server here: https://discord.gg/0vBqM6uVbNfmsUkX
