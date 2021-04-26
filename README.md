@@ -14,7 +14,7 @@ Ubercube is fully open source and licensed under the [GNU 3.0 License](http://ww
 
 ## The Team
 - **[mploux/Marccspro](https://github.com/mploux)** - Lead Programmer
-- **[Jimi Vacarians](https://github.com/jb-perrier)** - Programmer/Art
+- **[jb-perrier/Jimi Vacarians](https://github.com/jb-perrier)** - Programmer/Art
 - **[Tybau](https://github.com/Tybau)** - Programmer
 - **[Custom2043]()** - Programmer
 - **[Arthur/Neko](https://twitter.com/ArthurBaurens)** - Programmer
