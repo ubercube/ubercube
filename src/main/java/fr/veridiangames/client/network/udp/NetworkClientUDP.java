@@ -47,7 +47,7 @@ public class NetworkClientUDP implements Runnable
             this.client = client;
             this.address = InetAddress.getByName(address);
             this.port = port;
-            this.socket = new DatagramSocket(client.getTcp().getSocket().getLocalPort());
+            this.socket = new DatagramSocket(client.getTcp().getSocket().getLocalPort() + 1);
             log("UDP: Connected !");
             new Thread(this, "udp-thread").start();
         }

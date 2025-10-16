@@ -188,7 +188,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 			int i = core.getGame().getEntityManager().getNetworkableEntites().get(ii);
 			Entity e = core.getGame().getEntityManager().getEntities().get(i);
 			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);
-			udpSend(packet, net.getAddress(), net.getPort());
+			udpSend(packet, net.getAddress(), net.getPort() + 1);
 		}
 	}
 
@@ -210,7 +210,7 @@ public class NetworkServer implements Runnable, NetworkableServer
 				continue;
 			Entity e = core.getGame().getEntityManager().getEntities().get(i);
 			ECNetwork net = (ECNetwork) e.get(EComponent.NETWORK);
-			udpSend(packet, net.getAddress(), net.getPort());
+			udpSend(packet, net.getAddress(), net.getPort() + 1);
 		}
 	}
 
