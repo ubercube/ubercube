@@ -19,7 +19,6 @@
 
 package fr.veridiangames.core.network.packets;
 
-import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.player.Player;
 import fr.veridiangames.core.game.entities.player.ServerPlayer;
