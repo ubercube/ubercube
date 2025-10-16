@@ -1,6 +1,5 @@
 package fr.veridiangames.core.game.gamemodes;
 
-import com.sun.javafx.geom.Vec3f;
 import fr.veridiangames.client.Ubercube;
 import fr.veridiangames.client.main.screens.gamemode.QGHudScreen;
 import fr.veridiangames.client.main.screens.gamemode.QGPlayerListScreen;
@@ -62,7 +61,7 @@ public class QGGameMode implements GameMode
 		blueScore = i;
 	}
 
-	private Vec3f qgPosition = new Vec3f();
+	private Vec3 qgPosition = new Vec3();
 	private int qgRadius = 10;
 
 	int worldSize;
@@ -97,7 +96,7 @@ public class QGGameMode implements GameMode
 		{
 			p = (Player) GameCore.getInstance().getGame().getEntityManager().get(i);
 
-			if(distance(new Vec3f(p.getPosition().x, p.getPosition().y, p.getPosition().z), qgPosition) <= qgRadius)
+			if(distance(new Vec3(p.getPosition().x, p.getPosition().y, p.getPosition().z), qgPosition) <= qgRadius)
 				redIn++;
 		}
 
@@ -105,7 +104,7 @@ public class QGGameMode implements GameMode
 		{
 			p = (Player) GameCore.getInstance().getGame().getEntityManager().get(i);
 
-			if(distance(new Vec3f(p.getPosition().x, p.getPosition().y, p.getPosition().z), qgPosition) <= qgRadius)
+			if(distance(new Vec3(p.getPosition().x, p.getPosition().y, p.getPosition().z), qgPosition) <= qgRadius)
 				blueIn++;
 		}
 
@@ -122,9 +121,9 @@ public class QGGameMode implements GameMode
 		}
 	}
 
-	public float distance(Vec3f v1, Vec3f v2)
+	public float distance(Vec3 v1, Vec3 v2)
 	{
-		Vec3f v = new Vec3f();
+		Vec3 v = new Vec3();
 		v.x = v1.x - v2.x;
 		v.y = v1.y - v2.y;
 		v.z = v1.z - v2.z;
@@ -213,7 +212,7 @@ public class QGGameMode implements GameMode
 		w.addBlock((int)blueTeam.getSpawn().x, w.getHeightAt((int)blueTeam.getSpawn().x,(int)blueTeam.getSpawn().z)+2,(int)blueTeam.getSpawn().z, Block.ROCK.getARGB());
 		w.addBlock((int)blueTeam.getSpawn().x, w.getHeightAt((int)blueTeam.getSpawn().x,(int)blueTeam.getSpawn().z)+3,(int)blueTeam.getSpawn().z, Color4f.BLUE.getARGB());
 
-		qgPosition = new Vec3f(worldSize/2, w.getHeightAt(worldSize/2, worldSize/2), worldSize/2);
+		qgPosition = new Vec3(worldSize/2, w.getHeightAt(worldSize/2, worldSize/2), worldSize/2);
 		w.addBlock((int)qgPosition.x, w.getHeightAt((int)qgPosition.x,(int)qgPosition.z),(int)qgPosition.z, Block.ROCK.getARGB());
 		w.addBlock((int)qgPosition.x, w.getHeightAt((int)qgPosition.x,(int)qgPosition.z)+1,(int)qgPosition.z, Block.ROCK.getARGB());
 		w.addBlock((int)qgPosition.x, w.getHeightAt((int)qgPosition.x,(int)qgPosition.z)+2,(int)qgPosition.z, Block.ROCK.getARGB());

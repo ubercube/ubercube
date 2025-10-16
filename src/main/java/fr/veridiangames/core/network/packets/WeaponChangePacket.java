@@ -19,7 +19,6 @@
 
 package fr.veridiangames.core.network.packets;
 
-import com.sun.corba.se.spi.activation.Server;
 import fr.veridiangames.core.GameCore;
 import fr.veridiangames.core.game.entities.Entity;
 import fr.veridiangames.core.game.entities.player.Player;
@@ -73,7 +72,7 @@ public class WeaponChangePacket extends Packet
     {
         server.udpSendToAll(new WeaponChangePacket(this));
 		Entity e = server.getCore().getGame().getEntityManager().get(playerID);
-    	if (e != null && e instanceof ServerPlayer)
+    	if (e instanceof ServerPlayer)
 		{
 			ServerPlayer p = (ServerPlayer) e;
 			p.setCurrentWeapon(weaponID);

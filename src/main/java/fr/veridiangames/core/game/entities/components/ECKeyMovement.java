@@ -29,8 +29,6 @@ import fr.veridiangames.core.maths.Vec4;
 import fr.veridiangames.core.physics.Rigidbody;
 import fr.veridiangames.core.profiler.Profiler;
 
-import javax.jws.soap.SOAPBinding;
-
 /**
  * Created by Marccspro on 31 janv. 2016.
  */

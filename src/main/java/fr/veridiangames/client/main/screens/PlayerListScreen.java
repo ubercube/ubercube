@@ -39,8 +39,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static sun.audio.AudioPlayer.player;
-
 /**
  * Created by Marc on 13/07/2016.
  */
