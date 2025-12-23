@@ -46,9 +46,12 @@ public class NetworkClientUDP implements Runnable
         {
             this.client = client;
             this.address = InetAddress.getByName(address);
-            this.port = port + 1;
-            this.socket = new DatagramSocket(this.port);
-            log("UDP: Connected !");
+            // Server listens on the provided port (same numeric port as TCP, different protocol).
+            // Client must bind UDP to its *local* port so the server can reply; server assumes tcpPort+1.
+            this.port = port;
+            int localUdpPort = client.getTcp().getSocket().getLocalPort() + 1;
+            this.socket = new DatagramSocket(localUdpPort);
+            log("UDP: Connected ! (bind=" + localUdpPort + ", target=" + this.address.getHostAddress() + ":" + this.port + ")");
             new Thread(this, "udp-thread").start();
         }
         catch (SocketException | UnknownHostException e)
