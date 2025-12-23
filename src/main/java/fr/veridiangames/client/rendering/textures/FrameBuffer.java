@@ -83,7 +83,8 @@ public class FrameBuffer
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, (ByteBuffer) null);
+		// Use a depth type appropriate for depth textures.
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, (ByteBuffer) null);
 	}
 	
 	private void createDepthBufferAttachement()
@@ -97,14 +98,17 @@ public class FrameBuffer
 	
 	public void bind()
 	{
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBufferID);
+		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferID);
+		glDrawBuffer(GL_COLOR_ATTACHMENT0);
 		glViewport(0, 0, width, height);
 	}
 
 	public void bindDepth()
 	{
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, depthBufferID);
+		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferID);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTextureID, 0);
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
 		glViewport(0, 0, width, height);
 	}
 	

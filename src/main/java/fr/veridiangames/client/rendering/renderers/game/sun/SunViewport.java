@@ -44,8 +44,9 @@ public class SunViewport
 		rotation = Mat4.rotate(direction, new Vec3(0, 1, 0));
 
 		float aspect = Display.getInstance().getAspect();
-		float tanHalfHFOV = Mathf.tan(Mathf.toRadians(playerCam.getFov() / 2.0f));
-		float tanHalfVFOV = Mathf.tan(Mathf.toRadians((playerCam.getFov() * aspect) / 2.0f));
+		// Camera fov is treated as vertical; derive horizontal from aspect.
+		float tanHalfVFOV = Mathf.tan(Mathf.toRadians(playerCam.getFov() / 2.0f));
+		float tanHalfHFOV = tanHalfVFOV * aspect;
 
 		for (int i = 0; i < shadowSascadeDistances.length - 1; i++)
 		{

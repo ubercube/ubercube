@@ -36,6 +36,12 @@ float calcShadowFactor(vec4[SHADOW_CASCADE_COUNT] lightPos, float[SHADOW_CASCADE
     vec3 projCoords = lightPosition.xyz / lightPosition.w;
     projCoords = projCoords * 0.5 + 0.5;
 
+	// Outside the shadow map projection: treat as lit to avoid edge dropouts.
+	if (projCoords.z < 0.0 || projCoords.z > 1.0)
+		return 1.0;
+	if (projCoords.x < 0.0 || projCoords.x > 1.0 || projCoords.y < 0.0 || projCoords.y > 1.0)
+		return 1.0;
+
     float closestDepth = texture(shadowMap[shadowMapID], projCoords.xy).r;
     float currentDepth = projCoords.z;
 
